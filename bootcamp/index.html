@@ -3,61 +3,1590 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nexthink Bootcamp — Coming Soon</title>
+<title>Mission: Learning Architect — Nexthink Interview Prep</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
   :root {
-    --ink: #0B1320; --paper: #F7F5F0; --panel: #FFFFFF; --line: #D8D4C8;
-    --teal: #0F6E56; --teal-bright: #1D9E75; --teal-soft: #E1F5EE;
-    --radius: 16px;
+    --ink: #0B1320;
+    --paper: #F7F5F0;
+    --panel: #FFFFFF;
+    --line: #D8D4C8;
+    --teal: #0F6E56;
+    --teal-bright: #1D9E75;
+    --teal-soft: #E1F5EE;
+    --amber: #B8742A;
+    --amber-soft: #FAEEDA;
+    --blue: #1D4ED8;
+    --blue-soft: #E6F1FB;
+    --locked: #B8B3A4;
+    --radius: 14px;
+    --radius-sm: 8px;
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     background: var(--paper);
-    background-image: radial-gradient(circle at 1px 1px, rgba(11,19,32,0.06) 1px, transparent 0);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(11,19,32,0.06) 1px, transparent 0);
     background-size: 22px 22px;
-    font-family: 'Space Grotesk', sans-serif; color: var(--ink);
-    min-height: 100vh; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; padding: 48px 24px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
-  .card {
-    background: var(--panel); border: 1px solid var(--line);
-    border-radius: var(--radius); padding: 48px 40px; max-width: 560px;
-    width: 100%; text-align: center;
+
+  *:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
   }
-  .badge {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.1em;
-    background: var(--teal-soft); color: #085041;
-    border-radius: 20px; padding: 4px 14px; display: inline-block; margin-bottom: 24px;
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
-  .icon { font-size: 52px; margin-bottom: 20px; line-height: 1; }
-  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; }
-  p { font-size: 15px; color: #4A4639; line-height: 1.65; margin-bottom: 24px; }
-  .meta {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #8A8575;
-    border-top: 1px solid var(--line); padding-top: 20px; margin-top: 4px;
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
   }
-  .back {
-    margin-top: 32px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;
-    color: var(--teal); text-decoration: none; font-weight: 600;
+  .skip-link:focus {
+    left: 12px;
+    top: 12px;
+    background: var(--ink);
+    color: white;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    z-index: 200;
   }
-  .back:hover { text-decoration: underline; }
+
+  /* ───────── HEADER ───────── */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(247,245,240,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--teal);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+
+  .brand-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .xp-tracker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .xp-bar-outer {
+    width: 160px;
+    height: 8px;
+    background: var(--line);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .xp-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--teal-bright));
+    width: 0%;
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+    border-radius: 20px;
+  }
+  .xp-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* ───────── HERO ───────── */
+  .hero {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 56px 24px 32px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 54px);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--teal);
+    text-decoration: underline;
+    text-decoration-color: var(--teal-bright);
+    text-decoration-thickness: 4px;
+    text-underline-offset: 6px;
+  }
+
+  .hero p {
+    font-size: 17px;
+    color: #4A4639;
+    max-width: 620px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1;
+  }
+  .hero-stat-lbl {
+    font-size: 11px;
+    color: #6B6759;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  /* ───────── MAP (path of levels) ───────── */
+  .map-section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 24px 60px;
+  }
+
+  .map-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6B6759;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .level-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    color: inherit;
+  }
+
+  .level-card:hover:not(.locked) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(11,19,32,0.08);
+    border-color: var(--teal-bright);
+  }
+
+  .level-card.locked {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .level-card.complete {
+    border-color: var(--teal-bright);
+    background: var(--teal-soft);
+  }
+
+  .level-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .level-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--teal);
+    background: var(--teal-soft);
+    border-radius: 20px;
+    padding: 3px 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .level-card.locked .level-num {
+    background: #ECEAE3;
+    color: var(--locked);
+  }
+
+  .level-status {
+    font-size: 18px;
+  }
+
+  .level-name {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .level-focus {
+    font-size: 12.5px;
+    color: #6B6759;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    min-height: 36px;
+  }
+
+  .level-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: #8A8575;
+  }
+
+  .level-xp {
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* ───────── LEVEL DETAIL VIEW ───────── */
+  .level-detail {
+    display: none;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+  .level-detail.active { display: block; }
+  .map-section.hidden { display: none; }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    margin-bottom: 24px;
+  }
+  .back-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+  .detail-header {
+    margin-bottom: 28px;
+  }
+
+  .detail-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .detail-header h2 {
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+
+  .detail-header .lead {
+    font-size: 15.5px;
+    color: #4A4639;
+    line-height: 1.6;
+  }
+
+  .block {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 18px;
+  }
+
+  .block-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .block-label.amber { color: var(--amber); }
+  .block-label.blue { color: var(--blue); }
+
+  .block p, .block li {
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: #2B2A24;
+  }
+
+  .block ul {
+    list-style: none;
+    padding: 0;
+  }
+  .block ul li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .block ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--teal-bright);
+    font-weight: 700;
+  }
+
+  .answer-card {
+    background: var(--blue-soft);
+    border-left: 3px solid var(--blue);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #0C2A52;
+    white-space: pre-wrap;
+    margin-top: 8px;
+  }
+
+  .copy-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+
+  .copy-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+  .copy-btn:hover { background: var(--teal); }
+  .copy-btn.copied { background: var(--teal-bright); }
+
+  /* Quiz */
+  .quiz-q {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .quiz-option {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .quiz-option:hover { border-color: var(--teal-bright); }
+  .quiz-option.correct {
+    background: var(--teal-soft);
+    border-color: var(--teal-bright);
+    font-weight: 600;
+  }
+  .quiz-option.incorrect {
+    background: #FCEBEB;
+    border-color: #E24B4A;
+  }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-feedback {
+    font-size: 13.5px;
+    line-height: 1.6;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: var(--teal-soft); color: #085041; }
+  .quiz-feedback.incorrect-fb { background: #FCEBEB; color: #791F1F; }
+
+  /* Drag-drop matching (Level 4) */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 560px) {
+    .match-grid { grid-template-columns: 1fr; }
+  }
+  .match-col h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6B6759;
+    margin-bottom: 10px;
+  }
+  .match-item {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+    cursor: grab;
+    user-select: none;
+  }
+  .match-target {
+    min-height: 44px;
+    border: 1.5px dashed var(--line);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    color: #8A8575;
+  }
+  .match-target.filled {
+    border-style: solid;
+    border-color: var(--teal-bright);
+    background: var(--teal-soft);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .match-target.drag-over { border-color: var(--blue); background: var(--blue-soft); }
+
+  /* Checklist (Level 6) */
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--line);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+  .checklist-item.checked .checklist-box {
+    background: var(--teal-bright);
+    border-color: var(--teal-bright);
+    color: white;
+  }
+  .checklist-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .checklist-item.checked .checklist-text {
+    color: #6B6759;
+    text-decoration: line-through;
+  }
+
+  /* Slider / scale (Level 2 self-assessment) */
+  .scale-row {
+    margin-bottom: 16px;
+  }
+  .scale-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+  .scale-skill { font-weight: 600; }
+  .scale-val { font-family: 'IBM Plex Mono', monospace; color: var(--teal); font-weight: 700; }
+  input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 20px;
+    background: var(--line);
+    outline-offset: 4px;
+  }
+
+  /* Timer (Level 8 mock interview) */
+  .timer-display {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 38px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--ink);
+    margin: 10px 0;
+  }
+  .timer-display.warn { color: var(--amber); }
+  .timer-display.over { color: #E24B4A; }
+  .timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .timer-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    border: 1.5px solid var(--ink);
+    background: var(--ink);
+    color: white;
+    border-radius: 20px;
+    padding: 9px 20px;
+    cursor: pointer;
+  }
+  .timer-btn.secondary {
+    background: none;
+    color: var(--ink);
+  }
+
+  /* Complete button */
+  .complete-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+  .complete-btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--teal);
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 14px 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .complete-btn:hover { background: var(--teal-bright); transform: translateY(-1px); }
+  .complete-btn:disabled {
+    background: var(--locked);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Badge toast */
+  .toast {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    transition: bottom 0.4s cubic-bezier(.4,0,.2,1);
+    z-index: 300;
+    max-width: 90vw;
+  }
+  .toast.show { bottom: 30px; }
+  .toast-icon { font-size: 26px; }
+  .toast-text { font-size: 13.5px; line-height: 1.4; }
+  .toast-text strong { color: var(--teal-bright); }
+
+  /* Final summary */
+  .final-screen {
+    display: none;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    text-align: center;
+  }
+  .final-screen.active { display: block; }
+  .final-screen h2 {
+    font-size: clamp(28px, 5vw, 42px);
+    margin-bottom: 14px;
+  }
+  .badge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+    margin: 28px 0;
+  }
+  .badge-pill {
+    background: var(--panel);
+    border: 1px solid var(--teal-bright);
+    border-radius: var(--radius-sm);
+    padding: 12px 6px;
+    font-size: 22px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 24px 50px;
+    font-size: 12px;
+    color: #8A8575;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 36px 18px 24px; }
+    .xp-bar-outer { width: 100px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="badge">Knowledge &amp; rehearsal</div>
-  <div class="icon">🧭</div>
-  <h1>Nexthink Bootcamp</h1>
-  <p>Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal under BrightHire conditions — timed, structured, no second takes.</p>
-  <p style="font-size:13px; color:#8A8575;">Replace this file with your <strong>nexthink_interview_bootcamp.html</strong> content.</p>
-  <div class="meta">10 levels · ~3h · Coming soon</div>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="top-bar">
+  <div class="brand">
+    <span class="brand-mark">Mission Brief</span>
+    <span class="brand-title">Learning Architect Bootcamp</span>
+  </div>
+  <div class="xp-tracker">
+    <span class="xp-label" id="xpLabel">0 / 2400 XP</span>
+    <div class="xp-bar-outer"><div class="xp-bar-inner" id="xpBar"></div></div>
+  </div>
 </div>
 
-<a class="back" href="../index.html">← Back to all tracks</a>
+<main id="main">
 
+  <section class="hero">
+    <div class="hero-eyebrow">Nexthink · Product Education · Learning Architect</div>
+    <h1>Ten levels between you and <em>"you're hired."</em></h1>
+    <p>A self-paced, gamified training built around exactly what this role tests: SCORM/xAPI fluency, LMS telemetry thinking, Articulate Rise mechanics, and game-based learning design for adult, inclusive audiences. Clear a level, earn XP, unlock the next.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-lbl">Levels</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">2400</div><div class="hero-stat-lbl">Total XP</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">~3h</div><div class="hero-stat-lbl">Full run</div></div>
+    </div>
+  </section>
+
+  <section class="map-section" id="mapSection">
+    <div class="map-title">Choose your level</div>
+    <div class="level-grid" id="levelGrid"></div>
+  </section>
+
+  <section class="level-detail" id="levelDetail"></section>
+
+  <section class="final-screen" id="finalScreen">
+    <div class="hero-eyebrow">Mission complete</div>
+    <h2>Diamond Crown of Readiness 👑</h2>
+    <p style="color:#4A4639; font-size:15px; line-height:1.6;">You've cleared every level. You know SCORM from xAPI, you can talk Rise vs. Storyline with confidence, you've drafted your gamified onboarding pitch, and you've rehearsed your STAR stories out loud. That's not luck — that's preparation. Go get the offer.</p>
+    <div class="badge-grid" id="badgeGrid"></div>
+    <button class="back-btn" onclick="goToMap()" style="margin-top:10px;">↺ Replay any level</button>
+  </section>
+
+</main>
+
+<footer>Built for one interview. Use it as many times as you need.</footer>
+
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">🏅</span>
+  <span class="toast-text" id="toastText"></span>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// LEVEL DATA — 10 levels covering SCORM/xAPI, LMS telemetry,
+// Articulate Rise/Storyline, and gamified inclusive learning design
+// ═══════════════════════════════════════════════════════════════════
+
+const LEVELS = [
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 1,
+  name: "The Brief",
+  focus: "Decode the Nexthink Learning Architect job description",
+  xp: 150,
+  badge: "🧭",
+  type: "checklist",
+  content: {
+    intro: "Before touching any tool, map exactly what this role tests. Every level after this one trains a specific line from the JD.",
+    blocks: [
+      {
+        label: "Mission",
+        icon: "🎯",
+        html: `<p>Nexthink's Product Education team needs someone who can take a complex IT product and turn it into learning content that actually changes behaviour — for adults, at scale, blended across self-paced and instructor-led formats.</p>`
+      },
+      {
+        label: "The five pillars this bootcamp trains",
+        icon: "📋",
+        html: `<ul>
+          <li><strong>SCORM &amp; xAPI</strong> — the standards that let your content talk to an LMS</li>
+          <li><strong>LMS telemetry</strong> — using completion/drop-off data to redesign content, not just report on it</li>
+          <li><strong>Articulate Rise &amp; Storyline</strong> — knowing which tool for which job, and why</li>
+          <li><strong>Gamification for adults</strong> — game mechanics that respect professional learners, not badges for badges' sake</li>
+          <li><strong>Inclusive, responsive design</strong> — WCAG and UDL applied to corporate eLearning, not an afterthought</li>
+        </ul>`
+      }
+    ],
+    checklist: [
+      "I understand Nexthink sells Digital Employee Experience (DEX) software, not consumer apps",
+      "I understand 'Product Education' means teaching customers/users how to use the product — not internal onboarding",
+      "I know the role partners directly with Product Managers and SMEs, not just other instructional designers",
+      "I've identified that AI-assisted content creation is named explicitly as a required skill, not a nice-to-have",
+      "I know the five pillars above and can name them without looking"
+    ]
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 2,
+  name: "Self-Audit",
+  focus: "Honest skill inventory — where you're strong, where you'll bridge the gap",
+  xp: 150,
+  badge: "🔍",
+  type: "scale",
+  content: {
+    intro: "No interview prep works if it starts from denial. Rate yourself honestly on each skill — the app will remember your answers so you know exactly where to spend your remaining prep time.",
+    blocks: [
+      {
+        label: "Why this matters",
+        icon: "💡",
+        html: `<p>You already have deep, real expertise in pedagogy, gamification design, and AI-assisted workflows — that's not in question. The gap is tool-specific fluency: Storyline, SCORM packaging mechanics, and Nexthink's own product. Naming the gap precisely is what lets you close it efficiently instead of panicking about all of it equally.</p>`
+      }
+    ],
+    scales: [
+      { id: "rise", label: "Articulate Rise (hands-on build)" },
+      { id: "storyline", label: "Articulate Storyline (triggers/variables)" },
+      { id: "scorm", label: "SCORM packaging & LMS publishing" },
+      { id: "xapi", label: "xAPI / Tin Can statements" },
+      { id: "telemetry", label: "Using LMS data to redesign content" },
+      { id: "gamification", label: "Game-based learning for adult/professional audiences" },
+      { id: "accessibility", label: "WCAG / inclusive design in eLearning" },
+      { id: "synthesia", label: "AI video tools (Synthesia, Camtasia)" }
+    ]
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 3,
+  name: "SCORM vs. xAPI",
+  focus: "The standard that lets your course talk to an LMS — both versions",
+  xp: 200,
+  badge: "📡",
+  type: "quiz",
+  content: {
+    intro: "This is the single most-asked technical concept in instructional design interviews. You don't need to write SCORM manifest XML by hand — you need to explain, fluently, what it does and when xAPI is the better choice.",
+    blocks: [
+      {
+        label: "Core concept",
+        icon: "📡",
+        html: `<p><strong>SCORM</strong> (Sharable Content Object Reference Model) is a packaging standard. It lets a course built in Rise or Storyline talk to almost any LMS using a shared language: "this learner started," "this learner scored 80%," "this learner completed."</p>
+        <p style="margin-top:10px;"><strong>xAPI</strong> (Experience API, formerly Tin Can) is the more flexible successor. Instead of one big "completed/not completed" signal, it logs granular statements: <em>"Ana watched Video 3," "Ana clicked Hint on Question 4," "Ana practiced the scenario in the sandbox."</em> It can also track learning that happens outside an LMS entirely — a simulation, a mobile app, a VR session.</p>`
+      },
+      {
+        label: "The one-line answer for the interview",
+        icon: "🎤",
+        html: ``
+      }
+    ],
+    interviewAnswer: "SCORM tracks completion — xAPI tracks experience. SCORM tells the LMS 'this person finished and scored X.' xAPI lets you log specific actions inside and outside the course, which is exactly what you'd want for product training where the real learning happens in a live demo environment, not just inside the module.",
+    quiz: {
+      question: "A Nexthink customer completes a self-paced Rise module, then practices in a live sandbox environment outside the LMS. Which standard captures both parts of that journey?",
+      options: [
+        "SCORM only — it's the industry standard for all tracking",
+        "xAPI — because it can log statements from activities outside the LMS itself",
+        "Neither — sandbox activity can't be tracked digitally",
+        "SCORM 2.0, a newer unreleased version"
+      ],
+      correctIndex: 1,
+      feedbackCorrect: "Exactly. SCORM is LMS-bound by design — it only knows what happens inside its own player. xAPI's Learning Record Store can receive statements from anywhere, including a sandbox, a mobile app, or even a physical workshop check-in.",
+      feedbackIncorrect: "Not quite. SCORM only tracks what happens inside the LMS player — it has no way to see sandbox activity. xAPI's Learning Record Store can receive statements from any connected source, which is exactly why it fits this scenario."
+    }
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 4,
+  name: "Rise or Storyline?",
+  focus: "Match the format to the learning need — the decision Nexthink makes daily",
+  xp: 200,
+  badge: "🛠️",
+  type: "match",
+  content: {
+    intro: "Drag each learning need to the tool that fits it best. There's no trick — the logic is genuinely simple once it clicks, and once it clicks you'll never confuse them again.",
+    blocks: [
+      {
+        label: "The real difference",
+        icon: "🛠️",
+        html: `<p><strong>Rise</strong> = fast, responsive, block-based. Perfect for structured, linear content consumed on any device. Minimal design skill required, built-in mobile responsiveness.</p>
+        <p style="margin-top:8px;"><strong>Storyline</strong> = slide-based with full creative control — triggers, variables, branching logic, custom interactions. Best when you need a simulation, a non-linear scenario, or pixel-level design control. Steeper build time, no native mobile responsiveness without extra work.</p>`
+      }
+    ],
+    matchPairs: [
+      { left: "Quick onboarding module for a new Nexthink feature, needs to work on mobile", right: "Rise" },
+      { left: "Branching troubleshooting simulation where wrong answers lead to different consequences", right: "Storyline" },
+      { left: "Certification exam with randomized question banks", right: "Storyline" },
+      { left: "Library of short, structured how-to lessons for self-paced learning", right: "Rise" },
+      { left: "Custom interactive dashboard walkthrough mimicking the real Nexthink UI", right: "Storyline" }
+    ]
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 5,
+  name: "Telemetry Thinking",
+  focus: "Turn LMS data into a redesign decision — not just a report",
+  xp: 250,
+  badge: "📊",
+  type: "scenario",
+  content: {
+    intro: "Nexthink's entire business is digital experience telemetry. They will absolutely test whether you think about your own learning content the same way they think about employee endpoints — with data, not vibes.",
+    blocks: [
+      {
+        label: "The dataset",
+        icon: "📊",
+        html: `<p>You shipped a Rise module on a new Nexthink feature. After 3 weeks:</p>
+        <ul>
+          <li><strong>Completion rate:</strong> 58% (target: 80%)</li>
+          <li><strong>Drop-off point:</strong> 71% of non-completers exit at Lesson 3 of 5</li>
+          <li><strong>Time-on-task at Lesson 3:</strong> 3x longer than any other lesson</li>
+          <li><strong>Quiz score at Lesson 3 (for those who continue):</strong> avg 54%, lowest of all lessons</li>
+        </ul>`
+      },
+      {
+        label: "What this pattern actually tells you",
+        icon: "🔬",
+        html: `<p>High time-on-task + low quiz score + mass drop-off at the same lesson is not a motivation problem — it's a <strong>content clarity problem</strong>. Learners are trying, struggling, and giving up. The fix isn't "make it more fun," it's "the explanation at Lesson 3 doesn't match the learner's current mental model."</p>`
+      }
+    ],
+    interviewAnswer: "I'd treat Lesson 3 as the priority, not the whole module. The data shows people are engaged enough to spend extra time there — they're trying. The low quiz score paired with high time-on-task tells me the content itself is the barrier, likely a concept introduced without enough scaffolding from Lesson 2. I'd pull the actual lesson, check whether it assumes prior knowledge the learner doesn't have yet, add a worked example or a short demo video, and re-test with a small group before redeploying — using the same telemetry to confirm the fix worked.",
+    quiz: {
+      question: "Given this data pattern, what's the single highest-leverage fix?",
+      options: [
+        "Add more gamification points to Lesson 3 to boost motivation",
+        "Shorten Lesson 3 so people don't have time to get frustrated",
+        "Investigate whether Lesson 3 assumes prior knowledge the learner doesn't have, then add scaffolding",
+        "Remove Lesson 3 from the course entirely"
+      ],
+      correctIndex: 2,
+      feedbackCorrect: "Right. High effort + low score = a clarity gap, not a motivation gap. Gamifying a confusing lesson just makes a confusing lesson with badges. Find the conceptual gap first.",
+      feedbackIncorrect: "The pattern (high time-on-task + low score + mass drop-off) points to a content clarity problem, not low motivation. Adding points or cutting the content treats the symptom, not the cause — the real fix is finding what assumption Lesson 3 makes that learners don't have yet."
+    }
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 6,
+  name: "The Adult Learner",
+  focus: "Why gamification for professionals ≠ gamification for kids",
+  xp: 200,
+  badge: "🧠",
+  type: "checklist",
+  content: {
+    intro: "Nexthink's learners are IT professionals on the clock. A points-and-confetti system designed for a language app will feel patronizing here. This level recalibrates your gamification instincts for a professional, time-pressured, expertise-driven audience.",
+    blocks: [
+      {
+        label: "What changes for adult professional learners",
+        icon: "🧠",
+        html: `<ul>
+          <li><strong>Autonomy over points</strong> — adults disengage fast from systems that feel like school. Optional challenge paths beat mandatory leaderboards.</li>
+          <li><strong>Competence signals, not just rewards</strong> — a badge means more when it maps to a real skill they can put on a resume or cite to their manager, not just "you clicked through."</li>
+          <li><strong>Relevance over fantasy</strong> — narrative works (you used it well in your own AWJ project), but for IT professionals, the "story" should be a realistic scenario from their actual job, not a fictional quest.</li>
+          <li><strong>Respect their time</strong> — adult learners are evaluating "is this worth my hour" constantly. Game mechanics should reduce friction, not add steps.</li>
+          <li><strong>Self-Determination Theory still applies</strong> — autonomy, competence, relatedness — but relatedness for adults often means peer recognition or community board input, not collaborative play.</li>
+        </ul>`
+      },
+      {
+        label: "Translate your own AWJ experience",
+        icon: "🌉",
+        html: `<p>You already built this instinct once: the AWJ's "researcher identity" narrative worked because it mapped onto something the learner aspired to be. For Nexthink, the equivalent move is a "DEX practitioner" identity arc — IT certifications already work this way (Basic → Pro → Master), so you're not inventing the wheel, you're refining one that already exists in their ecosystem.</p>`
+      }
+    ],
+    checklist: [
+      "I can explain why leaderboards can backfire with adult professional learners",
+      "I can name at least 2 ways a badge can map to a real, citable skill",
+      "I've connected my AWJ narrative-identity mechanic to Nexthink's existing certification tiers",
+      "I understand 'relevance over fantasy' as the key adaptation from language-learning gamification to enterprise software training",
+      "I can explain Self-Determination Theory (autonomy/competence/relatedness) without notes"
+    ]
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 7,
+  name: "Build the Pitch",
+  focus: "Design a gamified onboarding flow for a real Nexthink feature, live",
+  xp: 300,
+  badge: "🏗️",
+  type: "builder",
+  content: {
+    intro: "This is the level that turns theory into something you could actually say out loud in the interview. Fill in your own answers — the app saves them so you can review and refine before the real thing.",
+    blocks: [
+      {
+        label: "The brief",
+        icon: "🏗️",
+        html: `<p>Design a short, gamified, blended learning path to onboard a new IT admin to <strong>Nexthink's Alert &amp; Incident Resolution feature</strong> (or substitute any feature you're more familiar with — the structure matters more than the specific product knowledge).</p>`
+      }
+    ],
+    builderFields: [
+      { id: "objective", label: "1. Learning objective (one sentence, behavior-focused)", placeholder: "e.g. By the end of this path, the learner can independently triage and resolve a flagged incident in under 5 minutes." },
+      { id: "format", label: "2. Format mix — what's self-paced (Rise) vs. instructor-led (Virtual Classroom)?", placeholder: "e.g. Self-paced Rise module covers the 'why' and UI tour; live Virtual Classroom covers hands-on triage with real incident data." },
+      { id: "mechanic", label: "3. One gamification mechanic — and why it respects an adult learner's time", placeholder: "e.g. A 'speed-to-resolution' practice scenario with a personal best timer — competence-focused, optional, no public leaderboard." },
+      { id: "accessibility", label: "4. One specific accessibility/inclusion decision", placeholder: "e.g. All screen-recording demos include captions by default and a text transcript, since IT professionals often work in open, noisy office environments." },
+      { id: "metric", label: "5. The one metric you'd check after 2 weeks to know if it worked", placeholder: "e.g. Time-to-first-successful-resolution for new admins, compared against the team average." }
+    ]
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 8,
+  name: "The Recording",
+  focus: "Rehearse your STAR answers against the clock — BrightHire conditions",
+  xp: 250,
+  badge: "🎙️",
+  type: "timer",
+  content: {
+    intro: "BrightHire records a structured, one-shot interview — no human improvising a follow-up question to rescue a vague answer. Practice hitting 90–120 seconds with a complete Situation–Task–Action–Result arc, out loud, every time.",
+    blocks: [
+      {
+        label: "Today's prompts — pick one, hit record (mentally), speak for 90–120s",
+        icon: "🎙️",
+        html: `<ul>
+          <li>"Tell us about a time you influenced a stakeholder without formal authority."</li>
+          <li>"Describe a project that didn't go as planned. What did you learn?"</li>
+          <li>"Walk us through how you'd ramp up on a product you've never used before."</li>
+          <li>"Tell us about a time you used data to change your approach to a learning program."</li>
+        </ul>`
+      },
+      {
+        label: "The STAR cue card",
+        icon: "⭐",
+        html: `<p><strong>S</strong>ituation (10–15s) → <strong>T</strong>ask (10s) → <strong>A</strong>ction (40–60s, the bulk) → <strong>R</strong>esult (15–20s, with a number if possible).</p>`
+      }
+    ]
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 9,
+  name: "Know the Terrain",
+  focus: "What you'd actually find on Nexthink Learn — speak with specifics",
+  xp: 250,
+  badge: "🗺️",
+  type: "checklist",
+  content: {
+    intro: "You already found Nexthink Learn (learn.nexthink.com) and its Virtual Classrooms page. This level makes sure you can speak about it with the specificity that separates 'I researched the company' from 'I actually used your product.'",
+    blocks: [
+      {
+        label: "Before the interview — do this for real, not hypothetically",
+        icon: "🗺️",
+        html: `<ul>
+          <li>Register free at learn.nexthink.com</li>
+          <li>Complete one short course in the "Nexthink Infinity Fundamentals" path (~15–20 min)</li>
+          <li>Note the format: is it block-based (Rise-style) or more custom (Storyline-style)?</li>
+          <li>Note one thing you'd keep, and one thing you'd genuinely improve — specific, not flattering</li>
+        </ul>`
+      },
+      {
+        label: "Why this is your highest-leverage move",
+        icon: "💎",
+        html: `<p>Most candidates talk about instructional design in the abstract. You can say "I went through your Fundamentals path, and here's a specific observation" — which is precisely the proactive, product-curious behaviour the JD asks for ("proactively contribute ideas for new learning formats").</p>`
+      }
+    ],
+    checklist: [
+      "I've registered on learn.nexthink.com",
+      "I've completed at least one short course",
+      "I've identified whether their content looks Rise-built or Storyline-built",
+      "I have one specific, genuine improvement idea ready to share",
+      "I can connect this to my own AWJ project as a 'here's the same philosophy I'd bring' bridge"
+    ]
+  }
+},
+
+// ───────────────────────────────────────────────────────────────────
+{
+  id: 10,
+  name: "Final Boss: Mock Panel",
+  focus: "Full simulated interview — all five pillars, no notes",
+  xp: 350,
+  badge: "👑",
+  type: "boss",
+  content: {
+    intro: "One pass, five questions, no second takes — exactly like BrightHire. Answer each one out loud before checking the model answer. This is the level that tells you if you're actually ready.",
+    blocks: [],
+    bossQuestions: [
+      {
+        q: "Explain the difference between SCORM and xAPI to someone non-technical, in under 30 seconds.",
+        model: "SCORM tells the LMS 'this person finished and got this score' — it's a simple pass/fail signal. xAPI is more like a detailed diary: it can log specific actions, even outside the course itself, like practicing in a live demo environment. For a product like Nexthink, where real learning often happens hands-on, xAPI gives a much richer picture."
+      },
+      {
+        q: "A module has high completion but learners still can't perform the task in real life. What's your first move?",
+        model: "Completion isn't competence. I'd look past the completion metric to assessment data within the module — are quiz scores actually high, or is completion just 'clicked through'? Then I'd validate against real-world performance directly: shadow a support ticket, or ask the SME where new admins still get stuck. The fix is usually adding a hands-on practice component, not redesigning the content that's already there."
+      },
+      {
+        q: "When would you choose Storyline over Rise for a Nexthink training module, specifically?",
+        model: "When the learning need is a non-linear simulation — like a branching incident-response scenario where different choices lead to different consequences — or when I need a custom interactive walkthrough that mimics Nexthink's actual UI precisely. Rise is faster and mobile-responsive by default, so it's my choice for structured, linear content. Storyline earns its extra build time when the interaction itself is the learning."
+      },
+      {
+        q: "How do you keep gamification from feeling juvenile to an IT professional audience?",
+        model: "I tie every mechanic to something real — a badge that maps to a skill they could mention in a 1:1 with their manager, a challenge mode that's optional rather than mandatory, and a narrative grounded in their actual job rather than a fictional quest. Autonomy and competence matter more than points for this audience — Self-Determination Theory still applies, but the 'fun' has to come from feeling more capable, not from decoration."
+      },
+      {
+        q: "What's one thing you'd want to learn about Nexthink's current Product Education content in your first 30 days?",
+        model: "I'd want to see the actual telemetry — completion rates and drop-off points across the existing Learn catalog — to find out where learners are already struggling, rather than guessing. I'd also want to understand the current split between self-paced Rise content and instructor-led Virtual Classrooms, to see if that blend is intentional by topic complexity or more historical. Both would tell me where my first contribution should go."
+      }
+    ]
+  }
+}
+
+];
+
+
+// ═══════════════════════════════════════════════════════════════════
+// APP LOGIC
+// ═══════════════════════════════════════════════════════════════════
+
+function loadProgress() {
+  return { completed: {}, scales: {}, builder: {} };
+}
+
+function saveProgress() {
+  // Progress lives in memory for this session only.
+}
+
+let progress = loadProgress();
+let currentLevelId = null;
+
+const TOTAL_XP = LEVELS.reduce((sum, l) => sum + l.xp, 0);
+
+function earnedXP() {
+  return LEVELS.filter(l => progress.completed[l.id]).reduce((s, l) => s + l.xp, 0);
+}
+
+function updateXPBar() {
+  const earned = earnedXP();
+  const pct = Math.round((earned / TOTAL_XP) * 100);
+  document.getElementById("xpBar").style.width = pct + "%";
+  document.getElementById("xpLabel").textContent = `${earned} / ${TOTAL_XP} XP`;
+}
+
+function isUnlocked(level) {
+  if (level.id === 1) return true;
+  return !!progress.completed[level.id - 1];
+}
+
+// ───────────────────────────────────────────────────────────────────
+// MAP RENDERING
+// ───────────────────────────────────────────────────────────────────
+
+function renderMap() {
+  const grid = document.getElementById("levelGrid");
+  grid.innerHTML = "";
+  LEVELS.forEach(level => {
+    const unlocked = isUnlocked(level);
+    const complete = !!progress.completed[level.id];
+    const card = document.createElement("button");
+    card.className = "level-card" + (unlocked ? "" : " locked") + (complete ? " complete" : "");
+    card.setAttribute("aria-disabled", unlocked ? "false" : "true");
+    card.innerHTML = `
+      <div class="level-top-row">
+        <span class="level-num">LEVEL ${String(level.id).padStart(2,"0")}</span>
+        <span class="level-status">${complete ? "✅" : (unlocked ? level.badge : "🔒")}</span>
+      </div>
+      <div class="level-name">${level.name}</div>
+      <div class="level-focus">${level.focus}</div>
+      <div class="level-meta">
+        <span>${level.type === "boss" ? "FINAL BOSS" : level.type.toUpperCase()}</span>
+        <span class="level-xp">+${level.xp} XP</span>
+      </div>
+    `;
+    if (unlocked) {
+      card.addEventListener("click", () => openLevel(level.id));
+    }
+    grid.appendChild(card);
+  });
+  updateXPBar();
+}
+
+function goToMap() {
+  document.getElementById("mapSection").classList.remove("hidden");
+  document.getElementById("levelDetail").classList.remove("active");
+  document.getElementById("finalScreen").classList.remove("active");
+  currentLevelId = null;
+  renderMap();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ───────────────────────────────────────────────────────────────────
+// LEVEL DETAIL RENDERING
+// ───────────────────────────────────────────────────────────────────
+
+function openLevel(id) {
+  currentLevelId = id;
+  const level = LEVELS.find(l => l.id === id);
+  document.getElementById("mapSection").classList.add("hidden");
+  const detail = document.getElementById("levelDetail");
+  detail.classList.add("active");
+
+  let bodyHTML = `
+    <button class="back-btn" onclick="goToMap()">← Back to map</button>
+    <div class="detail-header">
+      <span class="detail-badge">Level ${String(level.id).padStart(2,"0")} · ${level.badge} · +${level.xp} XP</span>
+      <h2>${level.name}</h2>
+      <p class="lead">${level.content.intro}</p>
+    </div>
+  `;
+
+  (level.content.blocks || []).forEach(block => {
+    bodyHTML += `
+      <div class="block">
+        <div class="block-label">${block.icon || ""} ${block.label}</div>
+        ${block.html}
+      </div>
+    `;
+  });
+
+  if (level.content.interviewAnswer) {
+    bodyHTML += `
+      <div class="block">
+        <div class="block-label blue">🎤 Model interview answer</div>
+        <div class="answer-card" id="answerText-${level.id}">${level.content.interviewAnswer}</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copyAnswer(${level.id})" id="copyBtn-${level.id}">Copy answer</button>
+        </div>
+      </div>
+    `;
+  }
+
+  bodyHTML += `<div id="interactiveZone-${level.id}"></div>`;
+
+  bodyHTML += `
+    <div class="complete-row">
+      <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel(${level.id})">
+        ${progress.completed[level.id] ? "✅ Completed — replay anytime" : "Mark level complete →"}
+      </button>
+    </div>
+  `;
+
+  detail.innerHTML = bodyHTML;
+  renderInteractive(level);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function copyAnswer(levelId) {
+  const level = LEVELS.find(l => l.id === levelId);
+  navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
+    const btn = document.getElementById(`copyBtn-${levelId}`);
+    btn.textContent = "Copied ✓";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
+  });
+}
+
+// ───────────────────────────────────────────────────────────────────
+// INTERACTIVE TYPE RENDERERS
+// ───────────────────────────────────────────────────────────────────
+
+function renderInteractive(level) {
+  const zone = document.getElementById(`interactiveZone-${level.id}`);
+  if (!zone) return;
+
+  switch (level.type) {
+    case "checklist": renderChecklist(level, zone); break;
+    case "scale": renderScale(level, zone); break;
+    case "quiz": renderQuiz(level, zone); break;
+    case "match": renderMatch(level, zone); break;
+    case "scenario": renderQuiz(level, zone); break; // scenario uses quiz UI
+    case "builder": renderBuilder(level, zone); break;
+    case "timer": renderTimer(level, zone); break;
+    case "boss": renderBoss(level, zone); break;
+  }
+}
+
+// ── Checklist ─────────────────────────────────────────────────────
+function renderChecklist(level, zone) {
+  const saved = progress.scales[`checklist-${level.id}`] || {};
+  let html = `<div class="block"><div class="block-label">✅ Self-check</div>`;
+  level.content.checklist.forEach((item, i) => {
+    const checked = saved[i] ? "checked" : "";
+    html += `
+      <div class="checklist-item ${checked}" onclick="toggleCheck(${level.id}, ${i})" tabindex="0" role="checkbox" aria-checked="${!!saved[i]}"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCheck(${level.id},${i})}">
+        <div class="checklist-box">${saved[i] ? "✓" : ""}</div>
+        <div class="checklist-text">${item}</div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  zone.innerHTML = html;
+}
+
+function toggleCheck(levelId, index) {
+  const key = `checklist-${levelId}`;
+  if (!progress.scales[key]) progress.scales[key] = {};
+  progress.scales[key][index] = !progress.scales[key][index];
+  saveProgress();
+  openLevel(levelId);
+}
+
+// ── Scale / self-assessment ───────────────────────────────────────
+function renderScale(level, zone) {
+  const saved = progress.scales[`scale-${level.id}`] || {};
+  let html = `<div class="block"><div class="block-label">🎚️ Rate yourself 1 (just heard of it) – 10 (could teach it)</div>`;
+  level.content.scales.forEach(s => {
+    const val = saved[s.id] !== undefined ? saved[s.id] : 5;
+    html += `
+      <div class="scale-row">
+        <div class="scale-label-row">
+          <span class="scale-skill">${s.label}</span>
+          <span class="scale-val" id="scaleVal-${level.id}-${s.id}">${val}</span>
+        </div>
+        <input type="range" min="1" max="10" value="${val}"
+               oninput="updateScale(${level.id}, '${s.id}', this.value)"
+               aria-label="${s.label} self-rating">
+      </div>
+    `;
+  });
+  html += `</div>`;
+  zone.innerHTML = html;
+}
+
+function updateScale(levelId, skillId, val) {
+  const key = `scale-${levelId}`;
+  if (!progress.scales[key]) progress.scales[key] = {};
+  progress.scales[key][skillId] = parseInt(val, 10);
+  saveProgress();
+  document.getElementById(`scaleVal-${levelId}-${skillId}`).textContent = val;
+}
+
+// ── Quiz / scenario ────────────────────────────────────────────────
+function renderQuiz(level, zone) {
+  const q = level.content.quiz;
+  let html = `
+    <div class="block">
+      <div class="block-label amber">❓ Check your thinking</div>
+      <div class="quiz-q">${q.question}</div>
+      <div class="quiz-options" id="quizOptions-${level.id}">
+  `;
+  q.options.forEach((opt, i) => {
+    html += `<button class="quiz-option" onclick="answerQuiz(${level.id}, ${i})">${opt}</button>`;
+  });
+  html += `</div><div class="quiz-feedback" id="quizFeedback-${level.id}"></div></div>`;
+  zone.innerHTML = html;
+}
+
+function answerQuiz(levelId, chosenIndex) {
+  const level = LEVELS.find(l => l.id === levelId);
+  const q = level.content.quiz;
+  const options = document.querySelectorAll(`#quizOptions-${levelId} .quiz-option`);
+  options.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correctIndex) btn.classList.add("correct");
+    else if (i === chosenIndex) btn.classList.add("incorrect");
+  });
+  const fb = document.getElementById(`quizFeedback-${levelId}`);
+  const isCorrect = chosenIndex === q.correctIndex;
+  fb.textContent = isCorrect ? q.feedbackCorrect : q.feedbackIncorrect;
+  fb.className = "quiz-feedback show " + (isCorrect ? "correct-fb" : "incorrect-fb");
+}
+
+// ── Matching (drag and drop, with click-fallback for accessibility) ─
+function renderMatch(level, zone) {
+  const pairs = level.content.matchPairs;
+  const shuffledRights = [...pairs.map(p => p.right)].sort(() => Math.random() - 0.5);
+  let html = `
+    <div class="block">
+      <div class="block-label">🔗 Match the need to the tool</div>
+      <p style="font-size:13px;color:#6B6759;margin-bottom:14px;">Tap a need on the left, then tap the tool on the right it belongs with.</p>
+      <div class="match-grid">
+        <div class="match-col">
+          <h4>Learning need</h4>
+          ${pairs.map((p, i) => `<button class="match-item" id="left-${level.id}-${i}" onclick="selectMatchLeft(${level.id}, ${i})">${p.left}</button>`).join("")}
+        </div>
+        <div class="match-col">
+          <h4>Tool</h4>
+          ${[...new Set(shuffledRights)].map((r, i) => `<button class="match-target" id="right-${level.id}-${r.replace(/\s/g,'')}" onclick="selectMatchRight(${level.id}, '${r}')">${r}</button>`).join("")}
+        </div>
+      </div>
+      <div id="matchFeedback-${level.id}" style="margin-top:10px;font-size:13px;"></div>
+    </div>
+  `;
+  zone.innerHTML = html;
+  matchState[level.id] = { selectedLeft: null, matched: {} };
+}
+
+const matchState = {};
+
+function selectMatchLeft(levelId, index) {
+  matchState[levelId].selectedLeft = index;
+  document.querySelectorAll(`[id^="left-${levelId}-"]`).forEach(el => el.style.borderColor = "");
+  document.getElementById(`left-${levelId}-${index}`).style.borderColor = "#1D4ED8";
+}
+
+function selectMatchRight(levelId, toolName) {
+  const state = matchState[levelId];
+  if (state.selectedLeft === null) return;
+  const level = LEVELS.find(l => l.id === levelId);
+  const pair = level.content.matchPairs[state.selectedLeft];
+  const correct = pair.right === toolName;
+  const leftEl = document.getElementById(`left-${levelId}-${state.selectedLeft}`);
+  const rightEl = document.getElementById(`right-${levelId}-${toolName.replace(/\s/g,'')}`);
+
+  if (correct) {
+    leftEl.style.display = "none";
+    rightEl.classList.add("filled");
+    rightEl.textContent = `${toolName} ✓ ${pair.left.slice(0,30)}...`;
+    state.matched[state.selectedLeft] = true;
+  } else {
+    rightEl.style.background = "#FCEBEB";
+    setTimeout(() => { rightEl.style.background = ""; }, 500);
+  }
+  state.selectedLeft = null;
+
+  const totalMatched = Object.keys(state.matched).length;
+  const fb = document.getElementById(`matchFeedback-${levelId}`);
+  if (totalMatched === level.content.matchPairs.length) {
+    fb.innerHTML = `<strong style="color:#0F6E56;">All matched! Rise = speed and structure. Storyline = control and simulation. That's the whole decision tree.</strong>`;
+  } else {
+    fb.textContent = `${totalMatched} / ${level.content.matchPairs.length} matched`;
+  }
+}
+
+// ── Builder (free text reflection, saved) ──────────────────────────
+function renderBuilder(level, zone) {
+  const saved = progress.builder[level.id] || {};
+  let html = `<div class="block"><div class="block-label">🏗️ Draft your pitch</div>`;
+  level.content.builderFields.forEach(f => {
+    html += `
+      <div style="margin-bottom:16px;">
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px;" for="builder-${level.id}-${f.id}">${f.label}</label>
+        <textarea id="builder-${level.id}-${f.id}" rows="2" placeholder="${f.placeholder}"
+          style="width:100%;font-family:'Space Grotesk',sans-serif;font-size:13.5px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;resize:vertical;"
+          oninput="saveBuilderField(${level.id}, '${f.id}', this.value)">${saved[f.id] || ""}</textarea>
+      </div>
+    `;
+  });
+  html += `
+    <button class="copy-btn" onclick="copyBuilderPitch(${level.id})" style="margin-top:4px;">Copy full pitch as one block</button>
+  </div>`;
+  zone.innerHTML = html;
+}
+
+function saveBuilderField(levelId, fieldId, value) {
+  if (!progress.builder[levelId]) progress.builder[levelId] = {};
+  progress.builder[levelId][fieldId] = value;
+  saveProgress();
+}
+
+function copyBuilderPitch(levelId) {
+  const level = LEVELS.find(l => l.id === levelId);
+  const saved = progress.builder[levelId] || {};
+  let text = `GAMIFIED ONBOARDING PITCH — Nexthink Alert & Incident Resolution\n\n`;
+  level.content.builderFields.forEach(f => {
+    text += `${f.label}\n${saved[f.id] || "(not filled in)"}\n\n`;
+  });
+  navigator.clipboard.writeText(text);
+  alert("Pitch copied to clipboard.");
+}
+
+// ── Timer (mock interview rehearsal) ───────────────────────────────
+let timerInterval = null;
+let timerSeconds = 0;
+
+function renderTimer(level, zone) {
+  zone.innerHTML = `
+    <div class="block">
+      <div class="block-label">🎙️ Speak for 90–120 seconds</div>
+      <div class="timer-display" id="timerDisplay">00:00</div>
+      <div class="timer-controls">
+        <button class="timer-btn" onclick="startTimer()">▶ Start</button>
+        <button class="timer-btn secondary" onclick="resetTimer()">↺ Reset</button>
+      </div>
+      <p style="text-align:center;font-size:12px;color:#6B6759;margin-top:10px;">Turns amber at 90s, red past 120s — that's your real-time pacing cue.</p>
+    </div>
+  `;
+  resetTimer();
+}
+
+function startTimer() {
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    const m = String(Math.floor(timerSeconds / 60)).padStart(2, "0");
+    const s = String(timerSeconds % 60).padStart(2, "0");
+    const display = document.getElementById("timerDisplay");
+    if (display) {
+      display.textContent = `${m}:${s}`;
+      display.className = "timer-display" + (timerSeconds >= 120 ? " over" : timerSeconds >= 90 ? " warn" : "");
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerSeconds = 0;
+  const display = document.getElementById("timerDisplay");
+  if (display) { display.textContent = "00:00"; display.className = "timer-display"; }
+}
+
+// ── Boss level — sequential reveal Q&A ─────────────────────────────
+function renderBoss(level, zone) {
+  let html = `<div class="block"><div class="block-label" style="color:#B8742A;">👑 Five questions. Answer out loud first, then reveal.</div>`;
+  level.content.bossQuestions.forEach((item, i) => {
+    html += `
+      <div style="margin-bottom:18px;padding-bottom:16px;${i < level.content.bossQuestions.length-1 ? 'border-bottom:1px solid var(--line);' : ''}">
+        <p style="font-weight:600;font-size:14.5px;margin-bottom:10px;">${i+1}. ${item.q}</p>
+        <button class="copy-btn" style="background:#B8742A;" onclick="revealBoss(${level.id}, ${i})" id="bossBtn-${level.id}-${i}">Reveal model answer</button>
+        <div class="answer-card" id="bossAnswer-${level.id}-${i}" style="display:none;margin-top:10px;">${item.model}</div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  zone.innerHTML = html;
+}
+
+function revealBoss(levelId, index) {
+  document.getElementById(`bossAnswer-${levelId}-${index}`).style.display = "block";
+  document.getElementById(`bossBtn-${levelId}-${index}`).style.display = "none";
+}
+
+// ───────────────────────────────────────────────────────────────────
+// COMPLETION
+// ───────────────────────────────────────────────────────────────────
+
+function completeLevel(id) {
+  const wasComplete = !!progress.completed[id];
+  progress.completed[id] = true;
+  saveProgress();
+  updateXPBar();
+
+  if (!wasComplete) {
+    const level = LEVELS.find(l => l.id === id);
+    showToast(level);
+  }
+
+  const btn = document.getElementById(`completeBtn-${id}`);
+  if (btn) btn.textContent = "✅ Completed — replay anytime";
+
+  const allDone = LEVELS.every(l => progress.completed[l.id]);
+  if (allDone) {
+    setTimeout(showFinalScreen, 1200);
+  } else {
+    setTimeout(goToMap, 900);
+  }
+}
+
+function showToast(level) {
+  const toast = document.getElementById("toast");
+  document.getElementById("toastIcon").textContent = level.badge;
+  document.getElementById("toastText").innerHTML = `<strong>+${level.xp} XP</strong> — ${level.name} cleared`;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function showFinalScreen() {
+  document.getElementById("mapSection").classList.add("hidden");
+  document.getElementById("levelDetail").classList.remove("active");
+  document.getElementById("finalScreen").classList.add("active");
+  const badgeGrid = document.getElementById("badgeGrid");
+  badgeGrid.innerHTML = LEVELS.map(l => `<div class="badge-pill" title="${l.name}">${l.badge}</div>`).join("");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ───────────────────────────────────────────────────────────────────
+// INIT
+// ───────────────────────────────────────────────────────────────────
+
+renderMap();
+
+const allDoneOnLoad = LEVELS.every(l => progress.completed[l.id]);
+if (allDoneOnLoad) {
+  showFinalScreen();
+}
+
+</script>
 </body>
 </html>
