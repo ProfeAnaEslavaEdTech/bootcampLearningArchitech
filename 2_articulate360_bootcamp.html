@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articulate 360 Bootcamp — Hands-On Track</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #0B1320;
+    --paper: #F7F5F0;
+    --panel: #FFFFFF;
+    --line: #D8D4C8;
+    --teal: #0F6E56;
+    --teal-bright: #1D9E75;
+    --teal-soft: #E1F5EE;
+    --amber: #B8742A;
+    --amber-soft: #FAEEDA;
+    --blue: #1D4ED8;
+    --blue-soft: #E6F1FB;
+    --coral: #C24A2E;
+    --coral-soft: #FAECE7;
+    --purple: #6D28D9;
+    --purple-soft: #EDE9FE;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    background-image: radial-gradient(circle at 1px 1px, rgba(11,19,32,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  *:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  .skip-link { position: absolute; left: -9999px; }
+  .skip-link:focus { left: 12px; top: 12px; background: var(--ink); color: white; padding: 8px 14px; border-radius: var(--radius-sm); z-index: 200; }
+
+  /* TOP BAR */
+  .top-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(247,245,240,0.94); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand-mark {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600;
+    color: var(--purple); letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid var(--purple); border-radius: 20px; padding: 3px 10px;
+  }
+  .brand-title { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+  .progress-tracker { display: flex; align-items: center; gap: 12px; font-family: 'IBM Plex Mono', monospace; }
+  .progress-bar-outer { width: 160px; height: 8px; background: var(--line); border-radius: 20px; overflow: hidden; }
+  .progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--purple), #8B5CF6); width: 0%; transition: width 0.5s ease; border-radius: 20px; }
+  .progress-label { font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+  /* HERO */
+  .hero { max-width: 900px; margin: 0 auto; padding: 52px 24px 28px; text-align: center; }
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;
+    color: var(--purple); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px;
+  }
+  .hero h1 { font-size: clamp(28px, 5vw, 46px); line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .hero h1 em { font-style: normal; color: var(--purple); text-decoration: underline; text-decoration-color: #8B5CF6; text-decoration-thickness: 4px; text-underline-offset: 6px; }
+  .hero p { font-size: 16px; color: #4A4639; max-width: 640px; margin: 0 auto 8px; line-height: 1.65; }
+
+  /* SECTION NAV */
+  .section-nav { max-width: 1000px; margin: 0 auto; padding: 20px 24px 8px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .nav-chip {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
+    padding: 7px 14px; cursor: pointer; color: var(--ink); transition: all 0.15s;
+  }
+  .nav-chip:hover { border-color: var(--purple); color: var(--purple); }
+
+  /* PROJECT GROUPS */
+  .project-section { max-width: 860px; margin: 0 auto; padding: 40px 24px 0; }
+  .group-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
+  .group-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; color: var(--panel); background: var(--ink); border-radius: 6px; padding: 3px 9px; }
+  .group-title { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .group-subtitle { font-size: 13px; color: #6B6759; font-style: italic; margin-bottom: 24px; line-height: 1.6; border-left: 2px solid var(--line); padding-left: 12px; }
+
+  /* PROJECT CARD */
+  .project-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; }
+  .project-head { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; cursor: pointer; user-select: none; }
+  .project-checkbox {
+    width: 24px; height: 24px; border: 2px solid var(--line); border-radius: 6px;
+    flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; transition: all 0.15s; cursor: pointer;
+  }
+  .project-card.done .project-checkbox { background: var(--teal-bright); border-color: var(--teal-bright); color: white; }
+  .project-meta { flex: 1; }
+  .project-track-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;
+  }
+  .track-rise { color: var(--teal); }
+  .track-storyline { color: var(--purple); }
+  .project-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .project-card.done .project-name { color: #6B6759; }
+  .project-tagline { font-size: 13px; color: #6B6759; line-height: 1.5; }
+  .project-toggle { font-size: 13px; color: #8A8575; margin-top: 4px; flex-shrink: 0; }
+
+  /* PROJECT BODY */
+  .project-body { display: none; padding: 0 20px 22px 58px; }
+  .project-body.open { display: block; }
+  .pb-block { margin-bottom: 16px; }
+  .pb-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pb-label.teal { color: var(--teal); }
+  .pb-label.amber { color: var(--amber); }
+  .pb-label.blue { color: var(--blue); }
+  .pb-label.coral { color: var(--coral); }
+  .pb-label.purple { color: var(--purple); }
+
+  .pb-block p, .pb-block li { font-size: 14px; line-height: 1.7; color: #2B2A24; }
+  .pb-block ul { list-style: none; padding: 0; }
+  .pb-block ul li { padding-left: 18px; position: relative; margin-bottom: 6px; }
+  .pb-block ul li::before { content: '→'; position: absolute; left: 0; color: var(--teal-bright); font-weight: 700; }
+
+  .deliverable-box { background: var(--teal-soft); border: 1px solid var(--teal-bright); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: #085041; }
+  .tip-box { background: var(--purple-soft); border: 1px solid #8B5CF6; border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: #3B0764; }
+
+  .toolstack-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tool-pill { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; background: var(--blue-soft); color: #0C447C; border-radius: 20px; padding: 4px 11px; }
+  .time-pill { display: inline-flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; background: var(--amber-soft); color: #633806; border-radius: 20px; padding: 4px 11px; }
+
+  .mark-done-btn { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; background: var(--ink); color: white; border: none; border-radius: 20px; padding: 9px 18px; cursor: pointer; margin-top: 6px; }
+  .mark-done-btn:hover { background: var(--teal); }
+  .project-card.done .mark-done-btn { background: var(--teal-bright); }
+
+  /* CHECKLIST FOOTER */
+  .portfolio-section { max-width: 860px; margin: 0 auto; padding: 50px 24px 80px; }
+  .portfolio-box { background: var(--ink); color: var(--paper); border-radius: var(--radius); padding: 32px 28px; text-align: center; }
+  .portfolio-box h2 { font-size: 22px; margin-bottom: 10px; font-weight: 700; }
+  .portfolio-box p { font-size: 14px; color: #C9C5B8; line-height: 1.6; max-width: 560px; margin: 0 auto 18px; }
+  .portfolio-list { text-align: left; max-width: 520px; margin: 0 auto 20px; list-style: none; padding: 0; font-size: 13px; line-height: 1.8; color: #E5E2D6; display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  .portfolio-list li { padding-left: 20px; position: relative; margin-bottom: 4px; }
+  .portfolio-list li::before { content: '☐'; position: absolute; left: 0; color: #8B5CF6; }
+  .portfolio-list li.checked::before { content: '☑'; }
+  .portfolio-list li.checked { color: #8A8575; text-decoration: line-through; }
+
+  footer { text-align: center; padding: 20px 24px 50px; font-size: 12px; color: #8A8575; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 36px 18px 20px; }
+    .progress-bar-outer { width: 90px; }
+    .project-body { padding-left: 20px; }
+    .portfolio-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="top-bar">
+  <div class="brand">
+    <span class="brand-mark">Articulate 360</span>
+    <span class="brand-title">Build it to learn it</span>
+  </div>
+  <div class="progress-tracker">
+    <span class="progress-label" id="progLabel">0 / 14 projects</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progBar"></div></div>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero-eyebrow">Articulate 360 · Rise + Storyline · Hands-On Track</div>
+    <h1>Don't watch tutorials. <em>Build things</em> — broken at first, working by the end.</h1>
+    <p>14 mini-projects that take you from zero to publishing your first real Rise course and your first Storyline interaction. Each one ends with something you can open, show, and describe as your own work.</p>
+  </section>
+
+  <nav class="section-nav" aria-label="Jump to track">
+    <button class="nav-chip" onclick="scrollToGroup('group-1')">1 · Rise: first course</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-2')">2 · Rise: interactions & quiz</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-3')">3 · Storyline: first slide</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-4')">4 · Storyline: logic & branching</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-5')">5 · Publish & export</button>
+  </nav>
+
+  <div id="projectsRoot"></div>
+
+  <section class="portfolio-section">
+    <div class="portfolio-box">
+      <h2>What you can show when you're done</h2>
+      <p>Complete all 14 and you have two real artifacts: a published Rise course and a working Storyline branching scenario — both built by you from scratch.</p>
+      <ul class="portfolio-list" id="portfolioChecklist"></ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>Built for hands-on learning. The best Articulate tutorial is the one you do.</footer>
+
+<script>
+
+const GROUPS = [
+
+  {
+    id: "group-1",
+    num: "01",
+    title: "Rise 360 — First Course",
+    track: "rise",
+    subtitle: "Rise works in blocks. Every lesson is a stack of blocks. Master that mental model first — everything else follows.",
+    projects: [
+      {
+        name: "Open Rise and Create Your First Lesson",
+        tagline: "Don't read about Rise. Click New Course, right now.",
+        time: "20 min",
+        tools: ["Articulate 360 (free trial)", "Any browser"],
+        task: `<p>Go to <strong>articulate.com/360</strong>, start the free trial, and open Rise 360. Create a new course. Add one lesson. Inside that lesson, add these three blocks in order:</p>
+        <ul>
+          <li>A <strong>Text & Media</strong> block — write 2 sentences about any topic you know well</li>
+          <li>A <strong>Statement</strong> block — one key takeaway, bold and centered</li>
+          <li>A <strong>Button</strong> block — label it "Continue" (it doesn't need to go anywhere yet)</li>
+        </ul>
+        <p>The goal: understand that Rise = course → lessons → blocks. Nothing else yet.</p>`,
+        deliverable: "A Rise course with one lesson containing those three blocks. Screenshot the lesson preview.",
+        tip: "The block library is the blue + button between blocks. Every content type is a block — images, videos, quizzes, accordions — they all go in the same way."
+      },
+      {
+        name: "Build a Full 3-Lesson Course Structure",
+        tagline: "A course with one lesson is a page. A course with three lessons is a course.",
+        time: "30 min",
+        tools: ["Rise 360"],
+        task: `<p>In the same course, add two more lessons. Give your course a real theme — pick any topic you could teach in 10 minutes (a tool, a process, a concept). Structure the three lessons as:</p>
+        <ul>
+          <li><strong>Lesson 1:</strong> What it is (concept)</li>
+          <li><strong>Lesson 2:</strong> How to do it (steps)</li>
+          <li><strong>Lesson 3:</strong> When to use it (decision)</li>
+        </ul>
+        <p>Add at least 3 blocks per lesson. Don't worry about content quality — worry about navigation and structure.</p>`,
+        deliverable: "A 3-lesson course you can click through from start to finish without errors. Preview it and verify the Next/Back buttons work.",
+        tip: "Use the Course Outline (left panel) to see the lesson order. Drag lessons to reorder. The learner sees exactly this order."
+      },
+      {
+        name: "Apply Your Brand — Theme, Colors, Fonts",
+        tagline: "Rise courses look the same by default. One theme change makes it yours.",
+        time: "25 min",
+        tools: ["Rise 360"],
+        task: `<p>Go to <strong>Course Settings → Theme</strong>. Change:</p>
+        <ul>
+          <li>The <strong>accent color</strong> to something that isn't the Rise default blue</li>
+          <li>The <strong>font</strong> to anything from the Google Fonts list</li>
+          <li>The <strong>cover image</strong> — upload any image or use a color cover</li>
+          <li>The <strong>course title and description</strong> — write something real</li>
+        </ul>
+        <p>Preview the full course after each change to see the effect live.</p>`,
+        deliverable: "The same 3-lesson course with a custom theme that looks noticeably different from the Rise default. Screenshot the cover.",
+        tip: "Theme changes apply to the whole course instantly. This is Rise's biggest advantage over Storyline for fast, consistent branding."
+      }
+    ]
+  },
+
+  {
+    id: "group-2",
+    num: "02",
+    title: "Rise 360 — Interactions & Assessment",
+    track: "rise",
+    subtitle: "Rise's power is in its interaction blocks. A course without interactions is a PDF. These projects make it a learning experience.",
+    projects: [
+      {
+        name: "Add 3 Different Interaction Blocks",
+        tagline: "Labeled graphic, accordion, and process — the three most-used Rise interactions.",
+        time: "35 min",
+        tools: ["Rise 360"],
+        task: `<p>Add one of each of these blocks to your course (one per lesson, or all in one new lesson):</p>
+        <ul>
+          <li><strong>Labeled Graphic:</strong> upload any image and add at least 3 clickable labels with text</li>
+          <li><strong>Accordion:</strong> create 4 items — each with a title and 2-3 sentences of content</li>
+          <li><strong>Process:</strong> a 4-step process (any process — making coffee, setting an alert, onboarding a user)</li>
+        </ul>
+        <p>Click through each one in preview to verify they open/close correctly.</p>`,
+        deliverable: "Three working interaction blocks, previewed and confirmed clickable. Note which one took longest to build and why.",
+        tip: "Labeled Graphic is the most used Rise block in corporate eLearning. Master it first — you'll use it in every course."
+      },
+      {
+        name: "Build a Real Knowledge Check",
+        tagline: "5 questions. Feedback on every wrong answer. No vocabulary-only questions.",
+        time: "35 min",
+        tools: ["Rise 360"],
+        task: `<p>Add a <strong>Knowledge Check</strong> block to the end of one of your lessons. Build 5 questions following these rules:</p>
+        <ul>
+          <li>Use at least 2 different question types (Multiple Choice, True/False, Matching, or Fill in the Blank)</li>
+          <li>Every wrong answer must have custom feedback — explain the misconception, not just "Incorrect"</li>
+          <li>At least 2 questions must require applying a concept to a scenario, not just recalling a term</li>
+        </ul>`,
+        deliverable: "A 5-question knowledge check with custom feedback on all wrong answers. Answer some questions wrong intentionally to verify the feedback appears.",
+        tip: "In Rise, knowledge checks don't affect the course completion score by default. To make them required, go to Course Settings → Completion and set a quiz passing score."
+      },
+      {
+        name: "Add a Graded Quiz and Set Completion Rules",
+        tagline: "A quiz without a passing score isn't a quiz — it's a survey.",
+        time: "30 min",
+        tools: ["Rise 360"],
+        task: `<p>Add a <strong>Quiz</strong> lesson at the end of your course (different from the knowledge check — this is a standalone graded quiz). Then:</p>
+        <ul>
+          <li>Set a <strong>passing score</strong> (use 80% — understand why, not just how)</li>
+          <li>Add a <strong>pass message</strong> and a <strong>fail message</strong> with different next-step instructions</li>
+          <li>In Course Settings → Completion, set the course to complete only when the learner <strong>passes the quiz</strong></li>
+        </ul>`,
+        deliverable: "A course that only marks as complete when the learner passes the quiz with 80%+. Fail it on purpose to confirm the fail message appears.",
+        tip: "80% is the most common threshold in corporate certification because it allows 20% error margin without signaling rote memorization. Know this rationale — you'll be asked about it."
+      }
+    ]
+  },
+
+  {
+    id: "group-3",
+    num: "03",
+    title: "Storyline 360 — First Slide",
+    track: "storyline",
+    subtitle: "Storyline is a slide canvas. Everything is an object on a slide — text, images, buttons, shapes. Triggers make those objects do things.",
+    projects: [
+      {
+        name: "Open Storyline and Build Slide 1",
+        tagline: "The Storyline canvas is intimidating until you build your first slide.",
+        time: "25 min",
+        tools: ["Articulate 360 (Storyline 360)", "Windows PC or VM"],
+        task: `<p>Open Storyline 360. Create a new project. On Slide 1:</p>
+        <ul>
+          <li>Delete the default placeholder text boxes</li>
+          <li>Add a <strong>text box</strong> with a title and a subtitle (any topic)</li>
+          <li>Add a <strong>rectangle shape</strong> — format it as a button (fill color, rounded corners)</li>
+          <li>Add a <strong>text label</strong> inside the shape: "Start"</li>
+          <li>Preview the slide (F12) — it should look like a title screen</li>
+        </ul>`,
+        deliverable: "A Slide 1 that looks like a real course cover — title, subtitle, and a visible Start button. Screenshot in preview mode.",
+        tip: "Storyline uses layers: the Stage (canvas), the Timeline (when things appear), and the Trigger panel (what things do). Open all three panels on your first session and leave them visible."
+      },
+      {
+        name: "Add a Trigger — Click Button to Go to Next Slide",
+        tagline: "A button without a trigger is decoration. This is where Storyline starts.",
+        time: "25 min",
+        tools: ["Storyline 360"],
+        task: `<p>Add a second slide to your project (any content). Then go back to Slide 1 and:</p>
+        <ul>
+          <li>Select your Start button shape</li>
+          <li>Open the <strong>Trigger Wizard</strong> (right panel)</li>
+          <li>Add trigger: <em>Jump to next slide / When user clicks / On this object</em></li>
+          <li>Preview the full project (not just the slide) — click Start — confirm it advances to Slide 2</li>
+        </ul>`,
+        deliverable: "A 2-slide project where clicking Start on Slide 1 advances to Slide 2. This is the foundation of every Storyline interaction.",
+        tip: "The Trigger Wizard has three parts: Action (what happens), Object (to what), Condition (when). Read all three every time you add a trigger — it prevents 90% of beginner errors."
+      },
+      {
+        name: "Build a 5-Slide Linear Module",
+        tagline: "Navigation + consistent slide master = a real module, not a demo.",
+        time: "40 min",
+        tools: ["Storyline 360"],
+        task: `<p>Expand your project to 5 slides. Use a real topic (any 5-step process). Add:</p>
+        <ul>
+          <li>A <strong>Slide Master</strong> with a logo placeholder, a color bar at the bottom, and a slide number</li>
+          <li><strong>Next / Back buttons</strong> on each slide (use the slide master or copy across slides)</li>
+          <li>A <strong>progress indicator</strong> — either Storyline's built-in seekbar or a custom shape that shows the current step</li>
+        </ul>
+        <p>Preview the full project and click through all 5 slides.</p>`,
+        deliverable: "A 5-slide module with consistent branding (via Slide Master), working Next/Back buttons, and a visual progress indicator.",
+        tip: "Edit the Slide Master once — View → Slide Master. Every slide that uses that layout gets the changes automatically. This is Rise's biggest advantage turned into a Storyline skill."
+      }
+    ]
+  },
+
+  {
+    id: "group-4",
+    num: "04",
+    title: "Storyline 360 — Logic, Variables & Branching",
+    track: "storyline",
+    subtitle: "This is what Storyline can do that Rise can't: real branching, states, variables, and simulation logic. This is the hard part — and the impressive part.",
+    projects: [
+      {
+        name: "States — Button That Changes When Clicked",
+        tagline: "States are how Storyline tracks what the learner has already done.",
+        time: "30 min",
+        tools: ["Storyline 360"],
+        task: `<p>On any slide, add 3 buttons (shapes with text). For each button:</p>
+        <ul>
+          <li>Open <strong>States</strong> panel (bottom of screen)</li>
+          <li>Edit the <strong>Visited</strong> state — change the fill color to teal/green</li>
+          <li>Edit the <strong>Hover</strong> state — change the fill to a lighter shade</li>
+        </ul>
+        <p>Add a trigger: show a "Continue" button only when all 3 buttons have been visited. (Condition: state of Button1 = Visited AND Button2 = Visited AND Button3 = Visited.)</p>`,
+        deliverable: "3 buttons that change color when clicked, and a Continue button that only appears after all three are visited. Test it in preview — the Continue must be invisible at first.",
+        tip: "States are the most powerful concept in Storyline. Every object has states. Normal → Hover → Down → Visited → Disabled → Hidden. Learn these six — they control everything."
+      },
+      {
+        name: "Variables — Track a Learner Choice",
+        tagline: "Variables let Storyline remember something. Without variables, each slide forgets everything.",
+        time: "35 min",
+        tools: ["Storyline 360"],
+        task: `<p>Create a 3-slide scenario:</p>
+        <ul>
+          <li><strong>Slide 1:</strong> Ask "Are you new to this tool? Yes / No" (two buttons)</li>
+          <li>Create a <strong>True/False variable</strong> called <em>IsNewUser</em>, default = False</li>
+          <li>Trigger on Yes button: set IsNewUser = True, then jump to Slide 2</li>
+          <li>Trigger on No button: jump to Slide 3 directly</li>
+          <li><strong>Slide 2:</strong> "Beginner path" content</li>
+          <li><strong>Slide 3:</strong> "Advanced path" content</li>
+        </ul>`,
+        deliverable: "A 3-slide project where clicking Yes routes to a different slide than clicking No. Test both paths. This is the foundation of every branching scenario.",
+        tip: "Open View → Variables panel to see all your variables. Name them clearly (IsNewUser, not Var1) — in a real project you'll have 20+ variables and you need to read them instantly."
+      },
+      {
+        name: "Build a Full Branching Troubleshooting Scenario",
+        tagline: "This is the project that proves you can design Storyline logic, not just use it.",
+        time: "60 min",
+        tools: ["Storyline 360"],
+        task: `<p>Build a 3-decision-point troubleshooting scenario. An IT admin gets an alert. At each decision point they choose between 3 actions:</p>
+        <ul>
+          <li><strong>Decision 1:</strong> Check logs / Restart service / Escalate immediately</li>
+          <li>Each path leads to a <strong>consequence slide</strong> that either advances or explains the error</li>
+          <li><strong>Decision 2 &amp; 3:</strong> Only appear on the correct paths</li>
+          <li>Include one "wrong path" that teaches something — don't just say "wrong, try again"</li>
+          <li>Add a <strong>Results slide</strong> at the end using Storyline's built-in Results slide (Insert → New Slide → Results)</li>
+        </ul>`,
+        deliverable: "A branching scenario with at least 8 slides, 3 decision points, and a Results slide. Every path must reach an end — no dead ends. Export the Story View screenshot (View → Story View).",
+        tip: "Start in Story View (View → Story View) to see the branching map. Build the slide structure there first — drag connections between slides — then add content. Don't build slide by slide or you'll lose track of the logic."
+      }
+    ]
+  },
+
+  {
+    id: "group-5",
+    num: "05",
+    title: "Publish, Export & SCORM",
+    track: "rise",
+    subtitle: "Building a course is half the job. Publishing it correctly — for an LMS, for review, for a client — is the other half. These projects close that gap.",
+    projects: [
+      {
+        name: "Publish Your Rise Course to Review 360",
+        tagline: "Review 360 is how you share work for feedback without sending files.",
+        time: "20 min",
+        tools: ["Rise 360", "Review 360 (included in 360)"],
+        task: `<p>In Rise, go to <strong>Share → Publish to Review</strong>. After publishing:</p>
+        <ul>
+          <li>Open the Review 360 link — see the course exactly as a reviewer would</li>
+          <li>Add a comment on any slide (pretend you're the client)</li>
+          <li>Go back to Rise, make one change, and <strong>re-publish to the same Review link</strong></li>
+          <li>Confirm the comment is still there and the content updated</li>
+        </ul>`,
+        deliverable: "A live Review 360 link you can share. A screenshot showing the comment thread. Note: this link stays live as long as your trial is active.",
+        tip: "Review 360 links are version-controlled. Every time you republish, reviewers see the new version but comments stay attached to the previous content. This is the professional feedback workflow — know it."
+      },
+      {
+        name: "Export Rise as SCORM 1.2 and Inspect the Package",
+        tagline: "Every LMS expects SCORM. You should know exactly what you're handing over.",
+        time: "25 min",
+        tools: ["Rise 360", "File explorer"],
+        task: `<p>In Rise, go to <strong>Export → LMS</strong>. Choose <strong>SCORM 1.2</strong>. Download the .zip file. Then:</p>
+        <ul>
+          <li>Unzip the package and open the folder</li>
+          <li>Find and open <strong>imsmanifest.xml</strong> in any text editor — read the first 20 lines</li>
+          <li>Find the <strong>index.html</strong> file — open it in a browser and see what loads</li>
+          <li>Note the file structure: what folder holds the actual course content?</li>
+        </ul>`,
+        deliverable: "A screenshot of the unzipped SCORM folder with imsmanifest.xml visible, and a 3-sentence note on what you found inside it.",
+        tip: "SCORM 1.2 vs SCORM 2004: Rise exports both. SCORM 1.2 is safer — every LMS supports it. SCORM 2004 has better reporting. Default to 1.2 unless your LMS admin tells you otherwise."
+      },
+      {
+        name: "Publish Storyline as SCORM and Understand Tracking Settings",
+        tagline: "Storyline's publish settings are where most LMS problems start.",
+        time: "30 min",
+        tools: ["Storyline 360"],
+        task: `<p>In Storyline, go to <strong>Publish → LMS</strong>. Before clicking Publish, configure:</p>
+        <ul>
+          <li><strong>Output format:</strong> SCORM 1.2</li>
+          <li><strong>Tracking:</strong> change from "Slides viewed" to "Using quiz result" — select your Results slide</li>
+          <li><strong>Reporting:</strong> set Passed/Incomplete (not Passed/Failed — understand the difference)</li>
+          <li><strong>HTML5 only</strong> (uncheck Flash — it's deprecated)</li>
+        </ul>
+        <p>Publish. Open the published folder and launch <strong>story.html</strong> in a browser.</p>`,
+        deliverable: "A published Storyline SCORM package that tracks completion by quiz result, not slides viewed. A note on why Passed/Incomplete is safer than Passed/Failed for most LMS configurations.",
+        tip: "Passed/Failed sends a Fail status if the learner exits mid-course before attempting the quiz. Passed/Incomplete sends Incomplete instead — which lets the learner re-enter and try again. Always use Incomplete unless the client specifically requires Failed."
+      }
+    ]
+  }
+
+];
+
+const ALL_PROJECTS = GROUPS.flatMap(g => g.projects.map(p => ({ ...p, groupId: g.id })));
+
+let doneState = {};
+
+function projectKey(groupId, idx) { return `${groupId}-${idx}`; }
+function totalDone() { return Object.values(doneState).filter(Boolean).length; }
+
+function updateProgress() {
+  const done = totalDone();
+  const total = ALL_PROJECTS.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById("progBar").style.width = pct + "%";
+  document.getElementById("progLabel").textContent = `${done} / ${total} projects`;
+  renderChecklist();
+}
+
+function scrollToGroup(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderGroups() {
+  const root = document.getElementById("projectsRoot");
+  root.innerHTML = "";
+  GROUPS.forEach(group => {
+    const section = document.createElement("section");
+    section.className = "project-section";
+    section.id = group.id;
+    let html = `
+      <div class="group-header">
+        <span class="group-num">${group.num}</span>
+        <span class="group-title">${group.title}</span>
+      </div>
+      <p class="group-subtitle">${group.subtitle}</p>
+    `;
+    group.projects.forEach((p, idx) => {
+      const key = projectKey(group.id, idx);
+      const isDone = !!doneState[key];
+      const trackClass = group.track === 'rise' ? 'track-rise' : 'track-storyline';
+      const trackLabel = group.track === 'rise' ? 'Rise 360' : 'Storyline 360';
+      html += `
+        <div class="project-card ${isDone ? 'done' : ''}" id="card-${key}">
+          <div class="project-head" onclick="toggleProject('${key}')">
+            <div class="project-checkbox" onclick="event.stopPropagation(); toggleDone('${key}')">${isDone ? '✓' : ''}</div>
+            <div class="project-meta">
+              <div class="project-track-label ${trackClass}">${trackLabel}</div>
+              <div class="project-name">${p.name}</div>
+              <div class="project-tagline">${p.tagline}</div>
+            </div>
+            <div class="project-toggle" id="arrow-${key}">▾</div>
+          </div>
+          <div class="project-body" id="body-${key}">
+            <div class="pb-block">
+              <div class="pb-label amber">⏱ Time &amp; tools</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                <span class="time-pill">${p.time}</span>
+                <div class="toolstack-row">${p.tools.map(t => `<span class="tool-pill">${t}</span>`).join("")}</div>
+              </div>
+            </div>
+            <div class="pb-block">
+              <div class="pb-label amber">🛠 The task</div>
+              ${p.task}
+            </div>
+            <div class="pb-block">
+              <div class="pb-label blue">📦 Deliverable</div>
+              <div class="deliverable-box">${p.deliverable}</div>
+            </div>
+            <div class="pb-block">
+              <div class="pb-label purple">💡 Key insight</div>
+              <div class="tip-box">${p.tip}</div>
+            </div>
+            <button class="mark-done-btn" onclick="toggleDone('${key}')">${isDone ? '✓ Done — click to undo' : 'Mark as complete'}</button>
+          </div>
+        </div>
+      `;
+    });
+    section.innerHTML = html;
+    root.appendChild(section);
+  });
+}
+
+function toggleProject(key) {
+  const body = document.getElementById(`body-${key}`);
+  const arrow = document.getElementById(`arrow-${key}`);
+  const isOpen = body.classList.toggle("open");
+  arrow.textContent = isOpen ? "▴" : "▾";
+}
+
+function toggleDone(key) {
+  doneState[key] = !doneState[key];
+  const card = document.getElementById(`card-${key}`);
+  card.classList.toggle("done", doneState[key]);
+  card.querySelector(".project-checkbox").textContent = doneState[key] ? "✓" : "";
+  card.querySelector(".mark-done-btn").textContent = doneState[key] ? "✓ Done — click to undo" : "Mark as complete";
+  updateProgress();
+}
+
+function renderChecklist() {
+  const list = document.getElementById("portfolioChecklist");
+  list.innerHTML = ALL_PROJECTS.map(p => {
+    let foundKey = null;
+    for (const g of GROUPS) {
+      g.projects.forEach((proj, idx) => { if (proj === p) foundKey = projectKey(g.id, idx); });
+    }
+    const isDone = foundKey && doneState[foundKey];
+    return `<li class="${isDone ? 'checked' : ''}">${p.name}</li>`;
+  }).join("");
+}
+
+renderGroups();
+updateProgress();
+</script>
+</body>
+</html>
