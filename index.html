@@ -1,3 +1,8 @@
+<!-- ============================================================
+     FILE: index.html
+     UPLOAD TO: root of the repository (replace the existing file)
+     WHAT IT IS: Landing page — 9 tracks
+     ============================================================ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +33,9 @@
     --amber: #B45309;
     --amber-bright: #D97706;
     --amber-soft: #FEF3C7;
+    --green: #059669;
+    --green-bright: #10B981;
+    --green-soft: #D1FAE5;
     --radius: 16px;
   }
 
@@ -95,12 +103,23 @@
     gap: 18px;
     max-width: 1240px;
     width: 100%;
+    margin-bottom: 18px;
+  }
+  /* ── ROW 3: single centred card ── */
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: minmax(0, 360px);
+    gap: 18px;
+    max-width: 1240px;
+    width: 100%;
+    justify-content: center;
   }
   @media (max-width: 1100px) {
     .card-grid, .card-grid-2 { grid-template-columns: 1fr 1fr; }
+    .card-grid-3 { grid-template-columns: 1fr 1fr; justify-content: unset; }
   }
   @media (max-width: 560px) {
-    .card-grid, .card-grid-2 { grid-template-columns: 1fr; }
+    .card-grid, .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
   }
 
   .nav-card {
@@ -116,6 +135,7 @@
   .nav-card.card-navy:hover   { border-color: var(--navy); }
   .nav-card.card-cyan:hover   { border-color: var(--cyan-bright); }
   .nav-card.card-amber:hover  { border-color: var(--amber-bright); }
+  .nav-card.card-green:hover  { border-color: var(--green-bright); }
 
   .nav-card-tag {
     font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
@@ -128,6 +148,7 @@
   .tag-navy   { background: var(--navy-soft);   color: #1F3864; }
   .tag-cyan   { background: var(--cyan-soft);   color: #0E4F5C; }
   .tag-amber  { background: var(--amber-soft);  color: #7C2D00; }
+  .tag-green  { background: var(--green-soft);  color: #064E3B; }
 
   .nav-card-icon { font-size: 34px; margin-bottom: 12px; line-height: 1; }
 
@@ -148,6 +169,7 @@
   .card-navy:hover   .nav-card-cta { color: var(--navy); }
   .card-cyan:hover   .nav-card-cta { color: var(--cyan); }
   .card-amber:hover  .nav-card-cta { color: var(--amber); }
+  .card-green:hover  .nav-card-cta { color: var(--green); }
 
   footer { text-align: center; padding: 24px; font-size: 12px; color: #8A8575; }
   footer a { color: var(--teal); text-decoration: none; }
@@ -162,8 +184,8 @@
 
   <div class="hero">
     <div class="hero-eyebrow">Profe Ana Eslava EdTech · Learning Architect</div>
-    <h1>Eight tracks. <em>One portfolio.</em></h1>
-    <p>Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Every track is built from a real job posting or a real technical skill. Pick the one you need — or run all eight.</p>
+    <h1>Nine tracks. <em>One portfolio.</em></h1>
+    <p>Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Every track is built from a real job posting or a real technical skill. Pick the one you need — or run all nine.</p>
   </div>
 
   <!-- ROW 1 -->
@@ -258,6 +280,22 @@
       <p>Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.</p>
       <div class="nav-card-meta">
         <span>13 steps · ~50 min</span>
+        <span class="nav-card-cta">Enter →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ROW 3 -->
+  <div class="card-grid-3">
+
+    <a class="nav-card card-green" href="./ai-literacy/index.html">
+      <span class="nav-card-tag tag-green">AI fluency</span>
+      <div class="nav-card-icon" aria-hidden="true">🤖</div>
+      <h2>AI Literacy for IDs</h2>
+      <p>How RLHF works, why models hallucinate, and how instruction following succeeds or breaks — then translating it into safer prompt patterns and smarter AI-assisted design in Articulate 360.</p>
+      <div class="nav-card-meta">
+        <span>12 steps · ~45 min · Curious → Strategist</span>
         <span class="nav-card-cta">Enter →</span>
       </div>
     </a>
