@@ -20,6 +20,8 @@
     --purple: #6D28D9;
     --purple-bright: #7C3AED;
     --purple-soft: #EDE9FE;
+    --navy: #1F3864;
+    --navy-soft: #EEF1F7;
     --radius: 16px;
   }
 
@@ -59,7 +61,7 @@
   }
 
   .hero h1 {
-    font-size: clamp(30px, 5vw, 52px); line-height: 1.07; font-weight: 700;
+    font-size: clamp(28px, 4.5vw, 50px); line-height: 1.07; font-weight: 700;
     letter-spacing: -0.02em; margin-bottom: 18px;
   }
 
@@ -73,50 +75,53 @@
 
   .card-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    max-width: 1100px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    max-width: 1200px;
     width: 100%;
   }
-  @media (max-width: 900px) { .card-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 580px) { .card-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1100px) { .card-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px)  { .card-grid { grid-template-columns: 1fr; } }
 
   .nav-card {
     background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 32px 28px; text-decoration: none; color: inherit;
+    padding: 28px 24px; text-decoration: none; color: inherit;
     display: flex; flex-direction: column;
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
   }
-  .nav-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(11,19,32,0.1); }
-  .nav-card.card-teal:hover  { border-color: var(--teal-bright); }
-  .nav-card.card-coral:hover { border-color: var(--coral); }
+  .nav-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(11,19,32,0.1); }
+  .nav-card.card-teal:hover   { border-color: var(--teal-bright); }
+  .nav-card.card-coral:hover  { border-color: var(--coral); }
   .nav-card.card-purple:hover { border-color: var(--purple-bright); }
+  .nav-card.card-navy:hover   { border-color: var(--navy); }
 
   .nav-card-tag {
     font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px;
-    padding: 4px 12px; display: inline-block; margin-bottom: 16px; align-self: flex-start;
+    padding: 4px 12px; display: inline-block; margin-bottom: 14px; align-self: flex-start;
   }
   .tag-teal   { background: var(--teal-soft);   color: #085041; }
   .tag-coral  { background: var(--coral-soft);  color: #4A1B0C; }
   .tag-purple { background: var(--purple-soft); color: #3B1499; }
+  .tag-navy   { background: var(--navy-soft);   color: #1F3864; }
 
-  .nav-card-icon { font-size: 38px; margin-bottom: 14px; line-height: 1; }
+  .nav-card-icon { font-size: 34px; margin-bottom: 12px; line-height: 1; }
 
-  .nav-card h2 { font-size: 21px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.01em; }
+  .nav-card h2 { font-size: 19px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
 
-  .nav-card p { font-size: 14px; color: #6B6759; line-height: 1.6; margin-bottom: 18px; flex: 1; }
+  .nav-card p { font-size: 13px; color: #6B6759; line-height: 1.6; margin-bottom: 16px; flex: 1; }
 
   .nav-card-meta {
     font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8A8575;
     display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid var(--line); padding-top: 14px;
+    border-top: 1px solid var(--line); padding-top: 12px;
   }
 
-  .nav-card-cta { font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 4px; }
+  .nav-card-cta { font-weight: 700; color: var(--ink); }
   .card-teal:hover   .nav-card-cta { color: var(--teal); }
   .card-coral:hover  .nav-card-cta { color: var(--coral); }
   .card-purple:hover .nav-card-cta { color: var(--purple); }
+  .card-navy:hover   .nav-card-cta { color: var(--navy); }
 
   footer { text-align: center; padding: 24px; font-size: 12px; color: #8A8575; }
   footer a { color: var(--teal); text-decoration: none; }
@@ -131,8 +136,8 @@
 
   <div class="hero">
     <div class="hero-eyebrow">Profe Ana Eslava EdTech · Learning Architect</div>
-    <h1>Five tracks (More coming soon) <em>One portfolio.</em></h1>
-    <p>Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Pick the track you need — or run all five. Every time I see a job position post, I will create a lesson unit to get ready to land in my dream job</p>
+    <h1>Four tracks. <em>One portfolio.</em></h1>
+    <p>Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Pick the track you need — or run all four.</p>
   </div>
 
   <div class="card-grid">
@@ -144,7 +149,7 @@
       <p>Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.</p>
       <div class="nav-card-meta">
         <span>10 levels · ~3h</span>
-        <span class="nav-card-cta">Enter <span aria-hidden="true">→</span></span>
+        <span class="nav-card-cta">Enter →</span>
       </div>
     </a>
 
@@ -155,7 +160,7 @@
       <p>Fourteen scoped mini-projects, one for nearly every responsibility line in the job description. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
       <div class="nav-card-meta">
         <span>14 projects · 20–60 min each</span>
-        <span class="nav-card-cta">Enter <span aria-hidden="true">→</span></span>
+        <span class="nav-card-cta">Enter →</span>
       </div>
     </a>
 
@@ -166,28 +171,18 @@
       <p>Fourteen projects across Rise 360 and Storyline 360 — from building your first block-based course to publishing SCORM packages, adding branching logic, and designing interactive assessments.</p>
       <div class="nav-card-meta">
         <span>14 projects · Rise + Storyline</span>
-        <span class="nav-card-cta">Enter <span aria-hidden="true">→</span></span>
-      </div>
-    </a>
-    <a class="nav-card card-blue" href="./jnj-bootcamp/index.html">
-      <span class="nav-card-tag tag-blue">Duty-by-duty drill</span>
-      <div class="nav-card-icon" aria-hidden="true">🏥</div>
-      <h2>J&J Learning Designer Practice Lab</h2>
-      <p>Ten real cases mapped one-to-one to the actual J&J qualifications list — storyboard a decision-point frame, audit an accessibility slide, diagnose a misleading performance-data pattern, and end by actually building in Articulate Rise.</p>
-      <div class="nav-card-meta">
-        <span>10 modules · ~3h</span>
-        <span class="nav-card-cta">Enter <span aria-hidden="true">→</span></span>
+        <span class="nav-card-cta">Enter →</span>
       </div>
     </a>
 
-    <a class="nav-card card-purple" href="./jnj-dual-track/index.html">
-      <span class="nav-card-tag tag-purple">Bloom's progression</span>
-      <div class="nav-card-icon" aria-hidden="true">🧠</div>
-      <h2>Dual-Track: Learning Designer vs. LXA</h2>
-      <p>Switch between the execution track and the strategy track. Every module is tagged Remember through Create — including two full High-Level-Design-from-scratch exercises that walk all six Bloom's steps inside one brief.</p>
+    <a class="nav-card card-navy" href="./frameworks/index.html">
+      <span class="nav-card-tag tag-navy">Framework fluency</span>
+      <div class="nav-card-icon" aria-hidden="true">🏛️</div>
+      <h2>EU Frameworks</h2>
+      <p>Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.</p>
       <div class="nav-card-meta">
-        <span>10 + 8 modules · ~4h</span>
-        <span class="nav-card-cta">Enter <span aria-hidden="true">→</span></span>
+        <span>~45 min · Newcomer → Pioneer</span>
+        <span class="nav-card-cta">Enter →</span>
       </div>
     </a>
 
