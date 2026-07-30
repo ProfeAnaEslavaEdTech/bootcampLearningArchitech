@@ -22,6 +22,12 @@
     --purple-soft: #EDE9FE;
     --navy: #1F3864;
     --navy-soft: #EEF1F7;
+    --cyan: #0E7490;
+    --cyan-bright: #06B6D4;
+    --cyan-soft: #CFFAFE;
+    --amber: #B45309;
+    --amber-bright: #D97706;
+    --amber-soft: #FEF3C7;
     --radius: 16px;
   }
 
@@ -73,15 +79,29 @@
 
   .hero p { font-size: 17px; color: #4A4639; max-width: 580px; margin: 0 auto; line-height: 1.65; }
 
+  /* ── ROW 1: 4-col grid ── */
   .card-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 18px;
-    max-width: 1200px;
+    max-width: 1240px;
+    width: 100%;
+    margin-bottom: 18px;
+  }
+  /* ── ROW 2: 4-col grid ── */
+  .card-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    max-width: 1240px;
     width: 100%;
   }
-  @media (max-width: 1100px) { .card-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 560px)  { .card-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1100px) {
+    .card-grid, .card-grid-2 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .card-grid, .card-grid-2 { grid-template-columns: 1fr; }
+  }
 
   .nav-card {
     background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
@@ -94,6 +114,8 @@
   .nav-card.card-coral:hover  { border-color: var(--coral); }
   .nav-card.card-purple:hover { border-color: var(--purple-bright); }
   .nav-card.card-navy:hover   { border-color: var(--navy); }
+  .nav-card.card-cyan:hover   { border-color: var(--cyan-bright); }
+  .nav-card.card-amber:hover  { border-color: var(--amber-bright); }
 
   .nav-card-tag {
     font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
@@ -104,10 +126,12 @@
   .tag-coral  { background: var(--coral-soft);  color: #4A1B0C; }
   .tag-purple { background: var(--purple-soft); color: #3B1499; }
   .tag-navy   { background: var(--navy-soft);   color: #1F3864; }
+  .tag-cyan   { background: var(--cyan-soft);   color: #0E4F5C; }
+  .tag-amber  { background: var(--amber-soft);  color: #7C2D00; }
 
   .nav-card-icon { font-size: 34px; margin-bottom: 12px; line-height: 1; }
 
-  .nav-card h2 { font-size: 19px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .nav-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
 
   .nav-card p { font-size: 13px; color: #6B6759; line-height: 1.6; margin-bottom: 16px; flex: 1; }
 
@@ -122,6 +146,8 @@
   .card-coral:hover  .nav-card-cta { color: var(--coral); }
   .card-purple:hover .nav-card-cta { color: var(--purple); }
   .card-navy:hover   .nav-card-cta { color: var(--navy); }
+  .card-cyan:hover   .nav-card-cta { color: var(--cyan); }
+  .card-amber:hover  .nav-card-cta { color: var(--amber); }
 
   footer { text-align: center; padding: 24px; font-size: 12px; color: #8A8575; }
   footer a { color: var(--teal); text-decoration: none; }
@@ -136,16 +162,17 @@
 
   <div class="hero">
     <div class="hero-eyebrow">Profe Ana Eslava EdTech · Learning Architect</div>
-    <h1>Four tracks. <em>One portfolio.</em></h1>
-    <p>Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Pick the track you need — or run all four.</p>
+    <h1>Eight tracks. <em>One portfolio.</em></h1>
+    <p>Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Every track is built from a real job posting or a real technical skill. Pick the one you need — or run all eight.</p>
   </div>
 
+  <!-- ROW 1 -->
   <div class="card-grid">
 
     <a class="nav-card card-teal" href="./bootcamp/index.html">
       <span class="nav-card-tag tag-teal">Knowledge &amp; rehearsal</span>
       <div class="nav-card-icon" aria-hidden="true">🧭</div>
-      <h2>Nexthink Bootcamp</h2>
+      <h2>SaaS Training Bootcamp</h2>
       <p>Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.</p>
       <div class="nav-card-meta">
         <span>10 levels · ~3h</span>
@@ -156,8 +183,8 @@
     <a class="nav-card card-coral" href="./handson/index.html">
       <span class="nav-card-tag tag-coral">Real artifacts</span>
       <div class="nav-card-icon" aria-hidden="true">🛠️</div>
-      <h2>Nexthink Hands-On</h2>
-      <p>Fourteen scoped mini-projects, one for nearly every responsibility line in the job description. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
+      <h2>SaaS Hands-On Track</h2>
+      <p>Fourteen scoped mini-projects covering the full Learning Architect role. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
       <div class="nav-card-meta">
         <span>14 projects · 20–60 min each</span>
         <span class="nav-card-cta">Enter →</span>
@@ -182,6 +209,55 @@
       <p>Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.</p>
       <div class="nav-card-meta">
         <span>~45 min · Newcomer → Pioneer</span>
+        <span class="nav-card-cta">Enter →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ROW 2 -->
+  <div class="card-grid-2">
+
+    <a class="nav-card card-navy" href="./jnj-bootcamp/index.html">
+      <span class="nav-card-tag tag-navy">Duty-by-duty drill</span>
+      <div class="nav-card-icon" aria-hidden="true">🏥</div>
+      <h2>Learning Designer Practice Lab</h2>
+      <p>Ten real cases mapped one-to-one to an actual qualifications list — storyboard a decision frame, audit an accessibility slide, diagnose misleading performance data, and build in Articulate Rise.</p>
+      <div class="nav-card-meta">
+        <span>10 modules · ~3h</span>
+        <span class="nav-card-cta">Enter →</span>
+      </div>
+    </a>
+
+    <a class="nav-card card-purple" href="./jnj-dual-track/index.html">
+      <span class="nav-card-tag tag-purple">Bloom's progression</span>
+      <div class="nav-card-icon" aria-hidden="true">🧠</div>
+      <h2>Dual-Track: Designer vs. LXA</h2>
+      <p>Switch between the execution track (Learning Designer) and the strategy track (Learning Experience Architect). Every module is tagged Remember through Create — two full HLD-from-scratch exercises included.</p>
+      <div class="nav-card-meta">
+        <span>10 + 8 modules · ~4h</span>
+        <span class="nav-card-cta">Enter →</span>
+      </div>
+    </a>
+
+    <a class="nav-card card-cyan" href="./lrs/index.html">
+      <span class="nav-card-tag tag-cyan">Architecture</span>
+      <div class="nav-card-icon" aria-hidden="true">🗄️</div>
+      <h2>LRS Architecture</h2>
+      <p>Hybrid B2C + B2B platform design — multi-tenancy, xAPI statement forwarding, permission scopes, cmi5 dynamic launch, and a full annotated code walkthrough of the two-scenario architecture.</p>
+      <div class="nav-card-meta">
+        <span>13 steps · ~45 min</span>
+        <span class="nav-card-cta">Enter →</span>
+      </div>
+    </a>
+
+    <a class="nav-card card-amber" href="./scripting/index.html">
+      <span class="nav-card-tag tag-amber">Developer track</span>
+      <div class="nav-card-icon" aria-hidden="true">⚙️</div>
+      <h2>xAPI Scripting in Articulate 360</h2>
+      <p>Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.</p>
+      <div class="nav-card-meta">
+        <span>13 steps · ~50 min</span>
         <span class="nav-card-cta">Enter →</span>
       </div>
     </a>
