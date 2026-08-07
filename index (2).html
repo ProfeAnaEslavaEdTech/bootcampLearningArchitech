@@ -1,0 +1,815 @@
+<!-- ============================================================
+     FILE: unicef/index.html
+     UPLOAD TO: create folder "unicef" → upload as index.html
+     WHAT IT IS: UNICEF Digital Learning Consultant — ToR-mapped practice lab (TMC0004741)
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNICEF Digital Learning Consultant — Practice Lab</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --sky: #009EDB;
+    --sky-dark: #005C8A;
+    --sky-light: #33B5E8;
+    --sky-soft: #E0F4FD;
+    --paper: #F4F8FB;
+    --panel: #FFFFFF;
+    --line: #D0E4F0;
+    --ink: #14202E;
+    --ink-soft: #4A5C6A;
+    --green: #1C7A4D;
+    --green-soft: #E5F4EC;
+    --amber: #B5750C;
+    --amber-soft: #FBF0DC;
+    --red: #C0273C;
+    --red-soft: #FBE9EB;
+    --radius: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  *:focus-visible { outline: 3px solid var(--sky-light); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  .skip-link { position: absolute; left: -9999px; }
+  .skip-link:focus {
+    left: 12px; top: 12px; background: var(--sky-dark); color: white;
+    padding: 8px 14px; border-radius: var(--radius); z-index: 200;
+  }
+
+  .top-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+    padding: 14px 22px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-logo {
+    width: 28px; height: 28px; background: var(--sky); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-size: 15px; color: white; font-weight: 700;
+  }
+  .brand-title { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .brand-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--ink-soft); }
+  .progress-tracker { display: flex; align-items: center; gap: 10px; }
+  .progress-bar-outer { width: 130px; height: 7px; background: var(--line); border-radius: 20px; overflow: hidden; }
+  .progress-bar-inner { height: 100%; background: var(--sky); width: 0%; transition: width 0.5s ease; border-radius: 20px; }
+  .progress-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+
+  .hero { max-width: 960px; margin: 0 auto; padding: 52px 24px 28px; text-align: center; }
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600;
+    color: var(--sky-dark); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Source Serif 4', serif; font-size: clamp(28px, 5vw, 44px); line-height: 1.15; font-weight: 600;
+    letter-spacing: -0.01em; margin-bottom: 16px; color: var(--ink);
+  }
+  .hero h1 em { font-style: italic; color: var(--sky); }
+  .hero p { font-size: 15.5px; color: var(--ink-soft); max-width: 620px; margin: 0 auto 8px; line-height: 1.65; }
+
+  .map-section { max-width: 1060px; margin: 0 auto; padding: 28px 24px 60px; }
+  .map-title { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 18px; text-align: center; }
+  .level-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+
+  .level-card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    border-left: 4px solid var(--line);
+    padding: 16px 18px; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s;
+    text-align: left; width: 100%; font-family: inherit; color: inherit;
+  }
+  .level-card:hover:not(.locked) { border-left-color: var(--sky); box-shadow: 0 6px 18px rgba(0,158,219,0.12); transform: translateY(-2px); }
+  .level-card.locked { cursor: not-allowed; opacity: 0.5; }
+  .level-card.complete { background: var(--green-soft); border-left-color: var(--green); }
+
+  .level-top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 9px; }
+  .level-num { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 700; color: var(--ink-soft); letter-spacing: 0.04em; }
+  .level-status { font-size: 16px; }
+  .level-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .level-focus { font-size: 12px; color: var(--ink-soft); line-height: 1.5; margin-bottom: 10px; min-height: 32px; }
+  .level-tag { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: var(--sky-dark); text-transform: uppercase; letter-spacing: .04em; }
+
+  .level-detail { display: none; max-width: 800px; margin: 0 auto; padding: 30px 24px 80px; }
+  .level-detail.active { display: block; }
+  .map-section.hidden { display: none; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 500;
+    color: var(--ink); cursor: pointer; margin-bottom: 22px;
+  }
+  .back-btn:hover { border-color: var(--sky); color: var(--sky); }
+
+  .detail-header { margin-bottom: 24px; }
+  .detail-duty {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--sky-dark); margin-bottom: 8px; display: block;
+  }
+  .detail-header h2 { font-family: 'Source Serif 4', serif; font-size: clamp(22px, 4vw, 30px); font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; color: var(--ink); }
+  .detail-header .lead { font-size: 14.5px; color: var(--ink-soft); line-height: 1.6; }
+
+  .block { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; }
+  .block-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--sky-dark); margin-bottom: 11px; display: flex; align-items: center; gap: 7px;
+  }
+  .block-label.amber { color: var(--amber); }
+  .block-label.red { color: var(--red); }
+  .block p, .block li { font-size: 13.5px; line-height: 1.65; color: var(--ink); }
+  .block ul { list-style: none; padding: 0; }
+  .block ul li { padding-left: 18px; position: relative; margin-bottom: 7px; }
+  .block ul li::before { content: '+'; position: absolute; left: 0; color: var(--sky); font-weight: 700; }
+
+  .case-card {
+    background: var(--paper); border-left: 3px solid var(--sky); border-radius: var(--radius);
+    padding: 14px 16px; margin-bottom: 10px;
+  }
+  .case-card .ct { font-size: 12.5px; font-weight: 600; color: var(--sky-dark); margin-bottom: 5px; }
+  .case-card .cd { font-size: 13px; color: var(--ink); line-height: 1.6; }
+
+  .answer-card {
+    background: var(--green-soft); border-left: 3px solid var(--green); border-radius: var(--radius);
+    padding: 13px 15px; font-size: 13px; line-height: 1.65; color: #0F3D24; white-space: pre-wrap; margin-top: 8px;
+  }
+  .copy-row { display: flex; justify-content: flex-end; margin-top: 8px; }
+  .copy-btn {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; background: var(--sky);
+    color: white; border: none; border-radius: 20px; padding: 6px 14px; cursor: pointer;
+  }
+  .copy-btn:hover { background: var(--sky-light); }
+  .copy-btn.copied { background: var(--green); }
+
+  .builder-field { margin-bottom: 16px; }
+  .builder-field label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; color: var(--ink); }
+  .builder-field textarea {
+    width: 100%; font-family: 'IBM Plex Sans', sans-serif; font-size: 13.5px; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: var(--radius); resize: vertical; background: white;
+  }
+
+  .storyboard-frame { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 0; margin-bottom: 12px; overflow: hidden; }
+  .storyboard-frame .sf-header { background: var(--ink); color: white; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 5px 12px; display: flex; justify-content: space-between; }
+  .storyboard-frame .sf-body { padding: 14px 16px; background: white; }
+  .storyboard-frame .sf-row { display: flex; gap: 10px; font-size: 12.5px; padding: 4px 0; }
+  .storyboard-frame .sf-row .sf-label { font-weight: 600; min-width: 90px; color: var(--ink-soft); }
+
+  .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-box {
+    width: 19px; height: 19px; border: 2px solid var(--sky); border-radius: 3px; flex-shrink: 0; margin-top: 1px;
+    display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.15s;
+  }
+  .checklist-item.checked .checklist-box { background: var(--sky); border-color: var(--sky); color: white; }
+  .checklist-text { font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .checklist-text { color: var(--ink-soft); text-decoration: line-through; }
+
+  .quiz-q { font-size: 14px; font-weight: 600; margin-bottom: 13px; color: var(--ink); }
+  .quiz-options { display: flex; flex-direction: column; gap: 7px; margin-bottom: 13px; }
+  .quiz-option {
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 10px 13px; font-size: 13px; text-align: left; cursor: pointer; font-family: inherit;
+    color: var(--ink); transition: border-color 0.15s, background 0.15s;
+  }
+  .quiz-option:hover { border-color: var(--sky); }
+  .quiz-option.correct { background: var(--green-soft); border-color: var(--green); font-weight: 600; }
+  .quiz-option.incorrect { background: var(--red-soft); border-color: var(--red); }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-feedback { font-size: 12.5px; line-height: 1.6; padding: 10px 13px; border-radius: var(--radius); display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: var(--green-soft); color: #0F3D24; }
+  .quiz-feedback.incorrect-fb { background: var(--red-soft); color: #6B0F1B; }
+
+  .complete-row { display: flex; justify-content: center; margin-top: 26px; }
+  .complete-btn {
+    font-size: 14px; font-weight: 600; background: var(--sky);
+    color: white; border: none; border-radius: 24px; padding: 12px 28px; cursor: pointer;
+    display: flex; align-items: center; gap: 8px; transition: background 0.15s, transform 0.15s;
+  }
+  .complete-btn:hover { background: var(--sky-light); transform: translateY(-1px); }
+
+  .toast {
+    position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--ink); color: white;
+    padding: 15px 22px; border-radius: var(--radius); display: flex; align-items: center; gap: 11px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3); transition: bottom 0.4s cubic-bezier(.4,0,.2,1); z-index: 300; max-width: 90vw;
+    border: 1px solid var(--sky);
+  }
+  .toast.show { bottom: 30px; }
+  .toast-text { font-size: 12.5px; line-height: 1.4; }
+  .toast-text strong { color: #7DD3F8; }
+
+  .final-screen { display: none; max-width: 680px; margin: 0 auto; padding: 56px 24px; text-align: center; }
+  .final-screen.active { display: block; }
+  .final-screen h2 { font-family: 'Source Serif 4', serif; font-size: clamp(26px, 4.5vw, 36px); margin-bottom: 13px; color: var(--ink); }
+
+  footer { text-align: center; padding: 26px 24px 46px; font-size: 11px; color: var(--ink-soft); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 34px 18px 20px; }
+    .progress-bar-outer { width: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="top-bar">
+  <div class="brand">
+    <div class="brand-logo">U</div>
+    <div>
+      <div class="brand-title">UNICEF Digital Learning Consultant</div>
+      <div class="brand-sub">Supply Division · ToR TMC0004741 · 12-month consultancy</div>
+    </div>
+  </div>
+  <div class="progress-tracker">
+    <span class="progress-label" id="xpLabel">0/10 modules practiced</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="xpBar"></div></div>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero-eyebrow">Copenhagen / Remote · Individual Consultancy · 5+ years required</div>
+    <h1>Ten duties. <em>One contract.</em><br>Eight deliverables with real deadlines.</h1>
+    <p>Each module maps to a specific ToR requirement — Agora, Moodle migration, multilingual Rise, supply chain domain, stakeholder advisory. Practiced the way you'd actually do the work, not multiple choice about theory.</p>
+  </section>
+
+  <section class="map-section" id="mapSection">
+    <div class="map-title">— select a module to practice —</div>
+    <div class="level-grid" id="levelGrid"></div>
+  </section>
+
+  <section class="level-detail" id="levelDetail"></section>
+
+  <section class="final-screen" id="finalScreen">
+    <div class="hero-eyebrow">Practice complete</div>
+    <h2>You've rehearsed every line of the ToR.</h2>
+    <p style="color:var(--ink-soft); font-size:14.5px; line-height:1.6;">Ten modules, eight deliverable types, two honest gap answers. That's not "I've read the Terms of Reference" — that's "I know what the first 90 days of this contract look like."</p>
+    <button class="back-btn" onclick="goToMap()" style="margin-top:18px;">↺ Replay any module</button>
+  </section>
+
+</main>
+
+<footer>Practice scenarios are illustrative. UNICEF supply chain content is based on publicly available information only.</footer>
+
+<div class="toast" id="toast">
+  <span class="toast-text" id="toastText"></span>
+</div>
+
+<script>
+const LEVELS = [
+
+{
+  id: 1,
+  name: "What Is Agora?",
+  duty: "Ensure integration of online courses with Agora (UNICEF's LMS) — Moodle Workplace",
+  focus: "Understand what Agora actually is and what the Totara → Moodle migration means for your deliverables",
+  type: "quiz",
+  content: {
+    intro: "Agora is UNICEF's global LMS. The ToR mentions it 14 times — and specifically that you'll support a migration from Totara to Moodle Workplace. Before you can build anything on it, you need to understand what it is.",
+    blocks: [
+      {
+        label: "The platform context",
+        icon: "🖥️",
+        html: `<div class="case-card">
+          <div class="ct">What the ToR tells you</div>
+          <div class="cd">Agora = UNICEF's LMS. Currently running on <strong>Totara</strong>. The ToR asks you to support migration to <strong>Moodle Workplace</strong>. You'll develop pages, content, and courses directly on Agora — not just upload SCORM packages.</div>
+        </div>
+        <div class="case-card" style="margin-top:8px;">
+          <div class="ct">Totara vs Moodle Workplace — what matters</div>
+          <div class="cd">Totara is a fork of Moodle originally built for performance management (appraisals, learning plans linked to HR goals). Moodle Workplace is Moodle's own enterprise product with workflow automation and multi-tenancy. Both run SCORM and xAPI. Neither is "better" — they're designed for different organizational models.</div>
+        </div>`
+      }
+    ],
+    quiz: {
+      question: "UNICEF is migrating Agora from Totara to Moodle Workplace. What is the most significant practical challenge this creates for your specific deliverables?",
+      options: [
+        "Your Rise and Storyline files will need to be rebuilt from scratch because the SCORM format changes between platforms",
+        "Totara-specific features — learning plans linked to performance goals, audience-based enrollment, some custom reporting blocks — don't exist in Moodle Workplace as configured, so any course delivery model relying on those features needs to be redesigned, not just re-uploaded",
+        "Moodle Workplace doesn't support xAPI so the LRS Architecture track becomes irrelevant",
+        "The migration is only an IT problem — your job is to build the courses and the platform team handles everything else"
+      ],
+      correctIndex: 1,
+      feedbackCorrect: "Exactly. SCORM packages themselves migrate cleanly — a Rise export is a Rise export regardless of which Moodle variant runs it. The risk is in platform features: if any existing Totara courses use learning plan integration, audience-based enrollment, or Totara-specific certificates, those need to be redesigned for Moodle Workplace's equivalents (cohort enrollment, workplace certificate plugin). Your role is to flag these issues and propose solutions — that's exactly what 'identifying and resolving migration-related issues' means.",
+      feedbackIncorrect: "SCORM files are platform-agnostic — a Rise export runs on any SCORM-compliant LMS. The real risk is in Totara-specific features that have no direct equivalent in Moodle Workplace: learning plans tied to HR performance cycles, audience-based enrollment rules, and custom reporting blocks. These need to be redesigned, not just re-uploaded."
+    }
+  }
+},
+
+{
+  id: 2,
+  name: "Needs Analysis: The System Launch Brief",
+  duty: "Carry out the needs analysis, design and development of online learning courses",
+  focus: "Extract real learning objectives from an IT system rollout brief — the most common brief you'll receive",
+  type: "scenario",
+  content: {
+    intro: "Almost every project in this ToR is a system launch: PCM, eProcurement, SMT, Partner Portal, Supply Financing, PULSE. None of them will arrive as a 'learning needs analysis.' They'll arrive as an IT rollout brief. Your job is to translate one into the other.",
+    blocks: [
+      {
+        label: "The brief you'll receive",
+        icon: "📋",
+        html: `<div class="case-card">
+          <div class="ct">Email from the SMT Project Manager</div>
+          <div class="cd">"Hi, we're launching the Stock Management Tool (SMT) to 200 warehouse staff across 15 country offices in September. The system goes live in 8 weeks. We need training. I've attached the 120-page technical specification document — everything is in there. Can you start building?"</div>
+        </div>`
+      }
+    ],
+    interviewAnswer: "A 120-page technical spec is not a needs analysis — it's a documentation dump. Before I open Rise, I need to answer three questions the spec can't answer: What tasks will staff actually perform in SMT every week versus once a quarter? What does a critical error look like — what happens if a warehouse officer enters the wrong stock quantity? And what's the current workaround — how are they doing this today without SMT?\n\nI'd request two things before building anything: access to a sandbox environment so I can explore SMT myself and identify the 5-8 critical user tasks, and a 45-minute call with two or three actual warehouse staff to hear their current process and their anxieties about the new system. That 45 minutes is the most valuable time I'll spend on this project — more valuable than any time spent building slides.\n\nWith those inputs, the 120-page spec becomes a reference I consult during production, not my source of learning objectives."
+  }
+},
+
+{
+  id: 3,
+  name: "Rise at Scale: Multilingual Workflow",
+  duty: "Carry out other tasks related to the support of translation of online learning courses",
+  focus: "Build a translation workflow for Rise courses — XLIFF export, translator handoff, Arabic RTL challenge",
+  type: "builder",
+  content: {
+    intro: "The ToR explicitly includes translation support. UNICEF Supply Division's priority languages are English, French, and Arabic. Arabic means RTL — and Rise is built for LTR. You need a workflow that handles both the process and the exception.",
+    blocks: [
+      {
+        label: "Rise translation — how it actually works",
+        icon: "🌐",
+        html: `<div class="storyboard-frame">
+          <div class="sf-header"><span>RISE 360 XLIFF WORKFLOW</span><span>4-step cycle</span></div>
+          <div class="sf-body">
+            <div class="sf-row"><span class="sf-label">Step 1:</span><span>Build and finalize course in English — no translation until content is approved</span></div>
+            <div class="sf-row"><span class="sf-label">Step 2:</span><span>Export → XLIFF file (XML format containing all text strings, one per element)</span></div>
+            <div class="sf-row"><span class="sf-label">Step 3:</span><span>Send XLIFF to translator — they work in a CAT tool (SDL Trados, memoQ) or Rise's own import flow</span></div>
+            <div class="sf-row"><span class="sf-label">Step 4:</span><span>Re-import translated XLIFF → Rise builds a duplicate course in the target language</span></div>
+          </div>
+        </div>`
+      }
+    ],
+    builderFields: [
+      { id: "arabic", label: "Arabic is RTL and Rise's layout is LTR — the translated text flows right-to-left but the page layout doesn't flip. What's your practical approach to this constraint?", placeholder: "e.g. Use Rise's text blocks with manual RTL override attributes where possible; acknowledge to the Talent Management Specialist that Arabic will have layout limitations in Rise's current version; propose a Storyline-built Arabic version for critical interactions where RTL matters most; or use a dedicated Arabic Rise theme if available in UNICEF's licensed version..." },
+      { id: "handoff", label: "Your translator is a UNICEF procurement expert who speaks French and Arabic fluently — but has never opened an XLIFF file. How do you hand off the translation without a technical onboarding session?", placeholder: "e.g. Export from Rise and immediately import into a shared Word-style document using Rise's 'Export for translation' feature which produces a more readable format; or provide a 1-page annotated guide showing which column to edit and which to leave alone; or ask UNICEF if they have a preferred translation vendor who already knows the format..." },
+      { id: "qa", label: "After re-importing the translated XLIFF, what do you check before publishing the French or Arabic version on Agora?", placeholder: "e.g. Text overflow in buttons and labels (French text is 20-30% longer than English); quiz answer options still map to correct/incorrect responses; all images still have alt text (translation doesn't carry alt text over); video captions have been separately translated; course completion rules still trigger correctly..." }
+    ]
+  }
+},
+
+{
+  id: 4,
+  name: "Supply Chain Domain Crash Course",
+  duty: "Develop courses on PCM, eProcurement, SMT, Supply Financing, Last Mile Monitoring, PULSE",
+  focus: "Know enough about each system to ask the right questions — you're the designer, not the SME",
+  type: "quiz",
+  content: {
+    intro: "You don't need to be a procurement expert. You need to know what each system does at the level of 'what task does a user perform and why does it matter if they do it wrong.' That's enough to run a needs analysis and build a storyboard.",
+    blocks: [
+      {
+        label: "The eight project domains",
+        icon: "📦",
+        html: `<div class="storyboard-frame">
+          <div class="sf-header"><span>UNICEF SUPPLY DIVISION — KEY SYSTEMS</span><span>your design portfolio for 12 months</span></div>
+          <div class="sf-body">
+            <div class="sf-row"><span class="sf-label">PCM:</span><span>Procurement Case Management — tracks each procurement request from initiation through approval, sourcing, contracting, delivery</span></div>
+            <div class="sf-row"><span class="sf-label">eProcurement:</span><span>Digital portal for creating and managing purchase orders and supplier interactions online</span></div>
+            <div class="sf-row"><span class="sf-label">SMT:</span><span>Stock Management Tool — tracks inventory levels, movements, and replenishment in UNICEF warehouses</span></div>
+            <div class="sf-row"><span class="sf-label">Supply Financing:</span><span>Mechanisms for pre-financing procurement on behalf of country offices — letters of credit, advance financing</span></div>
+            <div class="sf-row"><span class="sf-label">Last Mile:</span><span>Tracking delivery of UNICEF supplies to final destinations — health posts, schools, community sites</span></div>
+            <div class="sf-row"><span class="sf-label">PULSE:</span><span>UNICEF's supply chain visibility and analytics platform — dashboards for tracking supply pipeline data</span></div>
+          </div>
+        </div>`
+      }
+    ],
+    quiz: {
+      question: "You're designing the Introduction to Procurement Services course — 5 Rise modules, due November 2026. The SME sends you a 60-page procurement policy manual and says 'cover all of this.' What's your response?",
+      options: [
+        "Build all five modules from the manual — the SME knows the domain better than you do",
+        "Ask the SME to identify the three most common errors new staff make in their first 90 days, then design backward from preventing those errors — the manual becomes a reference linked from the course, not the content itself",
+        "Reduce the manual to 5 equal sections and map one Rise module to each section",
+        "Push back and explain that 60 pages is too much content for 5 Rise modules"
+      ],
+      correctIndex: 1,
+      feedbackCorrect: "Exactly. A policy manual is written by lawyers and compliance officers to be complete — not to change behavior. Designing backward from the errors new staff actually make forces the SME to prioritize, grounds the content in real performance rather than policy coverage, and gives you a defensible way to say 'this section becomes a job aid link' when the scope bloats. The manual is still in the course — as a linked reference, not as the learning journey.",
+      feedbackIncorrect: "Mapping content to module count or covering the full manual produces a course that documents policy rather than changes behavior. The question that unlocks everything is: what do new staff get wrong in their first 90 days, and what happens when they do? That answer tells you what the five modules need to accomplish — and the rest of the manual becomes a reference."
+    }
+  }
+},
+
+{
+  id: 5,
+  name: "Agora Page Design",
+  duty: "Develop pages and courses on Agora; support redesign of Supply Community Learning Channel",
+  focus: "Design a course home page and a learning channel — not just upload a SCORM file",
+  type: "builder",
+  content: {
+    intro: "In Moodle Workplace, an 'Agora page' is more than a course container. The Supply Community Learning Channel is an organized hub page hosting multiple courses. The ToR asks you to redesign it and build individual course home pages. This is information architecture, not just eLearning production.",
+    blocks: [
+      {
+        label: "What you'll actually build",
+        icon: "🏗️",
+        html: `<div class="case-card">
+          <div class="ct">Two distinct deliverable types</div>
+          <div class="cd"><strong>Course home page:</strong> The Agora page that hosts one specific course — description, learning objectives, enrollment button, estimated time, completion certificate. Think of it as the course landing page in the LMS.<br><br><strong>Supply Community Learning Channel:</strong> A hub page organizing ALL supply-related courses by topic, audience, or system. Staff browse here to find what they need. Currently on Totara, being redesigned for Moodle Workplace.</div>
+        </div>`
+      }
+    ],
+    builderFields: [
+      { id: "audit", label: "Before redesigning the Supply Community Learning Channel, what do you audit in the existing Totara version — and what data do you need from the LMS admin?", placeholder: "e.g. Current course inventory (how many courses, by topic); completion rates per course (which are actually being used); search terms staff use most; which courses have outdated content; user role breakdown (is this for all Supply Division or specific sub-groups); and what the most common staff feedback or complaints about the current channel have been..." },
+      { id: "ia", label: "Propose an information architecture for a Supply Community Learning Channel hosting 15+ courses across procurement, supply chain, and systems topics.", placeholder: "e.g. Organize by audience role first (New Staff Onboarding / Procurement Officers / Warehouse Staff / Finance Officers), then within each audience group by system or topic; or organize by system/platform (PCM / eProcurement / SMT / etc.) with an 'All Staff' section for cross-cutting courses; include a 'Recently Updated' section so returning staff know what's changed..." },
+      { id: "adoption", label: "The redesigned channel launches but adoption is low — most staff aren't visiting the page. What do you recommend to the Talent Management Specialist?", placeholder: "e.g. Embed course links directly in system launch emails and onboarding checklists so staff don't have to find the channel independently; add a 'mandatory completion' flag to critical system courses so managers can track; work with IT to surface course recommendations on the Agora dashboard; or run a 2-week 'new channel' announcement campaign through existing UNICEF Supply Division newsletters..." }
+    ]
+  }
+},
+
+{
+  id: 6,
+  name: "Totara → Moodle Migration",
+  duty: "Support migration of the Supply Community Learning Channel from Totara to Moodle Workplace",
+  focus: "Know what migration issues look like and how to systematically identify and resolve them",
+  type: "checklist",
+  content: {
+    intro: "The ToR says: 'Assist in identifying, analyzing, and resolving migration-related issues to Agora pages.' This is a support role — you're not the IT migration lead — but you ARE responsible for the learning content and page design surviving the migration intact.",
+    blocks: [
+      {
+        label: "What migration issues actually look like",
+        icon: "🔍",
+        html: `<div class="case-card">
+          <div class="ct">What breaks during a Totara → Moodle Workplace migration</div>
+          <div class="cd">SCORM packages themselves usually survive intact. What breaks: Totara-specific enrollment rules, learning plan links, custom certificate templates, completion condition logic that referenced Totara activities, H5P content using older library versions, and course page layouts built with Totara-specific blocks.</div>
+        </div>`
+      }
+    ],
+    checklist: [
+      "Inventory every existing course and note which ones use Totara-specific features (learning plans, audience enrollment, appraisal links) — these need redesign, not just migration",
+      "Test each SCORM package in Moodle Workplace sandbox: confirm completion tracking, score reporting, and resume behavior all work correctly",
+      "Check H5P content library versions — H5P activities built for Totara's H5P version may not render correctly in Moodle Workplace without library updates",
+      "Verify that enrollment rules transfer — Totara 'audiences' map to Moodle Workplace 'cohorts'; confirm the IT team has recreated the enrollment logic, not just the course shells",
+      "Test certificate templates — Totara's certificate plugin is not the same as Moodle Workplace's; any custom certificate design needs to be rebuilt in the new plugin",
+      "Review completion conditions on courses that chain (where completing course A auto-enrolls learner in course B) — these rules are configured differently in Moodle Workplace",
+      "Document every issue found with: what the issue is, which course it affects, severity (blocks launch / degrades experience / cosmetic), and proposed resolution — then review with the Talent Management Specialist before fixing"
+    ]
+  }
+},
+
+{
+  id: 7,
+  name: "Accessibility for Global Audiences",
+  duty: "Test each digital learning product for content accuracy, accessibility, functionality and compliance with UNICEF standards",
+  focus: "Apply WCAG 2.1 AA in Rise and Agora — including the multilingual and low-bandwidth edge cases",
+  type: "checklist",
+  content: {
+    intro: "UNICEF staff access Agora from country offices worldwide — some with slow internet, assistive technology, and in languages with different reading directions. Accessibility isn't a QA checkbox at the end — it's a design constraint from the first storyboard.",
+    blocks: [
+      {
+        label: "UNICEF's accessibility baseline",
+        icon: "♿",
+        html: `<div class="case-card">
+          <div class="ct">What WCAG 2.1 AA means in practice for Rise courses on Agora</div>
+          <div class="cd">The UN system formally commits to WCAG 2.1 Level AA. For your deliverables this means: all non-decorative images have meaningful alt text, all video has synchronized captions (not auto-generated), all interactions are keyboard-accessible, color contrast meets 4.5:1 for body text, and the course works without requiring audio.</div>
+        </div>`
+      }
+    ],
+    checklist: [
+      "Every non-decorative image in Rise has meaningful alt text — not the filename, not 'image', but a description of what the image communicates",
+      "All video content has human-reviewed synchronized captions — auto-generated captions are a starting point only; procurement vocabulary ('SMT', 'PCM', 'eProcurement') will be wrong in auto-captions",
+      "Every interactive Rise element (accordion, tabs, hotspot, drag-and-drop) has a keyboard-accessible alternative path — test without using a mouse",
+      "Color contrast passes WCAG AA: 4.5:1 for normal text, 3:1 for large text and UI components — run the Agora page AND the Rise course through a contrast checker",
+      "The course communicates fully without audio — all narration content is also present in on-screen text or transcripts for staff in open-plan offices or with hearing impairments",
+      "Translated versions maintain accessibility — XLIFF re-import doesn't carry over alt text for images; audit every translated version separately",
+      "Test on a throttled connection (3G equivalent) — UNICEF country office staff in field locations need a course that loads, not one optimized for Copenhagen broadband"
+    ]
+  }
+},
+
+{
+  id: 8,
+  name: "Managing 8 Concurrent Deliverables",
+  duty: "Full production cycle management across PCM, Procurement Services, SMT, Supply Financing, Last Mile, PULSE, Agora Channel, Migration",
+  focus: "Build the tracking system that keeps 8 projects with staggered deadlines from colliding",
+  type: "builder",
+  content: {
+    intro: "The ToR has 8 named deliverable streams with deadlines running from September 2026 to July 2027 — plus adhoc projects. They don't arrive one at a time. They overlap, stall when SMEs are unavailable, and accelerate when IT goes live. You need a system.",
+    blocks: [
+      {
+        label: "The real deadline sequence",
+        icon: "📅",
+        html: `<div class="storyboard-frame">
+          <div class="sf-header"><span>DELIVERABLE TIMELINE</span><span>Sept 2026 → July 2027</span></div>
+          <div class="sf-body">
+            <div class="sf-row"><span class="sf-label">Sept 2026:</span><span>SMT eLearning — first deadline, most technical</span></div>
+            <div class="sf-row"><span class="sf-label">Nov 2026:</span><span>Introduction to Procurement Services (5 Rise modules + Agora page)</span></div>
+            <div class="sf-row"><span class="sf-label">Dec 2026:</span><span>PCM Course Update + PULSE — two projects sharing one deadline</span></div>
+            <div class="sf-row"><span class="sf-label">Jan 2027:</span><span>Supply Community Learning Channel redesign</span></div>
+            <div class="sf-row"><span class="sf-label">Feb 2027:</span><span>Migration support + Last Mile Supply Monitoring (same month)</span></div>
+            <div class="sf-row"><span class="sf-label">Mar 2027:</span><span>Supply Financing (12 Rise modules — largest single deliverable)</span></div>
+            <div class="sf-row"><span class="sf-label">Jul 2027:</span><span>Adhoc projects</span></div>
+          </div>
+        </div>`
+      }
+    ],
+    builderFields: [
+      { id: "smt", label: "SMT is your first deadline (Sept 2026) and the most technically complex. What do you do in your first two weeks of the contract to de-risk it?", placeholder: "e.g. Request sandbox access to SMT immediately — don't wait for a formal brief; schedule a needs analysis session with 2-3 warehouse staff before end of week 2; get the existing SMT documentation and identify the 5 critical user tasks by week 1; confirm with the Talent Management Specialist whether an existing draft course exists that can be updated vs. built from scratch..." },
+      { id: "collision", label: "PCM and PULSE share the December 2026 deadline. How do you prevent both from slipping simultaneously when the November Procurement Services deadline is just before them?", placeholder: "e.g. Front-load PCM storyboard approval before the Procurement Services build sprint starts in October — if PCM is approved in September, the November crunch doesn't delay it; for PULSE, set an internal deadline of November 15 for stakeholder review so there's 6 weeks of buffer before December 31; never let two projects enter the 'stakeholder review' phase at the same time if you can avoid it..." },
+      { id: "reporting", label: "The Talent Management Specialist asks for a weekly status update. What format do you use and what do you always include?", placeholder: "e.g. One-page table with: project name, current phase (needs analysis / storyboard / development / review / QA / published), what was completed this week, what's blocked and by whom, next milestone and date, and any deadline risk flags; keep it scannable — the specialist manages multiple consultants, so a wall of text doesn't serve them; send it every Monday morning before 9am Copenhagen time..." }
+    ]
+  }
+},
+
+{
+  id: 9,
+  name: "Stakeholder Advisory in UN Context",
+  duty: "Act as an advisor to internal stakeholders on questions related to digital learning",
+  focus: "Translate 'we need training' into what's actually needed — and say it in a way stakeholders accept",
+  type: "scenario",
+  content: {
+    intro: "The ToR's last listed duty is 'act as an advisor to internal stakeholders on questions related to digital learning.' This is the highest-leverage part of the role. Every other deliverable gets easier when stakeholders understand what learning can and can't do. And the hardest part of the advisory role is saying 'that won't work' without saying 'no.'",
+    blocks: [
+      {
+        label: "The advisory scenario",
+        icon: "💬",
+        html: `<div class="case-card">
+          <div class="ct">Request from a Supply Financing project manager</div>
+          <div class="cd">"We're launching Supply Financing next month. I need a one-hour e-learning course ready in two weeks. I have a PowerPoint with all the policy and process information — can you just convert it to Rise? The 12-module deliverable in the ToR sounds like too much; let's start with a quick overview."</div>
+        </div>`
+      }
+    ],
+    interviewAnswer: "Two problems in this request: the timeline and the format assumption. I'd address them separately.\n\nOn the timeline: a two-week turnaround for a meaningful course is possible for a simple update, not for new complex content. What I'd offer instead is a two-week quick-reference job aid — a well-designed Agora page with the key process steps and links to policy documents — while the full 12-module course follows on the March 2027 timeline. This gets something useful live at launch without sacrificing quality on the full deliverable.\n\nOn 'just convert the PowerPoint': a policy PowerPoint is organized for completeness, not for behavior change. Before I open Rise, I need to know: what is a Supply Financing officer supposed to DO differently after this course? If they can already access the policy PDF from Agora, the course has to add something the PDF can't — practice making decisions in realistic scenarios. Converting a PowerPoint to Rise produces a click-through document, not a course.\n\nI'd frame this to the project manager as: 'I can give you something useful at launch in two weeks and the full course by March. Here's what each one does and doesn't do.' That framing rarely gets rejected — it gives them something fast and doesn't compromise the instructional quality."
+  }
+},
+
+{
+  id: 10,
+  name: "Final Boss: The Real Gaps",
+  duty: "Exposure to UN Systems (preferred); Moodle Workplace/Totara; video production tools",
+  focus: "The three honest answers you need before any UNICEF interview",
+  type: "boss",
+  content: {
+    intro: "This ToR has three qualifications that most instructional designers applying from outside the UN system won't fully meet. Knowing how to answer them honestly — without underselling the adjacent skills — is as important as any module in this track.",
+    blocks: [],
+    bossQuestions: [
+      {
+        q: "The ToR lists 'Exposure to international professional contexts and/or multicultural environments within the United Nations Systems, preferably in UNICEF' as a requirement. You haven't worked inside UNICEF before. What's your honest, strong answer?",
+        model: "I'd say: 'I haven't worked as a UNICEF staff member, so I want to be upfront about that. What I can offer is a fast domain-acquisition process — the same needs analysis skills I'd apply to designing an SMT course, I'd apply to understanding UNICEF's supply chain vocabulary and stakeholder culture in my first weeks. I'd start by completing whatever existing Agora courses are available to Supply Division staff, requesting a briefing from the Talent Management Specialist on the key internal stakeholders, and treating my first two deliverables as learning opportunities about how UNICEF reviews and approves content. The learning curve is real; the skills to climb it fast are already there.'"
+      },
+      {
+        q: "The ToR requires experience with Totara and/or Moodle. You've used Moodle as an administrator and learner, but not Moodle Workplace or Totara specifically. How do you answer 'tell me about your Moodle experience'?",
+        model: "I'd say: 'I've administered and used Moodle — setting up course structures, configuring SCORM packages, managing enrollment and completion rules. Moodle Workplace specifically is newer to me, and I want to be transparent about that. What isn't new is the underlying logic: SCORM completion tracking works the same way, cohort enrollment follows the same principles as audience enrollment, and the page builder is a different interface for the same information architecture decisions. I've already done a self-study sprint on Moodle Workplace's specific features — the certificate plugin, the workplace learning plans, the custom dashboard blocks — so I can hit the ground running on Agora. I learn new LMS configurations fast; the instructional design quality doesn't change regardless of which buttons publish it.'"
+      },
+      {
+        q: "The ToR lists 'video production tools' as a required skill alongside Articulate 360. Depending on your actual toolkit — what's the honest, calibrated answer?",
+        model: "Name your actual tools: 'I use [Camtasia / ScreenFlow / DaVinci Resolve / Loom / OBS] for screen recordings, walkthroughs, and basic editing, which covers the majority of what supply system training needs — annotated screencasts of SMT workflows, talking-head introductions, and click-through process recordings. For higher-production video — motion graphics, multi-camera studio recordings — I'd involve a specialist and manage the production brief and review cycle. What I'd add as an instructional designer is the decision layer: knowing whether a process walkthrough should be a video, a Storyline click-through simulation, or a Rise labeled diagram is a more important call than the production tool. I'd make that call before production starts, not after.'"
+      }
+    ]
+  }
+}
+
+];
+
+function loadProgress() { return { completed: {}, scales: {}, builder: {}, storyboard: {} }; }
+function saveProgress() { /* in-memory only */ }
+let progress = loadProgress();
+
+const TOTAL_LEVELS = LEVELS.length;
+
+function completedCount() { return LEVELS.filter(l => progress.completed[l.id]).length; }
+
+function updateXPBar() {
+  const done = completedCount();
+  const pct = Math.round((done / TOTAL_LEVELS) * 100);
+  document.getElementById("xpBar").style.width = pct + "%";
+  document.getElementById("xpLabel").textContent = `${done}/${TOTAL_LEVELS} modules practiced`;
+}
+
+function isUnlocked(level) {
+  const idx = LEVELS.findIndex(l => l.id === level.id);
+  if (idx === 0) return true;
+  return !!progress.completed[LEVELS[idx - 1].id];
+}
+
+function renderMap() {
+  const grid = document.getElementById("levelGrid");
+  grid.innerHTML = "";
+  LEVELS.forEach(level => {
+    const unlocked = isUnlocked(level);
+    const complete = !!progress.completed[level.id];
+    const card = document.createElement("button");
+    card.className = "level-card" + (unlocked ? "" : " locked") + (complete ? " complete" : "");
+    card.innerHTML = `
+      <div class="level-top-row">
+        <span class="level-num">${String(level.id).padStart(2, "0")}</span>
+        <span class="level-status">${complete ? "✅" : (unlocked ? "" : "🔒")}</span>
+      </div>
+      <div class="level-name">${level.name}</div>
+      <div class="level-focus">${level.focus}</div>
+      <div class="level-tag">${level.type === "boss" ? "FINAL BOSS" : level.type.toUpperCase()}</div>
+    `;
+    if (unlocked) card.addEventListener("click", () => openLevel(level.id));
+    grid.appendChild(card);
+  });
+  updateXPBar();
+}
+
+function goToMap() {
+  document.getElementById("mapSection").classList.remove("hidden");
+  document.getElementById("levelDetail").classList.remove("active");
+  document.getElementById("finalScreen").classList.remove("active");
+  renderMap();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openLevel(id) {
+  const level = LEVELS.find(l => l.id === id);
+  document.getElementById("mapSection").classList.add("hidden");
+  const detail = document.getElementById("levelDetail");
+  detail.classList.add("active");
+
+  let bodyHTML = `
+    <button class="back-btn" onclick="goToMap()">← Back to modules</button>
+    <div class="detail-header">
+      <span class="detail-duty">ToR duty: ${level.duty}</span>
+      <h2>${level.name}</h2>
+      <p class="lead">${level.content.intro}</p>
+    </div>
+  `;
+
+  (level.content.blocks || []).forEach(block => {
+    bodyHTML += `<div class="block"><div class="block-label">${block.icon || ""} ${block.label}</div>${block.html}</div>`;
+  });
+
+  if (level.content.interviewAnswer) {
+    bodyHTML += `
+      <div class="block">
+        <div class="block-label amber">Model answer</div>
+        <div class="answer-card" id="answerText-${level.id}">${level.content.interviewAnswer}</div>
+        <div class="copy-row"><button class="copy-btn" onclick="copyAnswer(${level.id})" id="copyBtn-${level.id}">Copy answer</button></div>
+      </div>
+    `;
+  }
+
+  bodyHTML += `<div id="interactiveZone-${level.id}"></div>`;
+  bodyHTML += `
+    <div class="complete-row">
+      <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel(${level.id})">
+        ${progress.completed[level.id] ? "✅ Completed — replay anytime" : "Mark as practiced →"}
+      </button>
+    </div>
+  `;
+
+  detail.innerHTML = bodyHTML;
+  renderInteractive(level);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function copyAnswer(levelId) {
+  const level = LEVELS.find(l => l.id === levelId);
+  navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
+    const btn = document.getElementById(`copyBtn-${levelId}`);
+    btn.textContent = "Copied ✓";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
+  });
+}
+
+function renderInteractive(level) {
+  const zone = document.getElementById(`interactiveZone-${level.id}`);
+  if (!zone) return;
+  switch (level.type) {
+    case "checklist": renderChecklist(level, zone); break;
+    case "quiz": renderQuiz(level, zone); break;
+    case "scenario": break;
+    case "builder": renderBuilder(level, zone); break;
+    case "boss": renderBoss(level, zone); break;
+  }
+}
+
+function renderChecklist(level, zone) {
+  const saved = progress.scales[`checklist-${level.id}`] || {};
+  let html = `<div class="block"><div class="block-label">Audit checklist</div>`;
+  level.content.checklist.forEach((item, i) => {
+    const checked = saved[i] ? "checked" : "";
+    html += `
+      <div class="checklist-item ${checked}" onclick="toggleCheck(${level.id}, ${i})" tabindex="0" role="checkbox" aria-checked="${!!saved[i]}"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCheck(${level.id},${i})}">
+        <div class="checklist-box">${saved[i] ? "✓" : ""}</div>
+        <div class="checklist-text">${item}</div>
+      </div>`;
+  });
+  html += `</div>`;
+  zone.innerHTML = html;
+}
+function toggleCheck(levelId, index) {
+  const key = `checklist-${levelId}`;
+  if (!progress.scales[key]) progress.scales[key] = {};
+  progress.scales[key][index] = !progress.scales[key][index];
+  saveProgress();
+  openLevel(levelId);
+}
+
+function renderQuiz(level, zone) {
+  const q = level.content.quiz;
+  let html = `<div class="block"><div class="block-label amber">Check your thinking</div><div class="quiz-q">${q.question}</div><div class="quiz-options" id="quizOptions-${level.id}">`;
+  q.options.forEach((opt, i) => { html += `<button class="quiz-option" onclick="answerQuiz(${level.id}, ${i})">${opt}</button>`; });
+  html += `</div><div class="quiz-feedback" id="quizFeedback-${level.id}"></div></div>`;
+  zone.innerHTML = html;
+}
+function answerQuiz(levelId, chosenIndex) {
+  const level = LEVELS.find(l => l.id === levelId);
+  const q = level.content.quiz;
+  const options = document.querySelectorAll(`#quizOptions-${levelId} .quiz-option`);
+  options.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correctIndex) btn.classList.add("correct");
+    else if (i === chosenIndex) btn.classList.add("incorrect");
+  });
+  const fb = document.getElementById(`quizFeedback-${levelId}`);
+  const isCorrect = chosenIndex === q.correctIndex;
+  fb.textContent = isCorrect ? q.feedbackCorrect : q.feedbackIncorrect;
+  fb.className = "quiz-feedback show " + (isCorrect ? "correct-fb" : "incorrect-fb");
+}
+
+function renderBuilder(level, zone) {
+  const saved = progress.builder[level.id] || {};
+  let html = `<div class="block"><div class="block-label">Draft your approach</div>`;
+  level.content.builderFields.forEach(f => {
+    html += `
+      <div class="builder-field">
+        <label for="builder-${level.id}-${f.id}">${f.label}</label>
+        <textarea id="builder-${level.id}-${f.id}" rows="3" placeholder="${f.placeholder}"
+          oninput="saveBuilderField(${level.id}, '${f.id}', this.value)">${saved[f.id] || ""}</textarea>
+      </div>`;
+  });
+  html += `<button class="copy-btn" onclick="copyBuilderSection(${level.id})" style="margin-top:4px;">Copy as text</button></div>`;
+  zone.innerHTML = html;
+}
+function saveBuilderField(levelId, fieldId, value) {
+  if (!progress.builder[levelId]) progress.builder[levelId] = {};
+  progress.builder[levelId][fieldId] = value;
+  saveProgress();
+}
+function copyBuilderSection(levelId) {
+  const level = LEVELS.find(l => l.id === levelId);
+  const saved = progress.builder[levelId] || {};
+  let text = `${level.name.toUpperCase()}\n\n`;
+  level.content.builderFields.forEach(f => { text += `${f.label}\n${saved[f.id] || "(not filled in)"}\n\n`; });
+  navigator.clipboard.writeText(text);
+  alert("Copied to clipboard.");
+}
+
+function renderBoss(level, zone) {
+  let html = `<div class="block"><div class="block-label red">Final questions — honest answers required</div>`;
+  level.content.bossQuestions.forEach((item, i) => {
+    html += `
+      <div style="margin-bottom:17px;padding-bottom:15px;${i < level.content.bossQuestions.length - 1 ? 'border-bottom:1px solid var(--line);' : ''}">
+        <p style="font-weight:600;font-size:13.5px;margin-bottom:9px;color:var(--ink);">${i + 1}. ${item.q}</p>
+        <button class="copy-btn" style="background:var(--amber);" onclick="revealBoss(${level.id}, ${i})" id="bossBtn-${level.id}-${i}">Reveal model answer</button>
+        <div class="answer-card" id="bossAnswer-${level.id}-${i}" style="display:none;margin-top:9px;">${item.model}</div>
+      </div>`;
+  });
+  html += `</div>`;
+  zone.innerHTML = html;
+}
+function revealBoss(levelId, index) {
+  document.getElementById(`bossAnswer-${levelId}-${index}`).style.display = "block";
+  document.getElementById(`bossBtn-${levelId}-${index}`).style.display = "none";
+}
+
+function completeLevel(id) {
+  const wasComplete = !!progress.completed[id];
+  progress.completed[id] = true;
+  saveProgress();
+  updateXPBar();
+  if (!wasComplete) { const level = LEVELS.find(l => l.id === id); showToast(level); }
+  const btn = document.getElementById(`completeBtn-${id}`);
+  if (btn) btn.textContent = "✅ Completed — replay anytime";
+  const allDone = LEVELS.every(l => progress.completed[l.id]);
+  if (allDone) { setTimeout(showFinalScreen, 1200); } else { setTimeout(goToMap, 900); }
+}
+
+function showToast(level) {
+  const toast = document.getElementById("toast");
+  document.getElementById("toastText").innerHTML = `<strong>${level.name}</strong> practiced`;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2400);
+}
+
+function showFinalScreen() {
+  document.getElementById("mapSection").classList.add("hidden");
+  document.getElementById("levelDetail").classList.remove("active");
+  document.getElementById("finalScreen").classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+renderMap();
+if (LEVELS.every(l => progress.completed[l.id])) showFinalScreen();
+</script>
+</body>
+</html>
