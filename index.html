@@ -1,312 +1,1274 @@
-<!-- ============================================================
-     FILE: index.html
-     UPLOAD TO: root of the repository (replace the existing file)
-     WHAT IT IS: Landing page — 9 tracks
-     ============================================================ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Architect Bootcamp — Ana Eslava</title>
+<title>Language Learning Architect Bootcamp — Ana Eslava-Graterol</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,600;9..144,0,700;9..144,1,600;9..144,1,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-  :root {
-    --ink: #0B1320;
-    --paper: #F7F5F0;
-    --panel: #FFFFFF;
-    --line: #D8D4C8;
-    --teal: #0F6E56;
-    --teal-bright: #1D9E75;
-    --teal-soft: #E1F5EE;
-    --coral: #C24A2E;
-    --coral-soft: #FAECE7;
-    --purple: #6D28D9;
-    --purple-bright: #7C3AED;
-    --purple-soft: #EDE9FE;
-    --navy: #1F3864;
-    --navy-soft: #EEF1F7;
-    --cyan: #0E7490;
-    --cyan-bright: #06B6D4;
-    --cyan-soft: #CFFAFE;
-    --amber: #B45309;
-    --amber-bright: #D97706;
-    --amber-soft: #FEF3C7;
-    --green: #059669;
-    --green-bright: #10B981;
-    --green-soft: #D1FAE5;
-    --radius: 16px;
+/* ── Ocean Ink v0.1 ── */
+:root {
+  --ink:          #1C1E2E;
+  --canvas:       #F7F8FC;
+  --surface:      #FFFFFF;
+  --line:         #E6E8F2;
+  --muted:        #5B5F77;
+  --primary:      #3B5BD6;
+  --primary-deep: #22307C;
+  --on-primary:   #FFFFFF;
+  --accent:       #E8A33D;
+  --accent-text:  #9A5B00;
+  --blue-50:      #EEF2FD;
+  --blue-100:     #DCE4FB;
+  --focus-ring:   #3B5BD6;
+  --radius:       8px;
+  --tag-bg:       #EEF2FD;
+  --tag-text:     #22307C;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+    --line: #2A2E50; --muted: #9A9DBF;
+    --primary: #7B9FFF; --primary-deep: #3B5BD6;
+    --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+    --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+    --tag-bg: #171A38; --tag-text: #7B9FFF;
   }
+}
+:root[data-theme="light"] { --tag-bg: #EEF2FD; --tag-text: #22307C; }
+:root[data-theme="dark"] {
+  --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+  --line: #2A2E50; --muted: #9A9DBF;
+  --primary: #7B9FFF; --primary-deep: #3B5BD6;
+  --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+  --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+  --tag-bg: #171A38; --tag-text: #7B9FFF;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
 
-  body {
-    background: var(--paper);
-    background-image: radial-gradient(circle at 1px 1px, rgba(11,19,32,0.06) 1px, transparent 0);
-    background-size: 22px 22px;
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--ink);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+  left: 12px; top: 12px;
+  background: var(--primary-deep); color: #fff;
+  padding: 8px 14px; border-radius: 8px; z-index: 200;
+  font-family: 'Inter', system-ui, sans-serif; font-size: 13px;
+}
+
+body {
+  background: var(--canvas);
+  background-image: radial-gradient(circle at 1px 1px, rgba(28,30,46,0.05) 1px, transparent 0);
+  background-size: 22px 22px;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  display: flex; flex-direction: column;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
   }
+}
+:root[data-theme="dark"] body {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+}
 
-  *:focus-visible { outline: 3px solid #1D4ED8; outline-offset: 2px; }
+h1, h2, h3 { font-family: 'Fraunces', 'Palatino Linotype', Palatino, Georgia, serif; }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+/* ── HERO ── */
+.hero-band {
+  background: linear-gradient(135deg, #22307C 0%, #3B5BD6 52%, #E8A33D 100%);
+  padding: 72px 24px 64px; text-align: center;
+  print-color-adjust: exact; -webkit-print-color-adjust: exact;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero-band {
+    background: linear-gradient(135deg, #08091A 0%, #1A2464 100%);
   }
+}
+:root[data-theme="dark"] .hero-band { background: linear-gradient(135deg, #08091A 0%, #1A2464 100%); }
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.75); margin-bottom: 20px;
+}
+.hero-band h1 {
+  font-size: clamp(32px, 5vw, 58px); font-weight: 700; line-height: 1.05;
+  letter-spacing: -0.025em; color: #fff; margin-bottom: 20px; text-wrap: balance;
+}
+.hero-band h1 em { font-style: italic; color: #E8A33D; }
+.hero-sub {
+  font-size: clamp(14px, 1.6vw, 16.5px); color: rgba(255,255,255,0.88);
+  max-width: 560px; margin: 0 auto 40px; line-height: 1.65;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.hero-chip {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 11px; font-weight: 600; padding: 5px 14px; border-radius: 24px;
+  letter-spacing: 0.04em; background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.82); border: 1px solid rgba(255,255,255,0.18);
+}
 
-  .skip-link { position: absolute; left: -9999px; }
-  .skip-link:focus {
-    left: 12px; top: 12px; background: var(--ink); color: white;
-    padding: 8px 14px; border-radius: 8px; z-index: 200;
-  }
+/* ── TAB BAR ── */
+.tab-bar-wrapper {
+  background: var(--surface);
+  border-bottom: 2px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.tab-bar {
+  display: flex; max-width: 1240px;
+  margin: 0 auto; padding: 0 24px;
+}
+[role="tab"] {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 14px 22px 11px;
+  border: none; border-bottom: 3px solid transparent; margin-bottom: -2px;
+  background: transparent; color: var(--muted); cursor: pointer;
+  transition: color 0.15s, border-color 0.15s; white-space: nowrap;
+}
+[role="tab"]:hover { color: var(--primary); }
+[role="tab"][aria-selected="true"] { color: var(--primary); border-bottom-color: var(--primary); }
+[role="tabpanel"] { flex: 1; }
+[role="tabpanel"][hidden] { display: none; }
 
-  main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; }
+/* ── TRACKS PANEL ── */
+.tracks-panel {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 52px 24px 80px; gap: 18px;
+}
+.row-label {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); width: 100%; max-width: 1240px; margin: 10px auto -4px; padding: 0 2px;
+}
+.card-row { display: grid; gap: 18px; width: 100%; }
+.card-row-4 { grid-template-columns: repeat(4, 1fr); max-width: 1240px; margin: 0 auto; }
+.card-row-3 { grid-template-columns: repeat(3, 1fr); max-width: 930px; margin: 0 auto; }
+.card-row-2 { grid-template-columns: repeat(2, 1fr); max-width: 760px; margin: 0 auto; }
+@media (max-width: 1100px) {
+  .card-row-4 { grid-template-columns: repeat(2, 1fr); max-width: 760px; }
+  .card-row-3 { grid-template-columns: repeat(2, 1fr); max-width: 760px; }
+}
+@media (max-width: 560px) {
+  .card-row-4, .card-row-3, .card-row-2 { grid-template-columns: 1fr; max-width: 480px; }
+}
+.nav-card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 28px 24px; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.nav-card:hover {
+  transform: translateY(-4px); box-shadow: 0 12px 28px rgba(59,91,214,0.12);
+  border-color: var(--primary);
+}
+.nav-card-tag {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+  border-radius: 20px; padding: 4px 11px; display: inline-block;
+  margin-bottom: 14px; align-self: flex-start;
+  background: var(--tag-bg); color: var(--tag-text);
+}
+.nav-card-icon { font-size: 32px; margin-bottom: 12px; line-height: 1; }
+.nav-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--ink); }
+.nav-card p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; flex: 1; }
+.nav-card-meta {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 11px; color: var(--muted);
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--line); padding-top: 12px;
+}
+.nav-card-cta { font-weight: 700; color: var(--primary); }
 
-  .hero { max-width: 760px; text-align: center; margin-bottom: 48px; }
+/* ── GLOSSARY PANEL ── */
+.glossary-wrapper {
+  max-width: 860px; margin: 0 auto; padding: 48px 24px 80px;
+}
+.glossary-wrapper h2.panel-title {
+  font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 8px;
+}
+.panel-subtitle {
+  font-size: 14px; color: var(--muted); margin-bottom: 32px; line-height: 1.6;
+}
+.alpha-nav {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--line);
+}
+.alpha-nav a {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 12px; font-weight: 700;
+  width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  border-radius: 6px; border: 1px solid var(--line); color: var(--muted);
+  text-decoration: none; transition: all 0.15s;
+}
+.alpha-nav a.has-entries { color: var(--primary); border-color: var(--blue-100); background: var(--blue-50); }
+.alpha-nav a.has-entries:hover { border-color: var(--primary); }
+.alpha-nav a.no-entries { opacity: 0.28; pointer-events: none; }
+.gl-section { scroll-margin-top: 72px; }
+.gl-letter {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px; font-weight: 700; color: var(--accent-text);
+  padding-top: 36px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--blue-100); margin-bottom: 16px;
+}
+dl.gl-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
+.gl-entry {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; padding: 16px 20px;
+  transition: border-color 0.15s;
+}
+.gl-entry:hover { border-color: var(--primary); }
+.gl-entry dt {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--primary); margin-bottom: 3px;
+}
+.gl-entry dt .full {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px; font-weight: 600; color: var(--ink);
+  text-transform: none; letter-spacing: 0;
+}
+.gl-entry dd { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin-left: 0; }
+.gl-track-tag {
+  display: inline-block; margin-top: 8px;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+  background: var(--tag-bg); color: var(--tag-text);
+  padding: 2px 8px; border-radius: 12px;
+}
 
-  .hero-eyebrow {
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600;
-    color: var(--teal); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 16px;
-  }
+/* ── REFERENCES PANEL ── */
+.refs-wrapper {
+  max-width: 860px; margin: 0 auto; padding: 48px 24px 80px;
+}
+.refs-wrapper h2.panel-title { font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.refs-section-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 18px; font-weight: 700; color: var(--ink);
+  margin: 40px 0 14px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--blue-100);
+}
+.refs-section-title:first-of-type { margin-top: 0; }
+.refs-list { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 0; }
+.refs-list li {
+  font-size: 13.5px; color: var(--ink); line-height: 1.7;
+  padding: 14px 18px 14px 20px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; border-left: 3px solid var(--primary);
+}
+.refs-list li a {
+  color: var(--primary); text-decoration: none; font-size: 12px;
+  word-break: break-all; display: inline-block; margin-top: 2px;
+}
+.refs-list li a:hover { text-decoration: underline; }
+.refs-list li em { font-style: italic; }
+.refs-note {
+  margin-top: 32px; padding: 16px 20px;
+  background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: 8px;
+  font-size: 12.5px; color: var(--muted); line-height: 1.65;
+}
+.refs-copyright {
+  margin-top: 48px; padding: 24px 24px 20px;
+  background: var(--surface);
+  border: 1px solid var(--blue-100); border-top: 3px solid var(--primary-deep);
+  border-radius: 10px;
+}
+.refs-copyright-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 20px; font-weight: 700; color: var(--primary-deep); margin-bottom: 6px;
+}
+.refs-copyright p { font-size: 12.5px; color: var(--muted); line-height: 1.65; margin-bottom: 5px; }
+.refs-copyright p:last-child { margin-bottom: 0; }
+.refs-copyright-mllde {
+  font-size: 11.5px !important; font-style: italic;
+  border-top: 1px solid var(--line); margin-top: 12px !important; padding-top: 12px;
+}
+.refs-ai-note a { color: var(--primary); text-decoration: none; }
+.refs-ai-note a:hover { text-decoration: underline; }
 
-  .hero h1 {
-    font-size: clamp(28px, 4.5vw, 50px); line-height: 1.07; font-weight: 700;
-    letter-spacing: -0.02em; margin-bottom: 18px;
-  }
+/* ── FOOTER ── */
+footer {
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding: 22px 24px; text-align: center; font-size: 12px; color: var(--muted);
+}
+footer a { color: var(--primary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
 
-  .hero h1 em {
-    font-style: normal; color: var(--teal);
-    text-decoration: underline; text-decoration-color: var(--teal-bright);
-    text-decoration-thickness: 4px; text-underline-offset: 6px;
-  }
-
-  .hero p { font-size: 17px; color: #4A4639; max-width: 580px; margin: 0 auto; line-height: 1.65; }
-
-  /* ── ROW 1: 4-col grid ── */
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    max-width: 1240px;
-    width: 100%;
-    margin-bottom: 18px;
-  }
-  /* ── ROW 2: 4-col grid ── */
-  .card-grid-2 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    max-width: 1240px;
-    width: 100%;
-    margin-bottom: 18px;
-  }
-  /* ── ROW 3: single centred card ── */
-  .card-grid-3 {
-    display: grid;
-    grid-template-columns: minmax(0, 360px);
-    gap: 18px;
-    max-width: 1240px;
-    width: 100%;
-    justify-content: center;
-  }
-  @media (max-width: 1100px) {
-    .card-grid, .card-grid-2 { grid-template-columns: 1fr 1fr; }
-    .card-grid-3 { grid-template-columns: 1fr 1fr; justify-content: unset; }
-  }
-  @media (max-width: 560px) {
-    .card-grid, .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
-  }
-
-  .nav-card {
-    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
-    padding: 28px 24px; text-decoration: none; color: inherit;
-    display: flex; flex-direction: column;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-  }
-  .nav-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(11,19,32,0.1); }
-  .nav-card.card-teal:hover   { border-color: var(--teal-bright); }
-  .nav-card.card-coral:hover  { border-color: var(--coral); }
-  .nav-card.card-purple:hover { border-color: var(--purple-bright); }
-  .nav-card.card-navy:hover   { border-color: var(--navy); }
-  .nav-card.card-cyan:hover   { border-color: var(--cyan-bright); }
-  .nav-card.card-amber:hover  { border-color: var(--amber-bright); }
-  .nav-card.card-green:hover  { border-color: var(--green-bright); }
-
-  .nav-card-tag {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.08em; border-radius: 20px;
-    padding: 4px 12px; display: inline-block; margin-bottom: 14px; align-self: flex-start;
-  }
-  .tag-teal   { background: var(--teal-soft);   color: #085041; }
-  .tag-coral  { background: var(--coral-soft);  color: #4A1B0C; }
-  .tag-purple { background: var(--purple-soft); color: #3B1499; }
-  .tag-navy   { background: var(--navy-soft);   color: #1F3864; }
-  .tag-cyan   { background: var(--cyan-soft);   color: #0E4F5C; }
-  .tag-amber  { background: var(--amber-soft);  color: #7C2D00; }
-  .tag-green  { background: var(--green-soft);  color: #064E3B; }
-
-  .nav-card-icon { font-size: 34px; margin-bottom: 12px; line-height: 1; }
-
-  .nav-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
-
-  .nav-card p { font-size: 13px; color: #6B6759; line-height: 1.6; margin-bottom: 16px; flex: 1; }
-
-  .nav-card-meta {
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8A8575;
-    display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid var(--line); padding-top: 12px;
-  }
-
-  .nav-card-cta { font-weight: 700; color: var(--ink); }
-  .card-teal:hover   .nav-card-cta { color: var(--teal); }
-  .card-coral:hover  .nav-card-cta { color: var(--coral); }
-  .card-purple:hover .nav-card-cta { color: var(--purple); }
-  .card-navy:hover   .nav-card-cta { color: var(--navy); }
-  .card-cyan:hover   .nav-card-cta { color: var(--cyan); }
-  .card-amber:hover  .nav-card-cta { color: var(--amber); }
-  .card-green:hover  .nav-card-cta { color: var(--green); }
-
-  footer { text-align: center; padding: 24px; font-size: 12px; color: #8A8575; }
-  footer a { color: var(--teal); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
+/* ── THEME TOGGLE ── */
+#theme-btn {
+  position: fixed; top: 14px; right: 16px; z-index: 100;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font-size: 18px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#theme-btn:hover { border-color: var(--primary); box-shadow: 0 2px 12px rgba(59,91,214,0.18); }
+#theme-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
 </style>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Skip to content</a>
+<a href="#panel-tracks" class="skip-link">Skip to content</a>
+<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">🌓</button>
 
-<main id="main">
-
-  <div class="hero">
-    <div class="hero-eyebrow">Profe Ana Eslava EdTech · Learning Architect</div>
-    <h1>Nine tracks. <em>One portfolio.</em></h1>
-    <p>Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Every track is built from a real job posting or a real technical skill. Pick the one you need — or run all nine.</p>
+<!-- HERO -->
+<div class="hero-band">
+  <p class="hero-eyebrow">Profe Ana Eslava EdTech · Language Learning Architect</p>
+  <h1>Seventeen tracks.<br><em>One portfolio.</em></h1>
+  <p class="hero-sub">Knowledge without practice doesn't survive an interview, and practice without grounding doesn't either. Every track is built from a real job posting, a real technical skill, or a real design role.</p>
+  <div class="hero-chips">
+    <span class="hero-chip">Ana Eslava-Graterol</span>
+    <span class="hero-chip">HDD · Transformación Educativa Digital</span>
+    <span class="hero-chip">profeanaeslavaedtech.github.io →</span>
   </div>
+</div>
 
-  <!-- ROW 1 -->
-  <div class="card-grid">
+<!-- TAB BAR -->
+<div class="tab-bar-wrapper">
+  <div role="tablist" aria-label="Portfolio sections" class="tab-bar">
+    <button role="tab" id="tab-tracks"     aria-controls="panel-tracks"     aria-selected="true" >🧭 Tracks</button>
+    <button role="tab" id="tab-glossary"   aria-controls="panel-glossary"   aria-selected="false">📖 Glossary</button>
+    <button role="tab" id="tab-references" aria-controls="panel-references" aria-selected="false">📚 References</button>
+  </div>
+</div>
 
-    <a class="nav-card card-teal" href="./bootcamp/index.html">
-      <span class="nav-card-tag tag-teal">Knowledge &amp; rehearsal</span>
+<!-- ═══════════════════════════════════════════ PANEL: TRACKS ═══ -->
+<div id="panel-tracks" role="tabpanel" aria-labelledby="tab-tracks">
+<div class="tracks-panel">
+
+  <p class="row-label">Tracks 1–4 · Core bootcamp</p>
+  <div class="card-row card-row-4">
+    <a class="nav-card" href="./bootcamp/index.html">
+      <span class="nav-card-tag">Knowledge &amp; rehearsal</span>
       <div class="nav-card-icon" aria-hidden="true">🧭</div>
       <h2>SaaS Training Bootcamp</h2>
       <p>Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.</p>
-      <div class="nav-card-meta">
-        <span>10 levels · ~3h</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>10 levels · ~3h</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
-    <a class="nav-card card-coral" href="./handson/index.html">
-      <span class="nav-card-tag tag-coral">Real artifacts</span>
+    <a class="nav-card" href="./handson/index.html">
+      <span class="nav-card-tag">Real artifacts</span>
       <div class="nav-card-icon" aria-hidden="true">🛠️</div>
       <h2>SaaS Hands-On Track</h2>
       <p>Fourteen scoped mini-projects covering the full Learning Architect role. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
-      <div class="nav-card-meta">
-        <span>14 projects · 20–60 min each</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>14 projects · 20–60 min each</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
-    <a class="nav-card card-purple" href="./articulate360/index.html">
-      <span class="nav-card-tag tag-purple">Tool mastery</span>
+    <a class="nav-card" href="./articulate360/index.html">
+      <span class="nav-card-tag">Tool mastery</span>
       <div class="nav-card-icon" aria-hidden="true">🎨</div>
       <h2>Articulate 360</h2>
       <p>Fourteen projects across Rise 360 and Storyline 360 — from building your first block-based course to publishing SCORM packages, adding branching logic, and designing interactive assessments.</p>
-      <div class="nav-card-meta">
-        <span>14 projects · Rise + Storyline</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>14 projects · Rise + Storyline</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
-    <a class="nav-card card-navy" href="./frameworks/index.html">
-      <span class="nav-card-tag tag-navy">Framework fluency</span>
+    <a class="nav-card" href="./frameworks/index.html">
+      <span class="nav-card-tag">Framework fluency</span>
       <div class="nav-card-icon" aria-hidden="true">🏛️</div>
       <h2>EU Frameworks</h2>
       <p>Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.</p>
-      <div class="nav-card-meta">
-        <span>~45 min · Newcomer → Pioneer</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>~45 min · Newcomer → Pioneer</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
   </div>
 
-  <!-- ROW 2 -->
-  <div class="card-grid-2">
-
-    <a class="nav-card card-navy" href="./jnj-bootcamp/index.html">
-      <span class="nav-card-tag tag-navy">Duty-by-duty drill</span>
+  <p class="row-label">Tracks 5–8 · Practice labs</p>
+  <div class="card-row card-row-4">
+    <a class="nav-card" href="./jnj-bootcamp/index.html">
+      <span class="nav-card-tag">Duty-by-duty drill</span>
       <div class="nav-card-icon" aria-hidden="true">🏥</div>
       <h2>Learning Designer Practice Lab</h2>
       <p>Ten real cases mapped one-to-one to an actual qualifications list — storyboard a decision frame, audit an accessibility slide, diagnose misleading performance data, and build in Articulate Rise.</p>
-      <div class="nav-card-meta">
-        <span>10 modules · ~3h</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>10 modules · ~3h</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
-    <a class="nav-card card-purple" href="./jnj-dual-track/index.html">
-      <span class="nav-card-tag tag-purple">Bloom's progression</span>
+    <a class="nav-card" href="./jnj-dual-track/index.html">
+      <span class="nav-card-tag">Bloom's progression</span>
       <div class="nav-card-icon" aria-hidden="true">🧠</div>
       <h2>Dual-Track: Designer vs. LXA</h2>
       <p>Switch between the execution track (Learning Designer) and the strategy track (Learning Experience Architect). Every module is tagged Remember through Create — two full HLD-from-scratch exercises included.</p>
-      <div class="nav-card-meta">
-        <span>10 + 8 modules · ~4h</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>10 + 8 modules · ~4h</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
-    <a class="nav-card card-cyan" href="./lrs/index.html">
-      <span class="nav-card-tag tag-cyan">Architecture</span>
+    <a class="nav-card" href="./lrs/index.html">
+      <span class="nav-card-tag">Architecture</span>
       <div class="nav-card-icon" aria-hidden="true">🗄️</div>
       <h2>LRS Architecture</h2>
       <p>Hybrid B2C + B2B platform design — multi-tenancy, xAPI statement forwarding, permission scopes, cmi5 dynamic launch, and a full annotated code walkthrough of the two-scenario architecture.</p>
-      <div class="nav-card-meta">
-        <span>13 steps · ~45 min</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>13 steps · ~45 min</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
-    <a class="nav-card card-amber" href="./scripting/index.html">
-      <span class="nav-card-tag tag-amber">Developer track</span>
+    <a class="nav-card" href="./scripting/index.html">
+      <span class="nav-card-tag">Developer track</span>
       <div class="nav-card-icon" aria-hidden="true">⚙️</div>
       <h2>xAPI Scripting in Articulate 360</h2>
       <p>Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.</p>
-      <div class="nav-card-meta">
-        <span>13 steps · ~50 min</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>13 steps · ~50 min</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
   </div>
 
-  <!-- ROW 3 -->
-  <div class="card-grid-3">
-
-    <a class="nav-card card-green" href="./ai-literacy/index.html">
-      <span class="nav-card-tag tag-green">AI fluency</span>
+  <p class="row-label">Tracks 9–11 · Sector fluency</p>
+  <div class="card-row card-row-3">
+    <a class="nav-card" href="./ai-literacy/index.html">
+      <span class="nav-card-tag">AI fluency</span>
       <div class="nav-card-icon" aria-hidden="true">🤖</div>
       <h2>AI Literacy for IDs</h2>
       <p>How RLHF works, why models hallucinate, and how instruction following succeeds or breaks — then translating it into safer prompt patterns and smarter AI-assisted design in Articulate 360.</p>
-      <div class="nav-card-meta">
-        <span>12 steps · ~45 min · Curious → Strategist</span>
-        <span class="nav-card-cta">Enter →</span>
-      </div>
+      <div class="nav-card-meta"><span>12 steps · ~45 min · Curious → Strategist</span><span class="nav-card-cta">Enter →</span></div>
     </a>
-
+    <a class="nav-card" href="./unicef/index.html">
+      <span class="nav-card-tag">UN consultancy</span>
+      <div class="nav-card-icon" aria-hidden="true">🌍</div>
+      <h2>UNICEF Digital Learning Consultant</h2>
+      <p>Ten modules built from the real UNICEF Supply Division ToR — Agora LMS, multilingual Rise workflows, vendor governance, and a full panel simulation for the ToR TMC0004741 brief.</p>
+      <div class="nav-card-meta"><span>10 modules · ~3h</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
+    <a class="nav-card" href="./wida-k12/index.html">
+      <span class="nav-card-tag">Gap module</span>
+      <div class="nav-card-icon" aria-hidden="true">📚</div>
+      <h2>WIDA &amp; US K-12 ELL</h2>
+      <p>Five targeted modules closing the US K-12 knowledge gap — WIDA standards, ELL proficiency levels, BICS vs. CALP, IEP/504 intersections, and applying federal policy in instructional design.</p>
+      <div class="nav-card-meta"><span>5 modules · ~1.5h</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
   </div>
 
-</main>
+  <p class="row-label">Tracks 12–15 · Application &amp; language design</p>
+  <div class="card-row card-row-4">
+    <a class="nav-card" href="./unicef-apply/index.html">
+      <span class="nav-card-tag">Application craft</span>
+      <div class="nav-card-icon" aria-hidden="true">📝</div>
+      <h2>UNICEF Application Strategy</h2>
+      <p>Five modules on turning a UNICEF posting into a winning application — cover letter architecture, competency framing, ToR decoding, digital skills vocabulary, and a complete submission checklist.</p>
+      <div class="nav-card-meta"><span>5 modules · ~1h</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
+    <a class="nav-card" href="./tooling-sprint/index.html">
+      <span class="nav-card-tag">Skill build</span>
+      <div class="nav-card-icon" aria-hidden="true">🔧</div>
+      <h2>Tooling Sprint</h2>
+      <p>Five hands-on modules to build fluency with the tools Learning Architects actually use — from AI-powered prototyping workflows to production-ready artifact templates and version control habits.</p>
+      <div class="nav-card-meta"><span>5 modules · hands-on</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
+    <a class="nav-card" href="./job-search/index.html">
+      <span class="nav-card-tag">Search intelligence</span>
+      <div class="nav-card-icon" aria-hidden="true">🔍</div>
+      <h2>Job Search Intelligence</h2>
+      <p>Five modules on reading the L&amp;D job market like a strategist — posting decoding, compensation research, networking through evidence, application timing, and a live job-search audit checklist.</p>
+      <div class="nav-card-meta"><span>5 modules · ~45 min</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
+    <a class="nav-card" href="./language-learning-experience-designer/index.html">
+      <span class="nav-card-tag">Language design</span>
+      <div class="nav-card-icon" aria-hidden="true">🌐</div>
+      <h2>Language Learning Experience Designer</h2>
+      <p>Six modules from the MLLDE engine to the investor pack — CEFR anchoring, Avatar-as-Input lesson flow, AI tutor architecture, evidence metrics, and a full Language Passport destination design challenge.</p>
+      <div class="nav-card-meta"><span>6 modules · pedagogy to proof</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
+  </div>
+
+  <p class="row-label">Tracks 16–17 · Measurement &amp; AI governance</p>
+  <div class="card-row card-row-2">
+    <a class="nav-card" href="./cefr-metrics-architect/index.html">
+      <span class="nav-card-tag">Measurement arm</span>
+      <div class="nav-card-icon" aria-hidden="true">📊</div>
+      <h2>CEFR Learning Metrics Architect</h2>
+      <p>Five modules on designing defensible language learning metrics — the four evidence families, task gates, self-scaling rubrics, xAPI statement architecture, IRI registry discipline, and D1–D4 client deliverables.</p>
+      <div class="nav-card-meta"><span>5 modules · evidence · xAPI</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
+    <a class="nav-card" href="./ai-skills-architect/index.html">
+      <span class="nav-card-tag">AI system design</span>
+      <div class="nav-card-icon" aria-hidden="true">🤖</div>
+      <h2>AI Skills System Architect</h2>
+      <p>Five modules on designing, auditing and governing custom Claude skills for L&amp;D production — one-role-one-skill principle, trigger design, engine + pack, boundary declarations, and a live skills audit.</p>
+      <div class="nav-card-meta"><span>5 modules · governance · Claude</span><span class="nav-card-cta">Enter →</span></div>
+    </a>
+  </div>
+
+</div>
+</div><!-- /panel-tracks -->
+
+<!-- ═══════════════════════════════════════════ PANEL: GLOSSARY ═══ -->
+<div id="panel-glossary" role="tabpanel" aria-labelledby="tab-glossary" hidden>
+<div class="glossary-wrapper">
+  <h2 class="panel-title">Glossary of Acronyms</h2>
+  <p class="panel-subtitle">Every acronym used across the seventeen tracks, defined in full. Jump to a letter or scroll through.</p>
+
+  <nav class="alpha-nav" aria-label="Jump to letter">
+    <a href="#gl-a" class="has-entries">A</a>
+    <a href="#gl-b" class="has-entries">B</a>
+    <a href="#gl-c" class="has-entries">C</a>
+    <a href="#gl-d" class="has-entries">D</a>
+    <a href="#gl-e" class="has-entries">E</a>
+    <a href="#gl-f" class="no-entries">F</a>
+    <a href="#gl-g" class="has-entries">G</a>
+    <a href="#gl-h" class="has-entries">H</a>
+    <a href="#gl-i" class="has-entries">I</a>
+    <a href="#gl-j" class="has-entries">J</a>
+    <a href="#gl-k" class="has-entries">K</a>
+    <a href="#gl-l" class="has-entries">L</a>
+    <a href="#gl-m" class="has-entries">M</a>
+    <a href="#gl-n" class="has-entries">N</a>
+    <a href="#gl-o" class="no-entries">O</a>
+    <a href="#gl-p" class="has-entries">P</a>
+    <a href="#gl-q" class="has-entries">Q</a>
+    <a href="#gl-r" class="has-entries">R</a>
+    <a href="#gl-s" class="has-entries">S</a>
+    <a href="#gl-t" class="has-entries">T</a>
+    <a href="#gl-u" class="has-entries">U</a>
+    <a href="#gl-v" class="no-entries">V</a>
+    <a href="#gl-w" class="has-entries">W</a>
+    <a href="#gl-x" class="has-entries">X</a>
+    <a href="#gl-y" class="no-entries">Y</a>
+    <a href="#gl-z" class="no-entries">Z</a>
+  </nav>
+
+  <!-- A -->
+  <section class="gl-section" id="gl-a">
+    <h3 class="gl-letter">A</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>AA &nbsp;<span class="full">· WCAG Level AA</span></dt>
+        <dd>Middle tier of the three-level WCAG conformance scale (A / AA / AAA). The legally required standard for educational content under the EU European Accessibility Act and US Section 508. All bootcamp modules target WCAG 2.1 AA.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ACCESS &nbsp;<span class="full">· Assessing Comprehension and Communication in English State-to-State</span></dt>
+        <dd>Annual English language proficiency assessment administered in WIDA member states (PreK–Grade 12) across the four domains: Listening, Speaking, Reading, Writing.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ADDIE &nbsp;<span class="full">· Analysis, Design, Development, Implementation, Evaluation</span></dt>
+        <dd>The classic five-phase instructional design process model. Widely used as a planning scaffold; often combined with iterative approaches (SAM) in modern practice.</dd>
+        <span class="gl-track-tag">SaaS Training Bootcamp · SaaS Hands-On</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ADL &nbsp;<span class="full">· Advanced Distributed Learning</span></dt>
+        <dd>US Department of Defense initiative that co-created SCORM and co-maintains xAPI with IEEE. Publishes the xAPI specification and the cmi5 profile.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting</span>
+      </div>
+      <div class="gl-entry">
+        <dt>AI &nbsp;<span class="full">· Artificial Intelligence</span></dt>
+        <dd>Computational systems performing tasks associated with human reasoning — language understanding, pattern recognition, decision-making. Central to tracks 9, 15, 16, and 17.</dd>
+        <span class="gl-track-tag">AI Literacy · Language Design · AI Skills</span>
+      </div>
+      <div class="gl-entry">
+        <dt>APA &nbsp;<span class="full">· American Psychological Association</span></dt>
+        <dd>Style guide (7th edition) used for citations across all MLLDE artifacts and the bootcamp References tab. Specifies author–date in-text citations and a structured reference list.</dd>
+        <span class="gl-track-tag">All MLLDE tracks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>API &nbsp;<span class="full">· Application Programming Interface</span></dt>
+        <dd>A set of protocols that allows software components to communicate. xAPI statements are sent via HTTP POST to an LRS API endpoint; Rise 360 and Storyline 360 also expose JS APIs for variable access.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- B -->
+  <section class="gl-section" id="gl-b">
+    <h3 class="gl-letter">B</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>B2B &nbsp;<span class="full">· Business-to-Business</span></dt>
+        <dd>Platform or service model where the client is an organization, not an individual. Distinct LRS architecture patterns apply to B2B vs. B2C: separate tenant spaces, permission scopes, and statement-forwarding rules.</dd>
+        <span class="gl-track-tag">LRS Architecture</span>
+      </div>
+      <div class="gl-entry">
+        <dt>B2C &nbsp;<span class="full">· Business-to-Consumer</span></dt>
+        <dd>Platform or service model where the end user is an individual consumer. Covered alongside B2B in the LRS Architecture track's hybrid multi-tenancy design.</dd>
+        <span class="gl-track-tag">LRS Architecture</span>
+      </div>
+      <div class="gl-entry">
+        <dt>BICS &nbsp;<span class="full">· Basic Interpersonal Communication Skills</span></dt>
+        <dd>Social, conversational language that ELL students typically acquire within 1–3 years (Cummins, 1979). Surface fluency in BICS is frequently misread as academic readiness — a key diagnostic distinction in the WIDA track.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- C -->
+  <section class="gl-section" id="gl-c">
+    <h3 class="gl-letter">C</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>CALP &nbsp;<span class="full">· Cognitive Academic Language Proficiency</span></dt>
+        <dd>The formal, abstract language needed for academic success; takes 5–7 years to develop for ELLs (Cummins, 1979). Measured by WIDA and ACCESS. Not visible in BICS-level conversation.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CEFR &nbsp;<span class="full">· Common European Framework of Reference for Languages</span></dt>
+        <dd>International language proficiency standard (A1–C2) published by the Council of Europe (2001; Companion Volume 2020). Anchor of the MLLDE framework — every task, rubric, and metric traces back to a named CEFR descriptor scale.</dd>
+        <span class="gl-track-tag">Language Learning Designer · CEFR Metrics</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CELDT &nbsp;<span class="full">· California English Language Development Test</span></dt>
+        <dd>California's ELP assessment for K–12 ELLs, retired in 2018 and replaced by ELPAC. Referenced in historical context in the WIDA & US K-12 track.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>cmi5 &nbsp;<span class="full">· a profile for xAPI</span></dt>
+        <dd>A specification (ADL/AICC) defining how an LMS launches content, passes parameters (actor, registration, activity ID), and tracks completion via xAPI statements. Modern replacement for SCORM's JavaScript launch mechanism.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CLIL &nbsp;<span class="full">· Content and Language Integrated Learning</span></dt>
+        <dd>Dual-focus pedagogy teaching subject content through a target language (Coyle, Hood &amp; Marsh, 2010). One of the four MLLDE lesson pillars: Content, Communication, Cognition, Culture (the 4Cs).</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CLT &nbsp;<span class="full">· Communicative Language Teaching</span></dt>
+        <dd>Language teaching approach prioritizing real communicative use over grammatical form. Theoretical foundation of task-based language teaching and the MLLDE authentic-mission component.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CORS &nbsp;<span class="full">· Cross-Origin Resource Sharing</span></dt>
+        <dd>Browser security mechanism governing which origins can make HTTP requests to a different domain. Relevant when sending xAPI statements from a Rise or Storyline course to an LRS on a different host — the LRS must include the correct CORS headers.</dd>
+        <span class="gl-track-tag">xAPI Scripting · LRS Architecture</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CSS &nbsp;<span class="full">· Cascading Style Sheets</span></dt>
+        <dd>Language for styling HTML documents. The Ocean Ink v0.1 design system used across all bootcamp modules is implemented as a CSS custom-property (CSS variable) system with three-state dark-mode support.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CTL &nbsp;<span class="full">· Contextual Teaching and Learning</span></dt>
+        <dd>Pedagogy connecting content to real-world contexts and learner experience (Johnson, 2002). Operationalised through the REACT model (Relating, Experiencing, Applying, Cooperating, Transferring) in the MLLDE framework.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>CV &nbsp;<span class="full">· Curriculum Vitae</span></dt>
+        <dd>European term for the professional summary document (résumé in US usage). Reframing the CV in ToR language is a core module in the UNICEF Application Strategy track.</dd>
+        <span class="gl-track-tag">UNICEF Application · Job Search</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- D -->
+  <section class="gl-section" id="gl-d">
+    <h3 class="gl-letter">D</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>D1–D4 &nbsp;<span class="full">· MLLDE Deliverable Tiers</span></dt>
+        <dd>Four distinct output packs: D1 = Engineering pack (spec, registry, sprint backlog); D2 = Owner/Investor pack (PDF, deck, ROI frame); D3 = Pilot proposal; D4 = System of record (analysis, decisions, resolution ledger). Each has a separate audience and evidence standard.</dd>
+        <span class="gl-track-tag">Language Learning Designer · CEFR Metrics</span>
+      </div>
+      <div class="gl-entry">
+        <dt>DigComp &nbsp;<span class="full">· Digital Competence Framework for Citizens</span></dt>
+        <dd>EU framework (v2.2, 2022) mapping digital literacy across five areas at proficiency levels 1–8. Published by the Joint Research Centre (JRC). Covered in the EU Frameworks track.</dd>
+        <span class="gl-track-tag">EU Frameworks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>DigCompEdu &nbsp;<span class="full">· European Framework for the Digital Competence of Educators</span></dt>
+        <dd>EU framework (Redecker, 2017) assessing how educators use digital technologies across six areas. Proficiency from A1 to C2, aligned with CEFR scale notation. Covered in the EU Frameworks track.</dd>
+        <span class="gl-track-tag">EU Frameworks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>DPO &nbsp;<span class="full">· Data Protection Officer</span></dt>
+        <dd>GDPR-mandated role (Art. 37) responsible for overseeing data protection strategy and compliance. Relevant to LRS design: who is accountable for learner xAPI data in enterprise deployments.</dd>
+        <span class="gl-track-tag">LRS Architecture · Language Learning Designer</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- E -->
+  <section class="gl-section" id="gl-e">
+    <h3 class="gl-letter">E</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>EAA &nbsp;<span class="full">· European Accessibility Act</span></dt>
+        <dd>EU Directive 2019/882 requiring digital products and services — including e-learning — to meet accessibility standards. In force from June 2025. Aligns with EN 301 549, which references WCAG 2.1 AA.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>e-CF &nbsp;<span class="full">· European e-Competence Framework</span></dt>
+        <dd>IT competency standard (CWA 16234, CEN) mapping 41 competences across five e-Competence areas. Aligned with SFIA and ISO/IEC standards. Covered in the EU Frameworks track.</dd>
+        <span class="gl-track-tag">EU Frameworks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ECSF &nbsp;<span class="full">· European Cybersecurity Skills Framework</span></dt>
+        <dd>ENISA-published taxonomy of 12 cybersecurity roles, associated skills, and competences. Helps organizations map workforce capability to EU cybersecurity policy. Covered in the EU Frameworks track.</dd>
+        <span class="gl-track-tag">EU Frameworks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>EFL &nbsp;<span class="full">· English as a Foreign Language</span></dt>
+        <dd>Learning English in a context where it is not the dominant language (e.g., Spanish speakers learning English in Spain). Contrast with ESL (in-country) and ELL (US K-12 designation).</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ELD &nbsp;<span class="full">· English Language Development</span></dt>
+        <dd>Standards and instructional programs for students acquiring English as an additional language in US schools. ELD standards (including WIDA ELD) specify what students at each proficiency level can do.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ELL &nbsp;<span class="full">· English Language Learner</span></dt>
+        <dd>US K-12 designation for a student identified as having a home language other than English and assessed as needing English language support. Governed by Title III of ESSA.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ELPAC &nbsp;<span class="full">· English Language Proficiency Assessments for California</span></dt>
+        <dd>California's annual K–12 ELP assessment, replacing CELDT in 2018. Two components: initial identification and summative annual assessment across listening, speaking, reading, and writing.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ENISA &nbsp;<span class="full">· European Union Agency for Cybersecurity</span></dt>
+        <dd>EU agency headquartered in Athens that develops and maintains the European Cybersecurity Skills Framework (ECSF) and publishes cybersecurity policy for EU member states.</dd>
+        <span class="gl-track-tag">EU Frameworks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ESA &nbsp;<span class="full">· Engage, Study, Activate</span></dt>
+        <dd>Lesson-staging framework (Jim Scrivener, 2011) structuring how learners move from engagement through language study to activation in authentic use. One of the planning templates in the MLLDE lesson blueprint.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ESL &nbsp;<span class="full">· English as a Second Language</span></dt>
+        <dd>Learning English in a context where English is widely used (e.g., immigrants studying English in the US). Used interchangeably with ELL in many US K-12 contexts, though ELL is now the preferred policy term.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ESP &nbsp;<span class="full">· English for Specific Purposes</span></dt>
+        <dd>Language teaching approach designed around learners' professional or academic context (e.g., English for healthcare, aviation, or academic writing). Related to CLIL at the content-specialist end of the spectrum.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ESSA &nbsp;<span class="full">· Every Student Succeeds Act</span></dt>
+        <dd>US federal education law (Public Law 114-95, 2015) replacing No Child Left Behind. Governs Title III funding for ELL services, state ELP assessment requirements, and reclassification criteria (RFEP).</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>EU &nbsp;<span class="full">· European Union</span></dt>
+        <dd>Political and economic union of 27 member states. Issues the digital competency frameworks (DigComp, DigCompEdu, e-CF, ECSF), the GDPR, the EU AI Act, and the European Accessibility Act covered across bootcamp tracks.</dd>
+        <span class="gl-track-tag">EU Frameworks · All tracks</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- G -->
+  <section class="gl-section" id="gl-g">
+    <h3 class="gl-letter">G</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>GDPR &nbsp;<span class="full">· General Data Protection Regulation</span></dt>
+        <dd>EU Regulation 2016/679 governing personal data collection, processing and storage. Governs LRS telemetry design in the MLLDE framework: account IDs only in xAPI actor objects — no name, email, or PII. Immutable statements by design.</dd>
+        <span class="gl-track-tag">LRS Architecture · Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>GUID &nbsp;<span class="full">· Globally Unique Identifier</span></dt>
+        <dd>128-bit identifier formatted as UUID (e.g., 550e8400-e29b-41d4-a716-446655440000). Used in xAPI for statement IDs, registration values, and activity IDs that require global uniqueness.</dd>
+        <span class="gl-track-tag">xAPI Scripting · LRS Architecture</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- H -->
+  <section class="gl-section" id="gl-h">
+    <h3 class="gl-letter">H</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>HDD / HLD &nbsp;<span class="full">· High-level Design Document</span></dt>
+        <dd>Architecture document specifying system components, data flows, integration points and constraints before implementation begins. Produced in the Dual-Track LXA module as the capstone LXA-track deliverable.</dd>
+        <span class="gl-track-tag">Dual-Track: Designer vs. LXA</span>
+      </div>
+      <div class="gl-entry">
+        <dt>HTML5 &nbsp;<span class="full">· HyperText Markup Language version 5</span></dt>
+        <dd>The current standard for structuring web content. All seventeen bootcamp modules are self-contained HTML5 documents — no build step, no framework, no external dependencies.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>HTTPS &nbsp;<span class="full">· HyperText Transfer Protocol Secure</span></dt>
+        <dd>TLS-encrypted HTTP protocol. Required for any LRS endpoint receiving xAPI statements — plain HTTP connections are rejected by compliant implementations.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- I -->
+  <section class="gl-section" id="gl-i">
+    <h3 class="gl-letter">I</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>IEP &nbsp;<span class="full">· Individualized Education Program</span></dt>
+        <dd>Legally mandated plan for students with disabilities in US public schools (IDEA Act). ELLs may have both an IEP and ELD services — the intersection is a key design constraint in the WIDA & US K-12 track.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>IEEE &nbsp;<span class="full">· Institute of Electrical and Electronics Engineers</span></dt>
+        <dd>International standards body. Ratified xAPI as IEEE 9274.1.1-2021, giving it formal standing as an international standard for learning experience data.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting</span>
+      </div>
+      <div class="gl-entry">
+        <dt>IPA &nbsp;<span class="full">· International Phonetic Alphabet</span></dt>
+        <dd>Standardized phonetic notation system (International Phonetic Association, 1888). Used in the MLLDE framework to specify sound inventories for language-learning content — broad transcription, accepted variants, intelligibility-first. No accent is penalized.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>IPO &nbsp;<span class="full">· Input-Process-Output</span></dt>
+        <dd>Core cycle of the MLLDE lesson blueprint: learners receive authentic input (avatar-modeled chunks), process it through drills and card packs, then produce output in a real-voice authentic mission.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>IRI &nbsp;<span class="full">· Internationalized Resource Identifier</span></dt>
+        <dd>A globally unique identifier (URI extended to Unicode) used in xAPI to name verbs, activities, and extensions. Every IRI in the MLLDE framework comes from the approved MLLDE registry — none are minted without explicit sign-off.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting · CEFR Metrics</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- J -->
+  <section class="gl-section" id="gl-j">
+    <h3 class="gl-letter">J</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>JS &nbsp;<span class="full">· JavaScript</span></dt>
+        <dd>Scripting language used to send xAPI statements from Articulate Storyline 360 (via Execute JavaScript triggers), to read variables with GetVar(), and to handle cmi5 launch parameters passed in the URL query string.</dd>
+        <span class="gl-track-tag">xAPI Scripting</span>
+      </div>
+      <div class="gl-entry">
+        <dt>JSON &nbsp;<span class="full">· JavaScript Object Notation</span></dt>
+        <dd>Lightweight data-interchange format. xAPI statements are serialized as JSON objects and sent to the LRS via HTTP POST with Content-Type: application/json.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- K -->
+  <section class="gl-section" id="gl-k">
+    <h3 class="gl-letter">K</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>KPI &nbsp;<span class="full">· Key Performance Indicator</span></dt>
+        <dd>Measurable value linked to a business or learning objective. In the CEFR Metrics track, KPIs are mapped to xAPI statement families and Kirkpatrick evaluation levels to produce a traceable evidence chain.</dd>
+        <span class="gl-track-tag">CEFR Metrics Architect · Job Search</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- L -->
+  <section class="gl-section" id="gl-l">
+    <h3 class="gl-letter">L</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>L&amp;D &nbsp;<span class="full">· Learning &amp; Development</span></dt>
+        <dd>The organizational function responsible for employee training, performance support, capability building, and learning strategy. The field targeted by all seventeen bootcamp tracks.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>LLM &nbsp;<span class="full">· Large Language Model</span></dt>
+        <dd>Neural network trained on large text corpora capable of generating, summarizing, and transforming text. Why they hallucinate and how to prompt them safely is covered in the AI Literacy track; how to govern them in L&amp;D is covered in the AI Skills track.</dd>
+        <span class="gl-track-tag">AI Literacy · AI Skills Architect</span>
+      </div>
+      <div class="gl-entry">
+        <dt>LMS &nbsp;<span class="full">· Learning Management System</span></dt>
+        <dd>Platform for deploying, tracking, and administering eLearning (e.g., Moodle, Cornerstone, Docebo, Agora/Moodle Workplace). Sends SCORM or cmi5 launch parameters to content and receives completion data back.</dd>
+        <span class="gl-track-tag">SaaS Training Bootcamp · UNICEF Consultant</span>
+      </div>
+      <div class="gl-entry">
+        <dt>LRS &nbsp;<span class="full">· Learning Record Store</span></dt>
+        <dd>Persistent database that receives, stores and queries xAPI statements via the Statement API (GET/POST/PUT). The backend data layer of a modern learning architecture. Covered in depth in the LRS Architecture track.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting · CEFR Metrics</span>
+      </div>
+      <div class="gl-entry">
+        <dt>LXA &nbsp;<span class="full">· Learning Experience Architect</span></dt>
+        <dd>Senior role owning the strategic design of learning ecosystems — learning culture, governance, content architecture, and platform selection — above the Learning Designer execution track. The Dual-Track module compares both roles.</dd>
+        <span class="gl-track-tag">Dual-Track: Designer vs. LXA · All tracks</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- M -->
+  <section class="gl-section" id="gl-m">
+    <h3 class="gl-letter">M</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>MCER &nbsp;<span class="full">· Marco Común Europeo de Referencia para las Lenguas</span></dt>
+        <dd>Spanish name for CEFR. Used in Spanish-language MLLDE artifacts, PCIC references, and communications with Spanish-speaking clients or reviewers.</dd>
+        <span class="gl-track-tag">Language Learning Designer · CEFR Metrics</span>
+      </div>
+      <div class="gl-entry">
+        <dt>MCQ &nbsp;<span class="full">· Multiple Choice Question</span></dt>
+        <dd>Assessment item type with one correct answer among distractors. Used in bootcamp knowledge checks but explicitly secondary to task-based missions as evidence of learning in the MLLDE framework.</dd>
+        <span class="gl-track-tag">SaaS Training Bootcamp · EU Frameworks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>MLLDE &nbsp;<span class="full">· Machine Learning–Driven Language Design Environment</span></dt>
+        <dd>Ana Eslava-Graterol's proprietary Machine Learning–Driven Language Design Environment (© 2026). Four-layer stack: Standard (CEFR) → Method (MLLDE) → Data (language reference) → Product. Core move: engine + pack. Engine stays constant; each project fills one pack. Two cross-layer modules: Voice Architecture and Measurement.</dd>
+        <span class="gl-track-tag">Language Learning Designer · CEFR Metrics</span>
+      </div>
+      <div class="gl-entry">
+        <dt>MVP &nbsp;<span class="full">· Minimum Viable Product</span></dt>
+        <dd>The smallest functional version of a product that delivers value and can be tested with real users. The MLLDE design-brief phase forces the MVP question: one priority skill or mission type first — functional and user-tested beats feature-complete.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- N -->
+  <section class="gl-section" id="gl-n">
+    <h3 class="gl-letter">N</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>NDA &nbsp;<span class="full">· Non-Disclosure Agreement</span></dt>
+        <dd>Legal contract covering confidential information. Relevant to enterprise LRS architecture projects and SME-engagement contracts in consulting scenarios covered in the SaaS Hands-On track.</dd>
+        <span class="gl-track-tag">SaaS Hands-On</span>
+      </div>
+      <div class="gl-entry">
+        <dt>NLU &nbsp;<span class="full">· Natural Language Understanding</span></dt>
+        <dd>AI capability that interprets meaning and intent behind spoken or written language. Central to AI tutor design in the MLLDE voice architecture: the NLU→Pedagogy hand-off contract defines how learner intent maps to instructional responses.</dd>
+        <span class="gl-track-tag">Language Learning Designer · AI Literacy</span>
+      </div>
+      <div class="gl-entry">
+        <dt>NYSESLAT &nbsp;<span class="full">· New York State English as a Second Language Achievement Test</span></dt>
+        <dd>New York's annual ELP assessment for K–12 ELLs across listening, speaking, reading, and writing. One of the state assessments surveyed in the WIDA & US K-12 track.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- P -->
+  <section class="gl-section" id="gl-p">
+    <h3 class="gl-letter">P</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>PCIC &nbsp;<span class="full">· Plan Curricular del Instituto Cervantes</span></dt>
+        <dd>Official reference curriculum for Spanish as a foreign/second language, aligned to CEFR A1–C2, published by Instituto Cervantes (2006). Used in MLLDE Spanish-language packs as the data layer for lexical, grammatical, and pragmatic inventories.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>PDF &nbsp;<span class="full">· Portable Document Format</span></dt>
+        <dd>Document format used for shareable, print-stable deliverables. In the MLLDE framework, D2 owner packs and certification blueprints are typically delivered as PDFs.</dd>
+        <span class="gl-track-tag">SaaS Hands-On · Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>PII &nbsp;<span class="full">· Personally Identifiable Information</span></dt>
+        <dd>Data that can identify an individual (name, email, IP address, device fingerprint). GDPR and MLLDE design principles prohibit PII in xAPI actor objects — use account IDs (opaque identifiers) only.</dd>
+        <span class="gl-track-tag">LRS Architecture · Language Learning Designer</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- Q -->
+  <section class="gl-section" id="gl-q">
+    <h3 class="gl-letter">Q</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>QA &nbsp;<span class="full">· Quality Assurance</span></dt>
+        <dd>Systematic process of verifying a product meets defined standards. In eLearning: accessibility audits (WCAG), SCORM/xAPI validation with SCORM Cloud, SME sign-off, and LRS statement verification.</dd>
+        <span class="gl-track-tag">Articulate 360 · Tooling Sprint</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- R -->
+  <section class="gl-section" id="gl-r">
+    <h3 class="gl-letter">R</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>REACT &nbsp;<span class="full">· Relating, Experiencing, Applying, Cooperating, Transferring</span></dt>
+        <dd>The five strands of Contextual Teaching and Learning (Johnson, 2002). Applied in the MLLDE lesson blueprint to ensure learning tasks connect to learner experience and transfer to authentic contexts.</dd>
+        <span class="gl-track-tag">Language Learning Designer</span>
+      </div>
+      <div class="gl-entry">
+        <dt>RFEP &nbsp;<span class="full">· Reclassified Fluent English Proficient</span></dt>
+        <dd>US K-12 designation for an ELL student who has met criteria to exit ELL services. Tracked in longitudinal data and relevant to xAPI/LMS reporting design for Title III accountability.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>RLHF &nbsp;<span class="full">· Reinforcement Learning from Human Feedback</span></dt>
+        <dd>Training technique for aligning LLMs with human preferences: the model generates candidate outputs, human raters rank them, and those rankings train a reward model used in subsequent fine-tuning (Ouyang et al., NeurIPS 2022). Core concept in the AI Literacy track.</dd>
+        <span class="gl-track-tag">AI Literacy for IDs</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ROI &nbsp;<span class="full">· Return on Investment</span></dt>
+        <dd>Financial measure of training value: (monetary benefits − program cost) ÷ program cost × 100. Level 5 in the Phillips ROI Methodology; a BCR ≥ 1 means benefits exceed costs. Mapped in the CEFR Metrics track D2 deliverable.</dd>
+        <span class="gl-track-tag">CEFR Metrics Architect · SaaS Hands-On</span>
+      </div>
+      <div class="gl-entry">
+        <dt>RTL &nbsp;<span class="full">· Right-to-Left</span></dt>
+        <dd>Text rendering direction for Arabic, Hebrew, Persian and other scripts. Relevant to multilingual LMS configuration and Rise 360 localization in the UNICEF and MLLDE tracks.</dd>
+        <span class="gl-track-tag">UNICEF Consultant · Language Learning Designer</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- S -->
+  <section class="gl-section" id="gl-s">
+    <h3 class="gl-letter">S</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>SAM &nbsp;<span class="full">· Successive Approximation Model</span></dt>
+        <dd>Agile instructional design model (Michael Allen, 2012). Replaces ADDIE's waterfall with rapid prototyping cycles: Preparation → Iterative Design → Iterative Development. Covered as an ADDIE alternative in the SaaS Training Bootcamp.</dd>
+        <span class="gl-track-tag">SaaS Training Bootcamp</span>
+      </div>
+      <div class="gl-entry">
+        <dt>SCORM &nbsp;<span class="full">· Sharable Content Object Reference Model</span></dt>
+        <dd>Legacy eLearning packaging and tracking standard (ADL; v1.2 and 2004). Packages content as a ZIP with imsmanifest.xml; tracks via a JavaScript API (SCORM 1.2: API; SCORM 2004: API_1484_11). Superseded by xAPI for modern architectures.</dd>
+        <span class="gl-track-tag">SaaS Training Bootcamp · Articulate 360 · LRS Architecture</span>
+      </div>
+      <div class="gl-entry">
+        <dt>SFIA &nbsp;<span class="full">· Skills Framework for the Information Age</span></dt>
+        <dd>Professional skills framework (SFIA Foundation, v8 2021) used globally to define IT and digital skills at seven responsibility levels. One of five EU frameworks covered in the EU Frameworks track.</dd>
+        <span class="gl-track-tag">EU Frameworks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>SIFE &nbsp;<span class="full">· Students with Interrupted Formal Education</span></dt>
+        <dd>ELLs with significant gaps in prior schooling due to displacement, conflict, or migration. Require differentiated WIDA-aligned approaches and are a distinct population in the WIDA & US K-12 track's design scenarios.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>SME &nbsp;<span class="full">· Subject Matter Expert</span></dt>
+        <dd>A person with deep knowledge of a topic who provides content knowledge for learning design. Managing SME relationships — scoped briefs, review cycles, NDA, sign-off — is a core skill in the SaaS Hands-On and Learning Designer Practice Lab tracks.</dd>
+        <span class="gl-track-tag">SaaS Hands-On · Learning Designer Lab</span>
+      </div>
+      <div class="gl-entry">
+        <dt>STAR &nbsp;<span class="full">· Situation, Task, Action, Result</span></dt>
+        <dd>Structured narrative technique for competency-based interview answers. Used in the UNICEF Application Strategy and Job Search Intelligence tracks to rehearse three real scenarios from the posting.</dd>
+        <span class="gl-track-tag">UNICEF Application · Job Search</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- T -->
+  <section class="gl-section" id="gl-t">
+    <h3 class="gl-letter">T</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>TELPAS &nbsp;<span class="full">· Texas English Language Proficiency Assessment System</span></dt>
+        <dd>Texas's annual ELP assessment for K–12 ELLs across listening, speaking, reading and writing. One of the state assessments surveyed in the WIDA & US K-12 track.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>ToR &nbsp;<span class="full">· Terms of Reference</span></dt>
+        <dd>Document specifying the purpose, scope, deliverables, reporting lines, and requirements of a consultancy or project. UNICEF Supply Division ToR TMC0004741 is the source document for two bootcamp tracks.</dd>
+        <span class="gl-track-tag">UNICEF Consultant · UNICEF Application</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- U -->
+  <section class="gl-section" id="gl-u">
+    <h3 class="gl-letter">U</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>UDL &nbsp;<span class="full">· Universal Design for Learning</span></dt>
+        <dd>CAST framework for designing flexible learning experiences that meet diverse learner needs. Three principles: multiple means of Representation, Action &amp; Expression, and Engagement. Referenced in accessibility and inclusion modules.</dd>
+        <span class="gl-track-tag">Learning Designer Lab · WIDA &amp; US K-12 ELL</span>
+      </div>
+      <div class="gl-entry">
+        <dt>UNICEF &nbsp;<span class="full">· United Nations Children's Fund</span></dt>
+        <dd>UN agency focused on child welfare and humanitarian response. Supply Division ToR TMC0004741 (12-month digital learning consultancy, Agora/Moodle Workplace) is the basis of two bootcamp tracks.</dd>
+        <span class="gl-track-tag">UNICEF Consultant · UNICEF Application</span>
+      </div>
+      <div class="gl-entry">
+        <dt>UUID &nbsp;<span class="full">· Universally Unique Identifier</span></dt>
+        <dd>128-bit value (RFC 4122) formatted as 8-4-4-4-12 hex groups. Used in xAPI for statement IDs, registration values, and activity IDs that must be globally unique across all LRS deployments.</dd>
+        <span class="gl-track-tag">xAPI Scripting · LRS Architecture</span>
+      </div>
+      <div class="gl-entry">
+        <dt>UX &nbsp;<span class="full">· User Experience</span></dt>
+        <dd>The holistic quality of a person's interaction with a product — usability, accessibility, satisfaction, and meaning. Foundational discipline for LXD; accessibility (WCAG) is the non-negotiable floor of UX in all bootcamp modules.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- W -->
+  <section class="gl-section" id="gl-w">
+    <h3 class="gl-letter">W</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>WCAG &nbsp;<span class="full">· Web Content Accessibility Guidelines</span></dt>
+        <dd>W3C standard (current: WCAG 2.2, October 2023) for web accessibility, organized around four principles: Perceivable, Operable, Understandable, Robust. Level AA is the legal benchmark under the EU EAA, EN 301 549, and US Section 508. All bootcamp modules target WCAG 2.1 AA.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+      <div class="gl-entry">
+        <dt>WIDA &nbsp;<span class="full">· World-Class Instructional Design and Assessment</span></dt>
+        <dd>Consortium (University of Wisconsin system) developing English Language Development standards for PreK–12 multilingual learners across 40+ US member states. The 2020 ELD Standards Framework is the current edition; ACCESS is WIDA's annual summative assessment.</dd>
+        <span class="gl-track-tag">WIDA &amp; US K-12 ELL</span>
+      </div>
+    </dl>
+  </section>
+
+  <!-- X -->
+  <section class="gl-section" id="gl-x">
+    <h3 class="gl-letter">X</h3>
+    <dl class="gl-list">
+      <div class="gl-entry">
+        <dt>xAPI &nbsp;<span class="full">· Experience API  (also "Tin Can API")</span></dt>
+        <dd>IEEE standard (9274.1.1-2021, co-developed by ADL) for capturing learning experiences as Actor–Verb–Object statements and sending them to an LRS via HTTP POST. Replaces SCORM's JavaScript-only tracking with any-context, any-device recording. The central data standard across tracks 7, 8, 15, and 16.</dd>
+        <span class="gl-track-tag">LRS Architecture · xAPI Scripting · CEFR Metrics</span>
+      </div>
+      <div class="gl-entry">
+        <dt>XML &nbsp;<span class="full">· Extensible Markup Language</span></dt>
+        <dd>Tag-based data format used in SCORM packages (imsmanifest.xml defines the course structure) and some LMS integration formats. JSON has largely replaced XML in modern xAPI-based architectures.</dd>
+        <span class="gl-track-tag">Articulate 360 · LRS Architecture</span>
+      </div>
+      <div class="gl-entry">
+        <dt>XP &nbsp;<span class="full">· Experience Points</span></dt>
+        <dd>Gamification mechanic used across all bootcamp levels to signal progression and reward task completion. Visible in the level-progress bars and boss-level unlocks in every track.</dd>
+        <span class="gl-track-tag">All tracks</span>
+      </div>
+    </dl>
+  </section>
+
+</div>
+</div><!-- /panel-glossary -->
+
+<!-- ═══════════════════════════════════════════ PANEL: REFERENCES ═══ -->
+<div id="panel-references" role="tabpanel" aria-labelledby="tab-references" hidden>
+<div class="refs-wrapper">
+  <h2 class="panel-title">References</h2>
+  <p class="panel-subtitle" style="margin-bottom:32px">Sources and further reading, organized by topic. APA 7th edition · DOI included where available.</p>
+
+  <h3 class="refs-section-title">eLearning Technology &amp; Standards</h3>
+  <ol class="refs-list">
+    <li>ADL Initiative. (2016). <em>xAPI specification v1.0.3.</em> Advanced Distributed Learning.<br><a href="https://github.com/adlnet/xAPI-Spec">https://github.com/adlnet/xAPI-Spec</a></li>
+    <li>ADL / AICC. (2023). <em>cmi5 specification v1.0.0.</em> ADL Initiative.<br><a href="https://aicc.github.io/CMI-5_Spec_Current/">https://aicc.github.io/CMI-5_Spec_Current/</a></li>
+    <li>IEEE. (2021). <em>IEEE standard for experience API (xAPI), IEEE 9274.1.1-2021.</em> Institute of Electrical and Electronics Engineers.<br><a href="https://doi.org/10.1109/IEEESTD.2021.9599939">https://doi.org/10.1109/IEEESTD.2021.9599939</a></li>
+    <li>ADL Initiative. (2004). <em>SCORM 2004 4th edition specification.</em> Advanced Distributed Learning.<br><a href="https://adlnet.gov/projects/scorm/">https://adlnet.gov/projects/scorm/</a></li>
+    <li>Rustici Software. (2024). <em>SCORM explained.</em><br><a href="https://scorm.com/scorm-explained/">https://scorm.com/scorm-explained/</a></li>
+  </ol>
+
+  <h3 class="refs-section-title">Instructional Design Models &amp; Cognitive Theory</h3>
+  <ol class="refs-list">
+    <li>Allen, M. W. (2012). <em>Leaving ADDIE for SAM: An agile model for developing the best learning experiences.</em> ASTD Press.</li>
+    <li>Bloom, B. S., Engelhart, M. D., Furst, E. J., Hill, W. H., &amp; Krathwohl, D. R. (1956). <em>Taxonomy of educational objectives: Handbook 1: Cognitive domain.</em> David McKay.</li>
+    <li>Cowan, N. (2010). The magical mystery four: How is working memory capacity limited, and why? <em>Current Directions in Psychological Science, 19</em>(1), 51–57.<br><a href="https://doi.org/10.1177/0963721409359277">https://doi.org/10.1177/0963721409359277</a></li>
+    <li>Dick, W., Carey, L., &amp; Carey, J. O. (2015). <em>The systematic design of instruction</em> (8th ed.). Pearson.</li>
+    <li>Kirkpatrick, D. L., &amp; Kirkpatrick, J. D. (2006). <em>Evaluating training programs: The four levels</em> (3rd ed.). Berrett-Koehler.</li>
+    <li>Krathwohl, D. R. (2002). A revision of Bloom's taxonomy: An overview. <em>Theory Into Practice, 41</em>(4), 212–218.<br><a href="https://doi.org/10.1080/00405840290275453">https://doi.org/10.1080/00405840290275453</a></li>
+    <li>Mayer, R. E. (2009). <em>Multimedia learning</em> (2nd ed.). Cambridge University Press.</li>
+    <li>Merrill, M. D. (2002). First principles of instruction. <em>Educational Technology Research and Development, 50</em>(3), 43–59.<br><a href="https://doi.org/10.1007/BF02505024">https://doi.org/10.1007/BF02505024</a></li>
+    <li>Phillips, J. J. (2003). <em>Return on investment in training and performance improvement programs</em> (2nd ed.). Butterworth-Heinemann.</li>
+    <li>Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. <em>Cognitive Science, 12</em>(2), 257–285.</li>
+  </ol>
+
+  <h3 class="refs-section-title">Language Learning, CEFR &amp; MLLDE</h3>
+  <ol class="refs-list">
+    <li>Council of Europe. (2001). <em>Common European Framework of Reference for Languages: Learning, teaching, assessment.</em> Cambridge University Press.</li>
+    <li>Council of Europe. (2020). <em>Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume.</em><br><a href="https://www.coe.int/en/web/common-european-framework-reference-languages">https://www.coe.int/en/web/common-european-framework-reference-languages</a></li>
+    <li>Coyle, D., Hood, P., &amp; Marsh, D. (2010). <em>CLIL: Content and language integrated learning.</em> Cambridge University Press.</li>
+    <li>Eslava-Graterol, A. (2026). <em>MLLDE: Machine Learning–Driven Language Design Environment — curriculum master.</em> Unpublished framework. © Ana Eslava-Graterol. All rights reserved.</li>
+    <li>Instituto Cervantes. (2006). <em>Plan curricular del Instituto Cervantes: Niveles de referencia para el español.</em> Biblioteca Nueva.</li>
+    <li>Johnson, E. B. (2002). <em>Contextual teaching and learning: What it is and why it's here to stay.</em> Corwin Press.</li>
+    <li>Krashen, S. D. (1982). <em>Principles and practice in second language acquisition.</em> Pergamon.</li>
+    <li>Nation, I. S. P. (2001). <em>Learning vocabulary in another language.</em> Cambridge University Press.</li>
+    <li>Scrivener, J. (2011). <em>Learning teaching: The essential guide to English language teaching</em> (3rd ed.). Macmillan Education.</li>
+  </ol>
+
+  <h3 class="refs-section-title">EU Digital Competency Frameworks</h3>
+  <ol class="refs-list">
+    <li>CEN. (2014). <em>European e-Competence Framework (e-CF) 3.0</em> (CWA 16234). European Committee for Standardisation.</li>
+    <li>ENISA. (2022). <em>European Cybersecurity Skills Framework (ECSF).</em><br><a href="https://www.enisa.europa.eu/topics/cybersecurity-education/european-cybersecurity-skills-framework">https://www.enisa.europa.eu/topics/cybersecurity-education</a></li>
+    <li>European Commission. (2023). <em>ESCO: European Skills, Competences, Qualifications and Occupations.</em><br><a href="https://esco.ec.europa.eu">https://esco.ec.europa.eu</a></li>
+    <li>Redecker, C. (2017). <em>European Framework for the Digital Competence of Educators: DigCompEdu</em> (JRC107048). Publications Office of the EU.<br><a href="https://doi.org/10.2760/178059">https://doi.org/10.2760/178059</a></li>
+    <li>SFIA Foundation. (2021). <em>SFIA 8: Skills Framework for the Information Age.</em><br><a href="https://sfia-online.org">https://sfia-online.org</a></li>
+    <li>Vuorikari, R., Kluzer, S., &amp; Punie, Y. (2022). <em>DigComp 2.2: The Digital Competence Framework for Citizens</em> (JRC128415). Publications Office of the EU.<br><a href="https://doi.org/10.2760/115376">https://doi.org/10.2760/115376</a></li>
+  </ol>
+
+  <h3 class="refs-section-title">US K-12 ELL Policy &amp; Assessment</h3>
+  <ol class="refs-list">
+    <li>California Department of Education. (2023). <em>ELPAC: English Language Proficiency Assessments for California.</em><br><a href="https://www.elpac.org">https://www.elpac.org</a></li>
+    <li>Cummins, J. (1979). Cognitive/academic language proficiency, linguistic interdependence, the optimum age question and some other matters. <em>Working Papers on Bilingualism, 19,</em> 121–129.</li>
+    <li>Kieffer, M. J. (2008). Catching up or falling behind? Initial English proficiency, concentrated poverty, and the reading growth of language minority learners in the United States. <em>Journal of Educational Psychology, 100</em>(4), 851–868.<br><a href="https://doi.org/10.1037/0022-0663.100.4.851">https://doi.org/10.1037/0022-0663.100.4.851</a></li>
+    <li>Texas Education Agency. (2023). <em>TELPAS: Texas English Language Proficiency Assessment System.</em><br><a href="https://tea.texas.gov/student-assessment/testing/telpas">https://tea.texas.gov/student-assessment/testing/telpas</a></li>
+    <li>US Congress. (2015). <em>Every Student Succeeds Act.</em> Public Law 114-95.</li>
+    <li>WIDA Consortium. (2020). <em>WIDA English Language Development Standards Framework, 2020 edition: Kindergarten–Grade 12.</em> Board of Regents of the University of Wisconsin System.</li>
+  </ol>
+
+  <h3 class="refs-section-title">Artificial Intelligence &amp; Learning</h3>
+  <ol class="refs-list">
+    <li>Holmes, W., Bialik, M., &amp; Fadel, C. (2019). <em>Artificial intelligence in education: Promises and implications for teaching and learning.</em> Center for Curriculum Redesign.</li>
+    <li>Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., Zhang, C., Agarwal, S., Slama, K., Ray, A., Schulman, J., Hilton, J., Kelton, F., Miller, L., Simens, M., Askell, A., Welinder, P., Christiano, P., Leike, J., &amp; Lowe, R. (2022). Training language models to follow instructions with human feedback. <em>Advances in Neural Information Processing Systems, 35,</em> 27730–27744.<br><a href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a></li>
+    <li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017). Attention is all you need. <em>Advances in Neural Information Processing Systems, 30.</em><br><a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+  </ol>
+
+  <h3 class="refs-section-title">Accessibility Standards</h3>
+  <ol class="refs-list">
+    <li>European Parliament &amp; Council. (2019). <em>Directive (EU) 2019/882 on the accessibility requirements for products and services (European Accessibility Act).</em></li>
+    <li>W3C Web Accessibility Initiative. (2018). <em>Web Content Accessibility Guidelines (WCAG) 2.1.</em><br><a href="https://www.w3.org/TR/WCAG21/">https://www.w3.org/TR/WCAG21/</a></li>
+    <li>W3C Web Accessibility Initiative. (2023). <em>Web Content Accessibility Guidelines (WCAG) 2.2.</em><br><a href="https://www.w3.org/TR/WCAG22/">https://www.w3.org/TR/WCAG22/</a></li>
+  </ol>
+
+  <h3 class="refs-section-title">Legal &amp; Data Protection</h3>
+  <ol class="refs-list">
+    <li>European Parliament &amp; Council. (2016). <em>Regulation (EU) 2016/679 on the protection of natural persons with regard to the processing of personal data (GDPR).</em><br><a href="https://gdpr-info.eu">https://gdpr-info.eu</a></li>
+    <li>European Parliament &amp; Council. (2024). <em>Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act).</em> Official Journal of the European Union, OJ L 2024/1689, 12 July 2024. Art. 50: Transparency obligations — providers of AI systems that generate or manipulate text, images, audio or video must ensure outputs are marked as AI-generated in a machine-readable format; providers of AI systems intended to interact directly with natural persons must inform users they are interacting with an AI.<br><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689">https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689</a></li>
+  </ol>
+
+  <div class="refs-copyright">
+    <p class="refs-copyright-name">Ana Eslava-Graterol</p>
+    <p>Language Learning Architect · Universitat Politècnica de València · HDD Transformación Educativa Digital</p>
+    <p>© 2026 Ana Eslava-Graterol. All rights reserved.</p>
+    <p class="refs-copyright-mllde">The MLLDE (Machine Learning–Driven Language Design Environment) is an original proprietary pedagogical framework by Ana Eslava-Graterol. The "Language Passport"™ and "Grace" are registered concepts within this framework. All bootcamp modules are original instructional content produced by Ana Eslava-Graterol — non-commercial, educational use. CEFR (Council of Europe), PCIC (Instituto Cervantes), xAPI (ADL / IEEE 9274.1.1-2021), ESCO (European Commission), and IPA (International Phonetic Association) are cited external standards, not redistributed. References are provided for source verification and further reading.</p>
+    <p class="refs-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by Ana Eslava-Graterol · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a></p>
+  </div>
+</div>
+</div><!-- /panel-references -->
 
 <footer>
   Built for learning. <a href="https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech">View source on GitHub</a>
+  &nbsp;·&nbsp; Ocean Ink v0.1 · August 2026
+  <br>¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a>
 </footer>
 
+<script>
+/* ── Theme toggle ── */
+(function () {
+  var btn   = document.getElementById('theme-btn');
+  var root  = document.documentElement;
+  var cycle = ['system', 'light', 'dark'];
+  var icons = { system: '🌓', light: '☀️', dark: '🌙' };
+  var labels = {
+    system: 'Colour theme: system (follows your OS). Click to switch to light.',
+    light:  'Colour theme: light. Click to switch to dark.',
+    dark:   'Colour theme: dark. Click to switch to system.'
+  };
+  var current = localStorage.getItem('oi-theme') || 'system';
+  function applyTheme(t) {
+    if (t === 'system') { root.removeAttribute('data-theme'); }
+    else { root.setAttribute('data-theme', t); }
+    btn.textContent = icons[t];
+    btn.setAttribute('aria-label', labels[t]);
+    localStorage.setItem('oi-theme', t);
+    current = t;
+  }
+  applyTheme(current);
+  btn.addEventListener('click', function () {
+    applyTheme(cycle[(cycle.indexOf(current) + 1) % cycle.length]);
+  });
+})();
+
+/* ── Tab switching ── */
+(function () {
+  var tabs   = Array.from(document.querySelectorAll('[role="tab"]'));
+  var panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+  function activate(tab) {
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); t.tabIndex = -1; });
+    panels.forEach(function (p) { p.hidden = true; });
+    tab.setAttribute('aria-selected', 'true');
+    tab.tabIndex = 0;
+    document.getElementById(tab.getAttribute('aria-controls')).hidden = false;
+    localStorage.setItem('oi-tab', tab.id);
+  }
+
+  /* Restore saved tab */
+  var saved = localStorage.getItem('oi-tab');
+  var initialTab = saved ? (document.getElementById(saved) || tabs[0]) : tabs[0];
+  tabs.forEach(function (t) { t.tabIndex = -1; });
+  activate(initialTab);
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var idx = tabs.indexOf(e.currentTarget);
+      if (e.key === 'ArrowRight') { idx = (idx + 1) % tabs.length; tabs[idx].focus(); activate(tabs[idx]); }
+      if (e.key === 'ArrowLeft')  { idx = (idx - 1 + tabs.length) % tabs.length; tabs[idx].focus(); activate(tabs[idx]); }
+      if (e.key === 'Home')       { tabs[0].focus(); activate(tabs[0]); }
+      if (e.key === 'End')        { tabs[tabs.length - 1].focus(); activate(tabs[tabs.length - 1]); }
+    });
+  });
+})();
+</script>
 </body>
 </html>

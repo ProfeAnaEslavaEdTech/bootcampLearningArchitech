@@ -1,0 +1,656 @@
+<!-- ============================================================
+     FILE: lrs/index.html
+     UPLOAD TO: create folder "lrs" → upload as index.html
+     WHAT IT IS: LRS Architecture — Hybrid B2C + B2B Platform
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LRS Architecture — B2C + B2B Hybrid Platform</title>
+<style>
+  :root{
+    --navy:#1A3A5C; --blue:#1D6FA4; --ink:#1D2433; --mist:#EEF4FB;
+    --paper:#FFFFFF; --gold:#C9A227; --ok:#2E7D4F; --no:#B3403A;
+    --line:#D6DCE8; --cyan:#0E7490; --cyan-soft:#E0F7FA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{font-size:16px;}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background:var(--mist);color:var(--ink);line-height:1.55;
+    min-height:100vh;display:flex;flex-direction:column;
+  }
+  .mono{font-family:'Consolas','SF Mono',Menlo,monospace;}
+  .display{font-family:'Palatino Linotype','Book Antiqua',Palatino,Georgia,serif;}
+
+  /* Header / progress rail */
+  header{
+    background:var(--navy);color:#fff;padding:14px 20px 18px;
+    position:sticky;top:0;z-index:10;
+  }
+  .head-row{display:flex;justify-content:space-between;align-items:baseline;max-width:800px;margin:0 auto 10px;}
+  .head-row h1{font-size:1rem;font-weight:600;letter-spacing:.02em;}
+  .xp{font-size:.85rem;color:var(--gold);font-weight:700;}
+  .rail{max-width:800px;margin:0 auto;display:flex;gap:4px;align-items:center;}
+  .rail .seg{flex:1;height:6px;background:rgba(255,255,255,.18);border-radius:3px;transition:background .4s;}
+  .rail .seg.done{background:var(--gold);}
+  .rail-labels{max-width:800px;margin:4px auto 0;display:flex;justify-content:space-between;font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7);}
+  .rail-labels span.now{color:var(--gold);font-weight:700;}
+
+  main{flex:1;width:100%;max-width:800px;margin:0 auto;padding:26px 20px 120px;}
+  .step{display:none;animation:rise .35s ease;}
+  .step.active{display:block;}
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @media(prefers-reduced-motion:reduce){.step{animation:none;}.rail .seg{transition:none;}}
+
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:26px 28px;margin-bottom:18px;}
+  .eyebrow{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:8px;}
+  h2{font-size:1.55rem;color:var(--navy);margin-bottom:14px;line-height:1.2;}
+  h3{font-size:1rem;color:var(--navy);margin:18px 0 6px;font-weight:700;}
+  p{margin-bottom:12px;}
+  ul,ol{margin:0 0 12px 20px;}
+  li{margin-bottom:6px;}
+  strong{color:var(--navy);}
+
+  .anchor{border-left:4px solid var(--gold);background:#FBF7EA;padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.94rem;}
+  .anchor b{color:var(--navy);}
+
+  .alert{border-left:4px solid var(--cyan);background:var(--cyan-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0;font-size:.94rem;}
+
+  table{width:100%;border-collapse:collapse;font-size:.84rem;margin:12px 0;overflow-x:auto;display:block;}
+  th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-weight:600;}
+  td{border-bottom:1px solid var(--line);padding:8px 10px;vertical-align:top;}
+  tr:nth-child(even) td{background:var(--mist);}
+
+  /* Code blocks */
+  pre{background:#0D1F2D;color:#C9D1D9;border-radius:8px;padding:16px 18px;overflow-x:auto;font-size:.82rem;line-height:1.55;margin:14px 0;}
+  pre .c{color:#8B949E;} /* comment */
+  pre .k{color:#FF7B72;} /* keyword */
+  pre .s{color:#A5D6FF;} /* string */
+  pre .n{color:#79C0FF;} /* field name */
+  pre .v{color:#FFA657;} /* value/var */
+
+  /* ASCII diagram */
+  .diagram{background:#0D1F2D;color:#79C0FF;border-radius:8px;padding:16px 18px;font-size:.78rem;line-height:1.7;overflow-x:auto;margin:14px 0;white-space:pre;}
+
+  /* Quiz */
+  .quiz{border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:16px 0;background:#FAFBFE;}
+  .quiz .qq{font-weight:600;color:var(--navy);margin-bottom:10px;}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);
+    border-radius:8px;padding:10px 14px;margin-bottom:8px;font:inherit;cursor:pointer;transition:border-color .15s;}
+  .opt:hover{border-color:var(--blue);}
+  .opt:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .opt.right{border-color:var(--ok);background:#EAF4EE;font-weight:600;}
+  .opt.wrong{border-color:var(--no);background:#F9ECEB;}
+  .opt:disabled{cursor:default;opacity:.92;}
+  .fb{font-size:.9rem;margin-top:6px;display:none;}
+  .fb.show{display:block;}
+  .fb.good{color:var(--ok);font-weight:600;}
+  .fb.bad{color:var(--no);}
+  .fb .why{color:var(--ink);font-weight:400;display:block;margin-top:2px;}
+
+  details{border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:12px 0;background:#fff;}
+  summary{cursor:pointer;font-weight:600;color:var(--blue);}
+  details[open]{background:#FAFBFE;}
+
+  /* Scenario cards */
+  .scenario{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0;}
+  @media(max-width:600px){.scenario{grid-template-columns:1fr;}}
+  .sc-card{border-radius:10px;padding:18px;border:1.5px solid var(--line);}
+  .sc-card.b2c{background:#E8F5E9;border-color:#4CAF50;}
+  .sc-card.b2b{background:#E3F2FD;border-color:var(--blue);}
+  .sc-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+  .sc-card.b2c .sc-label{color:#2E7D32;}
+  .sc-card.b2b .sc-label{color:var(--navy);}
+
+  /* Footer nav */
+  nav{position:fixed;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--line);padding:12px 20px;}
+  .nav-inner{max-width:800px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  .btn{font:inherit;font-weight:600;border-radius:8px;padding:11px 22px;cursor:pointer;border:1.5px solid var(--navy);}
+  .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+  .btn.primary{background:var(--navy);color:#fff;}
+  .btn.primary:hover{background:var(--blue);border-color:var(--blue);}
+  .btn.ghost{background:#fff;color:var(--navy);}
+  .btn.ghost:hover{background:var(--mist);}
+  .btn[disabled]{opacity:.35;cursor:not-allowed;}
+  .stepcount{font-size:.8rem;color:#66707F;}
+
+  .big-level{font-size:2.2rem;color:var(--navy);margin:6px 0;}
+  .score-line{font-size:1.05rem;margin-bottom:10px;}
+  .gold{color:var(--gold);font-weight:700;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-row">
+    <h1 class="display">LRS Architecture · Hybrid B2C + B2B Platform</h1>
+    <div class="xp" aria-live="polite">XP <span id="xp">0</span></div>
+  </div>
+  <div class="rail" aria-hidden="true">
+    <div class="seg" data-r="0"></div><div class="seg" data-r="1"></div>
+    <div class="seg" data-r="2"></div><div class="seg" data-r="3"></div>
+    <div class="seg" data-r="4"></div><div class="seg" data-r="5"></div>
+  </div>
+  <div class="rail-labels" id="railLabels">
+    <span>Concept</span><span>Structure</span><span>Config</span><span>Scenarios</span><span>Code</span><span>Architect</span>
+  </div>
+</header>
+
+<main>
+
+<!-- STEP 0 · Welcome -->
+<section class="step active" data-step="0">
+  <div class="card">
+    <div class="eyebrow">Micro-course · ~45 min · Test-Teach-Test</div>
+    <h2 class="display">LRS Architecture for a Hybrid B2C + B2B Learning Marketplace</h2>
+    <p>This module trains you to architect a Learning Record Store that simultaneously serves <strong>individual retail learners (B2C)</strong> and <strong>corporate clients (B2B)</strong> — a hybrid model that completely changes how you design your data layer.</p>
+    <div class="anchor"><b>Why this matters:</b> a single flat LRS endpoint fails the moment you mix private consumer data with corporate client data. Getting this architecture right is the difference between a toy prototype and a commercial-grade platform.</div>
+    <p>You will leave with a clear mental model of multi-tenancy, statement forwarding, dynamic Articulate launch, and the exact code patterns that connect them.</p>
+    <div class="scenario">
+      <div class="sc-card b2c">
+        <div class="sc-label">B2C</div>
+        <strong>Individual users</strong><br>Personal email · retail purchase · aggregated analytics
+      </div>
+      <div class="sc-card b2b">
+        <div class="sc-label">B2B</div>
+        <strong>Corporate clients</strong><br>Seat licences · isolated tenants · client dashboards or data piping
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 1 · Pre-test -->
+<section class="step" data-step="1">
+  <div class="card">
+    <div class="eyebrow">Phase 1 · Test · Baseline</div>
+    <h2 class="display">What do you already know?</h2>
+    <p>Answer from instinct — wrong answers cost nothing and show you where to focus. +10 XP per correct answer.</p>
+
+    <div class="quiz" data-xp="10">
+      <p class="qq">1. Why can't you use a single flat LRS endpoint for both B2C users and B2B corporate clients?</p>
+      <button class="opt" data-ok="0">It is too slow for large volumes of statements</button>
+      <button class="opt" data-ok="1">You cannot mix private consumer data with corporate client data in the same unorganised bucket</button>
+      <button class="opt" data-ok="0">xAPI does not support multiple actor types in one store</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="10">
+      <p class="qq">2. In a multi-tenant LRS, what does each B2B corporate client receive?</p>
+      <button class="opt" data-ok="1">Their own isolated Tenant Account with a unique API Key and Secret</button>
+      <button class="opt" data-ok="0">A filtered view of the global B2C database</button>
+      <button class="opt" data-ok="0">A separate physical server</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="10">
+      <p class="qq">3. What is "Statement Forwarding" (Scenario B)?</p>
+      <button class="opt" data-ok="0">Exporting CSV reports to email clients</button>
+      <button class="opt" data-ok="0">Archiving old statements to cold storage</button>
+      <button class="opt" data-ok="1">Your LRS automatically replicating statements in real-time to a client's external LRS/LMS endpoint</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="10">
+      <p class="qq">4. When publishing Articulate content for a hybrid marketplace, which format is preferable and why?</p>
+      <button class="opt" data-ok="0">SCORM 1.2 — widest compatibility with old LMS platforms</button>
+      <button class="opt" data-ok="1">cmi5 or xAPI — they support dynamic LRS launch strings via URL parameters</button>
+      <button class="opt" data-ok="0">PDF export — lightest file size</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 2 · B2C vs B2B Fundamentals -->
+<section class="step" data-step="2">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Concept 1 of 5</div>
+    <h2 class="display">The Structural Difference: B2C vs. B2B Tracking</h2>
+    <div class="scenario">
+      <div class="sc-card b2c">
+        <div class="sc-label">B2C — Individual Consumers</div>
+        <ul style="margin-left:16px;font-size:.9rem;">
+          <li>User buys course with personal email (user@gmail.com)</li>
+          <li>LRS tracks individual progress, certifications, achievements</li>
+          <li>Data used for personal portfolio + marketing analytics</li>
+          <li>Traffic: <strong>predictable, steady stream</strong></li>
+        </ul>
+      </div>
+      <div class="sc-card b2b">
+        <div class="sc-label">B2B — Corporate Clients</div>
+        <ul style="margin-left:16px;font-size:.9rem;">
+          <li>Company buys 500 seat licences for its employees</li>
+          <li>LRS must segment data so HR sees only their employees</li>
+          <li>Data strictly isolated from other businesses</li>
+          <li>Traffic: <strong>sudden spikes</strong> (e.g. 5,000 users by Friday)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="anchor"><b>The key shift:</b> B2C is about the individual learner. B2B is about the organisation — and the organisation owns the right to see its employees' data without seeing anyone else's.</div>
+    <div class="quiz" data-xp="20">
+      <p class="qq">Quick check: a corporation mandates 5,000 employees complete a compliance course by Friday. Which infrastructure concern does this specifically create?</p>
+      <button class="opt" data-ok="0">The LRS will run out of storage space</button>
+      <button class="opt" data-ok="1">A massive sudden traffic spike that must not drop B2C statements running concurrently</button>
+      <button class="opt" data-ok="0">xAPI statements will conflict with existing SCORM data</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 3 · Multi-Tenancy + Configuration -->
+<section class="step" data-step="3">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Concept 2 of 5</div>
+    <h2 class="display">Four Architecture Requirements</h2>
+
+    <h3>1. Multi-Tenancy (Critical for B2B)</h3>
+    <p>Your LRS must use <strong>virtual walls</strong> to separate data. Each corporate client gets an isolated Tenant Account at its own endpoint — e.g. <code class="mono">yourlrs.com/company-a/</code> — with its own unique API Key and Secret. Company A's admins can never query Company B's data.</p>
+
+    <h3>2. Advanced Actor Identification</h3>
+    <p>B2C actors: identified by personal email → <code class="mono">mailto:john@gmail.com</code><br>
+    B2B actors: must include <strong>corporate identifiers</strong> (account IDs, enterprise OpenIDs) so statements map cleanly to their employer's tenant roster.</p>
+
+    <h3>3. Strict Permission Scoping (xAPI Scopes)</h3>
+    <table>
+      <tr><th>Role</th><th>Scope Granted</th><th>Effect</th></tr>
+      <tr><td>B2C User</td><td><code class="mono">statements/write:own</code></td><td>Can only post their own data</td></tr>
+      <tr><td>B2B Client Manager</td><td><code class="mono">statements/read</code> (filtered)</td><td>Read-only, hard-filtered to their Organisation ID</td></tr>
+      <tr><td>Platform Admin</td><td>Full scope</td><td>Global access across all tenants</td></tr>
+    </table>
+
+    <h3>4. Auto-Scaling Ingestion</h3>
+    <p>Your ingestion endpoint must auto-scale elastically to handle B2B corporate bursts <strong>without dropping B2C statement packets</strong> that arrive concurrently.</p>
+
+    <div class="quiz" data-xp="20">
+      <p class="qq">Quick check: a B2B client manager logs into your LRS portal. What must the permission system guarantee?</p>
+      <button class="opt" data-ok="0">They can see all tenants but cannot edit statements</button>
+      <button class="opt" data-ok="1">They can only see data hard-filtered to their own organisation — never B2C users or other corporate clients</button>
+      <button class="opt" data-ok="0">They get read access to the global B2C bucket for benchmarking</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 4 · LRS Platform Comparison -->
+<section class="step" data-step="4">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Concept 3 of 5</div>
+    <h2 class="display">Which LRS Handles the Hybrid Model Best?</h2>
+    <table>
+      <tr><th>Platform</th><th>Multi-Tenancy</th><th>Best For</th><th>Note</th></tr>
+      <tr><td><strong>Veracity LRS</strong></td><td>Native "LRS Spaces"</td><td>Hybrid B2C + B2B</td><td>Separate spaces under one master account — easiest for this architecture</td></tr>
+      <tr><td><strong>LearningLocker Enterprise</strong></td><td>Native org/sub-org filtering</td><td>B2B-heavy setups</td><td>Open-source version needs custom coding; Enterprise tier is production-ready</td></tr>
+      <tr><td><strong>Watershed LRS</strong></td><td>Advanced permission structures</td><td>Large enterprise B2B</td><td>Focused on external stakeholder dashboards per organisation</td></tr>
+    </table>
+    <div class="anchor"><b>Selection heuristic:</b> if you need to launch fast and balance both models today → <strong>Veracity</strong>. If your revenue is predominantly large enterprise → <strong>Watershed</strong>. If budget is constrained and you have dev resource → <strong>LearningLocker</strong> open-source + custom work.</div>
+    <div class="quiz" data-xp="20">
+      <p class="qq">Quick check: a client has offices in Paris, Berlin and Madrid and demands their data stays inside their own Cornerstone LMS. Which delivery scenario does this trigger?</p>
+      <button class="opt" data-ok="0">Scenario A — provision them a filtered sub-dashboard in your LRS</button>
+      <button class="opt" data-ok="1">Scenario B — configure a Statement Forwarding pipe to their Cornerstone endpoint</button>
+      <button class="opt" data-ok="0">Neither — export a CSV weekly</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 5 · Scenario A vs B -->
+<section class="step" data-step="5">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Concept 4 of 5</div>
+    <h2 class="display">B2B Delivery: Scenario A vs. Scenario B</h2>
+
+    <h3>Scenario A — Client Dashboard (SMB)</h3>
+    <p>Target: small-to-medium businesses without an internal LRS. They want a turnkey login to see their employees' data.</p>
+    <ul>
+      <li>You provision a <strong>client admin account</strong> in your multi-tenant LRS</li>
+      <li>Scope: <code class="mono">statements/read</code> permanently filtered to their Organisation ID</li>
+      <li>They see: progress, test scores, video viewing — nothing from other tenants</li>
+      <li>Often white-labeled with their brand</li>
+      <li><strong>Monetisation:</strong> included in standard business packages</li>
+    </ul>
+
+    <h3>Scenario B — Statement Forwarding / "Firehose" (Enterprise)</h3>
+    <p>Target: Fortune 500s, government agencies, institutions that already own Cornerstone, Moodle, Canvas, Watershed, or their own LRS.</p>
+    <ul>
+      <li>Client provides: <strong>their LRS Endpoint URL + API Key + API Secret</strong></li>
+      <li>You configure a <strong>Forwarding Rule</strong> in your master LRS</li>
+      <li>Every statement matching that client's tenant ID is instantly replicated via HTTPS POST to their endpoint</li>
+      <li>No manual exports. No CSV. Real-time, automatic</li>
+      <li><strong>Monetisation:</strong> premium tier or integration fee — justified by the infrastructure cost</li>
+    </ul>
+    <div class="alert"><b>Competitive advantage:</b> offering both Scenario A and Scenario B removes the most common enterprise sales objection — "we can't give our data to an external platform."</div>
+    <div class="quiz" data-xp="20">
+      <p class="qq">A startup with 40 employees signs up. Their HR manager wants to log in each Monday and see a completion report. Which scenario?</p>
+      <button class="opt" data-ok="1">Scenario A — provision a filtered sub-dashboard, include it in their standard subscription</button>
+      <button class="opt" data-ok="0">Scenario B — set up a statement pipe to their external LRS</button>
+      <button class="opt" data-ok="0">Neither — send a weekly CSV via email</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 6 · Full Architecture Diagram -->
+<section class="step" data-step="6">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Concept 5 of 5</div>
+    <h2 class="display">The Full Data Flow Architecture</h2>
+    <div class="diagram">[ Your Marketplace Content / Courses ]
+                 │
+                 ▼
+     [ Master LRS Ingestion ]  ◄── auto-scaling endpoint
+                 │
+        ┌────────┴────────┐
+        ▼                 ▼
+   [ B2C Storage ]   [ B2B Multi-Tenant Filter ]
+   (global bucket)        │ (tenant_id routing)
+                 ┌────────┴────────┐
+                 ▼                 ▼
+         [ Scenario A ]     [ Scenario B ]
+          Client Admins      Statement Pipe
+          log in via UI      → POST to client's
+          filtered view        external LRS / LMS</div>
+    <div class="anchor"><b>The tenant_id is the architectural spine.</b> Every statement, every permission filter, every forwarding rule, and every Articulate launch URL traces back to a single field: the <code class="mono">tenant_id</code> resolved at login.</div>
+    <details>
+      <summary>See the user login routing logic (+10 XP)</summary>
+      <div class="diagram">[ User Logs In ]
+       │
+       ├── account_type = B2C ──► Global LRS credentials injected
+       │
+       └── account_type = B2B ──► tenant_id resolved
+                                      │
+                                      ├── Scenario A? ──► Client portal dashboard
+                                      │
+                                      └── Scenario B? ──► Statement Pipe fires
+                                                         to client's external endpoint</div>
+    </details>
+  </div>
+</section>
+
+<!-- STEP 7 · Code: Database Schema -->
+<section class="step" data-step="7">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Implementation 1 of 3</div>
+    <h2 class="display">Implementation Phase 1: Database Identity</h2>
+    <p>Your custom platform database (PostgreSQL or MongoDB) must map every user to their scope before any LRS call is made.</p>
+    <pre><span class="c">// User document — the routing decision lives here</span>
+{
+  <span class="n">"user_id"</span>:                <span class="s">"usr_98765"</span>,
+  <span class="n">"email"</span>:                   <span class="s">"employee@clientcompany.com"</span>,
+  <span class="n">"account_type"</span>:           <span class="s">"B2B"</span>,           <span class="c">// "B2C" | "B2B"</span>
+  <span class="n">"tenant_id"</span>:              <span class="s">"tenant_company_abc"</span>,   <span class="c">// null for B2C</span>
+  <span class="n">"lrs_forwarding_enabled"</span>: <span class="k">true</span>            <span class="c">// Scenario B flag</span>
+}</pre>
+    <h3>What each field does</h3>
+    <table>
+      <tr><th>Field</th><th>B2C value</th><th>B2B value</th><th>Used for</th></tr>
+      <tr><td><code class="mono">account_type</code></td><td>"B2C"</td><td>"B2B"</td><td>Routing at login</td></tr>
+      <tr><td><code class="mono">tenant_id</code></td><td>null</td><td>"tenant_company_abc"</td><td>Multi-tenant filter + Articulate launch URL</td></tr>
+      <tr><td><code class="mono">lrs_forwarding_enabled</code></td><td>false</td><td>true/false</td><td>Triggers Scenario B pipe</td></tr>
+    </table>
+    <div class="quiz" data-xp="20">
+      <p class="qq">Quick check: a user's <code class="mono">tenant_id</code> is null. What does this tell the platform at login?</p>
+      <button class="opt" data-ok="1">They are a B2C retail user — route to global LRS credentials</button>
+      <button class="opt" data-ok="0">They are an unverified user — block login</button>
+      <button class="opt" data-ok="0">They are a platform admin with full access</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 8 · Code: xAPI Statement Generator -->
+<section class="step" data-step="8">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Implementation 2 of 3</div>
+    <h2 class="display">Implementation Phase 1: Dynamic xAPI Statement</h2>
+    <p>For custom UI interactions (video events, React quiz components, page-view tracking), your frontend must inject the <code class="mono">tenant_id</code> into the statement's <code class="mono">context.extensions</code>.</p>
+    <pre><span class="k">function</span> <span class="v">sendCustomXAPIStatement</span>(user, activityId, verbId, verbDisplay) {
+  <span class="k">const</span> statement = {
+    <span class="n">"actor"</span>: {
+      <span class="n">"name"</span>:  user.name,
+      <span class="n">"mbox"</span>:  <span class="s">`mailto:${user.email}`</span>
+    },
+    <span class="n">"verb"</span>: {
+      <span class="n">"id"</span>:      <span class="s">`http://adlnet.gov${verbId}`</span>,
+      <span class="n">"display"</span>: { <span class="s">"en-US"</span>: verbDisplay }
+    },
+    <span class="n">"object"</span>: {
+      <span class="n">"id"</span>: <span class="s">`https://yourmarketplace.com${activityId}`</span>
+    },
+    <span class="n">"context"</span>: {
+      <span class="n">"extensions"</span>: {
+        <span class="c">// ← This is what your LRS reads to route to the right tenant</span>
+        <span class="s">"https://yourmarketplace.com/tenant"</span>: user.tenant_id
+      }
+    }
+  };
+
+  <span class="c">// Never call LRS directly from frontend — route via your backend API</span>
+  <span class="k">return</span> <span class="v">fetch</span>(<span class="s">'/api/lrs/statements'</span>, {
+    method:  <span class="s">'POST'</span>,
+    headers: { <span class="s">'Content-Type'</span>: <span class="s">'application/json'</span> },
+    body:    JSON.stringify(statement)
+  });
+}</pre>
+    <div class="alert"><b>Security note:</b> the frontend never holds LRS API keys. It sends statements to <code class="mono">/api/lrs/statements</code> — your backend validates the session, resolves the <code class="mono">tenant_id</code>, injects the correct credentials, and forwards to the LRS. The client browser never touches the LRS directly.</div>
+    <div class="quiz" data-xp="20">
+      <p class="qq">Why does the statement go to <code class="mono">/api/lrs/statements</code> instead of directly to the LRS endpoint?</p>
+      <button class="opt" data-ok="0">It is faster to route through the backend</button>
+      <button class="opt" data-ok="1">LRS API credentials must stay server-side — the frontend never holds secrets</button>
+      <button class="opt" data-ok="0">xAPI requires a proxy by specification</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 9 · Code: Dynamic Articulate Launch -->
+<section class="step" data-step="9">
+  <div class="card">
+    <div class="eyebrow">Phase 2 · Teach · Implementation 3 of 3</div>
+    <h2 class="display">Implementation Phase 2: Dynamic Articulate Launch</h2>
+    <p>Articulate Storyline/Rise packages published as <strong>cmi5 or xAPI</strong> accept LRS credentials via URL parameters at launch time. This means <strong>one course file works for every tenant</strong> — no duplicate builds.</p>
+    <pre><span class="c">// B2C user — global LRS credentials</span>
+<span class="s">https://yourmarketplace.com/courses/course-id/index.html</span>
+  ?endpoint=<span class="v">https://yourlrs.com/b2c/</span>
+  &amp;auth=Basic <span class="v">BASE64_B2C_KEY_SECRET</span>
+  &amp;actor=<span class="s">{"name":"Jane Smith","mbox":"mailto:jane@gmail.com"}</span>
+
+<span class="c">// B2B user — tenant-specific credentials injected dynamically</span>
+<span class="s">https://yourmarketplace.com/courses/course-id/index.html</span>
+  ?endpoint=<span class="v">https://yourlrs.com/tenant_company_abc/</span>
+  &amp;auth=Basic <span class="v">BASE64_COMPANY_ABC_KEY</span>
+  &amp;actor=<span class="s">{"name":"John Doe","mbox":"mailto:john@company.com"}</span></pre>
+    <p>Articulate reads these URL parameters on initialisation, connects to the correct LRS tenant, and streams all slide views, quiz scores, and completions directly into the right bucket — automatically.</p>
+    <div class="anchor"><b>The operational rule:</b> your backend resolves <code class="mono">account_type</code> → if B2B, substitutes <code class="mono">DYNAMIC_TENANT_ID</code> and <code class="mono">DYNAMIC_BASE64_KEY</code> from a server-side tenant config map → builds the iframe src → client browser launches the course. The course file itself is identical for every user.</div>
+    <div class="quiz" data-xp="20">
+      <p class="qq">A client asks: "do we need a separate version of the course for each of our departments?" What is your answer?</p>
+      <button class="opt" data-ok="0">Yes — one build per department to ensure correct data routing</button>
+      <button class="opt" data-ok="1">No — one cmi5/xAPI build; the launch URL injects the correct tenant credentials dynamically at runtime</button>
+      <button class="opt" data-ok="0">Only if they use Storyline; Rise requires separate builds per tenant</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 10 · Post-test -->
+<section class="step" data-step="10">
+  <div class="card">
+    <div class="eyebrow">Phase 3 · Test · Scored</div>
+    <h2 class="display">Architecture Certification Check</h2>
+    <p>Harder form of the same knowledge. +30 XP per correct answer, first attempt counts.</p>
+
+    <div class="quiz" data-xp="30">
+      <p class="qq">1. A new corporate client signs a contract. What must you provision in your LRS before their employees begin training?</p>
+      <button class="opt" data-ok="0">A new physical server and database for that client</button>
+      <button class="opt" data-ok="1">An isolated Tenant Account with a unique API Key and Secret; configure a forwarding rule if they need Scenario B</button>
+      <button class="opt" data-ok="0">A shared admin login to your master LRS</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="30">
+      <p class="qq">2. What is the architectural role of <code class="mono">tenant_id</code>?</p>
+      <button class="opt" data-ok="0">A unique identifier for each individual learner</button>
+      <button class="opt" data-ok="1">The spine that connects the user record → LRS tenant endpoint → Articulate launch URL → forwarding rule</button>
+      <button class="opt" data-ok="0">The xAPI registration ID for a single course attempt</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="30">
+      <p class="qq">3. Why charge a premium for Scenario B (Statement Forwarding) vs. Scenario A (dashboard access)?</p>
+      <button class="opt" data-ok="0">It is technically simpler so you can justify a higher margin</button>
+      <button class="opt" data-ok="1">It requires custom integration infrastructure (forwarding rules, real-time piping, endpoint monitoring) that Scenario A does not</button>
+      <button class="opt" data-ok="0">Enterprise clients expect to pay more regardless of complexity</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="30">
+      <p class="qq">4. A junior developer says: "I'll store the LRS API secret in a JavaScript variable so the frontend can call the LRS directly." What is wrong?</p>
+      <button class="opt" data-ok="0">JavaScript variables are too slow for LRS calls</button>
+      <button class="opt" data-ok="0">The LRS does not accept calls from browsers, only from servers</button>
+      <button class="opt" data-ok="1">API secrets exposed in frontend code are readable by anyone — all LRS calls must be proxied through a server-side API route</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="30">
+      <p class="qq">5. Your auto-scaling ingestion endpoint exists specifically to handle what scenario?</p>
+      <button class="opt" data-ok="0">B2C users who upload large video files</button>
+      <button class="opt" data-ok="1">Sudden B2B traffic spikes (e.g. 5,000 employees mandated to complete a course by Friday) without dropping concurrent B2C statements</button>
+      <button class="opt" data-ok="0">Statement forwarding latency above 500ms</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 11 · Consulting Scenarios -->
+<section class="step" data-step="11">
+  <div class="card">
+    <div class="eyebrow">Phase 3 · Application · Consulting Scenarios</div>
+    <h2 class="display">The Architect's Decision Tree</h2>
+    <p>A prospect asks three questions during a sales call. Answer out loud before revealing.</p>
+
+    <h3>(a) "We have 300 employees. Our HR director wants to log in on Friday afternoons and see who completed what."</h3>
+    <details><summary>Reveal recommendation (+10 XP)</summary>
+      <p><strong>Scenario A.</strong> Provision a Scenario A dashboard — filtered read-only access to their tenant in your LRS. White-label with their logo if needed. Include in the standard Business tier. No forwarding pipe required.</p>
+    </details>
+
+    <h3>(b) "We use Cornerstone for all our HR data. We need learning completions to appear there automatically."</h3>
+    <details><summary>Reveal recommendation (+10 XP)</summary>
+      <p><strong>Scenario B.</strong> Configure a Statement Forwarding rule. Collect their Cornerstone LRS endpoint URL, API Key, and API Secret. All statements matching their <code class="mono">tenant_id</code> will be replicated in real-time via HTTPS POST. Charge the integration fee.</p>
+    </details>
+
+    <h3>(c) "We sell to both consumers online and to corporations. Can one platform handle both?"</h3>
+    <details><summary>Reveal recommendation (+10 XP)</summary>
+      <p><strong>Yes — this is the B2X model.</strong> Route B2C users to a global tenant with aggregated analytics. Route each B2B corporate client to their own isolated tenant. Offer Scenario A dashboards in standard plans, Scenario B forwarding as a premium add-on. Veracity LRS or LearningLocker Enterprise recommended as the LRS layer.</p>
+    </details>
+  </div>
+</section>
+
+<!-- STEP 12 · Completion -->
+<section class="step" data-step="12">
+  <div class="card" style="text-align:center;">
+    <div class="eyebrow">Module Complete</div>
+    <h2 class="display">Your Architecture Score</h2>
+    <p class="score-line">Total: <span class="gold" id="finalXP">0</span> XP of a possible 340</p>
+    <div class="big-level display" id="finalLevel">—</div>
+    <p id="finalMsg" style="margin:12px 0 20px;"></p>
+    <div class="anchor" style="text-align:left;">
+      <b>Next actions:</b>
+      <ul style="margin:8px 0 0 18px;">
+        <li>Open Veracity LRS (free tier) and create two LRS Spaces — one for B2C, one test B2B tenant</li>
+        <li>Publish one Articulate Rise module as cmi5 and test the dynamic launch URL with both tenant credentials</li>
+        <li>Write the backend <code class="mono">/api/lrs/statements</code> route in your framework of choice</li>
+        <li>Configure one Statement Forwarding rule to a second LRS Space to simulate Scenario B end-to-end</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<nav>
+  <div class="nav-inner">
+    <button class="btn ghost" id="back" disabled>Back</button>
+    <span class="stepcount" id="count">Step 1 of 13</span>
+    <button class="btn primary" id="next">Begin</button>
+  </div>
+</nav>
+
+<script>
+(function(){
+  var steps = document.querySelectorAll('.step');
+  var total = steps.length;
+  var i = 0, xp = 0;
+  var xpEl = document.getElementById('xp');
+  var backBtn = document.getElementById('back');
+  var nextBtn = document.getElementById('next');
+  var countEl = document.getElementById('count');
+  var segs = document.querySelectorAll('.rail .seg');
+  var labels = document.getElementById('railLabels').children;
+
+  function addXP(n){ xp += n; xpEl.textContent = xp; }
+
+  function show(n){
+    steps[i].classList.remove('active');
+    i = n;
+    steps[i].classList.add('active');
+    window.scrollTo({top:0,behavior:'auto'});
+    backBtn.disabled = (i === 0);
+    nextBtn.textContent = i === 0 ? 'Begin' : (i === total-1 ? 'Restart' : 'Continue');
+    countEl.textContent = 'Step ' + (i+1) + ' of ' + total;
+    var r = Math.min(5, Math.floor(i * 6 / total));
+    segs.forEach(function(s,k){ s.classList.toggle('done', k <= r && i > 0); });
+    for(var k=0;k<labels.length;k++){ labels[k].classList.toggle('now', k===r && i>0); }
+    if(i === total-1) finish();
+  }
+
+  nextBtn.addEventListener('click', function(){
+    if(i === total-1){ location.reload(); return; }
+    show(i+1);
+  });
+  backBtn.addEventListener('click', function(){ if(i>0) show(i-1); });
+
+  document.querySelectorAll('.quiz').forEach(function(q){
+    var opts = q.querySelectorAll('.opt');
+    var fb = q.querySelector('.fb');
+    var award = parseInt(q.getAttribute('data-xp'),10)||0;
+    var done = false;
+    opts.forEach(function(o){
+      o.addEventListener('click',function(){
+        if(done) return;
+        done = true;
+        var ok = o.getAttribute('data-ok') === '1';
+        opts.forEach(function(x){
+          x.disabled = true;
+          if(x.getAttribute('data-ok')==='1') x.classList.add('right');
+        });
+        if(ok){
+          addXP(award);
+          fb.className='fb show good';
+          fb.textContent='Correct · +'+award+' XP';
+        } else {
+          o.classList.add('wrong');
+          fb.className='fb show bad';
+          fb.innerHTML='Not quite — the highlighted answer is the keeper.<span class="why">Re-read the card above before the post-test.</span>';
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('details').forEach(function(d){
+    var given=false;
+    d.addEventListener('toggle',function(){
+      if(d.open && !given){ given=true; addXP(10); }
+    });
+  });
+
+  function finish(){
+    document.getElementById('finalXP').textContent = xp;
+    var pct = xp/340;
+    var lvl, msg;
+    if(pct>=0.85){ lvl='Architect'; msg='You can design and defend this system in a client conversation. Time to build the proof-of-concept.'; }
+    else if(pct>=0.65){ lvl='Engineer'; msg='Solid structural understanding. One more pass through the implementation steps and you are ready to present this architecture.'; }
+    else if(pct>=0.45){ lvl='Designer'; msg='The concepts are in place. Revisit the cards you missed — the post-test shows you exactly which ones.'; }
+    else { lvl='Analyst'; msg='Good start. Run the module again after a short break — spaced repetition closes the gaps quickly.'; }
+    document.getElementById('finalLevel').textContent = lvl;
+    document.getElementById('finalMsg').textContent = msg;
+  }
+
+  show(0);
+})();
+</script>
+</body>
+</html>

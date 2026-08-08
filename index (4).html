@@ -1,0 +1,576 @@
+<!-- ============================================================
+     FILE: ai-skills-architect/index.html
+     WHAT IT IS: Track 17 — AI Skills System Architect
+     One-skill-one-role · trigger design · engine + pack · audit methodology
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Skills System Architect — Claude Skills Design Bootcamp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
+  --line: #E6E8F2; --muted: #5B5F77;
+  --primary: #3B5BD6; --primary-deep: #22307C;
+  --on-primary: #FFFFFF; --accent: #E8A33D; --accent-text: #9A5B00;
+  --blue-50: #EEF2FD; --blue-100: #DCE4FB;
+  --focus-ring: #3B5BD6; --radius: 8px;
+  --tag-bg: #EEF2FD; --tag-text: #22307C;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+    --line: #2A2E50; --muted: #9A9DBF;
+    --primary: #7B9FFF; --primary-deep: #3B5BD6;
+    --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+    --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+    --tag-bg: #171A38; --tag-text: #7B9FFF;
+  }
+}
+:root[data-theme="light"] { --tag-bg: #EEF2FD; --tag-text: #22307C; }
+:root[data-theme="dark"] {
+  --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+  --line: #2A2E50; --muted: #9A9DBF;
+  --primary: #7B9FFF; --primary-deep: #3B5BD6;
+  --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+  --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+  --tag-bg: #171A38; --tag-text: #7B9FFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+  left: 12px; top: 12px; background: var(--primary-deep); color: #fff;
+  padding: 8px 14px; border-radius: 8px; z-index: 200;
+  font-family: 'Inter', system-ui, sans-serif; font-size: 13px;
+}
+body { background: var(--canvas); font-family: 'Inter', sans-serif; color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+h1, h2 { font-family: 'Fraunces', serif; }
+
+#theme-btn {
+  position: fixed; top: 14px; right: 16px; z-index: 100;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10); transition: border-color 0.15s;
+}
+#theme-btn:hover { border-color: var(--primary); }
+#theme-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+.top-bar {
+  background: var(--primary-deep); color: #fff; padding: 10px 24px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+  display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
+}
+.back-link { color: rgba(255,255,255,0.7); text-decoration: none; }
+.back-link:hover { color: #fff; }
+.top-sep { opacity: 0.4; }
+
+.hero {
+  background: linear-gradient(135deg, var(--primary-deep) 0%, var(--primary) 60%, #E8A33D 100%);
+  color: #fff; padding: 52px 24px 44px; text-align: center;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero { background: linear-gradient(135deg, #08091A 0%, #1A2464 100%); } }
+:root[data-theme="dark"] .hero { background: linear-gradient(135deg, #08091A 0%, #1A2464 100%); }
+.hero-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.62); margin-bottom: 16px; }
+.hero h1 { font-size: clamp(22px, 4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; line-height: 1.1; }
+.hero h1 em { font-style: normal; color: #FDE68A; }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.82); max-width: 620px; margin: 0 auto 24px; line-height: 1.6; }
+.skill-grid { display: inline-flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.skill-chip { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.skill-chip .chip-label { font-size: 9px; opacity: 0.6; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.xp-bar-wrap { max-width: 640px; margin: 0 auto; padding: 20px 24px 0; display: flex; align-items: center; gap: 12px; }
+.xp-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--primary); font-weight: 700; white-space: nowrap; }
+.xp-track { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.xp-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.5s ease; }
+.xp-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+.map-section { max-width: 640px; margin: 0 auto; padding: 24px 24px 60px; }
+.map-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+.level-card { background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: flex-start; gap: 16px; transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; text-align: left; width: 100%; font-family: inherit; color: var(--ink); }
+.level-card:hover:not(.locked) { border-color: var(--accent); box-shadow: 0 4px 16px rgba(59,91,214,0.15); transform: translateY(-1px); }
+.level-card.locked { opacity: 0.45; cursor: default; }
+.level-card.done { border-color: var(--primary); background: var(--blue-50); }
+.level-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: var(--primary); background: var(--blue-50); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.level-card.done .level-num { background: var(--primary); color: var(--on-primary); }
+.level-body { flex: 1; }
+.level-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+.level-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.level-artifact { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--primary); font-weight: 700; }
+.level-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+.badge-type { background: var(--tag-bg); color: var(--tag-text); }
+.badge-done { background: var(--primary); color: var(--on-primary); }
+.badge-lock { background: var(--line); color: var(--muted); }
+
+.overlay { display: none; position: fixed; inset: 0; background: rgba(15,17,32,0.75); z-index: 100; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 32px 16px 64px; }
+.overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: 14px; max-width: 720px; width: 100%; padding: 36px 36px 32px; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.3); }
+.modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; line-height: 1; padding: 4px; font-family: inherit; }
+.modal-close:hover { color: var(--ink); }
+.modal-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+.modal h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.modal-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+hr.divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+.modal-ai-note { margin-top: 20px; padding: 10px 14px; background: var(--blue-50); border-radius: 6px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+.modal-ai-note a { color: var(--primary); }
+.artifact-box { background: var(--blue-50); border: 1.5px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; color: var(--primary); }
+.check-group { margin-bottom: 20px; }
+.check-group-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.checklist-item:last-child { border-bottom: none; }
+.check-box { width: 20px; height: 20px; border: 2px solid var(--line); border-radius: 4px; flex-shrink: 0; cursor: pointer; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: background 0.12s, border-color 0.12s; margin-top: 2px; }
+.check-box.checked { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.check-text { font-size: 14px; line-height: 1.5; font-weight: 600; }
+.check-note { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 400; }
+.builder-field { margin-bottom: 20px; }
+.builder-label { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block; }
+.builder-hint { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-style: italic; }
+.builder-input { width: 100%; min-height: 80px; padding: 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink); background: var(--canvas); resize: vertical; line-height: 1.55; transition: border-color 0.12s; }
+.builder-input:focus { outline: none; border-color: var(--primary); }
+.model-answer { display: none; margin-top: 10px; padding: 12px 14px; background: var(--blue-50); border-left: 3px solid var(--primary); border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--ink); }
+.model-answer strong { color: var(--primary); }
+.boss-header { text-align: center; margin-bottom: 24px; }
+.boss-icon { font-size: 44px; line-height: 1; margin-bottom: 8px; }
+.boss-title { font-size: 18px; font-weight: 700; }
+.boss-sub { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.boss-q { background: var(--blue-50); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--primary); }
+.boss-input { width: 100%; min-height: 96px; padding: 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink); background: var(--canvas); resize: vertical; line-height: 1.55; transition: border-color 0.12s; margin-bottom: 6px; }
+.boss-input:focus { outline: none; border-color: var(--primary); }
+.prog-note { background: var(--blue-50); border-left: 3px solid var(--primary); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: var(--ink); line-height: 1.5; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; border: none; transition: background 0.15s, transform 0.1s; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover { background: var(--primary-deep); }
+.btn-ghost { background: var(--canvas); color: var(--ink); border: 1.5px solid var(--primary); }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.final-screen { display: none; text-align: center; padding: 48px 24px 64px; }
+.final-screen.show { display: block; }
+.final-icon { font-size: 56px; margin-bottom: 16px; }
+.final-screen h2 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.final-screen p { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 520px; margin: 0 auto 24px; }
+.final-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+.final-chip { background: var(--blue-50); color: var(--primary); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #22307C; color: #fff; padding: 12px 22px; border-radius: 30px; font-size: 14px; font-weight: 600; white-space: nowrap; z-index: 300; transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; pointer-events: none; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); }
+footer a { color: var(--primary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer .ai-note { font-size: 10.5px; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">🌓</button>
+
+<div class="top-bar">
+  <a href="../" class="back-link">← All tracks</a>
+  <span class="top-sep">|</span>
+  <strong>Track 17 · AI Skills System Architect</strong>
+  <span class="top-sep">·</span>
+  <span>one-skill-one-role · trigger design · engine + pack · audit</span>
+  <span class="top-sep">·</span>
+  <span>5 modules · AI governance</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">AI Skills 2.0 · Custom Claude Skills · L&amp;D Production System</div>
+  <h1>One skill.<br><em>One role.</em></h1>
+  <p class="hero-sub">A skills system where every skill owns exactly one decision domain — and knows which neighbours to defer to. Five modules on designing, writing, auditing, and governing custom Claude skills for production use.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">One-role principle<span class="chip-label">no "and also"</span></div>
+    <div class="skill-chip">Trigger design<span class="chip-label">route by deliverable</span></div>
+    <div class="skill-chip">Engine + pack<span class="chip-label">constants vs variables</span></div>
+    <div class="skill-chip">Boundary declarations<span class="chip-label">name your neighbours</span></div>
+    <div class="skill-chip">Skills audit<span class="chip-label">F1–F5 methodology</span></div>
+  </div>
+</div>
+
+<div class="xp-bar-wrap">
+  <span class="xp-label">Modules mastered</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+  <span class="xp-count" id="xpCount">0 / 5</span>
+</div>
+
+<div class="map-section" id="main">
+  <div class="map-title">Skills architecture modules</div>
+  <div id="map"></div>
+</div>
+
+<div class="final-screen" id="finalScreen">
+  <div class="final-icon">🤖</div>
+  <h2>AI Skills System: audit complete.</h2>
+  <p>You can now design, document, and audit a production Claude skills system — every skill with one role, every description with explicit boundary declarations, and an audit registry that makes future changes safe.</p>
+  <div class="final-chips">
+    <span class="final-chip">One-role principle applied</span>
+    <span class="final-chip">Trigger designed</span>
+    <span class="final-chip">Engine + pack separated</span>
+    <span class="final-chip">Boundaries declared</span>
+    <span class="final-chip">F1–F5 audit run</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../cefr-metrics-architect/" class="btn btn-ghost">← Metrics Architect (Track 16)</a>
+    <a href="../" class="btn btn-ghost">All tracks</a>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalContent"></div>
+    <div class="modal-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <a href="../">← Language Learning Architect Bootcamp</a> · AI Skills System Architect · Track 17 · AI Skills 2.0
+  <div class="ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a> · © Ana Eslava-Graterol · Ocean Ink v0.1</div>
+</footer>
+
+<script>
+const LEVELS = [
+  {
+    id: 1,
+    name: "One Skill, One Role",
+    desc: "The foundational design principle: a skill owns exactly one decision domain. If you write 'and also' in a skill description, you have two skills in one file. This module drills the principle until it is automatic.",
+    type: "builder",
+    artifact: "→ Deliverable: Role definition for one skill in your system, with proof that it does not bleed into a neighbour",
+    fields: [
+      {
+        label: "What is a 'decision domain' and why does mixing two break a system?",
+        hint: "Define 'decision domain' in your own words. Then describe the concrete failure mode when two domains share one skill — use a specific example from an L&D context (e.g., a skill that both designs lessons AND produces CV documents).",
+        model: "<strong>Decision domain:</strong> The set of requests that one skill is the right agent to handle — defined by what kind of deliverable the user receives, not by the topic they mention. A skill that owns 'language course design' accepts any request whose output is a course design artifact (lesson plan, curriculum map, tutor spec). It is not defined by keywords like 'language' or 'learning'.<br><br><strong>The mixing failure:</strong> If a single skill owns both course design AND CV writing, two problems arise: (1) Trigger ambiguity — a request like 'write something for my language teaching role' could be a lesson plan or a cover letter; the skill does not know which role to adopt. It starts blending both and produces a hybrid that is neither. (2) Version rot — when you update the CV rules, the lesson design output silently changes because the instructions are entangled. The failure is not a crash; it is a subtle, persistent degradation in quality that is hard to diagnose.<br><br><strong>The test:</strong> Read your skill description and ask: 'If I remove the second role, does the first role still work perfectly?' If yes, the second role did not belong. If no, you have an illegitimate dependency — surface it and fix the architecture."
+      },
+      {
+        label: "The 'and also' test — apply it to a draft skill description",
+        hint: "Take this draft description for a fictional skill and identify every 'and also' hidden in it: 'This skill helps the user design language learning courses, including lesson plans, CEFR anchoring, and learner assessment. It also helps write the teacher's user guide and the investor pitch deck for the same product.' Count the distinct roles. Name each one as a separate skill.",
+        model: "<strong>Distinct roles in the draft (4, not 1):</strong><br><br>1. <strong>Course designer</strong> — lesson plans, CEFR anchoring. Decision domain: how the product teaches.<br><br>2. <strong>Assessment designer</strong> — learner assessment. Decision domain: how learning is measured. (This is especially dangerous to merge with #1: assessment has its own methodology — rubrics, task gates, evidence tiers — that the course designer should specify but not implement.)<br><br>3. <strong>Technical writer</strong> — teacher's user guide. Decision domain: operational documentation for practitioners.<br><br>4. <strong>Business writer</strong> — investor pitch deck. Decision domain: financial / strategic communication for stakeholders.<br><br><strong>The correct fix:</strong> Name four skills. The course designer (#1) references the assessment designer (#2) in its Phase 4 and defers. The teacher guide (#3) receives a filled course pack as input — it does not design. The investor deck (#4) receives a completed project as input — it translates, it does not design.<br><br><strong>Rule:</strong> Every 'and also' in a description is a signal to split. After splitting, each skill's description must name the neighbours it defers to — in both directions."
+      },
+      {
+        label: "Define the role for one skill you own or plan to build",
+        hint: "Write the single-sentence role statement for one skill in your system. Format: '[Skill name] owns [decision domain] and produces [deliverable type]. It does NOT own [what it explicitly excludes].' Then check: does the 'does NOT own' clause name a neighbour skill?",
+        model: "<strong>Example — language-learning-experience-designer:</strong><br>'This skill owns the full design path of a language-learning product — from design brief to build spec and investor pack — and produces a pedagogical architecture, lesson flow, tutor spec, and dual deliverable packs. It does NOT own the detailed metrics engine, xAPI statement schemas, rubric mechanics, or persona report formats (those belong to cefr-learning-metrics-architect), and it does NOT own Ana's personal career documents (those belong to ana-application-kit).'<br><br><strong>Why the 'does NOT own' clause must name a neighbour:</strong> If you write 'does not own metrics design' without naming who does, you create a gap — a user who asks for metrics gets no answer. The gap is worse than the overlap. Every exclusion clause must be a pointer, not a void.<br><br><strong>Example — cefr-learning-metrics-architect:</strong><br>'This skill owns the MLLDE Measurement Module — metric definitions, assessment blueprints, xAPI specs, IRI registry discipline, and D1–D4 persona reports — and produces measurement deliverables for language-learning products. It does NOT own lesson design, curriculum, tutor persona, or mission design (those belong to language-learning-experience-designer), and when a measurement request grows into full product design, it hands the lead to that skill.'"
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "Writing Skill Descriptions — Trigger, Boundary, Neighbour",
+    desc: "A skill description does three jobs: it tells the model WHEN to activate (trigger), WHAT it is responsible for (scope), and WHERE requests go when they are out of scope (boundary + neighbour). All three must be explicit.",
+    type: "builder",
+    artifact: "→ Deliverable: A production-ready skill description with trigger, scope, and bidirectional boundary declarations",
+    fields: [
+      {
+        label: "What makes a trigger condition precise vs vague — and why does it matter?",
+        hint: "Compare these two trigger clauses: (A) 'Use when the user asks about learning.' (B) 'Use when the user asks to design, redesign, or architect a language-learning product, course, curriculum, lesson flow, MVP, or learning experience — or says "let\\'s design a new project" / "diseñemos un nuevo proyecto."' What is the practical difference in a production system where 3 skills all deal with language learning?",
+        model: "<strong>Trigger A ('asks about learning') is dangerously vague</strong> in a 3-skill system. Any of the three custom skills could plausibly respond — the course designer designs learning, the metrics architect measures learning, the career kit mentions learning credentials. The model must pick one, and without specificity, it picks the one whose description it most recently encountered or whose surface keywords match — neither of which is the right criterion.<br><br><strong>Trigger B is precise</strong> because it routes by deliverable type, not by topic. The deliverable 'a language-learning product design' is different from 'a metrics system for that product' even when both prompts use the word 'learning'.<br><br><strong>The production test for a trigger:</strong> Can a request activate two skills at once under this trigger? If yes, the trigger is too broad. The trigger should be satisfiable only when the deliverable type matches this skill's domain.<br><br><strong>AI SKILLS 2.0 governance rule:</strong> Route by deliverable, not by keyword. Trigger clauses must describe the deliverable the user will receive, not the topic they are asking about. This is the fix for finding F1 (trigger collision on 'assessment') in the AI Skills 2.0 audit — the collision happened because the metrics skill triggered on a keyword ('assessing') that also appears in course design contexts."
+      },
+      {
+        label: "Write the trigger clause for one skill",
+        hint: "Using the skill you defined in Module 1, write the trigger clause. Format: 'TRIGGER: [specific user phrases or contexts that activate this skill, described as deliverable types, not keywords]. BOUNDARY: [what this skill explicitly does NOT handle]. DEFER TO: [named neighbour skill + what that skill handles].'",
+        model: "<strong>Example — cefr-learning-metrics-architect trigger clause:</strong><br><br>TRIGGER: Use when MEASUREMENT IS THE DELIVERABLE — the user asks for learning metrics, success metrics, KPIs, or ROI; CEFR/MCER descriptor alignment of an existing product; xAPI, SCORM, cmi5, or LRS export of language data; learner, teacher, or admin reporting; pronunciation measurement (IPA, GOP, phoneme scoring); or applying the MLLDE Measurement Module to a new app. Produces deliverables D1–D4 from the client project pack.<br><br>BOUNDARY: Measurement, evidence, and reporting only. If the request also involves designing lessons, curriculum, tutor, or product experience — or assessment as part of a course design — defer to language-learning-experience-designer, which leads and invokes this skill as its Phase 4 measurement arm.<br><br>DEFER TO: language-learning-experience-designer when the request is partly or fully about how the product teaches (not just how learning is proved); ana-application-kit when the request concerns Ana's personal career documents.<br><br><strong>What this does:</strong> The trigger routes by deliverable type. The boundary closes the gap (prevents ambiguity). The deferral is bidirectional — the metrics skill names the architect AND the architect's description names the metrics skill, so both directions are covered. No request falls into a void."
+      },
+      {
+        label: "Bidirectional boundary declarations — why both directions, not just one?",
+        hint: "Skill A says 'I defer to Skill B for measurement.' Skill B says nothing about Skill A. Is the system safe? Describe the failure mode and write the missing clause that Skill B must add.",
+        model: "<strong>No, the system is not safe.</strong> The failure mode: a user sends a request that is '60% design + 40% measurement.' Skill A (design) sees the 40% measurement component, says 'I defer to B for that part,' and hands the request off. Skill B (measurement) receives a combined request, has no instruction to defer the design portion back to A, and starts designing lessons — producing an output that is neither the Architect's nor the measurement arm's best work. Or worse: both skills activate on the same request (the trigger collision finding F1), producing two conflicting responses.<br><br><strong>The missing clause Skill B must add:</strong><br>'BOUNDARY: If the request involves designing lessons, curriculum, tutor, or product experience — or assessment as part of a course design — defer to language-learning-experience-designer. This skill LEADS; invoke the measurement arm (this skill) only for its Phase 4.' The measurement arm must know to return the lead to the architect when design enters the request.<br><br><strong>AI SKILLS 2.0 governance rule §2:</strong> Every description names its neighbours and defers in both directions. A → B and B → A. The audit registry (this skill's audit section) is the place to record each pair of reciprocal deferral clauses and verify they match."
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "Engine + Pack — Constants vs Variables",
+    desc: "The engine carries what never changes across projects (method, rules, standards). The pack carries what changes per project (client name, target level, language, mission type). New project = new pack, never a new skill.",
+    type: "checklist",
+    artifact: "→ Deliverable: Annotated engine/pack split for one skill, with a filled pack template for a real project",
+    groups: [
+      {
+        label: "Understanding the split",
+        items: [
+          { text: "State the rule: 'Everything constant lives in the engine (SKILL.md and its bundled references). Everything variable lives in a fillable pack template that the user fills per project.'", note: "Example: the MLLDE lesson blueprint (IPO cycle × CLIL 4Cs) is in the engine — it never changes. The hotel industry, Spanish language, A1→B1 level, and 'Grace' persona are in the pack — they change per client." },
+          { text: "Check: if your engine file contains a client name, a specific CEFR level, or a product name — it is pack content that leaked into the engine. Move it to the pack template.", note: "Leaked pack content is the most common cause of skill 'aging' — the skill was built for one project and silently assumes its particulars for all subsequent projects. The fix is always: find the variable, put it in the template." },
+          { text: "The 'new project' test: when a new client arrives, can you run the skill again with only a new filled pack — or do you need to edit SKILL.md? If you need to edit SKILL.md, something that should be in the pack is still in the engine.", note: "Editing SKILL.md for a new project is a design error, not a process step. The goal is zero edits to SKILL.md between projects. All project-specific setup goes into a new filled pack." },
+          { text: "Document the engine/pack split explicitly at the top of the skill's SKILL.md: 'Engine (this file) owns: [list]. Pack template owns: [list].' This makes the split auditable without reading every line.", note: "Example engine list: MLLDE method, CEFR descriptor rules, IRI registry discipline, validity rule, copyright block. Example pack list: client name, language, target CEFR level, mission type, product name, persona name." }
+        ]
+      },
+      {
+        label: "Pack template design",
+        items: [
+          { text: "A pack template is a fillable document — not a prompt, not a style guide, not a README. It has named fields with clear prompts. The user fills it; the skill reads the filled values as its project-specific inputs.", note: "Fields to include for a language-learning design pack: Client name, Product name, Target language, Source language, Target CEFR level(s), Priority skill (Reception/Production/Interaction/Mediation), Mission type (transactional/relational/professional), Industry context, Persona name, Pilot timeline." },
+          { text: "Each field in the pack template must map to exactly one place in the engine where that value is consumed. If a field has no consumer in the engine, it is dead weight — remove it or add the consumer first.", note: "Dead fields accumulate over time as features are removed but templates are not updated. A quarterly pack template audit (checking each field against the engine's reference points) prevents template drift." },
+          { text: "The pack is the client's intellectual property. The engine is the designer's IP. The pack template makes this split auditable and contractually clean: the client receives the filled pack and their learner data; the designer retains the engine.", note: "This IP split must be stated in the skill's SKILL.md and in any client agreement. 'You own your data and your filled pack. The method (engine) is licensed, not transferred.' — AI SKILLS 2.0 governance principle, derived from the MLLDE engine + pack doctrine." }
+        ]
+      },
+      {
+        label: "Governance",
+        items: [
+          { text: "The 'ship complete or don't ship' rule: a skill uploads with every file its SKILL.md cites. If SKILL.md says 'read references/cefr-scales.md', that file must exist in the upload. Missing reference files are a critical defect (Audit Finding F2).", note: "Before uploading a skill, run a file checklist: read every 'references/X.md' and 'assets/Y.json' citation in SKILL.md, then verify each file exists in the upload package. One missing file can make the skill non-functional in ways that are hard to debug." },
+          { text: "The master-copy rule for shared references: if a file must exist in two skills, declare one as the canonical master and the other as a mirror. The mirror is updated FROM the master — never edit the mirror first.", note: "Example: apa-references.md exists in both language-learning-experience-designer and cefr-learning-metrics-architect. The master copy is in the Architect skill. If APA rules change, update the Architect's copy first, then copy to the metrics skill. Editing the mirror first causes version drift." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: "Skills Audit — Running the F1–F5 Methodology",
+    desc: "A skills audit is a structured review that finds trigger collisions, missing files, shared content duplication, and role redundancy BEFORE they cause production failures. This module runs you through the five-finding audit framework.",
+    type: "checklist",
+    artifact: "→ Deliverable: Completed audit report for a real or practice skills system, with prioritised repair list",
+    groups: [
+      {
+        label: "Before the audit — inventory",
+        items: [
+          { text: "List every skill in the system in a single inventory table: name, one-line role, domain (personal / client / infrastructure). This is the ground truth the audit runs against.", note: "AI SKILLS 2.0 audit format: | # | Skill | One-line role | Domain |. Complete this table before checking anything else. A skill not in the table is not in scope — and is probably the source of an undiscovered problem." },
+          { text: "Separate role skills from format helpers (docx, pptx, pdf, dataviz). Format helpers do not own decision domains; they render deliverables. They cannot collide with role skills. Exclude them from the collision analysis but include them in the inventory.", note: "Confusing format helpers for role skills leads to false positives in collision detection. A 'pptx' skill triggering on the same request as a 'course designer' skill is not a collision — the pptx skill is producing a format, not making a design decision." }
+        ]
+      },
+      {
+        label: "The five audit findings",
+        items: [
+          { text: "F1 — Trigger collision (HIGH risk): Two or more role skills have trigger clauses that can activate on the same request. Test: write 5 ambiguous user prompts and see which skills each would activate. Any prompt that activates 2+ role skills is a collision.", note: "Fix: tighten the trigger clause of the lower-priority skill to explicitly exclude the overlapping case. Then add the reciprocal boundary in the other skill. Example fix from AI SKILLS 2.0: the metrics skill's 'assessing reading/writing' trigger was replaced with 'MEASUREMENT IS THE DELIVERABLE' — this excludes assessment-as-course-design, which belongs to the Architect." },
+          { text: "F2 — Missing reference files (CRITICAL): The skill's SKILL.md cites files that are not in the uploaded folder. The skill cannot honour its own rules. Test: parse every file path in SKILL.md and verify each one exists.", note: "This is the most damaging defect because it is silent — the skill runs but ignores its own methodology. Fix: re-upload the skill with the complete references/ and assets/ folders. Do not patch SKILL.md to remove the citations — add the missing files." },
+          { text: "F3 — Duplicated shared content (MEDIUM): Two skills carry copies of the same reference material. Test: look for identical or near-identical paragraphs in the SKILL.md bodies of different skills — copyright blocks, APA lists, method descriptions, IRI discipline sections.", note: "Fix: designate one copy as the master; the other becomes a mirror. Document the master-copy relationship in the audit registry. Duplication is not always avoidable (skills cannot share folders), but it must be managed — the master must be the canonical update point." },
+          { text: "F4 — Duplicate skills (LOW risk — often not found): Two skills with the same role that could be merged. Test: look for skills with overlapping 'owns' clauses that cannot be distinguished by deliverable type.", note: "F4 is rarer than it looks. Skills that seem redundant often have genuinely distinct roles when the deliverable type is checked carefully. Before merging, confirm the roles are truly identical — not just topically related. Merging distinct roles creates the F1 trigger collision problem." },
+          { text: "F5 — Siloed shared assets (LOW risk): Assets used by multiple skills (brand files, style tokens, shared templates) live in only one skill and are inaccessible to the others. Test: look for references to 'brand.md', 'palette', or 'style guide' in any skill and check whether other skills that produce branded output can reach those files.", note: "Fix (if asset use grows): promote the shared asset to a dedicated small skill (e.g., 'ana-brand-system') that all others cite. Only promote when the duplication causes active maintenance pain — do not promote speculatively." }
+        ]
+      },
+      {
+        label: "The audit registry",
+        items: [
+          { text: "Every skill described in an audit, and every change to a description, gets a row in the audit registry before the change is applied. The registry is the single source of truth for the current state of the skills system.", note: "Registry columns: skill name | description version | change summary | date | status (proposed / approved / deployed). The registry prevents invisible changes — changes that happen in a skill file but are not recorded, making the audit stale within days of being published." },
+          { text: "Governance rule: the decision rule ('route by deliverable type, not by keyword') is the router, not the keyword list. When a new request type appears, update the decision rule in the registry first, then update the trigger clauses in the skills that are affected.", note: "Updating trigger clauses without updating the decision rule creates drift — the skills say one thing, the governance says another. After six months, the audit cannot be trusted because the rule and the skills have diverged." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: "Boss Battle — Audit a Skills System",
+    desc: "You receive a description of a real skills system with known defects. Apply the F1–F5 audit methodology, write the repair priority list, and draft the corrected description for the highest-priority finding.",
+    type: "boss",
+    artifact: "→ Deliverable: Audit report + corrected skill description for the highest-priority finding",
+    questions: [
+      "You are auditing a 4-skill Claude system for an L&D consultancy. The skills are: (1) 'content-creator' — writes course content, quizzes, and also the company's LinkedIn posts; (2) 'assessment-designer' — designs assessments for courses and also learner progress reports for clients; (3) 'report-writer' — writes learner progress reports and client summaries; (4) 'brand-kit' — stores the company's brand colours and fonts for all output. Identify every finding type (F1–F5) present in this system and assign each a priority (Critical / High / Medium / Low).",
+      "The 'assessment-designer' trigger clause reads: 'Use when the user asks about tests, quizzes, assessments, evaluations, or measuring learning.' The 'content-creator' trigger clause reads: 'Use when the user asks to create course content, including quizzes and assessments.' Write the corrected trigger clause for both skills so the F1 collision is resolved. Both clauses must declare a reciprocal boundary.",
+      "Skill #3 ('report-writer') has a SKILL.md that references 'references/report-template.md' and 'assets/chart-style.json'. On audit, neither file is in the upload. What is the correct repair procedure — and what is the one thing you must NOT do as a shortcut?"
+    ]
+  }
+];
+
+let done = new Set();
+const TOTAL = LEVELS.length;
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function updateXP() {
+  const n = done.size;
+  document.getElementById('xpFill').style.width = (n / TOTAL * 100) + '%';
+  document.getElementById('xpCount').textContent = n + ' / ' + TOTAL;
+  if (n === TOTAL) {
+    setTimeout(() => {
+      document.getElementById('map').style.display = 'none';
+      document.getElementById('finalScreen').classList.add('show');
+    }, 600);
+  }
+}
+
+function renderMap() {
+  const map = document.getElementById('map');
+  map.innerHTML = '';
+  LEVELS.forEach((lvl, i) => {
+    const isDone = done.has(lvl.id);
+    const isLocked = i > 0 && !done.has(LEVELS[i-1].id);
+    const card = document.createElement('button');
+    card.className = 'level-card' + (isDone ? ' done' : '') + (isLocked ? ' locked' : '');
+    card.setAttribute('aria-label', 'Module ' + lvl.id + ': ' + lvl.name + (isDone ? ' — completed' : isLocked ? ' — locked' : ''));
+    if (!isLocked) card.onclick = () => openLevel(lvl);
+    const typeLabel = lvl.type === 'boss' ? 'Boss Battle' : lvl.type === 'checklist' ? 'Checklist' : 'Builder';
+    card.innerHTML = `
+      <div class="level-num">${isDone ? '✓' : lvl.id}</div>
+      <div class="level-body">
+        <div class="level-name">${lvl.name}</div>
+        <div class="level-desc">${lvl.desc}</div>
+        ${lvl.artifact ? `<div class="level-artifact">${lvl.artifact}</div>` : ''}
+        <div class="level-meta">
+          <span class="badge badge-type">${typeLabel}</span>
+          ${isDone ? '<span class="badge badge-done">Complete</span>' : ''}
+          ${isLocked ? '<span class="badge badge-lock">Locked</span>' : ''}
+        </div>
+      </div>`;
+    map.appendChild(card);
+  });
+}
+
+function openLevel(lvl) {
+  const overlay = document.getElementById('overlay');
+  const content = document.getElementById('modalContent');
+  overlay.classList.add('open');
+
+  let html = `<div class="modal-eyebrow">Module ${lvl.id} of ${TOTAL}</div>
+    <h2 id="modalTitle">${lvl.name}</h2>
+    <p class="modal-desc">${lvl.desc}</p>`;
+
+  if (lvl.artifact) {
+    html += `<div class="artifact-box">📄 ${lvl.artifact}</div>`;
+  }
+
+  html += '<hr class="divider">';
+
+  if (lvl.type === 'builder') {
+    html += buildBuilder(lvl);
+  } else if (lvl.type === 'checklist') {
+    html += buildChecklist(lvl);
+  } else if (lvl.type === 'boss') {
+    html += buildBoss(lvl);
+  }
+
+  content.innerHTML = html;
+
+  content.querySelectorAll('.btn-show-model').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ma = btn.nextElementSibling;
+      if (ma) {
+        ma.style.display = ma.style.display === 'block' ? 'none' : 'block';
+        btn.textContent = ma.style.display === 'block' ? 'Hide model answer ↑' : 'Show model answer ↓';
+      }
+    });
+  });
+
+  content.querySelectorAll('.check-box').forEach(box => {
+    box.addEventListener('click', () => {
+      box.classList.toggle('checked');
+      box.textContent = box.classList.contains('checked') ? '✓' : '';
+      checkAllChecked(lvl);
+    });
+  });
+
+  const markBtn = content.querySelector('#markDoneBtn');
+  if (markBtn) {
+    markBtn.addEventListener('click', () => {
+      done.add(lvl.id);
+      showToast('Module ' + lvl.id + ' complete! 🎉');
+      closeOverlay();
+      updateXP();
+      renderMap();
+    });
+  }
+
+  overlay.querySelector('#modalClose').onclick = closeOverlay;
+  overlay.onclick = e => { if (e.target === overlay) closeOverlay(); };
+  document.addEventListener('keydown', escHandler);
+  overlay.focus && overlay.focus();
+}
+
+function escHandler(e) {
+  if (e.key === 'Escape') closeOverlay();
+}
+
+function closeOverlay() {
+  document.getElementById('overlay').classList.remove('open');
+  document.removeEventListener('keydown', escHandler);
+}
+
+function buildBuilder(lvl) {
+  let html = '';
+  lvl.fields.forEach((f, fi) => {
+    html += `<div class="builder-field">
+      <label class="builder-label" for="bf-${lvl.id}-${fi}">${f.label}</label>
+      <div class="builder-hint">${f.hint}</div>
+      <textarea class="builder-input" id="bf-${lvl.id}-${fi}" aria-label="${f.label}" placeholder="Write your answer here…"></textarea>
+      <button class="btn btn-ghost btn-show-model" type="button" style="margin-top:6px;font-size:13px;padding:7px 14px;">Show model answer ↓</button>
+      <div class="model-answer" aria-live="polite">${f.model}</div>
+    </div>`;
+  });
+  html += `<div class="btn-row"><button class="btn btn-primary" id="markDoneBtn" type="button">Mark module complete ✓</button></div>`;
+  return html;
+}
+
+function buildChecklist(lvl) {
+  let html = '';
+  lvl.groups.forEach(g => {
+    html += `<div class="check-group"><div class="check-group-label">${g.label}</div>`;
+    g.items.forEach((item, ii) => {
+      html += `<div class="checklist-item">
+        <div class="check-box" role="checkbox" aria-checked="false" tabindex="0" aria-label="${item.text}"></div>
+        <div><div class="check-text">${item.text}</div><div class="check-note">${item.note}</div></div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  html += `<div class="prog-note">Check all items to confirm you have applied this module to a real or practice skill in your system.</div>`;
+  html += `<div class="btn-row"><button class="btn btn-primary" id="markDoneBtn" type="button">Mark module complete ✓</button></div>`;
+  return html;
+}
+
+function buildBoss(lvl) {
+  let html = `<div class="boss-header">
+    <div class="boss-icon">🤖</div>
+    <div class="boss-title">Boss Battle: Skills System Audit</div>
+    <div class="boss-sub">Apply the full F1–F5 audit methodology to a live scenario. Answer all three questions before submitting.</div>
+  </div>`;
+  lvl.questions.forEach((q, qi) => {
+    html += `<div class="boss-q">Q${qi + 1}: ${q}</div>
+      <textarea class="boss-input" aria-label="Answer to question ${qi+1}" placeholder="Your answer…"></textarea>`;
+  });
+  html += `<div class="prog-note">There is no single correct answer — the audit is a method, not a key. A good answer names specific findings (F1–F5), assigns correct priorities, and drafts corrected clauses with reciprocal boundary declarations.</div>`;
+  html += `<div class="btn-row"><button class="btn btn-primary" id="markDoneBtn" type="button">Submit audit & complete track ✓</button></div>`;
+  return html;
+}
+
+function checkAllChecked(lvl) {
+  // Auto-mark complete not applied on checklist — user clicks the button
+}
+
+// Theme toggle — three-state: system → light → dark → system
+const themes = ['system', 'light', 'dark'];
+const icons = { system: '🌓', light: '☀️', dark: '🌙' };
+let themeIdx = 0;
+
+function applyTheme(t) {
+  const root = document.documentElement;
+  if (t === 'system') { root.removeAttribute('data-theme'); }
+  else { root.setAttribute('data-theme', t); }
+  const btn = document.getElementById('theme-btn');
+  btn.textContent = icons[t];
+  btn.setAttribute('aria-label', 'Colour theme: ' + t + '. Click to switch.');
+  try { localStorage.setItem('oi-theme', t); } catch(e) {}
+}
+
+document.getElementById('theme-btn').addEventListener('click', () => {
+  themeIdx = (themeIdx + 1) % themes.length;
+  applyTheme(themes[themeIdx]);
+});
+
+try {
+  const saved = localStorage.getItem('oi-theme');
+  if (saved && themes.includes(saved)) {
+    themeIdx = themes.indexOf(saved);
+    applyTheme(saved);
+  }
+} catch(e) {}
+
+renderMap();
+updateXP();
+</script>
+</body>
+</html>

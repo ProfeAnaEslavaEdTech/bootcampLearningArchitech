@@ -1,0 +1,675 @@
+<!-- ============================================================
+     FILE: tooling-sprint/index.html
+     UPLOAD TO: create folder "tooling-sprint" → upload as index.html
+     WHAT IT IS: Tooling Sprint — 5 modules: Rise, Storyline/SCORM,
+     SCORM Cloud evidence, Camtasia video, portfolio walk-through
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tooling Sprint — Build the Skills, Ship the Artifacts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --fire: #B45309;
+    --fire-bright: #D97706;
+    --fire-mid: #F59E0B;
+    --fire-soft: #FFFBEB;
+    --paper: #FEFDF8;
+    --panel: #FFFFFF;
+    --line: #FDE68A;
+    --ink: #1C1000;
+    --ink-soft: #57534E;
+    --green: #166534; --green-soft: #DCFCE7;
+    --blue: #1D4ED8;  --blue-soft: #EFF6FF;
+    --red: #991B1B;   --red-soft: #FEE2E2;
+    --radius: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink); min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  *:focus-visible { outline: 3px solid var(--fire-bright); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: var(--fire); color: #fff;
+    padding: 10px 24px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
+  }
+  .back-link { color: rgba(255,255,255,0.7); text-decoration: none; }
+  .back-link:hover { color: #fff; }
+  .top-sep { opacity: 0.4; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #78350F 0%, var(--fire) 100%);
+    color: #fff; padding: 52px 24px 44px; text-align: center;
+  }
+  .hero-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.55); margin-bottom: 16px;
+  }
+  .hero h1 { font-size: clamp(24px, 4vw, 42px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; line-height: 1.1; }
+  .hero h1 em { font-style: normal; color: #FDE68A; }
+  .hero-sub { font-size: 15px; color: rgba(255,255,255,0.75); max-width: 600px; margin: 0 auto 24px; line-height: 1.6; }
+
+  .skill-grid {
+    display: inline-flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  }
+  .skill-chip {
+    background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px; padding: 6px 14px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.9);
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .skill-chip .chip-label { font-size: 9px; opacity: 0.6; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* XP */
+  .xp-bar-wrap { max-width: 640px; margin: 0 auto; padding: 20px 24px 0; display: flex; align-items: center; gap: 12px; }
+  .xp-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--fire); font-weight: 700; white-space: nowrap; }
+  .xp-track { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .xp-fill  { height: 100%; background: var(--fire-bright); border-radius: 3px; transition: width 0.5s ease; }
+  .xp-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
+
+  /* MAP */
+  .map-section { max-width: 640px; margin: 0 auto; padding: 24px 24px 60px; }
+  .map-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+  .level-card {
+    background: var(--panel); border: 1.5px solid var(--line); border-radius: var(--radius);
+    padding: 20px 22px; margin-bottom: 10px; cursor: pointer;
+    display: flex; align-items: flex-start; gap: 16px;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    text-align: left; width: 100%; font-family: inherit;
+  }
+  .level-card:hover:not(.locked) { border-color: var(--fire-mid); box-shadow: 0 4px 16px rgba(180,83,9,0.15); transform: translateY(-1px); }
+  .level-card.locked { opacity: 0.45; cursor: default; }
+  .level-card.done   { border-color: var(--fire); background: var(--fire-soft); }
+
+  .level-num {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--fire); background: var(--fire-soft); border-radius: 50%;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .level-card.done .level-num { background: var(--fire); color: #fff; }
+
+  .level-body { flex: 1; }
+  .level-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .level-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+  .level-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .level-artifact {
+    display: flex; align-items: center; gap: 6px; margin-top: 8px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--fire); font-weight: 700;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .badge-type { background: var(--fire-soft); color: var(--fire); }
+  .badge-done { background: var(--fire); color: #fff; }
+  .badge-lock { background: #F5F5F4; color: #78716C; }
+
+  /* OVERLAY */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(28,16,0,0.7); z-index: 100;
+    align-items: flex-start; justify-content: center;
+    overflow-y: auto; padding: 32px 16px 64px;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--panel); border-radius: 14px; max-width: 700px; width: 100%;
+    padding: 36px 36px 32px; position: relative;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; font-size: 22px;
+    color: var(--ink-soft); cursor: pointer; line-height: 1; padding: 4px; font-family: inherit;
+  }
+  .modal-close:hover { color: var(--ink); }
+  .modal-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--fire); margin-bottom: 10px;
+  }
+  .modal h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .modal-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 24px; }
+  hr.divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+
+  /* ARTIFACT BOX */
+  .artifact-box {
+    background: var(--fire-soft); border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 14px 16px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; color: var(--fire);
+  }
+
+  /* STEP LIST */
+  .step-list { list-style: none; padding: 0; margin: 0 0 16px; }
+  .step-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--line);
+  }
+  .step-item:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--fire); background: var(--fire-soft); border-radius: 50%;
+    width: 24px; height: 24px; min-width: 24px;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+  .step-body { flex: 1; }
+  .step-action { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 4px; }
+  .step-detail { font-size: 12px; color: var(--ink-soft); line-height: 1.5; }
+  .step-link { color: var(--blue); font-weight: 600; }
+
+  /* CHECKLIST */
+  .check-group { margin-bottom: 20px; }
+  .check-group-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft);
+    margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line);
+  }
+  .checklist-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--line);
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px; height: 20px; border: 2px solid var(--line); border-radius: 4px;
+    flex-shrink: 0; cursor: pointer; background: var(--panel);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; transition: background 0.12s, border-color 0.12s; margin-top: 2px;
+  }
+  .check-box.checked { background: var(--fire); border-color: var(--fire); color: #fff; }
+  .check-text  { font-size: 14px; line-height: 1.5; font-weight: 600; }
+  .check-note  { font-size: 12px; color: var(--ink-soft); margin-top: 3px; font-weight: 400; }
+
+  /* BUILDER */
+  .builder-field { margin-bottom: 20px; }
+  .builder-label { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block; }
+  .builder-hint  { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; font-style: italic; }
+  .builder-input {
+    width: 100%; min-height: 80px; padding: 12px; border: 1.5px solid var(--line);
+    border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
+    background: var(--paper); resize: vertical; line-height: 1.55; transition: border-color 0.12s;
+  }
+  .builder-input:focus { outline: none; border-color: var(--fire-mid); }
+  .model-answer {
+    display: none; margin-top: 10px; padding: 12px 14px;
+    background: var(--fire-soft); border-left: 3px solid var(--fire-mid);
+    border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--ink);
+  }
+  .model-answer strong { color: var(--fire); }
+
+  /* BOSS */
+  .boss-header { text-align: center; margin-bottom: 24px; }
+  .boss-icon   { font-size: 44px; line-height: 1; margin-bottom: 8px; }
+  .boss-title  { font-size: 18px; font-weight: 700; }
+  .boss-sub    { font-size: 13px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .boss-q {
+    background: var(--fire-soft); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
+    font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--fire);
+  }
+  .boss-input {
+    width: 100%; min-height: 96px; padding: 12px; border: 1.5px solid var(--line);
+    border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
+    background: var(--paper); resize: vertical; line-height: 1.55;
+    transition: border-color 0.12s; margin-bottom: 6px;
+  }
+  .boss-input:focus { outline: none; border-color: var(--fire-mid); }
+
+  /* PROGRESS WIDGET */
+  .prog-note {
+    background: var(--blue-soft); border-left: 3px solid var(--blue);
+    border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;
+    font-size: 13px; color: #1E3A8A; line-height: 1.5;
+  }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px; border-radius: 8px; font-family: inherit;
+    font-size: 14px; font-weight: 700; cursor: pointer; border: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--fire); color: #fff; }
+  .btn-primary:hover { background: var(--fire-bright); }
+  .btn-ghost { background: var(--paper); color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--fire-mid); }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+
+  /* FINAL */
+  .final-screen { display: none; text-align: center; padding: 48px 24px 64px; }
+  .final-screen.show { display: block; }
+  .final-icon { font-size: 56px; margin-bottom: 16px; }
+  .final-screen h2 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+  .final-screen p  { font-size: 15px; color: var(--ink-soft); line-height: 1.65; max-width: 520px; margin: 0 auto 24px; }
+  .final-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+  .final-chip {
+    background: var(--fire-soft); color: var(--fire);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    padding: 5px 12px; border-radius: 20px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 30px;
+    font-size: 14px; font-weight: 600; white-space: nowrap; z-index: 300;
+    transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  footer { text-align: center; padding: 24px; font-size: 12px; color: var(--ink-soft); }
+  footer a { color: var(--fire); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="../" class="back-link">← All tracks</a>
+  <span class="top-sep">|</span>
+  <strong>Tooling Sprint</strong>
+  <span class="top-sep">·</span>
+  <span>Rise → Storyline → SCORM → Camtasia → Portfolio</span>
+  <span class="top-sep">·</span>
+  <span>5 modules · ~2 weeks hands-on</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">Artifact-driven · Build then evidence</div>
+  <h1>Build the skills. <em>Ship the artifacts.</em></h1>
+  <p class="hero-sub">Four tools appear in most postings. This sprint closes them in priority order — each module ends with a concrete portfolio artifact, not just a checkbox. No artifact = module not complete.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">Articulate Rise 360<span class="chip-label">closeable · 2–3 days</span></div>
+    <div class="skill-chip">Storyline 360<span class="chip-label">closeable · 1 week</span></div>
+    <div class="skill-chip">SCORM + LRS<span class="chip-label">1 afternoon</span></div>
+    <div class="skill-chip">Camtasia / Video<span class="chip-label">biggest gap · 1 weekend</span></div>
+    <div class="skill-chip">Portfolio walk-through<span class="chip-label">rehearse each artifact</span></div>
+  </div>
+</div>
+
+<div class="xp-bar-wrap">
+  <span class="xp-label">Artifacts shipped</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+  <span class="xp-count" id="xpCount">0 / 5</span>
+</div>
+
+<div class="map-section">
+  <div class="map-title">Sprint modules</div>
+  <div id="map"></div>
+</div>
+
+<div class="final-screen" id="finalScreen">
+  <div class="final-icon">🚀</div>
+  <h2>Sprint complete. Four tools, four artifacts.</h2>
+  <p>You can now demonstrate — not claim — Rise, Storyline, SCORM reporting, and video production. Each artifact is a screener blocker closed.</p>
+  <div class="final-chips">
+    <span class="final-chip">Rise module live</span>
+    <span class="final-chip">Storyline scenario + SCORM</span>
+    <span class="final-chip">SCORM Cloud dashboard</span>
+    <span class="final-chip">Video microlearning</span>
+    <span class="final-chip">Portfolio walk-through rehearsed</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../unicef-apply/" class="btn btn-ghost">← Application lab</a>
+    <a href="../" class="btn btn-ghost">All tracks</a>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <a href="../">← Learning Architect Bootcamp</a> · Four tools. Four artifacts. Then the next posting.
+</footer>
+
+<script>
+const LEVELS = [
+  {
+    id: 1,
+    name: "Articulate Rise 360",
+    desc: "Sign up, build a real course from an existing lesson, publish it, and get a shareable link. This is the artifact that closes the single biggest UNICEF screening gap.",
+    type: "checklist",
+    artifact: "→ Artifact: Live Rise module with a Review 360 or web URL",
+    groups: [
+      {
+        label: "Setup (30 min)",
+        items: [
+          { text: "Go to articulate.com/360 → Start Free Trial (30 days, no credit card required)", note: "Use your portfolio email so the account can persist." },
+          { text: "Open Rise 360 from the Articulate 360 dashboard", note: "Rise is the block-based tool. Storyline is the slide tool. Don't confuse them." },
+          { text: "Complete the 'Rise Quick Start' in-app tutorial (click ? → Quick Start)", note: "~20 minutes. Shows you blocks, lessons, sections, and the publish flow." }
+        ]
+      },
+      {
+        label: "Build (2–3 days)",
+        items: [
+          { text: "Choose an existing lesson, unit, or training piece you've already designed — rebuild it in Rise", note: "Do NOT build something new from scratch for the first artifact. Rebuild something you know so you can focus on the tool, not the content." },
+          { text: "Add at least 3 different block types: e.g. Text + Media, Sorting Activity, Knowledge Check", note: "Screeners check if you know Rise beyond paragraph blocks. Interactive blocks show authoring fluency." },
+          { text: "Add at least one multimedia block (video, audio, or annotated image)", note: "You can embed a Loom or YouTube link if you don't have original video yet." },
+          { text: "Add a quiz with at least 3 questions — one multiple choice, one true/false, one matching", note: "Use the built-in Quiz lesson type. Set a passing score (e.g. 80%)." },
+          { text: "Check the course on your phone using Preview → Mobile", note: "Rise is responsive by default but some block arrangements break on small screens. Fix anything that looks wrong." }
+        ]
+      },
+      {
+        label: "Publish & Evidence (1 hour)",
+        items: [
+          { text: "Publish via Share → Publish Online (free, no hosting needed) → copy the shareable URL", note: "This gives you a link that works in a browser without any LMS. Screenshot the published course in a browser." },
+          { text: "Add the URL and a screenshot to your portfolio page with the label 'Built in Articulate Rise 360'", note: "The link proves it's real. The screenshot gives a quick visual without requiring the interviewer to click." },
+          { text: "Also publish as SCORM 1.2 ZIP (for Storyline module 2) — download the ZIP file", note: "You'll upload this to SCORM Cloud in module 3." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "Storyline 360 — Branching Scenario",
+    desc: "Variables, branching paths, consequence slides, and a SCORM publish. This is what separates 'I've used Storyline' from 'I design with Storyline.'",
+    type: "checklist",
+    artifact: "→ Artifact: Publishable Storyline scenario (SCORM ZIP + Review 360 link)",
+    groups: [
+      {
+        label: "Design first — before you open the tool (1 hour)",
+        items: [
+          { text: "Write a branching scenario brief: one real workplace situation, two decision points, at least three outcomes", note: "Example: 'A supply chain officer receives an urgent vendor request with missing documentation. Do they: A) approve now, B) escalate, or C) ask for documents?' Design this on paper BEFORE touching Storyline." },
+          { text: "Map the branches on paper: which choices lead where, what feedback each path shows", note: "A flow diagram with 6–10 boxes. If you can't draw it, you can't build it." }
+        ]
+      },
+      {
+        label: "Build in Storyline 360 (3–4 days)",
+        items: [
+          { text: "Open Storyline 360 from the Articulate 360 dashboard → New Project", note: "Storyline uses slides, layers, triggers, and variables — very different from Rise." },
+          { text: "Complete the Storyline Quick Start tutorial before building your scenario", note: "Helps you understand slides, layers, states, and triggers in 30 minutes." },
+          { text: "Build the scenario: at least 6 slides (intro, 2 decision slides, correct path, 2 consequence slides)", note: "Use Text Entry or Button click → True/False Variable → Jump to Slide trigger for branching." },
+          { text: "Add a True/False variable that tracks whether the learner chose correctly, and use it on the final results slide", note: "This is the technical differentiator. Variables show you understand Storyline logic, not just slide design." },
+          { text: "Add custom feedback slides — do NOT use the default 'Correct/Incorrect' popups", note: "Custom feedback shows design thinking: why was that choice wrong? What should the learner do instead?" },
+          { text: "Add a results slide (Insert → New Slide → Results) — show score and pass/fail message", note: "Set passing score to 100% (only correct branching passes). This generates SCORM tracking data." }
+        ]
+      },
+      {
+        label: "Publish & Evidence",
+        items: [
+          { text: "Publish → Articulate Review 360 → copy the shareable link", note: "For portfolio and interview use." },
+          { text: "Also Publish → SCORM 1.2 → download ZIP", note: "You'll upload this to SCORM Cloud in module 3." },
+          { text: "Add the Review 360 link to your portfolio with the caption 'Branching scenario — Storyline 360'", note: "Include one screenshot of the branching slide showing the decision buttons." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "SCORM Cloud + LRS Evidence",
+    desc: "Upload your SCORM package, capture completion/score data, and screenshot the dashboard. This turns 'SCORM/xAPI' in your CV from a claim into evidence.",
+    type: "builder",
+    artifact: "→ Artifact: SCORM Cloud dashboard screenshot showing your module's reporting data",
+    fields: [
+      {
+        label: "Step 1: Publish to SCORM Cloud (free tier)",
+        hint: "Go to scormcloud.com → Sign up free → Create App → Upload SCORM Package (the ZIP from module 1 or 2). Launch your own course as a test learner. Complete it. Go to Reporting → see your completion, score, and time-on-task. Screenshot it. Paste the screenshot URL or describe what data you see.",
+        model: "<strong>What the dashboard should show:</strong> Learner name · Completion status (Completed/Passed) · Score (if quiz exists) · Time on task · Launch date. This is exactly the data an LMS captures — SCORM Cloud is an LMS that shows you the raw tracking layer. In an interview: 'I published a SCORM package to SCORM Cloud to verify the tracking data before deploying to the client LMS — here's the completion report.' That's a production workflow answer, not a theory answer."
+      },
+      {
+        label: "Step 2 (optional but powerful): xAPI statement to a free LRS",
+        hint: "Sign up for Veracity LRS (veracity.it/learning-locker-free) or Learning Locker free tier. In Storyline: Edit → Player → Reporting → Tracking: Report with xAPI. In the LRS endpoint, paste your Veracity endpoint + key. Launch the course → check the LRS statements page. Describe what you see or paste a screenshot URL.",
+        model: "<strong>xAPI statement structure you'll see:</strong> Actor (who) · Verb (completed/passed/answered) · Object (your course/question ID) · Result (score, success, completion) · Context (platform, session ID). In an interview: 'I tested xAPI statement delivery to a free LRS — here are three verb types the course generates. This is how I'd verify tracking integration before a production LMS deploy.' Rare. Only a small percentage of applicants can say this with evidence."
+      },
+      {
+        label: "Step 3: Write your CV line for SCORM/xAPI",
+        hint: "Based on what you built and evidenced, write the specific CV bullet for SCORM/xAPI. Use the evidence you just generated — not a generic claim.",
+        model: "<strong>Model bullet:</strong> 'Published SCORM 1.2 packages and verified completion tracking via SCORM Cloud; tested xAPI statement delivery to [Veracity/Learning Locker] LRS — confirmation report and tracking data available in portfolio.' — or shorter: 'SCORM/xAPI development and testing: publish-to-LRS workflow with reporting evidence.'"
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: "Camtasia — Video Microlearning",
+    desc: "Record a 3–5 minute screencast, add captions, run WCAG checks, publish. Video production is the single biggest structural gap across all postings — four of six roles named it.",
+    type: "checklist",
+    artifact: "→ Artifact: 3–5 min video microlearning piece, captioned, WCAG-checked, portfolio-linked",
+    groups: [
+      {
+        label: "Setup",
+        items: [
+          { text: "Download Camtasia free trial from techsmith.com/camtasia — 30-day full access", note: "Windows or Mac. If budget allows later: ~€300 one-time license. Free trial is enough for one artifact." },
+          { text: "Choose your recording topic: a tool walkthrough, a process explanation, or a how-to for something in your domain", note: "Best choice: a Storyline or Rise authoring step you already know. 'How to add a branching trigger in Storyline' is short, demonstrable, and shows double fluency." },
+          { text: "Write a 3–5 minute script before recording", note: "Time it out loud. 3 minutes of video = roughly 400–450 words at a comfortable pace. Do NOT improvise on-screen — you will restart 6 times." }
+        ]
+      },
+      {
+        label: "Record & Edit",
+        items: [
+          { text: "Use Camtasia's built-in recorder (Record Screen) — record screen + microphone simultaneously", note: "Check audio levels first: open Recorder → Audio → verify green bar moves when you speak." },
+          { text: "After recording: trim dead air at the start and end (drag the clip edges on the timeline)", note: "Every second of dead air in a portfolio video costs you attention. Lead with something happening." },
+          { text: "Add a title card at the start (5 sec): your name, the topic, the tool used", note: "Insert → Annotations → Title. Looks professional and gives screeners context." },
+          { text: "Add captions: Tools → Captions → Auto-generate → review every line and correct errors", note: "Auto-captions in Camtasia are good but not perfect. Reading every line is required for WCAG 1.2.2 compliance — you cannot just auto-generate and publish." },
+          { text: "Add zoom effects on key clicks (Animations → Zoom-n-Pan) to highlight small UI elements", note: "This is the core Camtasia microlearning skill. Shows you know how to direct visual attention." },
+          { text: "Add a brief end card (5 sec): 'Built by [name] · [portfolio URL]'", note: "Portfolio link in a video is a hire-me artifact that follows the link, not just the file." }
+        ]
+      },
+      {
+        label: "Publish & Evidence",
+        items: [
+          { text: "Export at 1080p MP4 (Share → Local File → MP4) — upload to YouTube (unlisted) or Vimeo (free tier)", note: "YouTube Unlisted = shareable by link, not indexed. Perfect for portfolio use." },
+          { text: "Run the published video through WAVE (wave.webaim.org) if embedded in a page, or check: do captions exist? Does the player have keyboard controls? Is there a transcript option?", note: "WCAG 1.2.2 requires synchronized captions for prerecorded audio. Your published video satisfies this if Camtasia captions were exported and embedded." },
+          { text: "Add the video to your portfolio page with: the YouTube/Vimeo embed, a one-line description, and the label 'Video microlearning — Camtasia'", note: "Also note the tools used (Camtasia + screen recording + auto-caption + manual correction) in the project description." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: "Portfolio Walk-Through",
+    desc: "You've built four artifacts. Now rehearse talking through each one. An interviewer will ask you to walk them through your portfolio — practice it out loud, not in your head.",
+    type: "boss",
+    artifact: "→ Artifact: Confident verbal portfolio presentation (2 min per piece)",
+    questions: [
+      {
+        q: "'Walk me through your Storyline scenario — what was the learner deciding, and what did the branching structure achieve?'",
+        model: "<strong>Structure to hit:</strong> (1) What problem the scenario addresses — the real-world decision the learner faces. (2) The branching architecture — how many decision points, what path logic, what each consequence taught. (3) The Storyline technical choices — why you used a variable, how the results slide tracks success. (4) What you'd do differently next time.<br><br><strong>What they're testing:</strong> Can you explain design decisions, not just tool operations? 'I added a variable because I needed to track the learner's first choice across multiple slides — the results slide reads that variable to determine which feedback they see' is a design answer. 'I clicked Insert → Variable' is an operator answer. They want designers."
+      },
+      {
+        q: "'Show me your SCORM reporting evidence. What does it tell you about the learner experience?'",
+        model: "<strong>Structure to hit:</strong> Open your SCORM Cloud screenshot. (1) Name the data points visible: completion status, score, time on task. (2) Explain what each tells you: time-on-task reveals if learners are reading or clicking through; score reveals if the assessment discriminates between prepared and unprepared learners; completion tells you if the course logic closes correctly. (3) Explain what you'd act on: 'If time-on-task was under 30 seconds for a 5-minute course, I'd suspect a click-through problem and redesign the interaction to require engagement.'<br><br>This answer shows you use data, not just collect it — rare in ID candidates."
+      },
+      {
+        q: "'Talk me through the video microlearning piece. What production decisions did you make and why?'",
+        model: "<strong>Structure to hit:</strong> (1) Why this topic — what the learner needed to be able to do after watching. (2) The production choices: script before recording, Camtasia for annotation and zoom control, auto-caption with manual review for WCAG 1.2.2. (3) What you'd add with more budget: a second camera for face-on reaction, ElevenLabs for AI voiceover in a second language, animated intro. (4) The accessibility sign-off: 'Captions are manually reviewed — I don't publish auto-generated without correction because AI caption error rates vary by accent.'<br><br>That accessibility specificity ends the interview in your favor."
+      }
+    ]
+  }
+];
+
+let completed = new Set();
+let checkState = {};
+
+function xp() {
+  const done = completed.size;
+  document.getElementById('xpFill').style.width = (done / LEVELS.length * 100) + '%';
+  document.getElementById('xpCount').textContent = done + ' / ' + LEVELS.length;
+}
+
+function renderMap() {
+  const map = document.getElementById('map');
+  map.innerHTML = '';
+  LEVELS.forEach((lvl, i) => {
+    const locked = i > 0 && !completed.has(LEVELS[i - 1].id);
+    const done = completed.has(lvl.id);
+    const btn = document.createElement('button');
+    btn.className = 'level-card' + (locked ? ' locked' : '') + (done ? ' done' : '');
+    btn.disabled = locked;
+    btn.onclick = () => !locked && openLevel(lvl.id);
+    btn.innerHTML = `
+      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-body">
+        <div class="level-name">${lvl.name}</div>
+        <div class="level-desc">${lvl.desc}</div>
+        <div class="level-artifact">${lvl.artifact}</div>
+        <div class="level-meta">
+          <span class="badge badge-type">${lvl.type}</span>
+          ${done ? '<span class="badge badge-done">Shipped ✓</span>' : ''}
+          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+        </div>
+      </div>`;
+    map.appendChild(btn);
+  });
+}
+
+function openLevel(id) {
+  const lvl = LEVELS.find(l => l.id === id);
+  if (!lvl) return;
+  checkState[id] = checkState[id] || {};
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('overlay').scrollTop = 0;
+  renderContent(lvl);
+}
+
+function renderContent(lvl) {
+  const c = document.getElementById('modalContent');
+  const header = `
+    <div class="modal-eyebrow">Module ${lvl.id} · ${lvl.type}</div>
+    <h2>${lvl.name}</h2>
+    <div class="modal-desc">${lvl.desc}</div>
+    <div class="artifact-box">🎯 ${lvl.artifact}</div>
+    <hr class="divider">`;
+  if (lvl.type === 'checklist') c.innerHTML = header + buildChecklist(lvl);
+  else if (lvl.type === 'builder') c.innerHTML = header + buildBuilder(lvl);
+  else if (lvl.type === 'boss')    c.innerHTML = header + buildBoss(lvl);
+  attachEvents(lvl);
+}
+
+function buildChecklist(lvl) {
+  let html = '';
+  lvl.groups.forEach((grp, gi) => {
+    html += `<div class="check-group"><div class="check-group-label">${grp.label}</div>`;
+    grp.items.forEach((item, ii) => {
+      const key = `${gi}-${ii}`;
+      const isChecked = checkState[lvl.id] && checkState[lvl.id][key];
+      html += `
+        <div class="checklist-item">
+          <div class="check-box ${isChecked ? 'checked' : ''}" id="cb-${gi}-${ii}"
+            role="checkbox" aria-checked="${isChecked ? 'true' : 'false'}" tabindex="0"
+            onclick="toggleGroupCheck(${lvl.id},${gi},${ii})"
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '✓' : ''}</div>
+          <div>
+            <div class="check-text">${item.text}</div>
+            <div class="check-note">${item.note}</div>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+  });
+  html += `<div class="prog-note">⚠️ Mark this module complete only when you have a shareable artifact link. "I did it in my head" doesn't close the screening gap.</div>`;
+  html += `<div class="btn-row"><button class="btn btn-primary" id="completeBtn">I have the artifact — mark complete →</button></div>`;
+  return html;
+}
+
+function buildBuilder(lvl) {
+  const fields = lvl.fields.map((f, i) => `
+    <div class="builder-field">
+      <label class="builder-label" for="bf${i}">${f.label}</label>
+      <div class="builder-hint">${f.hint}</div>
+      <textarea class="builder-input" id="bf${i}" placeholder="Your notes / URL / CV line…"></textarea>
+      <div class="model-answer" id="ma${i}">${f.model}</div>
+    </div>`).join('');
+  return `<div>${fields}<div class="btn-row"><button class="btn btn-ghost" id="revealBtn">Show model answers</button><button class="btn btn-primary" id="completeBtn">Evidence captured — mark complete →</button></div></div>`;
+}
+
+function buildBoss(lvl) {
+  const qs = lvl.questions.map((q, i) => `
+    <div class="boss-q">${q.q}</div>
+    <textarea class="boss-input" id="bq${i}" placeholder="Speak this answer out loud first, then write it…"></textarea>
+    <div class="model-answer" id="bm${i}">${q.model}</div>
+    ${i < lvl.questions.length - 1 ? '<hr class="divider">' : ''}
+  `).join('');
+  return `
+    <div class="boss-header">
+      <div class="boss-icon">🎙️</div>
+      <div class="boss-title">Portfolio Walk-Through Rehearsal</div>
+      <div class="boss-sub">Say it out loud before you write it. An interview is not a writing exercise.</div>
+    </div>
+    <div>${qs}<div class="btn-row" style="margin-top:16px;"><button class="btn btn-ghost" id="revealBtn">Show model structures</button><button class="btn btn-primary" id="completeBtn">Rehearsal done →</button></div></div>`;
+}
+
+function attachEvents(lvl) {
+  const reveal = document.getElementById('revealBtn');
+  if (reveal) reveal.onclick = () => document.querySelectorAll('.model-answer').forEach(el => el.style.display = 'block');
+  const complete = document.getElementById('completeBtn');
+  if (complete) complete.onclick = () => completeLevel(lvl.id);
+}
+
+function toggleGroupCheck(lvlId, gi, ii) {
+  if (!checkState[lvlId]) checkState[lvlId] = {};
+  const key = `${gi}-${ii}`;
+  checkState[lvlId][key] = !checkState[lvlId][key];
+  const cb = document.getElementById(`cb-${gi}-${ii}`);
+  if (checkState[lvlId][key]) {
+    cb.classList.add('checked');
+    cb.setAttribute('aria-checked', 'true');
+    cb.textContent = '✓';
+  } else {
+    cb.classList.remove('checked');
+    cb.setAttribute('aria-checked', 'false');
+    cb.textContent = '';
+  }
+}
+
+function completeLevel(id) {
+  completed.add(id);
+  closeModal();
+  renderMap(); xp();
+  showToast('Artifact shipped! ✓');
+  if (completed.size === LEVELS.length) {
+    setTimeout(() => {
+      document.getElementById('finalScreen').classList.add('show');
+      document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' });
+    }, 800);
+  }
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+document.getElementById('modalClose').onclick = closeModal;
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+renderMap(); xp();
+</script>
+</body>
+</html>
