@@ -1,0 +1,1051 @@
+<!-- ============================================================
+     FILE: ai-literacy/index.html
+     UPLOAD TO: create folder "ai-literacy" → upload as index.html
+     WHAT IT IS: AI Literacy for IDs — RLHF & Instruction Following
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Literacy for Instructional Designers — RLHF & Instruction Following</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #0D1F12;
+    --paper: #F6FBF7;
+    --panel: #FFFFFF;
+    --line: #D4E8D8;
+    --green: #059669;
+    --green-bright: #10B981;
+    --green-glow: #34D399;
+    --green-soft: #D1FAE5;
+    --green-pale: #ECFDF5;
+    --teal: #0E7490;
+    --teal-soft: #CFFAFE;
+    --purple: #7C3AED;
+    --purple-soft: #EDE9FE;
+    --amber: #D97706;
+    --amber-soft: #FEF3C7;
+    --red: #DC2626;
+    --red-soft: #FEE2E2;
+    --radius: 14px;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 2px 2px, rgba(5,150,105,0.07) 1px, transparent 0);
+    background-size: 24px 24px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--ink);
+    color: var(--green-soft);
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 3px solid var(--green-bright);
+  }
+  .header-brand { display: flex; align-items: center; gap: 14px; }
+  .header-icon { font-size: 28px; line-height: 1; }
+  .header-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .header-sub { font-family: var(--mono); font-size: 11px; color: var(--green-glow); margin-top: 2px; }
+  .header-right { font-family: var(--mono); font-size: 11px; color: #6B7280; text-align: right; }
+  .header-right span { color: var(--green-glow); font-weight: 600; }
+  .back-link { color: #6B7280; text-decoration: none; font-size: 12px; font-family: var(--mono); }
+  .back-link:hover { color: var(--green-glow); }
+
+  /* ── RAIL ── */
+  .rail-wrap { background: var(--ink); padding: 14px 28px 18px; border-bottom: 1px solid #1A3320; }
+  .rail-labels {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; color: #6B7280;
+    margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .rail-labels span.active { color: var(--green-glow); font-weight: 700; }
+  .rail-track { height: 6px; background: #374151; border-radius: 99px; overflow: hidden; }
+  .rail-fill {
+    height: 100%; background: linear-gradient(90deg, var(--green), var(--green-glow));
+    border-radius: 99px; transition: width 0.5s ease; width: 0%;
+  }
+
+  /* ── LAYOUT ── */
+  .layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 118px); }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: #F4FAF5; border-right: 1px solid var(--line);
+    padding: 24px 0; position: sticky; top: 0; height: calc(100vh - 118px); overflow-y: auto;
+  }
+  @media (max-width: 900px) { .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); } }
+
+  .sidebar-group {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 14px 20px 4px;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px; cursor: pointer; font-size: 13px; font-weight: 500;
+    border-left: 3px solid transparent; transition: all 0.15s; color: #6B7280;
+  }
+  .sidebar-item:hover { background: var(--green-pale); color: var(--ink); }
+  .sidebar-item.active { border-left-color: var(--green-bright); background: var(--green-pale); color: var(--ink); font-weight: 700; }
+  .sidebar-item.done { color: var(--green); }
+  .si-num {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    background: #E5E7EB; color: #6B7280; border-radius: 4px;
+    padding: 1px 6px; min-width: 26px; text-align: center; flex-shrink: 0;
+  }
+  .sidebar-item.active .si-num { background: var(--green-bright); color: white; }
+  .sidebar-item.done .si-num { background: var(--green); color: white; }
+  .si-label { flex: 1; line-height: 1.3; }
+  .si-xp { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--green-bright); flex-shrink: 0; }
+
+  /* ── MAIN ── */
+  .main { padding: 32px 36px 60px; max-width: 820px; }
+  @media (max-width: 700px) { .main { padding: 20px 16px 48px; } }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  /* ── XP BADGE ── */
+  .xp-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green-soft); border: 1px solid var(--green-bright);
+    color: var(--green); border-radius: 20px; padding: 4px 12px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700; margin-bottom: 20px;
+  }
+
+  .step-eyebrow {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--green-bright); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px;
+  }
+  .step h1 { font-size: clamp(22px, 3.5vw, 32px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.1; }
+  .step h1 em { font-style: normal; color: var(--green); text-decoration: underline; text-decoration-color: var(--green-bright); text-decoration-thickness: 3px; text-underline-offset: 5px; }
+  .step > p { font-size: 15px; line-height: 1.7; color: #2D4A34; margin-bottom: 20px; }
+
+  /* ── TEACH CARD ── */
+  .teach-card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; margin-bottom: 20px;
+  }
+  .teach-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+  .teach-card h3 { font-size: 14px; font-weight: 700; margin: 16px 0 8px; color: var(--green); }
+  .teach-card p { font-size: 14px; line-height: 1.7; color: #2D4A34; margin-bottom: 10px; }
+  .teach-card ul, .teach-card ol { padding-left: 20px; margin-bottom: 10px; }
+  .teach-card li { font-size: 14px; line-height: 1.75; color: #2D4A34; margin-bottom: 3px; }
+
+  /* ── PHASE CARD ── */
+  .phase-card {
+    border-radius: 10px; padding: 18px 20px; margin: 12px 0;
+    border-left: 4px solid;
+  }
+  .phase-card.ph1 { background: var(--teal-soft); border-color: var(--teal); }
+  .phase-card.ph2 { background: var(--purple-soft); border-color: var(--purple); }
+  .phase-card.ph3 { background: var(--amber-soft); border-color: var(--amber); }
+  .phase-card h4 {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+  }
+  .phase-card.ph1 h4 { color: var(--teal); }
+  .phase-card.ph2 h4 { color: var(--purple); }
+  .phase-card.ph3 h4 { color: var(--amber); }
+  .phase-card p { font-size: 13.5px; line-height: 1.65; margin: 0; }
+  .phase-card.ph1 p { color: #0C4A6E; }
+  .phase-card.ph2 p { color: #3B1499; }
+  .phase-card.ph3 p { color: #7C2D00; }
+
+  /* ── DIAGRAM ── */
+  .diagram {
+    background: var(--ink); border-radius: 10px; padding: 20px 24px; margin: 16px 0;
+    font-family: var(--mono); font-size: 12.5px; color: #E2E8F0; line-height: 1.8;
+    overflow-x: auto;
+  }
+  .diagram .hi  { color: var(--green-glow); font-weight: 700; }
+  .diagram .dim { color: #6B7280; }
+  .diagram .arrow { color: var(--green-bright); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 10px; padding: 14px 18px; margin: 14px 0;
+    display: flex; gap: 12px; align-items: flex-start; font-size: 13.5px; line-height: 1.6;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout.info  { background: var(--green-pale); border-left: 4px solid var(--green-bright); color: var(--ink); }
+  .callout.tip   { background: var(--teal-soft);  border-left: 4px solid var(--teal); color: #0C4A6E; }
+  .callout.warn  { background: var(--red-soft);   border-left: 4px solid var(--red); color: #7F1D1D; }
+  .callout.ai    { background: var(--purple-soft); border-left: 4px solid var(--purple); color: #3B1499; }
+
+  /* ── QUIZ ── */
+  .quiz-card {
+    background: var(--panel); border: 2px solid var(--line); border-radius: var(--radius);
+    padding: 22px; margin: 20px 0;
+  }
+  .quiz-q { font-weight: 700; font-size: 15px; margin-bottom: 14px; line-height: 1.4; }
+  .quiz-q .q-num { font-family: var(--mono); color: var(--green-bright); font-size: 12px; display: block; margin-bottom: 4px; }
+  .quiz-option {
+    display: block; width: 100%; text-align: left; background: var(--green-pale);
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 11px 16px;
+    margin-bottom: 8px; cursor: pointer; font-size: 14px; font-family: inherit;
+    transition: all 0.15s; color: var(--ink);
+  }
+  .quiz-option:hover { border-color: var(--green-bright); background: var(--green-soft); }
+  .quiz-option.correct { border-color: var(--green); background: var(--green-soft); color: #065F46; font-weight: 600; }
+  .quiz-option.wrong   { border-color: var(--red);   background: var(--red-soft);   color: #991B1B; }
+  .quiz-option.disabled { pointer-events: none; }
+  .quiz-feedback { font-size: 13px; line-height: 1.6; margin-top: 10px; padding: 10px 14px; border-radius: 8px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok  { background: var(--green-soft); color: #065F46; }
+  .quiz-feedback.no  { background: var(--red-soft);   color: #991B1B; }
+
+  /* ── SCENARIO ── */
+  .scenario {
+    background: linear-gradient(135deg, #0D1F12, #1A3320);
+    color: var(--green-soft); border-radius: var(--radius); padding: 24px;
+    margin: 20px 0; border: 1px solid var(--green);
+  }
+  .scenario-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--green-glow); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px;
+  }
+  .scenario h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .scenario p  { font-size: 14px; line-height: 1.65; color: #A7F3D0; margin-bottom: 8px; }
+  .scenario ul { padding-left: 18px; }
+  .scenario li { font-size: 13px; color: #A7F3D0; margin-bottom: 4px; }
+
+  /* ── PROMPT BOX ── */
+  .prompt-box {
+    background: #0F1117; border-radius: 10px; padding: 16px 20px; margin: 12px 0;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.7; color: #E2E8F0;
+    border: 1px solid #1E293B; overflow-x: auto;
+  }
+  .prompt-box .role { color: var(--green-glow); font-weight: 700; }
+  .prompt-box .constraint { color: #93C5FD; }
+  .prompt-box .format { color: #FCA5A5; }
+  .prompt-box .context { color: #FCD34D; }
+
+  /* ── COMPARE TABLE ── */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  .compare-table th {
+    background: var(--ink); color: var(--green-glow);
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 10px 14px; text-align: left;
+  }
+  .compare-table td { padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.5; }
+  .compare-table tr:nth-child(even) td { background: var(--green-pale); }
+  .yes { color: var(--green); font-weight: 700; }
+  .no  { color: var(--red); font-weight: 700; }
+
+  /* ── STEP NAV ── */
+  .step-nav { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+  .btn {
+    padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 700;
+    cursor: pointer; border: none; font-family: inherit; transition: all 0.15s;
+  }
+  .btn-primary { background: var(--green-bright); color: white; }
+  .btn-primary:hover { background: var(--green); }
+  .btn-secondary { background: var(--panel); border: 1.5px solid var(--line); color: var(--ink); }
+  .btn-secondary:hover { border-color: var(--green-bright); }
+
+  /* ── XP TOAST ── */
+  .xp-toast {
+    position: fixed; top: 20px; right: 20px;
+    background: var(--ink); color: var(--green-glow);
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    padding: 10px 18px; border-radius: 8px; border: 1px solid var(--green-bright);
+    opacity: 0; transform: translateY(-10px); transition: all 0.3s; pointer-events: none; z-index: 100;
+  }
+  .xp-toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── SCORE ── */
+  .score-screen { text-align: center; }
+  .score-ring {
+    width: 140px; height: 140px; border-radius: 50%;
+    border: 6px solid var(--green-bright);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 auto 24px; background: var(--green-pale);
+  }
+  .score-ring .score-num { font-size: 38px; font-weight: 700; color: var(--green); font-family: var(--mono); }
+  .score-ring .score-label { font-size: 11px; font-family: var(--mono); color: var(--green-bright); }
+  .score-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .score-desc { font-size: 15px; color: #2D4A34; max-width: 520px; margin: 0 auto 24px; line-height: 1.7; }
+  .level-badge {
+    display: inline-block; background: var(--ink); color: var(--green-glow);
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    padding: 8px 20px; border-radius: 99px; border: 1px solid var(--green-bright); margin-bottom: 24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="xp-toast" id="xpToast">+0 XP</div>
+
+<header class="site-header">
+  <div class="header-brand">
+    <div class="header-icon">🤖</div>
+    <div>
+      <div class="header-title">AI Literacy for Instructional Designers</div>
+      <div class="header-sub">RLHF · Instruction Following · Prompt Design · Authoring Workflow</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="back-link">← All tracks</a><br>
+    <span id="headerXP">0</span> XP &nbsp;|&nbsp; Step <span id="headerStep">1</span>/12
+  </div>
+</header>
+
+<div class="rail-wrap">
+  <div class="rail-labels">
+    <span id="rl0">Curious</span>
+    <span id="rl1">Aware</span>
+    <span id="rl2">Literate</span>
+    <span id="rl3">Designer</span>
+    <span id="rl4">Strategist</span>
+  </div>
+  <div class="rail-track"><div class="rail-fill" id="railFill"></div></div>
+</div>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Module steps">
+    <div class="sidebar-group">Test First</div>
+    <div class="sidebar-item active" data-step="0" onclick="goTo(0)">
+      <span class="si-num">01</span><span class="si-label">Diagnostic Quiz</span><span class="si-xp">25 XP</span>
+    </div>
+
+    <div class="sidebar-group">Teach — How AI Is Built</div>
+    <div class="sidebar-item" data-step="1" onclick="goTo(1)">
+      <span class="si-num">02</span><span class="si-label">The Base Model</span><span class="si-xp">20 XP</span>
+    </div>
+    <div class="sidebar-item" data-step="2" onclick="goTo(2)">
+      <span class="si-num">03</span><span class="si-label">RLHF Phase 1 — Fine-Tuning</span><span class="si-xp">25 XP</span>
+    </div>
+    <div class="sidebar-item" data-step="3" onclick="goTo(3)">
+      <span class="si-num">04</span><span class="si-label">RLHF Phase 2 — Reward Model</span><span class="si-xp">25 XP</span>
+    </div>
+    <div class="sidebar-item" data-step="4" onclick="goTo(4)">
+      <span class="si-num">05</span><span class="si-label">RLHF Phase 3 — Optimization</span><span class="si-xp">25 XP</span>
+    </div>
+
+    <div class="sidebar-group">Teach — Instruction Following</div>
+    <div class="sidebar-item" data-step="5" onclick="goTo(5)">
+      <span class="si-num">06</span><span class="si-label">What Instruction Following Means</span><span class="si-xp">25 XP</span>
+    </div>
+    <div class="sidebar-item" data-step="6" onclick="goTo(6)">
+      <span class="si-num">07</span><span class="si-label">Why AI Fails: Reward Hacking</span><span class="si-xp">25 XP</span>
+    </div>
+
+    <div class="sidebar-group">Apply — ID Practice</div>
+    <div class="sidebar-item" data-step="7" onclick="goTo(7)">
+      <span class="si-num">08</span><span class="si-label">Scenario: Diagnosing AI Output</span><span class="si-xp">35 XP</span>
+    </div>
+    <div class="sidebar-item" data-step="8" onclick="goTo(8)">
+      <span class="si-num">09</span><span class="si-label">Prompt Design for IDs</span><span class="si-xp">30 XP</span>
+    </div>
+    <div class="sidebar-item" data-step="9" onclick="goTo(9)">
+      <span class="si-num">10</span><span class="si-label">AI in Your Authoring Workflow</span><span class="si-xp">25 XP</span>
+    </div>
+
+    <div class="sidebar-group">Test Again</div>
+    <div class="sidebar-item" data-step="10" onclick="goTo(10)">
+      <span class="si-num">11</span><span class="si-label">Final Quiz</span><span class="si-xp">40 XP</span>
+    </div>
+    <div class="sidebar-group">Score</div>
+    <div class="sidebar-item" data-step="11" onclick="goTo(11)">
+      <span class="si-num">12</span><span class="si-label">Results & Next Steps</span><span class="si-xp">—</span>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- STEP 0 — DIAGNOSTIC -->
+    <div class="step active" id="step-0">
+      <div class="xp-badge">🎯 Diagnostic · 25 XP</div>
+      <div class="step-eyebrow">Step 01 — Test First</div>
+      <h1>How much do you already know about <em>AI under the hood</em>?</h1>
+      <p>Five quick questions. These are genuinely tricky — don't worry about getting them right. The goal is to surface what you already have and what the module needs to fill in.</p>
+
+      <div class="quiz-card" id="q0">
+        <div class="quiz-q"><span class="q-num">Q1 of 5</span>What does RLHF stand for?</div>
+        <button class="quiz-option" onclick="ans(this,'q0',false)">A. Recursive Language Handling Framework</button>
+        <button class="quiz-option" onclick="ans(this,'q0',true)">B. Reinforcement Learning from Human Feedback</button>
+        <button class="quiz-option" onclick="ans(this,'q0',false)">C. Real-time Language with Human Features</button>
+        <button class="quiz-option" onclick="ans(this,'q0',false)">D. Ranked Learning for Human-Focused tasks</button>
+        <div class="quiz-feedback" id="q0-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="q1">
+        <div class="quiz-q"><span class="q-num">Q2 of 5</span>A base language model (before RLHF) is trained to:</div>
+        <button class="quiz-option" onclick="ans(this,'q1',false)">A. Follow user instructions as accurately as possible</button>
+        <button class="quiz-option" onclick="ans(this,'q1',false)">B. Give safe, harmless answers by default</button>
+        <button class="quiz-option" onclick="ans(this,'q1',true)">C. Predict the next token in a sequence of text</button>
+        <button class="quiz-option" onclick="ans(this,'q1',false)">D. Rank answers by quality before responding</button>
+        <div class="quiz-feedback" id="q1-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="q2">
+        <div class="quiz-q"><span class="q-num">Q3 of 5</span>"Instruction following" in AI models refers to:</div>
+        <button class="quiz-option" onclick="ans(this,'q2',false)">A. The model's ability to write programming instructions</button>
+        <button class="quiz-option" onclick="ans(this,'q2',true)">B. The model precisely obeying multi-part constraints in a prompt</button>
+        <button class="quiz-option" onclick="ans(this,'q2',false)">C. The model following links and reading referenced documents</button>
+        <button class="quiz-option" onclick="ans(this,'q2',false)">D. The model checking its own outputs for errors</button>
+        <div class="quiz-feedback" id="q2-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="q3">
+        <div class="quiz-q"><span class="q-num">Q4 of 5</span>Why can a well-trained AI model confidently state incorrect facts?</div>
+        <button class="quiz-option" onclick="ans(this,'q3',false)">A. It was trained on too little data</button>
+        <button class="quiz-option" onclick="ans(this,'q3',false)">B. Its safety filters block the correct answers</button>
+        <button class="quiz-option" onclick="ans(this,'q3',true)">C. The reward model scores confident-sounding text highly, regardless of accuracy</button>
+        <button class="quiz-option" onclick="ans(this,'q3',false)">D. It uses a random selection when uncertain</button>
+        <div class="quiz-feedback" id="q3-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="q4">
+        <div class="quiz-q"><span class="q-num">Q5 of 5</span>As an ID using an AI tool to write quiz questions, you ask for "five multiple-choice questions on GDPR." The output has six questions, one is true/false. What most likely caused this?</div>
+        <button class="quiz-option" onclick="ans(this,'q4',false)">A. The AI misunderstood the topic of GDPR</button>
+        <button class="quiz-option" onclick="ans(this,'q4',true)">B. The prompt lacked explicit format constraints the model had to follow</button>
+        <button class="quiz-option" onclick="ans(this,'q4',false)">C. The model's training data had no GDPR quiz examples</button>
+        <button class="quiz-option" onclick="ans(this,'q4',false)">D. The AI always adds bonus content to be more helpful</button>
+        <div class="quiz-feedback" id="q4-fb"></div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-primary" onclick="completeStep(0,25);goTo(1)">Start learning →</button>
+      </div>
+    </div>
+
+    <!-- STEP 1 — BASE MODEL -->
+    <div class="step" id="step-1">
+      <div class="xp-badge">🧠 Foundation · 20 XP</div>
+      <div class="step-eyebrow">Step 02 — Teach</div>
+      <h1>Before RLHF: <em>the base model</em></h1>
+      <p>Every AI tool you use — ChatGPT, Claude, Copilot in Storyline — started as a base model. Understanding what a base model is (and is not) explains why RLHF had to be invented.</p>
+
+      <div class="teach-card">
+        <h2>📖 What a base model actually does</h2>
+        <p>A base language model is trained on hundreds of billions of words — books, websites, code, articles — using one simple objective: <strong>predict the next word</strong> (technically, token) given everything that came before.</p>
+
+        <div class="diagram">
+<span class="dim">Input:</span>  <span class="hi">"The capital of France is"</span>
+<span class="arrow">↓</span>  Model predicts highest-probability next token
+<span class="dim">Output:</span> <span class="hi">"Paris"</span>   <span class="dim">(probability: 0.94)</span>
+         <span class="dim">"Lyon"    (probability: 0.03)</span>
+         <span class="dim">"Berlin"  (probability: 0.01)</span>
+        </div>
+
+        <h3>The problem with a pure base model for IDs</h3>
+        <p>If you give a base model the prompt <em>"Write a learning objective for slide 3"</em>, it might respond by generating more prompts that look like they belong in the same document — because that's statistically likely. It's not being unhelpful; it's doing exactly what it was trained to do: continue the text.</p>
+
+        <p>Base models also have no concept of "I shouldn't say this" or "the user wants a short answer." They produce whatever token sequence has the highest probability given their training data — including harmful, biased, or just plain wrong content — because probability ≠ accuracy or appropriateness.</p>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div><strong>Key insight for IDs:</strong> When an AI tool gives you a plausible-sounding but factually wrong learning objective or quiz question, that's base model behavior leaking through the RLHF layer. The model predicts text that <em>looks</em> like a correct answer, not text that <em>is</em> a correct answer.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(0)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(1,20);goTo(2)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — SFT -->
+    <div class="step" id="step-2">
+      <div class="xp-badge">✍️ RLHF Phase 1 · 25 XP</div>
+      <div class="step-eyebrow">Step 03 — Teach</div>
+      <h1>RLHF Phase 1: <em>Supervised Fine-Tuning</em></h1>
+      <p>The first phase of RLHF turns the "next-word predictor" into something that at least tries to be helpful. This is where human trainers get involved for the first time.</p>
+
+      <div class="teach-card">
+        <h2>📋 What happens in SFT</h2>
+
+        <div class="phase-card ph1">
+          <h4>Phase 1 — Supervised Fine-Tuning (SFT)</h4>
+          <p>Human trainers write thousands of high-quality prompt→response pairs. "Given this instruction, here is an ideal response." The base model is then fine-tuned (further trained) on these examples — it learns to imitate the style, format, and tone of a helpful assistant rather than continuing arbitrary text.</p>
+        </div>
+
+        <h3>What SFT teaches the model</h3>
+        <ul>
+          <li>Respond to <em>instructions</em>, not just continue text</li>
+          <li>Use a conversational format with a clear answer</li>
+          <li>Decline some categories of harmful request</li>
+          <li>Structure long answers with headings, lists, steps</li>
+        </ul>
+
+        <h3>What SFT does NOT fix</h3>
+        <p>SFT examples are expensive to create — you can only write so many. The model generalizes from those examples, but it still makes things up with confidence, still gets edge cases wrong, and still doesn't reliably know when it's uncertain. That's what Phases 2 and 3 address.</p>
+
+        <div class="callout tip">
+          <span class="callout-icon">✅</span>
+          <div><strong>ID parallel:</strong> SFT is like onboarding a new instructional designer by showing them your best past work. They learn your format and tone quickly, but they still need feedback loops — which is exactly what Phases 2 and 3 provide.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(1)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(2,25);goTo(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 — REWARD MODEL -->
+    <div class="step" id="step-3">
+      <div class="xp-badge">⚖️ RLHF Phase 2 · 25 XP</div>
+      <div class="step-eyebrow">Step 04 — Teach</div>
+      <h1>RLHF Phase 2: <em>the reward model</em></h1>
+      <p>This is the most important phase to understand as an ID — because the reward model is the mechanism that shapes what your AI tool thinks "good" means. And it has a specific, exploitable weakness.</p>
+
+      <div class="teach-card">
+        <h2>📊 Building the reward model</h2>
+
+        <div class="phase-card ph2">
+          <h4>Phase 2 — Reward Model Training</h4>
+          <p>The SFT model generates several different responses to the same prompt. Human raters then rank these responses: "Response A is better than B, which is better than C." A separate neural network — the <strong>reward model</strong> — is trained to predict those human rankings. It learns what a human rater would prefer.</p>
+        </div>
+
+        <h3>The ranking process, visualized</h3>
+        <div class="diagram">
+<span class="dim">Prompt:</span> <span class="hi">"Explain SCORM in one sentence"</span>
+
+<span class="dim">Response A:</span> "SCORM is a set of technical standards for eLearning..."
+<span class="dim">Response B:</span> "SCORM stands for Sharable Content Object Reference Model and is used in eLearning..."
+<span class="dim">Response C:</span> "SCORM is a format."
+
+<span class="dim">Human ranking:</span>  A > B > C
+<span class="arrow">↓</span>
+<span class="hi">Reward model learns to score A higher than B or C</span>
+        </div>
+
+        <h3>What the reward model actually captures</h3>
+        <p>The reward model learns <em>human preference</em>, not objective truth. Humans tend to rate responses that are:</p>
+        <ul>
+          <li>Confident-sounding → rated higher (even if wrong)</li>
+          <li>Well-structured with bullet points → rated higher</li>
+          <li>Appropriately detailed → rated higher</li>
+          <li>Hedged ("I'm not sure…") → often rated lower</li>
+        </ul>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>This is why AI tools hallucinate so confidently.</strong> The reward model was trained to prefer confident-sounding responses. So the optimized model learns to sound confident — even when it's generating plausible nonsense. As an ID, you must verify every fact an AI tool gives you, especially statistics, citations, and technical specs.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(2)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(3,25);goTo(4)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 — PPO -->
+    <div class="step" id="step-4">
+      <div class="xp-badge">🔄 RLHF Phase 3 · 25 XP</div>
+      <div class="step-eyebrow">Step 05 — Teach</div>
+      <h1>RLHF Phase 3: <em>optimization with RL</em></h1>
+      <p>The third phase is where the model is actually trained to maximize its reward score. This is what makes it behave like an assistant — and where the most interesting failure modes emerge.</p>
+
+      <div class="teach-card">
+        <h2>🎮 Reinforcement Learning loop</h2>
+
+        <div class="phase-card ph3">
+          <h4>Phase 3 — RL Optimization (PPO)</h4>
+          <p>The SFT model generates responses. The reward model scores them. The RL algorithm (typically PPO — Proximal Policy Optimization) adjusts the model's weights to produce responses that score higher. This loop runs thousands of times until the model is reliably producing high-reward outputs.</p>
+        </div>
+
+        <div class="diagram">
+<span class="hi">Model</span> <span class="arrow">→</span> generates response <span class="arrow">→</span> <span class="hi">Reward Model</span> scores it
+   <span class="dim">↑                                              ↓</span>
+<span class="hi">Weights updated</span> <span class="arrow">←</span> PPO algorithm <span class="arrow">←</span> score fed back
+        </div>
+
+        <h3>What comes out the other end</h3>
+        <p>After all three phases, you have a model that:</p>
+        <ul>
+          <li>Responds to instructions rather than continuing text</li>
+          <li>Structures answers in a format humans rate as helpful</li>
+          <li>Declines obviously harmful requests</li>
+          <li>Sounds confident and well-organized</li>
+        </ul>
+
+        <h3>The full RLHF pipeline — one view</h3>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>Phase</th><th>Who's involved</th><th>What it produces</th></tr></thead>
+            <tbody>
+              <tr><td>Base model training</td><td>Text data, compute</td><td>Next-token predictor</td></tr>
+              <tr><td>SFT (Phase 1)</td><td>Human trainers writing examples</td><td>Instruction-following draft</td></tr>
+              <tr><td>Reward model (Phase 2)</td><td>Human raters ranking responses</td><td>A "what humans prefer" scorer</td></tr>
+              <tr><td>RL optimization (Phase 3)</td><td>RL algorithm + reward model</td><td>The assistant you interact with</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(3)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(4,25);goTo(5)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5 — INSTRUCTION FOLLOWING -->
+    <div class="step" id="step-5">
+      <div class="xp-badge">📋 Instruction Following · 25 XP</div>
+      <div class="step-eyebrow">Step 06 — Teach</div>
+      <h1>What <em>instruction following</em> actually means</h1>
+      <p>Instruction following is the AI capability that matters most for IDs using authoring tools and AI assistants. It's not about whether the model "understands" your intent — it's about whether it precisely obeys multi-part constraints without drifting.</p>
+
+      <div class="teach-card">
+        <h2>🎯 The spectrum of instruction compliance</h2>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>Instruction type</th><th>Example</th><th>How well models follow it</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Simple format</strong></td><td>"Give me a bulleted list"</td><td class="yes">Very reliable</td></tr>
+              <tr><td><strong>Count constraint</strong></td><td>"Write exactly 5 questions"</td><td>Often drifts (6 or 4)</td></tr>
+              <tr><td><strong>Bloom's level</strong></td><td>"At the Analysis level only"</td><td>Inconsistent without examples</td></tr>
+              <tr><td><strong>Persona</strong></td><td>"Write as a clinical trainer"</td><td>Good for 1-2 turns, then drifts</td></tr>
+              <tr><td><strong>Multiple constraints</strong></td><td>"5 MCQs, Bloom's Apply, under 20 words each"</td><td>Drops some constraints</td></tr>
+              <tr><td><strong>Negative instruction</strong></td><td>"Do NOT use the word 'leverage'"</td><td>Often violates it</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Why models fail complex instructions</h3>
+        <p>RLHF trained the model on human preferences — but human raters in Phase 2 were usually comparing two complete responses, not checking whether every constraint was met. A response that hits 4 out of 5 constraints but reads well might score higher than a response that hits all 5 but is awkwardly phrased. The model learns to optimize for "sounds good" over "obeyed every rule."</p>
+
+        <div class="callout ai">
+          <span class="callout-icon">🤖</span>
+          <div><strong>OpenAI's instruction-following research</strong> found that models fail most often when: (1) instructions are ambiguous, (2) there are more than 3 simultaneous constraints, or (3) a constraint conflicts with what the reward model finds "natural." Newer models are significantly better, but the pattern holds.</div>
+        </div>
+
+        <h3>What this means for ID prompts</h3>
+        <p>The more constraints you stack in one prompt, the higher the chance something gets dropped. The fix is not to write better English — it's to restructure the prompt so constraints are explicit, numbered, and minimal.</p>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(4)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(5,25);goTo(6)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6 — REWARD HACKING -->
+    <div class="step" id="step-6">
+      <div class="xp-badge">⚠️ Failure Modes · 25 XP</div>
+      <div class="step-eyebrow">Step 07 — Teach</div>
+      <h1>Why AI fails: <em>reward hacking & hallucination</em></h1>
+      <p>Two failure modes you will encounter regularly as an ID. Understanding their root causes is what lets you design prompts and review processes that catch them.</p>
+
+      <div class="teach-card">
+        <h2>🎯 Reward Hacking</h2>
+        <p><strong>Definition:</strong> The model learns to score high on the reward model without actually being helpful — it finds shortcuts the reward model didn't anticipate.</p>
+
+        <h3>Examples you'll see as an ID</h3>
+        <ul>
+          <li><strong>Sycophancy:</strong> The model agrees with you even when you're wrong. "That's a great learning objective!" (it's not at the right Bloom's level) — because agreement scored well in training.</li>
+          <li><strong>Padding:</strong> Adds unnecessary preamble ("Certainly! Here's a comprehensive overview…") because human raters rated thorough-looking responses higher.</li>
+          <li><strong>Confidence without knowledge:</strong> States facts it doesn't know with the same tone as facts it does know — because the reward model couldn't distinguish confidence-in-knowledge from confidence-in-fabrication.</li>
+        </ul>
+
+        <h2 style="margin-top:20px;">🌀 Hallucination</h2>
+        <p><strong>Definition:</strong> The model generates plausible-sounding but factually false information, stated confidently.</p>
+
+        <h3>Why hallucination is a specific RLHF artifact</h3>
+        <p>A base model that's uncertain might just produce low-probability tokens or trail off. But RLHF trained the model that confident, complete-sounding answers score well. So when the model doesn't know something, it generates the most probable completion of a confident-sounding sentence — which is a fabricated but plausible answer.</p>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>High-risk ID tasks:</strong> Asking AI to generate statistics ("what percentage of learners…"), citations ("cite a study on…"), regulatory details ("the GDPR article that covers…"), or product specifications ("what does Articulate Rise support…"). All are high hallucination risk. Always verify with primary sources.</div>
+        </div>
+
+        <h3>Low-risk vs high-risk AI tasks for IDs</h3>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>Task</th><th>Risk</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Rewrite this objective at Bloom's Apply level</td><td class="yes">Low</td><td>Format task, verifiable against Bloom's taxonomy</td></tr>
+              <tr><td>Generate 5 MCQ distractors for this concept</td><td class="yes">Low</td><td>You verify the content; AI handles the format</td></tr>
+              <tr><td>Suggest a learning scenario for this topic</td><td class="yes">Low</td><td>Creative task; accuracy is secondary</td></tr>
+              <tr><td>What does the GDPR say about learner data?</td><td class="no">High</td><td>Legal facts — high hallucination risk</td></tr>
+              <tr><td>Find a research study supporting this approach</td><td class="no">High</td><td>Citations are almost always fabricated</td></tr>
+              <tr><td>What features does this LMS support?</td><td class="no">High</td><td>Product specs change; AI training data is stale</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(5)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(6,25);goTo(7)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 7 — SCENARIO -->
+    <div class="step" id="step-7">
+      <div class="xp-badge">🎭 Scenario · 35 XP</div>
+      <div class="step-eyebrow">Step 08 — Practice</div>
+      <h1>Scenario: <em>diagnosing AI output</em></h1>
+
+      <div class="scenario">
+        <div class="scenario-label">📋 Brief</div>
+        <h3>You used AI to draft course content. Something's wrong.</h3>
+        <p>You asked your AI assistant: "Write 3 learning objectives for a GDPR awareness module for marketing employees. Make them measurable." Here is what you got:</p>
+        <ul>
+          <li>1. Employees will understand the importance of GDPR in their daily work.</li>
+          <li>2. Learners will know how to handle personal data according to GDPR Article 13, which requires data controllers to provide complete transparency notices within 48 hours of any data collection event.</li>
+          <li>3. Marketing staff will be able to identify and report a data breach to the DPO within 72 hours as required by GDPR Article 33.</li>
+        </ul>
+      </div>
+
+      <div class="quiz-card" id="sq0">
+        <div class="quiz-q"><span class="q-num">Diagnosis Q1</span>Objective 1 ("understand the importance of") — what's the problem and what RLHF mechanism caused it?</div>
+        <button class="quiz-option" onclick="ans(this,'sq0',false)">A. The topic is wrong — GDPR isn't relevant to marketing</button>
+        <button class="quiz-option" onclick="ans(this,'sq0',true)">B. "Understand" is not measurable (Bloom's Remember, vague) — the model prioritized sounding complete over following the "measurable" constraint</button>
+        <button class="quiz-option" onclick="ans(this,'sq0',false)">C. The objective is too long and should be split into two</button>
+        <button class="quiz-option" onclick="ans(this,'sq0',false)">D. The model ignored the marketing employee audience</button>
+        <div class="quiz-feedback" id="sq0-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="sq1">
+        <div class="quiz-q"><span class="q-num">Diagnosis Q2</span>Objective 2 mentions "GDPR Article 13" requiring "transparency notices within 48 hours." What failure mode is this, and what should you do?</div>
+        <button class="quiz-option" onclick="ans(this,'sq1',false)">A. This is correct — Article 13 does require a 48-hour window</button>
+        <button class="quiz-option" onclick="ans(this,'sq1',true)">B. This is hallucination — GDPR Article 13 exists but the 48-hour detail is fabricated. Verify with the actual regulation before using.</button>
+        <button class="quiz-option" onclick="ans(this,'sq1',false)">C. This is reward hacking — the model added detail to seem more thorough</button>
+        <button class="quiz-option" onclick="ans(this,'sq1',false)">D. This is a formatting error — the article number should not appear in a learning objective</button>
+        <div class="quiz-feedback" id="sq1-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="sq2">
+        <div class="quiz-q"><span class="q-num">Diagnosis Q3</span>Objective 3 (72-hour breach notification, Article 33) is actually correct — that IS in GDPR. What's still wrong with it as a learning objective?</div>
+        <button class="quiz-option" onclick="ans(this,'sq2',false)">A. Nothing — it's specific, measurable, and accurate</button>
+        <button class="quiz-option" onclick="ans(this,'sq2',true)">B. It confuses the data controller's obligation (the company, not the employee) with the employee action. Marketing staff don't report to the DPO — they report to their manager. Accurate GDPR fact, wrong application to the audience.</button>
+        <button class="quiz-option" onclick="ans(this,'sq2',false)">C. The 72-hour window is wrong — it should be 24 hours</button>
+        <button class="quiz-option" onclick="ans(this,'sq2',false)">D. It's too specific for an awareness module</button>
+        <div class="quiz-feedback" id="sq2-fb"></div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(6)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(7,35);goTo(8)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 8 — PROMPT DESIGN -->
+    <div class="step" id="step-8">
+      <div class="xp-badge">✍️ Prompt Design · 30 XP</div>
+      <div class="step-eyebrow">Step 09 — Apply</div>
+      <h1>Prompt design for IDs: <em>making instruction following work</em></h1>
+      <p>Now that you know how the model works, you can write prompts that work with its architecture instead of against it. Four principles that directly counteract RLHF failure modes.</p>
+
+      <div class="teach-card">
+        <h2>✏️ Principle 1: Role + Task + Constraints + Format</h2>
+        <p>Structure every significant prompt in four parts. This maps directly to what RLHF training taught the model to respond to.</p>
+
+        <div class="prompt-box">
+<span class="role">[ROLE]</span>    You are an instructional designer specializing in compliance training.
+<span class="context">[CONTEXT]</span>  Audience: marketing employees, no legal background. Topic: GDPR data handling.
+<span class="constraint">[TASK]</span>     Write 3 learning objectives at Bloom's Apply level (not Remember, not Analyze).
+<span class="format">[FORMAT]</span>   Each objective must: start with a measurable verb, be under 20 words, avoid the word "understand."
+        </div>
+
+        <h3>Principle 2: Number your constraints</h3>
+        <p>The model follows numbered lists more reliably than prose paragraphs. Three constraints buried in a sentence are easy to miss; three numbered bullets are much harder to ignore.</p>
+
+        <div class="prompt-box">
+<span class="constraint">Your output must follow these rules:
+1. Exactly 5 questions — no more, no less
+2. Each question tests the Apply level of Bloom's taxonomy
+3. Each distractor is plausible but clearly wrong on reflection
+4. No question uses the word "which" as the first word</span>
+        </div>
+
+        <h3>Principle 3: Give an example of what you want</h3>
+        <p>Showing one ideal output is more effective than describing it in words. The model's SFT training makes it excellent at imitating demonstrated patterns.</p>
+
+        <div class="prompt-box">
+<span class="context">Example of the format I want:</span>
+<span class="hi">Objective: Given a customer data request, the learner will apply the GDPR right-to-erasure process using the company intake form.</span>
+
+<span class="context">Now write 2 more objectives in this exact format for these topics:
+- Data breach internal reporting
+- Consent withdrawal handling</span>
+        </div>
+
+        <h3>Principle 4: Ask for self-checks</h3>
+        <p>Appending "Check that each objective starts with a measurable verb" forces the model to re-read its own output against a specific criterion before it finishes — a lightweight version of chain-of-thought reasoning that catches the most common drift.</p>
+
+        <div class="callout tip">
+          <span class="callout-icon">🔧</span>
+          <div><strong>For Articulate 360 workflows specifically:</strong> When using AI to draft Rise 360 block content, always specify the block type ("write this as a labeled graphic caption, max 40 words"), the learner action ("what the learner should DO after reading this"), and a fact you want included. This anchors the output and makes verification easier.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(7)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(8,30);goTo(9)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 9 — WORKFLOW -->
+    <div class="step" id="step-9">
+      <div class="xp-badge">🔄 Workflow · 25 XP</div>
+      <div class="step-eyebrow">Step 10 — Apply</div>
+      <h1>AI in your <em>Articulate 360 authoring workflow</em></h1>
+      <p>Where AI genuinely accelerates ID work, where it introduces risk, and the minimum verification step for each task.</p>
+
+      <div class="teach-card">
+        <h2>🗺️ AI-assisted ID workflow</h2>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>ID Task</th><th>AI role</th><th>Risk level</th><th>Minimum verify step</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Learning objectives</strong></td><td>Draft at specified Bloom's level</td><td>Low</td><td>Check verb against Anderson's taxonomy table</td></tr>
+              <tr><td><strong>Storyboard scenarios</strong></td><td>Generate character dialogue + branching options</td><td>Low</td><td>Check scenario matches audience reality</td></tr>
+              <tr><td><strong>MCQ distractors</strong></td><td>Generate plausible wrong answers</td><td>Medium</td><td>Verify each distractor is wrong for the right reason</td></tr>
+              <tr><td><strong>Rise 360 block copy</strong></td><td>Draft lesson text, captions, button labels</td><td>Medium</td><td>Read every sentence — hallucinated facts hide in body copy</td></tr>
+              <tr><td><strong>Regulatory/legal content</strong></td><td>NEVER use AI as primary source</td><td>High</td><td>Primary source only (legislation, official guidance)</td></tr>
+              <tr><td><strong>Statistics & citations</strong></td><td>Never trust unchecked</td><td>High</td><td>Search original source — AI citations are often fabricated</td></tr>
+              <tr><td><strong>Narration scripts</strong></td><td>Draft from approved outline</td><td>Low</td><td>Read aloud for tone + verify facts in approved content</td></tr>
+              <tr><td><strong>Alt-text for images</strong></td><td>Generate descriptive alt-text</td><td>Low</td><td>Check it describes the <em>learning point</em>, not just the image</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>The two-step rule for any AI-generated content</h3>
+        <ol style="padding-left:20px; font-size:14px; line-height:2.2; margin-top:8px;">
+          <li><strong>Format check:</strong> Does the output match the structure and constraints you asked for?</li>
+          <li><strong>Fact check:</strong> Is every factual claim in this output verifiable from a primary source you trust?</li>
+        </ol>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div>AI tools are best used as a <strong>first draft engine</strong>, not a final content producer. The ID's job shifts from "write from scratch" to "brief clearly, review critically, edit precisely." That's a genuine productivity gain — as long as the review step isn't skipped.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(8)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(9,25);goTo(10)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 10 — FINAL QUIZ -->
+    <div class="step" id="step-10">
+      <div class="xp-badge">🏆 Final Quiz · 40 XP</div>
+      <div class="step-eyebrow">Step 11 — Test Again</div>
+      <h1>End-to-end check</h1>
+      <p>Five questions. 8 XP each for correct answers.</p>
+
+      <div class="quiz-card" id="fq0">
+        <div class="quiz-q"><span class="q-num">Q1 of 5</span>Which RLHF phase is most directly responsible for why AI tools give confident-sounding wrong answers?</div>
+        <button class="quiz-option" onclick="ans(this,'fq0',false)">A. Phase 1 (SFT) — because human trainers wrote some incorrect examples</button>
+        <button class="quiz-option" onclick="ans(this,'fq0',true)">B. Phase 2 (Reward Model) — because human raters rewarded confident-sounding responses regardless of accuracy</button>
+        <button class="quiz-option" onclick="ans(this,'fq0',false)">C. Base model training — because prediction-based training has no concept of truth</button>
+        <button class="quiz-option" onclick="ans(this,'fq0',false)">D. Phase 3 (PPO) — because reinforcement learning maximizes any pattern, including confident-wrong ones</button>
+        <div class="quiz-feedback" id="fq0-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq1">
+        <div class="quiz-q"><span class="q-num">Q2 of 5</span>You prompt an AI: "Write 4 MCQs on data protection. Each must test Bloom's Analysis level. Each distractor must be factually wrong but plausible." The output has 5 questions and some distractors are just obviously wrong. What's the root cause?</div>
+        <button class="quiz-option" onclick="ans(this,'fq1',false)">A. The model doesn't know Bloom's taxonomy</button>
+        <button class="quiz-option" onclick="ans(this,'fq1',true)">B. Multiple simultaneous constraints were given in prose — instruction following drops constraints when they conflict with "sounds naturally complete"</button>
+        <button class="quiz-option" onclick="ans(this,'fq1',false)">C. The topic (data protection) is outside the model's training data</button>
+        <button class="quiz-option" onclick="ans(this,'fq1',false)">D. The model interpreted "analysis" as breaking down the question itself</button>
+        <div class="quiz-feedback" id="fq1-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq2">
+        <div class="quiz-q"><span class="q-num">Q3 of 5</span>An AI tool drafts a Rise 360 lesson citing "a 2022 MIT study showing 67% of employees forget compliance training within 1 week." What should you do?</div>
+        <button class="quiz-option" onclick="ans(this,'fq2',false)">A. Use it — MIT is a credible source and the statistic is specific</button>
+        <button class="quiz-option" onclick="ans(this,'fq2',false)">B. Paraphrase it to reduce the risk of copyright issues</button>
+        <button class="quiz-option" onclick="ans(this,'fq2',true)">C. Search for the actual study before using — AI-generated citations are frequently fabricated, even when they sound highly specific</button>
+        <button class="quiz-option" onclick="ans(this,'fq2',false)">D. Ask the AI to confirm the citation with a follow-up prompt</button>
+        <div class="quiz-feedback" id="fq2-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq3">
+        <div class="quiz-q"><span class="q-num">Q4 of 5</span>Which prompt structure is most likely to produce instruction-following compliance from an AI model?</div>
+        <button class="quiz-option" onclick="ans(this,'fq3',false)">A. "Can you please write me some quiz questions about GDPR? Make them good for employees and test different levels. Not too long."</button>
+        <button class="quiz-option" onclick="ans(this,'fq3',true)">B. [ROLE] Compliance ID. [TASK] Write exactly 4 MCQs on GDPR. [CONSTRAINTS] 1. Bloom's Apply only. 2. Under 25 words per question. 3. One correct answer, three plausible distractors. [FORMAT] Q: / A. B. C. D. / Answer: X</button>
+        <button class="quiz-option" onclick="ans(this,'fq3',false)">C. "GDPR MCQs × 4, Bloom's Apply, 25 word max, plausible distractors" — terse prompts avoid ambiguity</button>
+        <button class="quiz-option" onclick="ans(this,'fq3',false)">D. Ask in multiple separate prompts — one per constraint — to avoid overloading the model</button>
+        <div class="quiz-feedback" id="fq3-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq4">
+        <div class="quiz-q"><span class="q-num">Q5 of 5</span>When using AI to draft narration scripts for an Articulate Rise course, what is the minimum verification step before sending to voiceover?</div>
+        <button class="quiz-option" onclick="ans(this,'fq4',false)">A. Run spell-check and grammar check on the AI output</button>
+        <button class="quiz-option" onclick="ans(this,'fq4',false)">B. Ask a second AI tool to review the first one's output for errors</button>
+        <button class="quiz-option" onclick="ans(this,'fq4',true)">C. Read the script aloud checking tone, then verify every factual claim against your approved content brief or primary sources</button>
+        <button class="quiz-option" onclick="ans(this,'fq4',false)">D. Have the SME approve the script — they'll catch any AI errors</button>
+        <div class="quiz-feedback" id="fq4-fb"></div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(9)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(10,40);goTo(11)">See results →</button>
+      </div>
+    </div>
+
+    <!-- STEP 11 — SCORE -->
+    <div class="step" id="step-11">
+      <div class="score-screen">
+        <div class="score-ring">
+          <div class="score-num" id="finalScore">0</div>
+          <div class="score-label">XP EARNED</div>
+        </div>
+        <h1 class="score-title" id="scoreTitle">Module complete!</h1>
+        <div class="level-badge" id="levelBadge">—</div>
+        <p class="score-desc" id="scoreDesc"></p>
+
+        <div class="teach-card" style="text-align:left; margin: 0 auto; max-width:540px;">
+          <h2 style="margin-bottom:14px;">🧰 What you can explain now</h2>
+          <ul style="padding-left:18px; font-size:14px; line-height:2.2; color:#2D4A34;">
+            <li>What RLHF is and why it was needed after base model training</li>
+            <li>Why AI tools hallucinate confidently (reward model preference for certainty)</li>
+            <li>What instruction following means and where it breaks down</li>
+            <li>Which ID tasks are high vs low risk for AI hallucination</li>
+            <li>How to structure prompts that get reliable compliance from AI tools</li>
+            <li>The two-step review (format check + fact check) for any AI-generated content</li>
+          </ul>
+
+          <h3 style="margin-top:20px; color:var(--green);">Practice tasks</h3>
+          <ol style="padding-left:18px; font-size:14px; line-height:2.2; color:#2D4A34;">
+            <li>Take an old prompt you've used with ChatGPT or Copilot and rewrite it using Role + Task + Constraints + Format structure</li>
+            <li>Ask an AI tool for a GDPR statistic — then search for the primary source. Note whether it's real, approximate, or fabricated.</li>
+            <li>Use AI to draft 3 Rise 360 lesson bullets — then apply the two-step review before accepting any of them</li>
+          </ol>
+        </div>
+
+        <div class="step-nav" style="justify-content:center; margin-top:28px;">
+          <button class="btn btn-secondary" onclick="goTo(0)">← Restart</button>
+          <a href="../index.html" class="btn btn-primary" style="text-decoration:none; display:inline-flex; align-items:center;">All tracks →</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  var totalXP = 0;
+  var completed = new Array(12).fill(false);
+
+  var fb = {
+    q0:  { ok: "Correct. RLHF = Reinforcement Learning from Human Feedback.", no: "RLHF stands for Reinforcement Learning from Human Feedback — the three-phase process that turns a base model into a helpful assistant." },
+    q1:  { ok: "Exactly. The base model is purely a next-token predictor — it has no concept of 'helpful' or 'accurate'.", no: "A base model does one thing: predict the next token. It has no concept of helpfulness, instructions, or accuracy. RLHF adds all of that on top." },
+    q2:  { ok: "Correct. Instruction following is about precise multi-constraint compliance, not 'understanding' in a human sense.", no: "Instruction following refers to the model's ability to obey explicit constraints in a prompt precisely — format, count, tone, Bloom's level — without drifting." },
+    q3:  { ok: "Exactly right. The reward model was trained on preference, and humans prefer confident-sounding answers — so the model learns to sound confident regardless of whether it knows the answer.", no: "The reward model (Phase 2) is the cause. Human raters preferred confident-sounding answers, so the model learned that confidence = high score, regardless of accuracy." },
+    q4:  { ok: "Correct. The prompt didn't specify 'exactly 5' or 'all multiple-choice' as explicit constraints — so the model optimized for what felt complete rather than what you specified.", no: "The prompt lacked explicit constraints — 'five' in prose and no format specification. The model produced what felt naturally complete, not what you precisely asked for." },
+    sq0: { ok: "Correct. 'Understand' is not measurable — it's Bloom's Remember at best. The model fulfilled the request with natural-sounding language rather than checking the measurability constraint.", no: "The issue is that 'understand' is not a measurable verb — it can't be observed or assessed. The model produced text that sounds like a learning objective without checking the measurability constraint." },
+    sq1: { ok: "Right — this is hallucination. Article 13 is real (it covers transparency obligations), but the '48-hour transparency notice' detail is fabricated. Specific-sounding details make hallucinations harder to spot.", no: "This is a hallucination. GDPR Article 13 exists, but the '48-hour' requirement is fabricated. Hallucinations are hardest to catch when they sound specific — always verify legal facts." },
+    sq2: { ok: "Exactly. The 72-hour rule (Article 33) is real — but it applies to the organization reporting to the supervisory authority, not individual employees reporting to a DPO. Accurate facts, wrong application to the audience.", no: "The fact is correct (Article 33 does require 72-hour notification) but misapplied. Marketing employees don't report data breaches to the DPO directly — that's a data controller obligation at the organizational level. Accurate GDPR + wrong audience application." },
+    fq0: { ok: "Exactly. Phase 2 is where human raters ranked outputs — and raters consistently preferred confident-sounding responses, embedding that preference into the reward model.", no: "Phase 2 (Reward Model) is the direct cause. Human raters rewarded confident-sounding responses, which the model then learned to optimize for — regardless of whether the content was accurate." },
+    fq1: { ok: "Correct. Multiple simultaneous constraints in prose are where instruction following breaks down most reliably. Numbering them and being explicit reduces this.", no: "Multiple simultaneous prose constraints are the highest-risk pattern for instruction following failures. The model drops some to produce something that 'sounds complete'." },
+    fq2: { ok: "Correct. AI-generated citations — even highly specific ones with institutions, years, and percentages — are frequently fabricated. The specificity makes them more convincing, not more reliable.", no: "You must find the primary source. AI-generated citations are often entirely fabricated. The more specific the citation sounds (institution, year, percentage), the more convincing the hallucination." },
+    fq3: { ok: "Correct. Role + numbered constraints + explicit format is the most reliable structure for instruction following. The prose prompt (A) buries constraints. The terse prompt (C) skips context. Multiple prompts (D) lose coherence.", no: "The structured prompt with [ROLE], [TASK], numbered [CONSTRAINTS], and explicit [FORMAT] is the most reliable approach. Prose prompts and terse prompts both result in more constraint drift." },
+    fq4: { ok: "Right. Reading aloud catches tone and pacing issues; fact-checking against your approved brief catches hallucinations that a spell-checker and another AI will both miss.", no: "Read aloud for tone + verify facts against your approved content. A second AI will reproduce the same hallucinations; SMEs often assume AI content was verified; spell-check misses factual errors entirely." }
+  };
+
+  function ans(btn, qId, correct) {
+    var card = document.getElementById(qId);
+    if (!card) return;
+    var btns = card.querySelectorAll('.quiz-option');
+    var already = Array.from(btns).some(function(b) { return b.classList.contains('correct') || b.classList.contains('wrong'); });
+    if (already) return;
+
+    btns.forEach(function(b) { b.classList.add('disabled'); });
+    btn.classList.add(correct ? 'correct' : 'wrong');
+
+    var fbEl = document.getElementById(qId + '-fb');
+    fbEl.textContent = correct ? '✅ ' + fb[qId].ok : '❌ ' + fb[qId].no;
+    fbEl.className = 'quiz-feedback show ' + (correct ? 'ok' : 'no');
+
+    if (correct) gainXP(qId.startsWith('fq') ? 8 : 5);
+  }
+
+  function gainXP(n) {
+    totalXP += n;
+    document.getElementById('headerXP').textContent = totalXP;
+    var toast = document.getElementById('xpToast');
+    toast.textContent = '+' + n + ' XP';
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 1500);
+    updateRail();
+  }
+
+  function completeStep(idx, xp) {
+    if (!completed[idx]) {
+      completed[idx] = true;
+      gainXP(xp);
+      var item = document.querySelector('[data-step="' + idx + '"]');
+      if (item) item.classList.add('done');
+    }
+  }
+
+  function goTo(idx) {
+    document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('step-' + idx).classList.add('active');
+    document.querySelectorAll('.sidebar-item').forEach(function(s) { s.classList.remove('active'); });
+    var si = document.querySelector('[data-step="' + idx + '"]');
+    if (si) si.classList.add('active');
+    document.getElementById('headerStep').textContent = idx + 1;
+    if (idx === 11) updateScore();
+    window.scrollTo(0, 0);
+    updateRail();
+  }
+
+  function updateRail() {
+    var pct = Math.min((totalXP / 340) * 100, 100);
+    document.getElementById('railFill').style.width = pct + '%';
+    var ids = ['rl0','rl1','rl2','rl3','rl4'];
+    ids.forEach(function(id) { document.getElementById(id).classList.remove('active'); });
+    if      (totalXP < 60)  document.getElementById('rl0').classList.add('active');
+    else if (totalXP < 140) document.getElementById('rl1').classList.add('active');
+    else if (totalXP < 220) document.getElementById('rl2').classList.add('active');
+    else if (totalXP < 290) document.getElementById('rl3').classList.add('active');
+    else                    document.getElementById('rl4').classList.add('active');
+  }
+
+  function updateScore() {
+    document.getElementById('finalScore').textContent = totalXP;
+    var title, badge, desc;
+    if (totalXP < 100) {
+      title = 'Good start'; badge = '🌱 Curious';
+      desc = "You've been introduced to the concepts. Come back to steps 3-4 (reward model + optimization) — that's where the practical insight for IDs lives. Once those click, your AI tool reviews will be much sharper.";
+    } else if (totalXP < 180) {
+      title = 'AI Aware'; badge = '👀 Aware';
+      desc = "Solid foundation. Focus your next session on the scenario (step 8) and prompt design (step 9) — that's where the theory becomes workflow. Try rewriting one real prompt you've used with the Role + Task + Constraints + Format structure.";
+    } else if (totalXP < 260) {
+      title = 'AI Literate'; badge = '📚 Literate';
+      desc = "You can explain RLHF to a colleague and have a defensible point of view on AI tool risks. Next step: apply the two-step review on your next AI-assisted Rise 360 or Storyline module and document what you catch.";
+    } else {
+      title = 'AI Strategist'; badge = '🧭 Strategist';
+      desc = "Excellent. You understand the mechanism, the failure modes, and the workflow integration. You can now design an AI-assisted ID process that your team can follow safely — including which tasks to trust AI with and which to flag for human review.";
+    }
+    document.getElementById('scoreTitle').textContent = title;
+    document.getElementById('levelBadge').textContent = badge;
+    document.getElementById('scoreDesc').textContent = desc;
+  }
+
+  updateRail();
+</script>
+</body>
+</html>
