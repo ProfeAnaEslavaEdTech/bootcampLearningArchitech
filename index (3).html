@@ -1,0 +1,511 @@
+<!-- ============================================================
+     FILE: cefr-metrics-architect/index.html
+     WHAT IT IS: Track 16 — CEFR Learning Metrics Architect
+     The Measurement Arm: xAPI · evidence tiers · D1–D4 deliverables
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEFR Learning Metrics Architect — Measurement Arm Bootcamp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
+  --line: #E6E8F2; --muted: #5B5F77;
+  --primary: #3B5BD6; --primary-deep: #22307C;
+  --on-primary: #FFFFFF; --accent: #E8A33D; --accent-text: #9A5B00;
+  --blue-50: #EEF2FD; --blue-100: #DCE4FB;
+  --focus-ring: #3B5BD6; --radius: 8px;
+  --tag-bg: #EEF2FD; --tag-text: #22307C;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+    --line: #2A2E50; --muted: #9A9DBF;
+    --primary: #7B9FFF; --primary-deep: #3B5BD6;
+    --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+    --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+    --tag-bg: #171A38; --tag-text: #7B9FFF;
+  }
+}
+:root[data-theme="light"] { --tag-bg: #EEF2FD; --tag-text: #22307C; }
+:root[data-theme="dark"] {
+  --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+  --line: #2A2E50; --muted: #9A9DBF;
+  --primary: #7B9FFF; --primary-deep: #3B5BD6;
+  --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+  --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+  --tag-bg: #171A38; --tag-text: #7B9FFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+  left: 12px; top: 12px; background: var(--primary-deep); color: #fff;
+  padding: 8px 14px; border-radius: 8px; z-index: 200;
+  font-family: 'Inter', system-ui, sans-serif; font-size: 13px;
+}
+body { background: var(--canvas); font-family: 'Inter', sans-serif; color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+h1, h2 { font-family: 'Fraunces', serif; }
+
+#theme-btn {
+  position: fixed; top: 14px; right: 16px; z-index: 100;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10); transition: border-color 0.15s;
+}
+#theme-btn:hover { border-color: var(--primary); }
+#theme-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+.top-bar {
+  background: var(--primary-deep); color: #fff; padding: 10px 24px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+  display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
+}
+.back-link { color: rgba(255,255,255,0.7); text-decoration: none; }
+.back-link:hover { color: #fff; }
+.top-sep { opacity: 0.4; }
+
+.hero {
+  background: linear-gradient(135deg, var(--primary-deep) 0%, var(--primary) 60%, #E8A33D 100%);
+  color: #fff; padding: 52px 24px 44px; text-align: center;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hero { background: linear-gradient(135deg, #08091A 0%, #1A2464 100%); } }
+:root[data-theme="dark"] .hero { background: linear-gradient(135deg, #08091A 0%, #1A2464 100%); }
+.hero-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.62); margin-bottom: 16px; }
+.hero h1 { font-size: clamp(22px, 4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; line-height: 1.1; }
+.hero h1 em { font-style: normal; color: #FDE68A; }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.82); max-width: 620px; margin: 0 auto 24px; line-height: 1.6; }
+.skill-grid { display: inline-flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.skill-chip { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.skill-chip .chip-label { font-size: 9px; opacity: 0.6; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.xp-bar-wrap { max-width: 640px; margin: 0 auto; padding: 20px 24px 0; display: flex; align-items: center; gap: 12px; }
+.xp-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--primary); font-weight: 700; white-space: nowrap; }
+.xp-track { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.xp-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.5s ease; }
+.xp-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+.map-section { max-width: 640px; margin: 0 auto; padding: 24px 24px 60px; }
+.map-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+.level-card { background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: flex-start; gap: 16px; transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s; text-align: left; width: 100%; font-family: inherit; color: var(--ink); }
+.level-card:hover:not(.locked) { border-color: var(--accent); box-shadow: 0 4px 16px rgba(59,91,214,0.15); transform: translateY(-1px); }
+.level-card.locked { opacity: 0.45; cursor: default; }
+.level-card.done { border-color: var(--primary); background: var(--blue-50); }
+.level-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; color: var(--primary); background: var(--blue-50); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.level-card.done .level-num { background: var(--primary); color: var(--on-primary); }
+.level-body { flex: 1; }
+.level-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+.level-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.level-artifact { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--primary); font-weight: 700; }
+.level-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.badge { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+.badge-type { background: var(--tag-bg); color: var(--tag-text); }
+.badge-done { background: var(--primary); color: var(--on-primary); }
+.badge-lock { background: var(--line); color: var(--muted); }
+
+.overlay { display: none; position: fixed; inset: 0; background: rgba(15,17,32,0.75); z-index: 100; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 32px 16px 64px; }
+.overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: 14px; max-width: 720px; width: 100%; padding: 36px 36px 32px; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.3); }
+.modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; line-height: 1; padding: 4px; font-family: inherit; }
+.modal-close:hover { color: var(--ink); }
+.modal-eyebrow { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+.modal h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.modal-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+hr.divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+.modal-ai-note { margin-top: 20px; padding: 10px 14px; background: var(--blue-50); border-radius: 6px; font-size: 11px; color: var(--muted); line-height: 1.5; }
+.modal-ai-note a { color: var(--primary); }
+.artifact-box { background: var(--blue-50); border: 1.5px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; color: var(--primary); }
+.check-group { margin-bottom: 20px; }
+.check-group-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.checklist-item:last-child { border-bottom: none; }
+.check-box { width: 20px; height: 20px; border: 2px solid var(--line); border-radius: 4px; flex-shrink: 0; cursor: pointer; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 12px; transition: background 0.12s, border-color 0.12s; margin-top: 2px; }
+.check-box.checked { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.check-text { font-size: 14px; line-height: 1.5; font-weight: 600; }
+.check-note { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 400; }
+.builder-field { margin-bottom: 20px; }
+.builder-label { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block; }
+.builder-hint { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-style: italic; }
+.builder-input { width: 100%; min-height: 80px; padding: 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink); background: var(--canvas); resize: vertical; line-height: 1.55; transition: border-color 0.12s; }
+.builder-input:focus { outline: none; border-color: var(--primary); }
+.model-answer { display: none; margin-top: 10px; padding: 12px 14px; background: var(--blue-50); border-left: 3px solid var(--primary); border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--ink); }
+.model-answer strong { color: var(--primary); }
+.boss-header { text-align: center; margin-bottom: 24px; }
+.boss-icon { font-size: 44px; line-height: 1; margin-bottom: 8px; }
+.boss-title { font-size: 18px; font-weight: 700; }
+.boss-sub { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.boss-q { background: var(--blue-50); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--primary); }
+.boss-input { width: 100%; min-height: 96px; padding: 12px; border: 1.5px solid var(--line); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink); background: var(--canvas); resize: vertical; line-height: 1.55; transition: border-color 0.12s; margin-bottom: 6px; }
+.boss-input:focus { outline: none; border-color: var(--primary); }
+.prog-note { background: var(--blue-50); border-left: 3px solid var(--primary); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; color: var(--ink); line-height: 1.5; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; border: none; transition: background 0.15s, transform 0.1s; }
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover { background: var(--primary-deep); }
+.btn-ghost { background: var(--canvas); color: var(--ink); border: 1.5px solid var(--primary); }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.final-screen { display: none; text-align: center; padding: 48px 24px 64px; }
+.final-screen.show { display: block; }
+.final-icon { font-size: 56px; margin-bottom: 16px; }
+.final-screen h2 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.final-screen p { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 520px; margin: 0 auto 24px; }
+.final-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+.final-chip { background: var(--blue-50); color: var(--primary); font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #22307C; color: #fff; padding: 12px 22px; border-radius: 30px; font-size: 14px; font-weight: 600; white-space: nowrap; z-index: 300; transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; pointer-events: none; }
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); }
+footer a { color: var(--primary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer .ai-note { font-size: 10.5px; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">🌓</button>
+
+<div class="top-bar">
+  <a href="../" class="back-link">← All tracks</a>
+  <span class="top-sep">|</span>
+  <strong>Track 16 · CEFR Learning Metrics Architect</strong>
+  <span class="top-sep">·</span>
+  <span>4 metric families · xAPI · D1–D4 deliverables</span>
+  <span class="top-sep">·</span>
+  <span>5 modules · measurement arm</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">MLLDE Measurement Module · Standards-anchored · Evidence-valid</div>
+  <h1>No statement.<br><em>No pass.</em></h1>
+  <p class="hero-sub">A metric without a statement source is not a metric — it is a claim. Five modules on designing defensible language learning evidence: task gates, xAPI architecture, IRI discipline, and client reports D1–D4.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">4 metric families<span class="chip-label">always distinct</span></div>
+    <div class="skill-chip">Task gate + rubric<span class="chip-label">pass floor</span></div>
+    <div class="skill-chip">xAPI statement design<span class="chip-label">actor·verb·object</span></div>
+    <div class="skill-chip">IRI registry<span class="chip-label">propose, never mint</span></div>
+    <div class="skill-chip">D1–D4 deliverables<span class="chip-label">client pack</span></div>
+  </div>
+</div>
+
+<div class="xp-bar-wrap">
+  <span class="xp-label">Modules mastered</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+  <span class="xp-count" id="xpCount">0 / 5</span>
+</div>
+
+<div class="map-section" id="main">
+  <div class="map-title">Measurement modules</div>
+  <div id="map"></div>
+</div>
+
+<div class="final-screen" id="finalScreen">
+  <div class="final-icon">📊</div>
+  <h2>Measurement arm complete.</h2>
+  <p>You can now design, defend, and deliver a full CEFR-anchored metrics system — from statement source to client report. Every metric traceable. Every claim evidenced.</p>
+  <div class="final-chips">
+    <span class="final-chip">4 families mapped</span>
+    <span class="final-chip">Task gate defined</span>
+    <span class="final-chip">xAPI statement designed</span>
+    <span class="final-chip">IRI proposed (not minted)</span>
+    <span class="final-chip">D1–D4 brief delivered</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../language-learning-experience-designer/" class="btn btn-ghost">← Language Design (Track 15)</a>
+    <a href="../" class="btn btn-ghost">All tracks</a>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalContent"></div>
+    <div class="modal-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <a href="../">← Learning Architect Bootcamp</a> · CEFR Learning Metrics Architect · Track 16 · The Measurement Arm
+  <div class="ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a> · © Ana Eslava-Graterol · Ocean Ink v0.1</div>
+</footer>
+
+<script>
+const LEVELS = [
+  {
+    id: 1,
+    name: "The Four Metric Families",
+    desc: "Define each family precisely, assign its correct statement source, and know which evidence tier it occupies. Confusing the families is the single most common measurement design error.",
+    type: "builder",
+    artifact: "→ Deliverable: Family map with statement source and evidence tier for one language product",
+    fields: [
+      {
+        label: "Define all four families and their statement sources",
+        hint: "For each metric family: name it, describe what it measures, name the xAPI verb(s) that generate statements for it, and state which evidence tier it occupies (Tier 1 = produced & scored, Tier 2 = attempted not scored, Tier 3 = self-reported). Do all four before checking the model.",
+        model: "<strong>Family 1 — Engagement:</strong> How and how often learners use the product. Metrics: sessions started, sessions completed, session length, return rate, cards created, output attempts. xAPI verbs: 'launched', 'experienced', 'interacted'. Evidence tier: Tier 2 (attempted, not quality-scored). Cannot be reported as learning evidence — only as usage evidence.<br><br><strong>Family 2 — Progress:</strong> Movement through CEFR levels, task gate pass rates, mode coverage. Metrics: A1→A2 transition (task gate passed), missions completed per level, modes evidenced (spoken interaction evidenced ≠ written production evidenced). xAPI verbs: 'completed' + 'passed' on task gate objects. Evidence tier: Tier 1 when task gate pass is logged with rubric score; Tier 2 if only 'completed' without score.<br><br><strong>Family 3 — Quality of Production:</strong> How well the learner produced. Metrics: rubric score per output task, pronunciation score (if API integrated), fluency proxy (words per minute), lexical range (unique chunks used). xAPI verb: 'scored' or 'passed' with score.raw on the output object. Evidence tier: Tier 1 only when a scoring instrument exists and was applied.<br><br><strong>Family 4 — Learner Self-Report:</strong> What the learner believes about themselves. Metrics: confidence rating (1–5) post-session, self-assessed CEFR level, card usefulness ratings. xAPI verb: 'answered' on survey objects. Evidence tier: Tier 3 — valid for predicting engagement and measuring metacognition; never substitutes for Families 2 or 3 in a learning outcome claim."
+      },
+      {
+        label: "Where mixing families breaks a report",
+        hint: "A client asks: 'Did our learners improve their spoken English?' You have: 1,200 sessions completed (Family 1), 340 task gate passes at A2 (Family 2), 67 rubric scores with mean 3.8/5 at B1 (Family 3), 890 learners self-rated B1 or higher (Family 4). Which of these four numbers answers the client's question? Which ones CANNOT be used as evidence of improvement?",
+        model: "<strong>Answers the question:</strong> The 340 A2 task gate passes (Family 2, Tier 1) and the 67 rubric scores at B1 (Family 3, Tier 1) are valid evidence of spoken improvement — they are based on production that was scored against a CEFR descriptor. If you can show 'before' baseline, these become progress evidence.<br><br><strong>Cannot answer the question:</strong><br>• 1,200 sessions (Family 1) — tells you learners engaged, not that they improved. Completion ≠ acquisition.<br>• 890 self-rated B1 (Family 4) — tells you learners believe they improved, not that they did. A confidence shift is a real outcome (motivational) but it is not a spoken language performance outcome.<br><br><strong>The correct report sentence:</strong> '340 learners passed the A2 spoken interaction task gate; 67 learners achieved a rubric score above 3/5 at B1 level. 890 learners self-assessed at B1 or above (Family 4, Tier 3 — reported separately).' Never aggregate these into one 'X learners improved' headline."
+      },
+      {
+        label: "Apply to your product — map one metric per family",
+        hint: "For a language learning product you are designing (or have designed): name one concrete metric from each family. For each: state the metric name, what xAPI statement generates it, and how you would present it in a client report headline.",
+        model: "<strong>Example — Language Passport / Hotel Staff Spanish A1→B1:</strong><br><br>Family 1 — Engagement: '82% of enrolled learners completed at least 3 sessions in the first 2 weeks.' Statement: 'launched' count per learner > 3 in a 14-day window. Report headline: 'Learner activation rate.'<br><br>Family 2 — Progress: '54% of active learners passed the A2 Hotel Check-In task gate.' Statement: 'passed' on mission object A2-hotel-checkin. Report headline: 'A2 mission pass rate.'<br><br>Family 3 — Quality: 'Mean rubric score for spoken check-in: 3.6 / 5 (A2 descriptor pass floor: 3/5).' Statement: 'scored' with score.raw on spoken output object. Report headline: 'Mean production quality.'<br><br>Family 4 — Self-report: '71% of learners rated their confidence in handling an English-speaking guest as 4 or 5 after the A2 module.' Statement: 'answered' on survey object post-A2. Report headline: 'Learner confidence shift (self-reported).' Always labelled as Tier 3."
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "Task Gates & Self-Scaling Rubrics",
+    desc: "A task gate without a rubric is an opinion. A rubric without a CEFR scale name is not anchored. Design both before writing any assessment content.",
+    type: "checklist",
+    artifact: "→ Deliverable: Complete task gate + rubric for one authentic mission at one CEFR level",
+    groups: [
+      {
+        label: "Task gate design",
+        items: [
+          { text: "Define the task gate: one sentence stating the minimum performance floor. Format: '[Learner] must [produce X] in [context Y] to a standard of [Z] for the mission to count as complete.'", note: "Example: 'The learner must produce at least 3 of 5 target hospitality chunks in a simulated check-in interaction, with the communication goal achieved, for the A2 Hotel Check-In mission to count as passed.'" },
+          { text: "Set the pass floor from the CEFR descriptor, not from intuition. Find the descriptor for this level and this mode in the CEFR Companion Volume — use its exact language in the gate definition.", note: "A2 Oral Interaction descriptor: 'Can interact with reasonable ease in structured situations and short conversations, provided the other person helps if necessary.' The gate pass floor must be consistent with this descriptor — not harder, not softer." },
+          { text: "Decide the evidence requirement: is the gate passed on rubric score only, or also on rater judgment? If human rating is in scope, specify: who rates, what training they receive, and what inter-rater reliability target applies.", note: "For AI-scored tasks: the scoring algorithm is the 'rater'. Document its logic. For rubric-only gates: the rubric score IS the judgment — there is no human override unless specified." },
+          { text: "State explicitly what happens when a learner does NOT pass the gate: retry immediately, retry after processing step, escalate to tutor, or count as attempted (Tier 2)?", note: "The gate logic determines which evidence tier the attempt populates. Failed gate + retry → Tier 2 for all attempts until the gate is passed, then Tier 1 for the passing attempt." }
+        ]
+      },
+      {
+        label: "Self-scaling rubric design",
+        items: [
+          { text: "The rubric is 'self-scaling' because it is set at the learner's stated CEFR level target — not at a fixed standard for all learners. A B1 learner's pass floor is a B1 descriptor; an A2 learner's is an A2 descriptor.", note: "Self-scaling ≠ adaptive. You set the scale relative to the stated goal before the learner produces. The scale does not change based on what the learner produces." },
+          { text: "Use the CEFR Companion Volume descriptor language in the rubric criteria — not invented criteria. Each rubric criterion must map to a named aspect of the descriptor: communication goal achieved, accuracy level, vocabulary range, discourse coherence.", note: "Invented criteria ('uses correct grammar') are not anchored to any CEFR scale. They make assessment non-transferable. Named criteria ('achieves the communication goal with some vocabulary gaps' → B1 Oral Interaction) are defensible." },
+          { text: "Set rubric score levels (e.g. 1–5 or 0–3) with anchor descriptions for each score level, not just for the pass floor. Define what a '1' looks like as well as what a '4' looks like.", note: "A rubric with only a pass/fail floor is a binary gate, not a rubric. The scale between scores is what makes the rubric useful for feedback and for tracking growth over time." },
+          { text: "Separate self-assessment from rater assessment: include a learner self-rating row in the rubric template, but store it in Family 4 (Tier 3), never in the same report column as the rater score.", note: "Physically separate the cells. A learner who rates themselves 4/5 and a rater who scores them 2/5 are two valid but different data points. Averaging them is a methodological error." }
+        ]
+      },
+      {
+        label: "Evidence tier and validity check",
+        items: [
+          { text: "Run the validity rule on your completed gate + rubric: 'a report is a query over statements; no production, no statements, no pass.' Trace each rubric score back to the xAPI statement that carries it.", note: "If the rubric score exists but the xAPI statement does not, the score is in a spreadsheet, not in a system. It cannot be queried at scale, cannot be aggregated across deployments, and cannot feed the client report." },
+          { text: "Label the evidence tier for every metric in your gate + rubric: Tier 1 (produced and scored with this rubric), Tier 2 (attempted but not yet scored), Tier 3 (self-rated). Confirm no Tier 3 data is in a Tier 1 reporting column.", note: "This check must happen at design time, not at reporting time. Tier confusion is easiest to prevent when the report template and the rubric template are designed together." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "xAPI Statement Architecture & IRI Registry",
+    desc: "Design the full xAPI statement for one mission type. Then propose a new IRI for the registry — and explain exactly why you cannot mint it unilaterally.",
+    type: "builder",
+    artifact: "→ Deliverable: Complete xAPI statement (5 components) + IRI proposal memo for AE review",
+    fields: [
+      {
+        label: "Design a complete xAPI statement for a task gate pass",
+        hint: "A B1 learner just passed the 'Customer Service Email' written production task gate. Design the complete xAPI statement: actor, verb, object, result, and context (with extensions for CEFR level, mode, scale name, and evidence tier). Then add one statement for the self-assessment score that fires in the same session.",
+        model: "<strong>Statement 1 — Task gate pass (Tier 1):</strong><br>Actor: {objectType: 'Agent', account: {name: 'learner_anon_hash_xyz', homePage: 'https://languagepassport.app'}} — GDPR: pseudonymised account hash, no PII in xAPI<br>Verb: {id: 'http://adlnet.gov/expapi/verbs/passed', display: {en: 'passed'}}<br>Object: {id: 'https://mllde.anaeslava.com/activities/mission/b1-customer-email', objectType: 'Activity', definition: {name: {en: 'B1 Customer Service Email Mission'}, description: {en: 'Learner writes a formal apology email to a customer after service failure.'}, type: 'http://adlnet.gov/expapi/activities/assessment'}}<br>Result: {success: true, completion: true, score: {raw: 4, min: 0, max: 5, scaled: 0.8}, response: '[email_hash]'} — response stores a hash of the produced text, not the text itself (GDPR)<br>Context extensions: {'https://mllde.anaeslava.com/extensions/cefr-level': 'B1', 'https://mllde.anaeslava.com/extensions/mode': 'written-production', 'https://mllde.anaeslava.com/extensions/cefr-scale': 'correspondence', 'https://mllde.anaeslava.com/extensions/evidence-tier': 'tier-1'}<br><br><strong>Statement 2 — Self-assessment (Tier 3):</strong><br>Verb: {id: 'http://adlnet.gov/expapi/verbs/answered'}<br>Object: {id: 'https://mllde.anaeslava.com/activities/survey/post-session-confidence'}<br>Result: {response: '4'} — learner self-rated confidence 4/5<br>Context extensions: {'evidence-tier': 'tier-3'} — physically separate from Statement 1"
+      },
+      {
+        label: "IRI registry discipline — propose, never mint",
+        hint: "You want to track the exact moment a learner harvests a language chunk into their My Cards during the Input phase — a new action that no existing ADL IRI covers. Draft a one-paragraph IRI proposal memo to AE for registry consideration. Include: what the verb means, why no existing IRI covers it, what data it would generate, and what you commit to NOT doing until the proposal is approved.",
+        model: "<strong>IRI Proposal Memo — verb: 'noticed'</strong><br><br>Proposed IRI: https://mllde.anaeslava.com/verbs/noticed<br>Display: {en: 'noticed', es: 'identificó'}<br><br>What it means: The learner actively tagged and labelled a language chunk from the Avatar-as-Input phase as personally useful. This is the Lexical Approach harvest moment — distinct from 'experienced' (passive exposure), 'completed' (task gate), or 'answered' (quiz response).<br><br>Why no existing IRI covers it: ADL's 'interacted' is too broad (covers any click interaction). 'Answered' requires a question/answer structure. 'Experienced' is passive. The harvest action has specific pedagogical significance in MLLDE: it marks the transition from Input to My Cards, generates the spaced repetition seed, and is the earliest evidence of intentional lexical acquisition.<br><br>Data it would generate: timestamp of harvest, chunk ID, learner-assigned category label, learner-set difficulty level. These feed spaced repetition scheduling and the lexical range metric in Family 3.<br><br>Commitment until approved: I will NOT use this IRI in any production statement, any LRS, or any client configuration. I will use 'interacted' as a placeholder in development. The approved IRI will replace it at the next release cycle, with a migration statement logged for existing data.<br><br>Requesting AE approval before proceeding."
+      },
+      {
+        label: "GDPR-by-design in xAPI — three rules",
+        hint: "A client asks why your xAPI actor field uses a hash instead of the learner's name and email. Write the three-sentence explanation you would give a non-technical product owner, and then write the technical implementation note for the engineering team.",
+        model: "<strong>For the product owner (plain language):</strong> 'Our system links learning records to learner identities using a pseudonymous ID (a code that maps to the learner's account in a separate, secured database). This means that if the learning record store were ever compromised, it would not expose personal information — an attacker would see learning activity without knowing who performed it. The mapping lives in our user database, protected by authentication, not inside the learning data itself.'<br><br><strong>For the engineering team (technical):</strong> Actor.account.name = SHA-256(learner_internal_id + SALT). Store the salt per-installation, not in the LRS. The mapping table (hash → learner_id → PII) lives in the application database with row-level access control. Never store name, email, or any PII in xAPI actor fields. Learner data export requests (GDPR Art. 15) are fulfilled by joining the mapping table to LRS query results server-side — never expose the join logic to the client application. Delete the mapping on erasure requests (GDPR Art. 17); LRS records with orphaned hashes become anonymous by design."
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: "D1–D4 Deliverables — Evidence to Reports",
+    desc: "The MLLDE Measurement Module produces four client deliverables. Know exactly what each contains, who the audience is, and what decisions it enables.",
+    type: "builder",
+    artifact: "→ Deliverable: D1–D4 brief for one language learning product (one paragraph per deliverable)",
+    fields: [
+      {
+        label: "D1 — Metric definition document",
+        hint: "D1 is the metric specification for the engineering team. For a B1 Spanish oral interaction product: write D1. Include: metric name, definition, which family it belongs to, statement source, evidence tier, and aggregation rule (how it rolls up to a product-level KPI).",
+        model: "<strong>D1 example — 'B1 Oral Interaction Pass Rate':</strong><br>Metric name: B1 Oral Interaction Pass Rate<br>Family: 2 — Progress<br>Definition: Percentage of active learners who have passed at least one B1 oral interaction task gate within the reporting period.<br>Statement source: xAPI 'passed' statement on any object with type 'simulation' and cefr-level extension 'B1' and mode extension 'spoken-interaction'.<br>Evidence tier: Tier 1 (scored production required for task gate pass).<br>Aggregation rule: Count distinct actor.account.name values with at least one qualifying 'passed' statement ÷ total distinct actor.account.name values with at least one 'launched' statement in the period × 100. Excludes accounts with zero activity.<br>Report headline: 'B1 Oral Interaction Pass Rate: X% (n=Y learners)'<br>Caveat: This metric requires pronunciation scoring or rubric scoring by a qualified rater. Unscored self-assessments are NOT included in this metric — they are reported separately as Family 4."
+      },
+      {
+        label: "D2 — Assessment blueprint",
+        hint: "D2 is the assessment blueprint: the complete map of what is assessed, at what level, using which rubric, at what point in the learner journey. Write D2 for one module of a B1 Spanish product: one spoken mission, one written mission, the rubric for each, and the task gate for each.",
+        model: "<strong>D2 example — Module 3 'Customer Interaction' B1:</strong><br><br>Mission A — Spoken: Telephone enquiry handling. Task gate: Learner conducts a simulated 3-minute customer call, achieving the communication goal with no more than 2 major communication breakdowns. CEFR scale: 'Overall oral interaction' B1. Rubric: 4 criteria × 5 points (communication goal achieved, vocabulary range, fluency and coherence, register appropriateness). Pass floor: ≥12/20 (3/5 on each criterion). Evidence tier: Tier 1.<br><br>Mission B — Written: Formal complaint email. Task gate: Learner writes 150–200 word email, achieving the three required discourse moves (acknowledge, remedy, commit). CEFR scale: 'Correspondence' B1. Rubric: 3 criteria × 5 points (discourse structure, lexical range, register). Pass floor: ≥9/15. Evidence tier: Tier 1.<br><br>Assessment timing: End of Module 3, after processing drills. Retry: unlimited within session; re-assessment available after 24-hour interval."
+      },
+      {
+        label: "D3 — xAPI / SCORM technical specification · D4 — Persona reports",
+        hint: "D3 is the technical integration spec for the LRS/SCORM connection. D4 is the three persona reports (learner / teacher / admin-HR). For a Spanish B1 product: write one key line for D3 (the launch parameters), and describe what each D4 persona report shows — and what it does NOT show.",
+        model: "<strong>D3 — Key launch parameter:</strong> cmi5 launch URL format: https://languagepassport.app/launch?actor={actor}&endpoint={endpoint}&fetch={fetch}&activityId={activityId}&registration={registration}. The fetch URL returns the auth token from the LRS. The activityId is the course IRI from the MLLDE registry. All sessions are registered to the same registration GUID so attempts are linked across devices.<br><br><strong>D4 — Persona reports:</strong><br><br>Learner report: 'My Progress' — shows Family 2 (missions passed), Family 3 (rubric scores per mission), Family 4 (confidence over time). Does NOT show: other learners' data, raw xAPI statement JSON, admin metrics. Audience: the learner only.<br><br>Teacher report: 'Class Progress' — shows aggregate Family 2 (class pass rates per mission), Family 3 mean scores, flagged learners below the task gate floor. Does NOT show: Tier 3 self-report data (teacher sees only evidenced progress), individual learner full history without opt-in. Audience: teacher with view access.<br><br>Admin-HR report: 'Organisational ROI' — shows Family 1 (activation rate), Family 2 (B1 pass rate), Kirkpatrick Level 4 proxy (if post-training performance data is available). Does NOT show: individual learner scores or names (aggregate only). Audience: L&D manager, HR, senior sponsor."
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: "Boss Battle — Deliver a Complete Metrics Brief",
+    desc: "A client wants evidence their language learning investment worked. Design the full measurement pack — metric families, task gate, xAPI statements, and report format — in response to three real panel questions.",
+    type: "boss",
+    artifact: "→ Deliverable: Verbal + written metrics brief for a language learning product panel",
+    questions: [
+      {
+        q: "'We have 500 learners completing our Spanish A2 module. How do you measure whether they actually learned anything, not just whether they finished?'",
+        model: "<strong>The distinction that answers this:</strong> Completion is Family 1 (Engagement, Tier 2). Learning evidence requires Family 2 + Family 3 (Progress + Quality, Tier 1).<br><br><strong>Answer structure:</strong> 'Completion tells you learners finished the course — it does not tell you they acquired language. We measure actual learning through two mechanisms: task gate passes and rubric scores on produced output.<br><br>For your A2 module: learners complete a simulated interaction (check-in, ordering, describing) that is recorded and scored against an A2 CEFR Interaction rubric — pass floor 3/5. This fires an xAPI 'passed' statement that we can aggregate: «68% of learners who completed the module also passed the A2 task gate.» That 68% is a learning claim. The completion figure is a retention claim. They are not the same number, and we never report them in the same sentence without labelling both.'<br><br><strong>What to add if they push back on 'but that takes more time to build':</strong> 'Yes — a valid measurement system costs more than a completion tracker. The alternative is reporting completion as learning, which is both methodologically wrong and, in HR/credentialing contexts, a liability. The task gate adds one production task per module and one rubric — it is the minimum investment to make your learning claim defensible.'"
+      },
+      {
+        q: "'What's xAPI and why should our LMS support it? Our current platform just tracks SCORM completions — is that not enough?'",
+        model: "<strong>Position honestly — SCORM is not nothing, but it has hard limits:</strong><br><br>'SCORM tracks whether a learner completed a course and their final quiz score — two data points, both binary. This is enough if your only question is «did the learner take the course?» It is not enough if your questions are «what did the learner produce?», «which interaction type is harder for them?», or «is their spoken language improving over six months?»<br><br>xAPI tracks learning wherever it happens — mobile, LMS, real-world practice — and records rich events: not just «completed», but «produced a 3-minute spoken interaction, rubric score 3.8/5, at B1 level, on 2026-08-07, on a mobile device». Each statement is queryable. You can ask: «show me all learners who passed the B1 oral gate but failed the written gate» — and get an answer. SCORM cannot do this.<br><br>For a language learning product specifically: the output task (the spoken or written production) is the core evidence. SCORM cannot carry voice recordings, rubric scores per criterion, or pronunciation data. xAPI can. If you want a learning claim, xAPI is the minimum viable infrastructure.'<br><br><strong>And if their LMS is SCORM-only:</strong> 'We can run a parallel xAPI track via a Learning Record Store — the LMS gets SCORM completion, the LRS gets the full statement stream. That is a transition architecture, not a permanent compromise.'"
+      },
+      {
+        q: "'We're presenting to the board next month. What one number should we put on the slide that proves this investment worked?'",
+        model: "<strong>The honest answer (give it):</strong> 'One number rarely proves a learning investment worked — it proves one thing about one cohort at one moment. But if I had to pick one number for a board slide, I would pick the Family 2 metric with a baseline comparison: «X% of learners passed the B1 task gate, up from 0% at the start of the programme.» That is a before/after claim with an evidenced outcome.<br><br><strong>What makes it defensible:</strong> The task gate pass is Tier 1 evidence (produced output, scored against a rubric). The baseline is defined at programme start. The CEFR level is named. The report can be reconstructed from LRS query results if anyone challenges it.<br><br><strong>What to avoid:</strong> «500 learners completed the programme» (Family 1, no learning claim). «Learner satisfaction was 4.2/5» (Family 4, confidence not performance). «Engagement increased 40%» (Family 1, engagement ≠ learning).<br><br><strong>What to pair it with:</strong> One Family 4 number — «88% of passing learners reported feeling more confident in English-speaking contexts» — but clearly labelled as self-report, not performance evidence. Boards respond well to a paired claim: performance evidence + confidence shift. Never present them as the same type of evidence.'"
+      }
+    ]
+  }
+];
+
+let completed = new Set();
+let checkState = {};
+
+function xp() {
+  const done = completed.size;
+  document.getElementById('xpFill').style.width = (done / LEVELS.length * 100) + '%';
+  document.getElementById('xpCount').textContent = done + ' / ' + LEVELS.length;
+}
+
+function renderMap() {
+  const map = document.getElementById('map');
+  map.innerHTML = '';
+  LEVELS.forEach((lvl, i) => {
+    const locked = i > 0 && !completed.has(LEVELS[i - 1].id);
+    const done = completed.has(lvl.id);
+    const btn = document.createElement('button');
+    btn.className = 'level-card' + (locked ? ' locked' : '') + (done ? ' done' : '');
+    btn.disabled = locked;
+    btn.onclick = () => !locked && openLevel(lvl.id);
+    btn.setAttribute('aria-label', lvl.name + (locked ? ' — locked' : '') + (done ? ' — complete' : ''));
+    btn.innerHTML = `
+      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-body">
+        <div class="level-name">${lvl.name}</div>
+        <div class="level-desc">${lvl.desc}</div>
+        <div class="level-artifact">${lvl.artifact}</div>
+        <div class="level-meta">
+          <span class="badge badge-type">${lvl.type}</span>
+          ${done ? '<span class="badge badge-done">Done ✓</span>' : ''}
+          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+        </div>
+      </div>`;
+    map.appendChild(btn);
+  });
+}
+
+function openLevel(id) {
+  const lvl = LEVELS.find(l => l.id === id);
+  if (!lvl) return;
+  checkState[id] = checkState[id] || {};
+  const overlay = document.getElementById('overlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  renderContent(lvl);
+}
+
+function renderContent(lvl) {
+  const c = document.getElementById('modalContent');
+  const header = `<div class="modal-eyebrow">Module ${lvl.id} of ${LEVELS.length} · ${lvl.type}</div><h2 id="modalTitle">${lvl.name}</h2><div class="modal-desc">${lvl.desc}</div><div class="artifact-box">🎯 ${lvl.artifact}</div><hr class="divider">`;
+  if (lvl.type === 'checklist') c.innerHTML = header + buildChecklist(lvl);
+  else if (lvl.type === 'builder') c.innerHTML = header + buildBuilder(lvl);
+  else if (lvl.type === 'boss')    c.innerHTML = header + buildBoss(lvl);
+  attachEvents(lvl);
+}
+
+function buildChecklist(lvl) {
+  let html = '';
+  lvl.groups.forEach((grp, gi) => {
+    html += `<div class="check-group"><div class="check-group-label">${grp.label}</div>`;
+    grp.items.forEach((item, ii) => {
+      const key = gi + '-' + ii;
+      const isChecked = checkState[lvl.id] && checkState[lvl.id][key];
+      html += `<div class="checklist-item"><div class="check-box ${isChecked ? 'checked' : ''}" id="cb-${gi}-${ii}" role="checkbox" aria-checked="${isChecked ? 'true' : 'false'}" tabindex="0" onclick="toggleGroupCheck(${lvl.id},${gi},${ii})" onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '✓' : ''}</div><div><div class="check-text">${item.text}</div><div class="check-note">${item.note}</div></div></div>`;
+    });
+    html += '</div>';
+  });
+  html += `<div class="prog-note">✦ Mark complete only when you can apply these principles to a new product — not just after reading them.</div>`;
+  html += `<div class="btn-row"><button class="btn btn-primary" id="completeBtn">Module mastered →</button></div>`;
+  return html;
+}
+
+function buildBuilder(lvl) {
+  const fields = lvl.fields.map((f, i) => `<div class="builder-field"><label class="builder-label" for="bf${i}">${f.label}</label><div class="builder-hint">${f.hint}</div><textarea class="builder-input" id="bf${i}" placeholder="Write your answer first, then check the model…"></textarea><div class="model-answer" id="ma${i}">${f.model}</div></div>`).join('');
+  return `<div>${fields}<div class="btn-row"><button class="btn btn-ghost" id="revealBtn">Show model answers</button><button class="btn btn-primary" id="completeBtn">Mastered →</button></div></div>`;
+}
+
+function buildBoss(lvl) {
+  const qs = lvl.questions.map((q, i) => `<div class="boss-q">${q.q}</div><textarea class="boss-input" id="bq${i}" placeholder="Say it out loud first. Then write the key points…"></textarea><div class="model-answer" id="bm${i}">${q.model}</div>${i < lvl.questions.length - 1 ? '<hr class="divider">' : ''}`).join('');
+  return `<div class="boss-header"><div class="boss-icon">🎙️</div><div class="boss-title">Client Metrics Panel</div><div class="boss-sub">Speak first, write second. A client panel is a conversation, not a report.</div></div><div>${qs}<div class="btn-row" style="margin-top:16px;"><button class="btn btn-ghost" id="revealBtn">Show model answers</button><button class="btn btn-primary" id="completeBtn">Panel complete →</button></div></div>`;
+}
+
+function attachEvents(lvl) {
+  const reveal = document.getElementById('revealBtn');
+  if (reveal) reveal.onclick = () => document.querySelectorAll('.model-answer').forEach(el => el.style.display = 'block');
+  const complete = document.getElementById('completeBtn');
+  if (complete) complete.onclick = () => completeLevel(lvl.id);
+}
+
+function toggleGroupCheck(lvlId, gi, ii) {
+  if (!checkState[lvlId]) checkState[lvlId] = {};
+  const key = gi + '-' + ii;
+  checkState[lvlId][key] = !checkState[lvlId][key];
+  const cb = document.getElementById('cb-' + gi + '-' + ii);
+  if (checkState[lvlId][key]) { cb.classList.add('checked'); cb.setAttribute('aria-checked', 'true'); cb.textContent = '✓'; }
+  else { cb.classList.remove('checked'); cb.setAttribute('aria-checked', 'false'); cb.textContent = ''; }
+}
+
+function completeLevel(id) {
+  completed.add(id);
+  closeModal();
+  renderMap(); xp();
+  showToast('Module mastered ✓');
+  if (completed.size === LEVELS.length) {
+    setTimeout(() => { document.getElementById('finalScreen').classList.add('show'); document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' }); }, 800);
+  }
+}
+
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
+
+document.getElementById('modalClose').onclick = closeModal;
+document.getElementById('overlay').addEventListener('click', e => { if (e.target === document.getElementById('overlay')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+renderMap(); xp();
+
+(function () {
+  const btn = document.getElementById('theme-btn');
+  const root = document.documentElement;
+  const cycle = ['system', 'light', 'dark'];
+  const icons = { system: '🌓', light: '☀️', dark: '🌙' };
+  const labels = { system: 'Colour theme: system. Click to switch to light.', light: 'Colour theme: light. Click to switch to dark.', dark: 'Colour theme: dark. Click to switch to system.' };
+  let current = localStorage.getItem('oi-theme') || 'system';
+  function apply(t) {
+    if (t === 'system') { root.removeAttribute('data-theme'); } else { root.setAttribute('data-theme', t); }
+    btn.textContent = icons[t];
+    btn.setAttribute('aria-label', labels[t]);
+    localStorage.setItem('oi-theme', t);
+    current = t;
+  }
+  apply(current);
+  btn.addEventListener('click', function () { const next = cycle[(cycle.indexOf(current) + 1) % cycle.length]; apply(next); });
+})();
+</script>
+</body>
+</html>

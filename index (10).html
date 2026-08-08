@@ -1,0 +1,1381 @@
+<!-- ============================================================
+     FILE: scripting/index.html
+     UPLOAD TO: create folder "scripting" → upload as index.html
+     WHAT IT IS: xAPI Scripting in Articulate 360 — Developer Track
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scripting for xAPI & SCORM — Articulate 360 Developer Track</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #1A1207;
+    --paper: #FEFDF8;
+    --panel: #FFFFFF;
+    --line: #E8E2D0;
+    --amber: #B45309;
+    --amber-bright: #D97706;
+    --amber-glow: #F59E0B;
+    --amber-soft: #FEF3C7;
+    --amber-pale: #FFFBEB;
+    --teal: #0F766E;
+    --teal-soft: #CCFBF1;
+    --purple: #7C3AED;
+    --purple-soft: #EDE9FE;
+    --red: #DC2626;
+    --red-soft: #FEE2E2;
+    --green: #059669;
+    --green-soft: #D1FAE5;
+    --radius: 14px;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    background-image:
+      linear-gradient(rgba(180,83,9,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(180,83,9,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--ink);
+    color: #FEF3C7;
+    padding: 18px 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 3px solid var(--amber-glow);
+  }
+  .header-brand { display: flex; align-items: center; gap: 14px; }
+  .header-icon { font-size: 28px; line-height: 1; }
+  .header-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+  .header-sub { font-family: var(--mono); font-size: 11px; color: var(--amber-glow); margin-top: 2px; }
+  .header-right { font-family: var(--mono); font-size: 11px; color: #9CA3AF; text-align: right; }
+  .header-right span { color: var(--amber-glow); font-weight: 600; }
+  .back-link { color: #9CA3AF; text-decoration: none; font-size: 12px; font-family: var(--mono); }
+  .back-link:hover { color: var(--amber-glow); }
+
+  /* ── PROGRESS RAIL ── */
+  .rail-wrap {
+    background: var(--ink); padding: 14px 28px 18px;
+    border-bottom: 1px solid #2D2010;
+  }
+  .rail-labels {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10px; color: #6B7280;
+    margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .rail-labels span.active { color: var(--amber-glow); font-weight: 700; }
+  .rail-track {
+    height: 6px; background: #374151; border-radius: 99px; overflow: hidden;
+  }
+  .rail-fill {
+    height: 100%; background: linear-gradient(90deg, var(--amber-bright), var(--amber-glow));
+    border-radius: 99px; transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* ── LAYOUT ── */
+  .layout { display: grid; grid-template-columns: 280px 1fr; gap: 0; min-height: calc(100vh - 120px); }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: #FAFAF7; border-right: 1px solid var(--line);
+    padding: 24px 0; position: sticky; top: 0; height: calc(100vh - 120px); overflow-y: auto;
+  }
+  @media (max-width: 900px) { .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); } }
+
+  .sidebar-section { margin-bottom: 6px; }
+  .sidebar-group {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 12px 20px 4px;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px; cursor: pointer; font-size: 13px; font-weight: 500;
+    border-left: 3px solid transparent; transition: all 0.15s;
+    color: #6B7280;
+  }
+  .sidebar-item:hover { background: var(--amber-pale); color: var(--ink); }
+  .sidebar-item.active { border-left-color: var(--amber-bright); background: var(--amber-pale); color: var(--ink); font-weight: 700; }
+  .sidebar-item.done { color: var(--teal); }
+  .sidebar-item.done .si-check { color: var(--teal); }
+  .si-num {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    background: #E5E7EB; color: #6B7280; border-radius: 4px;
+    padding: 1px 6px; min-width: 26px; text-align: center; flex-shrink: 0;
+  }
+  .sidebar-item.active .si-num { background: var(--amber-bright); color: white; }
+  .sidebar-item.done .si-num { background: var(--teal); color: white; }
+  .si-label { flex: 1; line-height: 1.3; }
+  .si-xp {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--amber-bright); flex-shrink: 0;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main { padding: 32px 36px 60px; max-width: 800px; }
+  @media (max-width: 700px) { .main { padding: 20px 16px 48px; } }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  /* ── XP BADGE ── */
+  .xp-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--amber-soft); border: 1px solid var(--amber-glow);
+    color: var(--amber); border-radius: 20px; padding: 4px 12px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  /* ── STEP HEADER ── */
+  .step-eyebrow {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    color: var(--amber-bright); text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 8px;
+  }
+  .step h1 { font-size: clamp(22px, 3.5vw, 32px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.1; }
+  .step h1 em { font-style: normal; color: var(--amber); text-decoration: underline; text-decoration-color: var(--amber-glow); text-decoration-thickness: 3px; text-underline-offset: 5px; }
+  .step > p { font-size: 15px; line-height: 1.7; color: #44392A; margin-bottom: 20px; }
+
+  .divider { border: none; border-top: 1px solid var(--line); margin: 24px 0; }
+
+  /* ── TEACH CARD ── */
+  .teach-card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; margin-bottom: 20px;
+  }
+  .teach-card h2 { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .teach-card h3 { font-size: 14px; font-weight: 700; margin: 16px 0 8px; color: var(--amber); }
+  .teach-card p { font-size: 14px; line-height: 1.7; color: #44392A; margin-bottom: 10px; }
+  .teach-card ul, .teach-card ol { padding-left: 20px; margin-bottom: 10px; }
+  .teach-card li { font-size: 14px; line-height: 1.7; color: #44392A; margin-bottom: 4px; }
+
+  /* ── CODE BLOCK ── */
+  pre {
+    background: #0F1117; color: #E2E8F0; font-family: var(--mono);
+    font-size: 12.5px; line-height: 1.65; border-radius: 10px;
+    padding: 18px 20px; overflow-x: auto; margin: 14px 0;
+    border: 1px solid #1E293B;
+  }
+  code { font-family: var(--mono); font-size: 12.5px; }
+  .c  { color: #64748B; }
+  .k  { color: #93C5FD; }
+  .s  { color: #86EFAC; }
+  .n  { color: #FCD34D; }
+  .v  { color: #F9A8D4; }
+  .fn { color: #C4B5FD; }
+  .p  { color: #94A3B8; }
+  .kw { color: #67E8F9; }
+  inline code { background: #F3F0E8; color: var(--amber); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+  /* ── TOOL TAG ── */
+  .tool-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--purple-soft); color: var(--purple);
+    border-radius: 6px; padding: 3px 9px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    margin: 2px;
+  }
+  .tool-tag.scorm { background: var(--teal-soft); color: var(--teal); }
+  .tool-tag.xapi  { background: var(--amber-soft); color: var(--amber); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 10px; padding: 14px 18px; margin: 14px 0;
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 13.5px; line-height: 1.6;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout.info  { background: var(--amber-pale); border-left: 4px solid var(--amber-glow); color: var(--ink); }
+  .callout.tip   { background: var(--teal-soft);  border-left: 4px solid var(--teal); color: #064E3B; }
+  .callout.warn  { background: var(--red-soft);   border-left: 4px solid var(--red); color: #7F1D1D; }
+  .callout.good  { background: var(--green-soft); border-left: 4px solid var(--green); color: #064E3B; }
+
+  /* ── QUIZ ── */
+  .quiz-card {
+    background: var(--panel); border: 2px solid var(--line); border-radius: var(--radius);
+    padding: 22px; margin: 20px 0;
+  }
+  .quiz-q { font-weight: 700; font-size: 15px; margin-bottom: 14px; line-height: 1.4; }
+  .quiz-q .q-num { font-family: var(--mono); color: var(--amber-bright); font-size: 12px; display: block; margin-bottom: 4px; }
+  .quiz-option {
+    display: block; width: 100%; text-align: left; background: #F9F7F1;
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 11px 16px;
+    margin-bottom: 8px; cursor: pointer; font-size: 14px; font-family: inherit;
+    transition: all 0.15s; color: var(--ink);
+  }
+  .quiz-option:hover { border-color: var(--amber-bright); background: var(--amber-pale); }
+  .quiz-option.correct { border-color: var(--green); background: var(--green-soft); color: #065F46; font-weight: 600; }
+  .quiz-option.wrong   { border-color: var(--red);   background: var(--red-soft);   color: #991B1B; }
+  .quiz-option.disabled { pointer-events: none; }
+  .quiz-feedback { font-size: 13px; line-height: 1.6; margin-top: 10px; padding: 10px 14px; border-radius: 8px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok  { background: var(--green-soft); color: #065F46; }
+  .quiz-feedback.no  { background: var(--red-soft);   color: #991B1B; }
+
+  /* ── SCENARIO BOX ── */
+  .scenario {
+    background: linear-gradient(135deg, #1A1207, #2D1A05);
+    color: #FEF3C7; border-radius: var(--radius); padding: 24px;
+    margin: 20px 0; border: 1px solid var(--amber);
+  }
+  .scenario-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 700;
+    color: var(--amber-glow); text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 10px;
+  }
+  .scenario h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .scenario p  { font-size: 14px; line-height: 1.65; color: #FDE68A; margin-bottom: 8px; }
+  .scenario ul { padding-left: 18px; }
+  .scenario li { font-size: 13px; color: #FDE68A; margin-bottom: 4px; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow {
+    display: flex; flex-direction: column; gap: 0; margin: 16px 0;
+  }
+  .flow-row { display: flex; align-items: center; gap: 0; }
+  .flow-box {
+    background: var(--panel); border: 1.5px solid var(--line);
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 12.5px; font-weight: 600; text-align: center;
+    min-width: 130px; flex: 1;
+  }
+  .flow-box.amber { background: var(--amber-soft); border-color: var(--amber-bright); color: var(--amber); }
+  .flow-box.teal  { background: var(--teal-soft);  border-color: var(--teal); color: var(--teal); }
+  .flow-box.purple{ background: var(--purple-soft); border-color: var(--purple); color: var(--purple); }
+  .flow-box.dark  { background: var(--ink); color: var(--amber-glow); border-color: var(--amber); }
+  .flow-arrow { font-size: 18px; color: var(--amber-bright); padding: 0 6px; flex-shrink: 0; font-weight: 700; }
+  .flow-down { text-align: center; font-size: 18px; color: var(--amber-bright); margin: 2px 0; }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  .compare-table th {
+    background: var(--ink); color: var(--amber-glow);
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 10px 14px; text-align: left;
+  }
+  .compare-table td { padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.5; }
+  .compare-table tr:nth-child(even) td { background: #FAFAF7; }
+  .compare-table tr:hover td { background: var(--amber-pale); }
+  .yes { color: var(--green); font-weight: 700; }
+  .no  { color: var(--red); font-weight: 700; }
+  .partial { color: var(--amber); font-weight: 600; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; line-height: 1.5;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before { content: '□'; font-size: 16px; color: var(--amber-bright); margin-top: 1px; flex-shrink: 0; }
+
+  /* ── STEP NAV ── */
+  .step-nav { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+  .btn {
+    padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 700;
+    cursor: pointer; border: none; font-family: inherit; transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--amber-bright); color: white;
+  }
+  .btn-primary:hover { background: var(--amber); }
+  .btn-secondary {
+    background: var(--panel); border: 1.5px solid var(--line); color: var(--ink);
+  }
+  .btn-secondary:hover { border-color: var(--amber-bright); }
+
+  /* ── XP TOAST ── */
+  .xp-toast {
+    position: fixed; top: 20px; right: 20px;
+    background: var(--ink); color: var(--amber-glow);
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    padding: 10px 18px; border-radius: 8px; border: 1px solid var(--amber-bright);
+    opacity: 0; transform: translateY(-10px);
+    transition: all 0.3s; pointer-events: none; z-index: 100;
+  }
+  .xp-toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── SCORE SCREEN ── */
+  .score-screen { text-align: center; }
+  .score-ring {
+    width: 140px; height: 140px; border-radius: 50%;
+    border: 6px solid var(--amber-glow);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    background: var(--amber-pale);
+  }
+  .score-ring .score-num { font-size: 38px; font-weight: 700; color: var(--amber); font-family: var(--mono); }
+  .score-ring .score-label { font-size: 11px; font-family: var(--mono); color: var(--amber-bright); }
+  .score-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .score-desc { font-size: 15px; color: #44392A; max-width: 520px; margin: 0 auto 24px; line-height: 1.7; }
+  .level-badge {
+    display: inline-block; background: var(--ink); color: var(--amber-glow);
+    font-family: var(--mono); font-size: 13px; font-weight: 700;
+    padding: 8px 20px; border-radius: 99px; border: 1px solid var(--amber-bright);
+    margin-bottom: 24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="xp-toast" id="xpToast">+0 XP</div>
+
+<header class="site-header">
+  <div class="header-brand">
+    <div class="header-icon">⚙️</div>
+    <div>
+      <div class="header-title">Scripting for xAPI & SCORM</div>
+      <div class="header-sub">Articulate 360 Developer Track · Instructional Designer Path</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="../index.html" class="back-link">← All tracks</a><br>
+    <span id="headerXP">0</span> XP &nbsp;|&nbsp; Step <span id="headerStep">1</span>/13
+  </div>
+</header>
+
+<div class="rail-wrap">
+  <div class="rail-labels">
+    <span id="rl0">Learner</span>
+    <span id="rl1">Builder</span>
+    <span id="rl2">Tracker</span>
+    <span id="rl3">Scripter</span>
+    <span id="rl4">Architect</span>
+  </div>
+  <div class="rail-track"><div class="rail-fill" id="railFill"></div></div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" aria-label="Module steps">
+
+    <div class="sidebar-section">
+      <div class="sidebar-group">Test</div>
+      <div class="sidebar-item active" data-step="0" onclick="goTo(0)">
+        <span class="si-num">01</span>
+        <span class="si-label">Diagnostic Quiz</span>
+        <span class="si-xp">20 XP</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-group">Teach — Foundation</div>
+      <div class="sidebar-item" data-step="1" onclick="goTo(1)">
+        <span class="si-num">02</span>
+        <span class="si-label">What Articulate 360 Publishes</span>
+        <span class="si-xp">20 XP</span>
+      </div>
+      <div class="sidebar-item" data-step="2" onclick="goTo(2)">
+        <span class="si-num">03</span>
+        <span class="si-label">SCORM 1.2 vs 2004 vs xAPI</span>
+        <span class="si-xp">25 XP</span>
+      </div>
+      <div class="sidebar-item" data-step="3" onclick="goTo(3)">
+        <span class="si-num">04</span>
+        <span class="si-label">The xAPI Statement Anatomy</span>
+        <span class="si-xp">30 XP</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-group">Teach — Scripting in Storyline</div>
+      <div class="sidebar-item" data-step="4" onclick="goTo(4)">
+        <span class="si-num">05</span>
+        <span class="si-label">Execute JavaScript Trigger</span>
+        <span class="si-xp">30 XP</span>
+      </div>
+      <div class="sidebar-item" data-step="5" onclick="goTo(5)">
+        <span class="si-num">06</span>
+        <span class="si-label">Custom xAPI Statements</span>
+        <span class="si-xp">35 XP</span>
+      </div>
+      <div class="sidebar-item" data-step="6" onclick="goTo(6)">
+        <span class="si-num">07</span>
+        <span class="si-label">cmi5 Launch Parameters</span>
+        <span class="si-xp">30 XP</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-group">Teach — Rise & LRS Connect</div>
+      <div class="sidebar-item" data-step="7" onclick="goTo(7)">
+        <span class="si-num">08</span>
+        <span class="si-label">Rise 360 + xAPI Limits</span>
+        <span class="si-xp">25 XP</span>
+      </div>
+      <div class="sidebar-item" data-step="8" onclick="goTo(8)">
+        <span class="si-num">09</span>
+        <span class="si-label">Connecting to the LRS Endpoint</span>
+        <span class="si-xp">30 XP</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-group">Test + Practice</div>
+      <div class="sidebar-item" data-step="9" onclick="goTo(9)">
+        <span class="si-num">10</span>
+        <span class="si-label">Scenario: Custom Event Tracking</span>
+        <span class="si-xp">40 XP</span>
+      </div>
+      <div class="sidebar-item" data-step="10" onclick="goTo(10)">
+        <span class="si-num">11</span>
+        <span class="si-label">Debugging: Console & Validators</span>
+        <span class="si-xp">25 XP</span>
+      </div>
+      <div class="sidebar-item" data-step="11" onclick="goTo(11)">
+        <span class="si-num">12</span>
+        <span class="si-label">Quiz: End-to-End Knowledge</span>
+        <span class="si-xp">40 XP</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-group">Boss Level</div>
+      <div class="sidebar-item" data-step="12" onclick="goTo(12)">
+        <span class="si-num">13</span>
+        <span class="si-label">Score & Next Steps</span>
+        <span class="si-xp">—</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- STEP 0 — DIAGNOSTIC -->
+    <div class="step active" id="step-0">
+      <div class="xp-badge">🎯 Diagnostic · 20 XP available</div>
+      <div class="step-eyebrow">Step 01 — Test First</div>
+      <h1>What do you already know about <em>xAPI scripts</em>?</h1>
+      <p>Three quick questions before we teach anything. Answer honestly — there's no penalty for wrong answers, and they help calibrate how deep we go.</p>
+
+      <div class="quiz-card" id="q0">
+        <div class="quiz-q"><span class="q-num">Q1 of 3</span>Where do you add JavaScript code in Storyline 360?</div>
+        <button class="quiz-option" onclick="ans(this,'q0',false)">A. In the Slide Properties panel under Advanced tab</button>
+        <button class="quiz-option" onclick="ans(this,'q0',false)">B. In the Variables window under Custom Scripts</button>
+        <button class="quiz-option" onclick="ans(this,'q0',true)">C. Via a Trigger using "Execute JavaScript" action</button>
+        <button class="quiz-option" onclick="ans(this,'q0',false)">D. In Rise 360's custom block editor</button>
+        <div class="quiz-feedback" id="q0-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="q1">
+        <div class="quiz-q"><span class="q-num">Q2 of 3</span>An xAPI statement MUST contain:</div>
+        <button class="quiz-option" onclick="ans(this,'q1',false)">A. Actor, Verb, Object, Result</button>
+        <button class="quiz-option" onclick="ans(this,'q1',true)">B. Actor, Verb, Object</button>
+        <button class="quiz-option" onclick="ans(this,'q1',false)">C. Actor, Activity, Score</button>
+        <button class="quiz-option" onclick="ans(this,'q1',false)">D. Verb, Object, Context Extensions</button>
+        <div class="quiz-feedback" id="q1-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="q2">
+        <div class="quiz-q"><span class="q-num">Q3 of 3</span>When Articulate publishes a Tin Can (xAPI) package, what is the LRS endpoint passed as?</div>
+        <button class="quiz-option" onclick="ans(this,'q2',false)">A. A hidden field inside the imsmanifest.xml</button>
+        <button class="quiz-option" onclick="ans(this,'q2',false)">B. A hardcoded variable in the storyline.js file</button>
+        <button class="quiz-option" onclick="ans(this,'q2',true)">C. A URL query parameter at launch time (?endpoint=…)</button>
+        <button class="quiz-option" onclick="ans(this,'q2',false)">D. A value stored in the LMS's SCORM API</button>
+        <div class="quiz-feedback" id="q2-fb"></div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-primary" onclick="completeStep(0,20);goTo(1)">Start learning →</button>
+      </div>
+    </div>
+
+    <!-- STEP 1 — WHAT ARTICULATE PUBLISHES -->
+    <div class="step" id="step-1">
+      <div class="xp-badge">📦 Foundation · 20 XP</div>
+      <div class="step-eyebrow">Step 02 — Teach</div>
+      <h1>What Articulate 360 <em>actually publishes</em></h1>
+      <p>Before you write a single line of script, you need a clear mental model of what Articulate 360 outputs — because each format connects to the LRS in a completely different way.</p>
+
+      <div class="teach-card">
+        <h2>🗂️ Four publish targets in Articulate 360</h2>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>Format</th><th>Tool</th><th>Tracking standard</th><th>LRS required?</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SCORM 1.2</strong></td><td>Rise + Storyline</td><td>cmi.* API calls</td><td class="no">No (LMS)</td></tr>
+              <tr><td><strong>SCORM 2004</strong></td><td>Rise + Storyline</td><td>cmi.* API calls</td><td class="no">No (LMS)</td></tr>
+              <tr><td><strong>xAPI (Tin Can)</strong></td><td>Rise + Storyline</td><td>xAPI statements</td><td class="yes">Yes</td></tr>
+              <tr><td><strong>cmi5</strong></td><td>Storyline 360</td><td>xAPI + cmi5 spec</td><td class="yes">Yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>What's inside a SCORM package?</h3>
+        <p>A ZIP file containing an <code>imsmanifest.xml</code>, the course HTML/JS/CSS, and a SCORM wrapper that the LMS hooks into. The LMS provides the <strong>SCORM API object</strong> (<code>API</code> or <code>API_1484_11</code>) at launch — Articulate's runtime finds it and calls <code>LMSInitialize()</code>, <code>LMSSetValue()</code>, etc.</p>
+
+        <h3>What's inside an xAPI package?</h3>
+        <p>Same ZIP structure, but instead of calling an LMS API, the course sends <strong>HTTP POST requests</strong> to an LRS endpoint. The endpoint URL, auth credentials, and actor identity are passed as <strong>URL query parameters</strong> at launch.</p>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div>The key insight: SCORM relies on the LMS being the "parent window" that injects an API. xAPI relies on the course making HTTP calls to an LRS. These are fundamentally different architectures — and where you put your custom script depends entirely on which one you're using.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(0)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(1,20);goTo(2)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — SCORM vs xAPI -->
+    <div class="step" id="step-2">
+      <div class="xp-badge">📊 Comparison · 25 XP</div>
+      <div class="step-eyebrow">Step 03 — Teach</div>
+      <h1>SCORM 1.2 vs 2004 vs <em>xAPI</em>: the real differences</h1>
+      <p>Every ID has heard "SCORM vs xAPI." Here is what that actually means at the code level, so you know which format to choose before you open Storyline's publish dialog.</p>
+
+      <div class="teach-card">
+        <h2>🔌 How the LMS/LRS gets data</h2>
+
+        <h3>SCORM 1.2 — synchronous, session-bound</h3>
+        <pre><code><span class="c">// SCORM 1.2 — LMS injects API into parent window</span>
+<span class="c">// Articulate calls these automatically:</span>
+<span class="fn">API</span>.<span class="fn">LMSInitialize</span>(<span class="s">""</span>);
+<span class="fn">API</span>.<span class="fn">LMSSetValue</span>(<span class="s">"cmi.core.score.raw"</span>, <span class="s">"85"</span>);
+<span class="fn">API</span>.<span class="fn">LMSSetValue</span>(<span class="s">"cmi.core.lesson_status"</span>, <span class="s">"passed"</span>);
+<span class="fn">API</span>.<span class="fn">LMSCommit</span>(<span class="s">""</span>);
+<span class="fn">API</span>.<span class="fn">LMSFinish</span>(<span class="s">""</span>);</code></pre>
+        <p>Data fields are fixed — you can only track what the spec defines. No custom events.</p>
+
+        <h3>SCORM 2004 — richer, same architecture</h3>
+        <p>Uses <code>API_1484_11</code> with dot-notation paths like <code>cmi.interactions.0.type</code>. More granular interaction tracking but still limited to the spec's data model. Still session-bound, still LMS-dependent.</p>
+
+        <h3>xAPI (Tin Can) — HTTP, any time, any device</h3>
+        <pre><code><span class="c">// xAPI — course POSTs directly to LRS over HTTP</span>
+<span class="c">// No LMS needed. Works offline too (queue + retry)</span>
+<span class="p">{</span>
+  <span class="n">"actor"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"name"</span><span class="p">:</span> <span class="s">"Ana Eslava"</span><span class="p">,</span> <span class="n">"mbox"</span><span class="p">:</span> <span class="s">"mailto:ana@example.com"</span> <span class="p">},</span>
+  <span class="n">"verb"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"id"</span><span class="p">:</span> <span class="s">"http://adlnet.gov/expapi/verbs/completed"</span><span class="p">,</span>
+            <span class="n">"display"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"completed"</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="n">"object"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"id"</span><span class="p">:</span> <span class="s">"https://yourplatform.com/courses/onboarding"</span> <span class="p">}</span>
+<span class="p">}</span></code></pre>
+        <p>Can capture <em>any</em> event you can name with a verb — video paused, hotspot clicked, branching path chosen. No fixed field limit.</p>
+
+        <div class="callout tip">
+          <span class="callout-icon">✅</span>
+          <div><strong>Rule of thumb:</strong> If your LMS only supports SCORM, use SCORM. If you have an LRS (or want full custom tracking), use xAPI. If you need guaranteed cmi5 AU launch spec compliance, use cmi5 — which is xAPI with a stricter launch protocol.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(1)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(2,25);goTo(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 — xAPI ANATOMY -->
+    <div class="step" id="step-3">
+      <div class="xp-badge">🧬 Anatomy · 30 XP</div>
+      <div class="step-eyebrow">Step 04 — Teach</div>
+      <h1>The xAPI statement <em>anatomy</em></h1>
+      <p>Every xAPI statement is a JSON object that describes one learning event. If you can build a valid statement from scratch, you can script anything.</p>
+
+      <div class="teach-card">
+        <h2>📐 Required fields (Actor · Verb · Object)</h2>
+        <pre><code><span class="p">{</span>
+  <span class="c">// ── ACTOR — WHO did it? ──────────────────────</span>
+  <span class="n">"actor"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">"objectType"</span><span class="p">:</span> <span class="s">"Agent"</span><span class="p">,</span>
+    <span class="n">"name"</span><span class="p">:</span> <span class="s">"Ana Eslava"</span><span class="p">,</span>
+    <span class="n">"mbox"</span><span class="p">:</span> <span class="s">"mailto:ana@example.com"</span>
+  <span class="p">},</span>
+
+  <span class="c">// ── VERB — WHAT happened? ────────────────────</span>
+  <span class="n">"verb"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">"id"</span><span class="p">:</span> <span class="s">"http://adlnet.gov/expapi/verbs/answered"</span><span class="p">,</span>
+    <span class="n">"display"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"answered"</span> <span class="p">}</span>
+  <span class="p">},</span>
+
+  <span class="c">// ── OBJECT — ON WHAT? ────────────────────────</span>
+  <span class="n">"object"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">"objectType"</span><span class="p">:</span> <span class="s">"Activity"</span><span class="p">,</span>
+    <span class="n">"id"</span><span class="p">:</span> <span class="s">"https://yourplatform.com/quiz/module-3/q2"</span><span class="p">,</span>
+    <span class="n">"definition"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">"name"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"SCORM vs xAPI question"</span> <span class="p">},</span>
+      <span class="n">"type"</span><span class="p">:</span> <span class="s">"http://adlnet.gov/expapi/activities/question"</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+
+  <span class="c">// ── RESULT — optional but very useful ────────</span>
+  <span class="n">"result"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">"score"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"scaled"</span><span class="p">:</span> <span class="v">0.85</span><span class="p">,</span> <span class="n">"raw"</span><span class="p">:</span> <span class="v">85</span><span class="p">,</span> <span class="n">"min"</span><span class="p">:</span> <span class="v">0</span><span class="p">,</span> <span class="n">"max"</span><span class="p">:</span> <span class="v">100</span> <span class="p">},</span>
+    <span class="n">"success"</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span>
+    <span class="n">"completion"</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span>
+    <span class="n">"response"</span><span class="p">:</span> <span class="s">"xAPI"</span>
+  <span class="p">},</span>
+
+  <span class="c">// ── CONTEXT — custom data goes here ──────────</span>
+  <span class="n">"context"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">"extensions"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="s">"https://yourplatform.com/ext/tenant"</span><span class="p">:</span> <span class="s">"acme-corp"</span><span class="p">,</span>
+      <span class="s">"https://yourplatform.com/ext/department"</span><span class="p">:</span> <span class="s">"L&D"</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+
+  <span class="c">// ── TIMESTAMP — ISO 8601 ─────────────────────</span>
+  <span class="n">"timestamp"</span><span class="p">:</span> <span class="s">"2026-07-30T14:35:00.000Z"</span>
+<span class="p">}</span></code></pre>
+
+        <h3>Common ADL verbs to memorize</h3>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>Verb</th><th>Use case</th></tr></thead>
+            <tbody>
+              <tr><td><code>experienced</code></td><td>Learner viewed a page / slide</td></tr>
+              <tr><td><code>completed</code></td><td>Finished a module or course</td></tr>
+              <tr><td><code>passed</code> / <code>failed</code></td><td>Quiz result with passing score</td></tr>
+              <tr><td><code>answered</code></td><td>Responded to an individual question</td></tr>
+              <tr><td><code>interacted</code></td><td>Clicked a hotspot, drag-drop, etc.</td></tr>
+              <tr><td><code>launched</code></td><td>Course opened (often auto-sent)</td></tr>
+              <tr><td><code>initialized</code></td><td>cmi5 session started</td></tr>
+              <tr><td><code>terminated</code></td><td>cmi5 session cleanly ended</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div>You can define your own verbs using any unique URL as the ID — e.g. <code>https://yourplatform.com/verbs/watched-video</code>. ADL verbs are just conventions, not enforced. Use them when they fit, make your own when they don't.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(2)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(3,30);goTo(4)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4 — EXECUTE JAVASCRIPT IN STORYLINE -->
+    <div class="step" id="step-4">
+      <div class="xp-badge">⚡ Storyline 360 · 30 XP</div>
+      <div class="step-eyebrow">Step 05 — Teach</div>
+      <h1>The <em>Execute JavaScript</em> trigger in Storyline 360</h1>
+      <p>This is your main entry point for custom scripting. Every custom xAPI statement you send from Storyline goes through this trigger.</p>
+
+      <div class="teach-card">
+        <h2>🔧 How to add the trigger</h2>
+        <ol style="padding-left:20px; margin-bottom:12px; font-size:14px; line-height:2;">
+          <li>Open the <strong>Triggers</strong> panel (right side of Storyline)</li>
+          <li>Click <strong>+ Create a new trigger</strong></li>
+          <li>Set Action → <strong>Execute JavaScript</strong></li>
+          <li>Set When → the event you want (e.g. "When user clicks", "When timeline starts")</li>
+          <li>Paste your JavaScript in the code box</li>
+        </ol>
+
+        <h3>Accessing Storyline variables inside your script</h3>
+        <pre><code><span class="c">// Get the value of a Storyline variable named "LearnerScore"</span>
+<span class="k">var</span> player <span class="p">=</span> <span class="fn">GetPlayer</span>();
+<span class="k">var</span> score <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"LearnerScore"</span>);
+
+<span class="c">// Set a Storyline variable from JavaScript</span>
+player.<span class="fn">SetVar</span>(<span class="s">"Confirmed"</span>, <span class="k">true</span>);
+
+<span class="c">// Navigate to a slide by name</span>
+player.<span class="fn">GoToSlide</span>(<span class="s">"2.3"</span>);</code></pre>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠️</span>
+          <div><code>GetPlayer()</code> only works inside Storyline's published output — it will throw a reference error if you test in a plain browser without the Storyline runtime. Always test in SCORM Cloud or your LMS/LRS, not by double-clicking the HTML file.</div>
+        </div>
+
+        <h3>Reading learner identity for your xAPI actor</h3>
+        <pre><code><span class="k">var</span> player <span class="p">=</span> <span class="fn">GetPlayer</span>();
+
+<span class="c">// Storyline exposes the LMS-reported learner name</span>
+<span class="k">var</span> learnerName  <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"ReportingLearnerName"</span>);
+<span class="k">var</span> learnerEmail <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"ReportingLearnerEmail"</span>);
+
+<span class="c">// If email is not set by LMS, fall back to a generated mbox</span>
+<span class="k">var</span> actor <span class="p">= {</span>
+  <span class="n">"objectType"</span><span class="p">:</span> <span class="s">"Agent"</span><span class="p">,</span>
+  <span class="n">"name"</span><span class="p">:</span>       learnerName  <span class="p">||</span> <span class="s">"Anonymous"</span><span class="p">,</span>
+  <span class="n">"mbox"</span><span class="p">:</span>       <span class="s">"mailto:"</span> <span class="p">+</span> <span class="p">(</span>learnerEmail <span class="p">||</span> <span class="s">"anonymous@learner.id"</span><span class="p">)</span>
+<span class="p">};</span></code></pre>
+
+        <h3>Key Storyline built-in variables</h3>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>Variable</th><th>What it contains</th></tr></thead>
+            <tbody>
+              <tr><td><code>ReportingLearnerName</code></td><td>Name passed by LMS at launch</td></tr>
+              <tr><td><code>ReportingLearnerEmail</code></td><td>Email passed by LMS (if supported)</td></tr>
+              <tr><td><code>ReportingLearnerID</code></td><td>Unique ID from LMS</td></tr>
+              <tr><td><code>TinCanActor</code></td><td>Full JSON actor string (xAPI publish only)</td></tr>
+              <tr><td><code>TinCanEndpoint</code></td><td>LRS endpoint URL (xAPI publish only)</td></tr>
+              <tr><td><code>TinCanAuth</code></td><td>Base64 auth string (xAPI publish only)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(3)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(4,30);goTo(5)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5 — CUSTOM xAPI STATEMENTS -->
+    <div class="step" id="step-5">
+      <div class="xp-badge">📡 Custom Statements · 35 XP</div>
+      <div class="step-eyebrow">Step 06 — Teach</div>
+      <h1>Writing <em>custom xAPI statements</em> from Storyline 360</h1>
+      <p>This is the full reusable script you'll drop into any Execute JavaScript trigger. Study every line — then adapt the verb, object ID, and result to match the event you want to track.</p>
+
+      <div class="teach-card">
+        <h2>📜 The reusable statement sender</h2>
+        <pre><code><span class="c">// ── Full custom xAPI statement from Storyline 360 ──────────</span>
+(<span class="k">function</span>() <span class="p">{</span>
+
+  <span class="c">// 1. Read LRS credentials from Storyline's built-in variables</span>
+  <span class="k">var</span> player   <span class="p">=</span> <span class="fn">GetPlayer</span>();
+  <span class="k">var</span> endpoint <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanEndpoint"</span>);
+  <span class="k">var</span> auth     <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanAuth"</span>);
+  <span class="k">var</span> actorRaw <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanActor"</span>);
+
+  <span class="c">// 2. Validate — abort silently if data is missing</span>
+  <span class="k">if</span> <span class="p">(!</span>endpoint <span class="p">||</span> <span class="p">!</span>auth<span class="p">)</span> <span class="k">return</span>;
+
+  <span class="c">// 3. Build the statement</span>
+  <span class="k">var</span> statement <span class="p">= {</span>
+    <span class="n">"actor"</span><span class="p">:</span>  <span class="fn">JSON</span>.<span class="fn">parse</span>(actorRaw),
+    <span class="n">"verb"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="c">// ✏️ Change this verb to match your event</span>
+      <span class="n">"id"</span><span class="p">:</span>      <span class="s">"http://adlnet.gov/expapi/verbs/interacted"</span><span class="p">,</span>
+      <span class="n">"display"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"interacted"</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">"object"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">"objectType"</span><span class="p">:</span> <span class="s">"Activity"</span><span class="p">,</span>
+      <span class="c">// ✏️ Use a stable, unique URI for this activity</span>
+      <span class="n">"id"</span><span class="p">:</span> <span class="s">"https://yourplatform.com/activities/module3/hotspot-risk-matrix"</span><span class="p">,</span>
+      <span class="n">"definition"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">"name"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"Risk Matrix Hotspot Interaction"</span> <span class="p">},</span>
+        <span class="n">"type"</span><span class="p">:</span> <span class="s">"http://adlnet.gov/expapi/activities/interaction"</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="c">// ✏️ Add result fields only when relevant</span>
+    <span class="n">"result"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">"response"</span><span class="p">:</span>   player.<span class="fn">GetVar</span>(<span class="s">"HotspotChoice"</span>)<span class="p">,</span>
+      <span class="n">"completion"</span><span class="p">:</span> <span class="k">true</span>
+    <span class="p">},</span>
+    <span class="n">"context"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">"extensions"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"https://yourplatform.com/ext/slide"</span><span class="p">:</span> <span class="s">"3.2"</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">"timestamp"</span><span class="p">:</span> <span class="k">new</span> <span class="fn">Date</span>().<span class="fn">toISOString</span>()
+  <span class="p">};</span>
+
+  <span class="c">// 4. POST to LRS</span>
+  <span class="k">var</span> xhr <span class="p">=</span> <span class="k">new</span> <span class="fn">XMLHttpRequest</span>();
+  xhr.<span class="fn">open</span>(<span class="s">"POST"</span><span class="p">,</span> endpoint <span class="p">+</span> <span class="s">"statements"</span><span class="p">,</span> <span class="k">true</span>);
+  xhr.<span class="fn">setRequestHeader</span>(<span class="s">"Content-Type"</span><span class="p">,</span>  <span class="s">"application/json"</span>);
+  xhr.<span class="fn">setRequestHeader</span>(<span class="s">"Authorization"</span><span class="p">,</span> <span class="s">"Basic "</span> <span class="p">+</span> auth);
+  xhr.<span class="fn">setRequestHeader</span>(<span class="s">"X-Experience-API-Version"</span><span class="p">,</span> <span class="s">"1.0.3"</span>);
+  xhr.<span class="fn">send</span>(<span class="fn">JSON</span>.<span class="fn">stringify</span>(statement));
+
+<span class="p">})()</span>; <span class="c">// IIFE — runs immediately, no leaking to global scope</span></code></pre>
+
+        <div class="callout good">
+          <span class="callout-icon">✅</span>
+          <div><strong>Why an IIFE?</strong> Wrapping your code in <code>(function(){ … })()</code> keeps all variables local. Multiple triggers on the same slide won't collide on variable names like <code>statement</code> or <code>xhr</code>.</div>
+        </div>
+
+        <h3>Adapting the template — the three lines you always change</h3>
+        <ol style="padding-left:20px; font-size:14px; line-height:2.2;">
+          <li><strong>Verb ID</strong> — pick the right ADL verb or define your own URL</li>
+          <li><strong>Object ID</strong> — a stable, unique URI for the specific activity in this course</li>
+          <li><strong>Result / context extensions</strong> — add Storyline variable values that are meaningful for this event</li>
+        </ol>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(4)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(5,35);goTo(6)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6 — cmi5 LAUNCH PARAMETERS -->
+    <div class="step" id="step-6">
+      <div class="xp-badge">🚀 cmi5 · 30 XP</div>
+      <div class="step-eyebrow">Step 07 — Teach</div>
+      <h1>cmi5 launch parameters — <em>the full URL anatomy</em></h1>
+      <p>When you publish a cmi5 or xAPI package from Articulate and an LRS/LMS launches it, all the connection data travels in the URL. This is the contract between your course and the LRS.</p>
+
+      <div class="teach-card">
+        <h2>🔗 The launch URL structure</h2>
+        <pre><code><span class="c"># Full launch URL anatomy (line-wrapped for readability)</span>
+https://yourplatform.com/courses/onboarding/index.html
+  ?endpoint=<span class="s">https://yourlrs.com/tenant_abc/</span>
+  &amp;auth=<span class="s">Basic dXNlcjpwYXNz</span>
+  &amp;actor=<span class="s">%7B%22name%22%3A%22Ana+Eslava%22%2C%22mbox%22%3A%22mailto%3Aana%40example.com%22%7D</span>
+  &amp;registration=<span class="s">550e8400-e29b-41d4-a716-446655440000</span>
+  &amp;activityId=<span class="s">https%3A%2F%2Fyourplatform.com%2Fcourses%2Fonboarding</span></code></pre>
+
+        <h3>Parameter breakdown</h3>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>Parameter</th><th>Required?</th><th>Contains</th></tr></thead>
+            <tbody>
+              <tr><td><code>endpoint</code></td><td class="yes">Yes</td><td>LRS base URL (must end in <code>/</code>)</td></tr>
+              <tr><td><code>auth</code></td><td class="yes">Yes</td><td>"Basic " + Base64(key:secret)</td></tr>
+              <tr><td><code>actor</code></td><td class="yes">Yes</td><td>URL-encoded JSON actor object</td></tr>
+              <tr><td><code>registration</code></td><td class="partial">Recommended</td><td>UUID — groups statements by enrollment</td></tr>
+              <tr><td><code>activityId</code></td><td class="partial">Recommended</td><td>Overrides the course's default activity IRI</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>How Storyline 360 reads these at runtime</h3>
+        <pre><code><span class="c">// Storyline parses the URL automatically and stores values as variables</span>
+<span class="c">// You read them with GetVar — you don't need to parse the URL yourself</span>
+<span class="k">var</span> player   <span class="p">=</span> <span class="fn">GetPlayer</span>();
+<span class="k">var</span> endpoint <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanEndpoint"</span>); <span class="c">// from ?endpoint=</span>
+<span class="k">var</span> auth     <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanAuth"</span>);     <span class="c">// from &amp;auth=</span>
+<span class="k">var</span> actor    <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanActor"</span>);    <span class="c">// from &amp;actor= (decoded JSON)</span></code></pre>
+
+        <h3>Multi-tenant: how the endpoint encodes the tenant</h3>
+        <pre><code><span class="c">// Different tenants → different LRS paths → data is isolated</span>
+
+<span class="c">// Tenant A (B2C learner)</span>
+endpoint = <span class="s">"https://yourlrs.com/consumer_lrs/"</span>
+
+<span class="c">// Tenant B (corporate client)</span>
+endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
+
+<span class="c">// The course script doesn't need to know which tenant it is —</span>
+<span class="c">// the LRS/LMS injects the right endpoint at launch time</span></code></pre>
+
+        <div class="callout info">
+          <span class="callout-icon">💡</span>
+          <div>The <code>auth</code> value is Base64-encoded <em>key:secret</em>. To generate it manually: <code>btoa("mykey:mysecret")</code> in a browser console. The LRS will give you the key/secret pair when you set up credentials — never hardcode them in your Storyline file.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(5)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(6,30);goTo(7)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 7 — RISE 360 + xAPI LIMITS -->
+    <div class="step" id="step-7">
+      <div class="xp-badge">📐 Rise 360 · 25 XP</div>
+      <div class="step-eyebrow">Step 08 — Teach</div>
+      <h1>Rise 360 + xAPI — <em>what's built in and what's not</em></h1>
+      <p>Rise 360 is the "no scripting needed" tool — which means it also has a hard ceiling on what you can track. Know where the ceiling is before you promise a client full custom telemetry from a Rise course.</p>
+
+      <div class="teach-card">
+        <h2>✅ What Rise sends automatically (xAPI publish)</h2>
+        <ul class="checklist">
+          <li>Course launched (initialized)</li>
+          <li>Course completed (completed verb)</li>
+          <li>Quiz passed / failed (with score)</li>
+          <li>Individual lesson completed (each block set)</li>
+          <li>Video watched (if Articulate video block)</li>
+          <li>Flashcard set completed</li>
+          <li>Sorting activity completed</li>
+        </ul>
+
+        <h2 style="margin-top:20px;">❌ What Rise cannot do (without Storyline embed)</h2>
+        <ul class="checklist">
+          <li>Custom verbs — you cannot add "evaluated" or "endorsed" etc.</li>
+          <li>Custom context extensions (tenant ID, department, custom metadata)</li>
+          <li>Event-level tracking within a lesson (scroll depth, time-on-block)</li>
+          <li>Sending statements to a second LRS endpoint</li>
+          <li>Reading Storyline variables from within a Rise block</li>
+        </ul>
+
+        <div class="callout tip">
+          <span class="callout-icon">🔧</span>
+          <div><strong>The hybrid workaround:</strong> Embed a Storyline 360 interaction block inside your Rise lesson. That Storyline block has full JavaScript access and can send any custom xAPI statement you need while the Rise shell handles the lesson-level tracking automatically.</div>
+        </div>
+
+        <h3>Rise publish settings for xAPI</h3>
+        <ol style="padding-left:20px; font-size:14px; line-height:2.2;">
+          <li>In Rise → Export → <strong>xAPI</strong> (not SCORM)</li>
+          <li>Set <strong>Completion tracking</strong>: by quiz score, by lesson, or by percentage</li>
+          <li>The downloaded ZIP is your xAPI package — upload it to your LMS/LRS</li>
+          <li>The LMS/LRS must inject <code>?endpoint=…&amp;auth=…&amp;actor=…</code> at launch</li>
+        </ol>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(6)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(7,25);goTo(8)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 8 — LRS ENDPOINT CONNECTION -->
+    <div class="step" id="step-8">
+      <div class="xp-badge">🔗 LRS Connect · 30 XP</div>
+      <div class="step-eyebrow">Step 09 — Teach</div>
+      <h1>Connecting your course to the <em>LRS endpoint</em></h1>
+      <p>The LRS is the database that stores all xAPI statements. Knowing how to set up the connection — and test it — is the ID developer's equivalent of "does the file save?"</p>
+
+      <div class="teach-card">
+        <h2>🗺️ The connection flow</h2>
+        <div class="flow">
+          <div class="flow-row">
+            <div class="flow-box amber">Articulate 360<br>Published Package</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box">LMS / Launch URL<br>(injects endpoint + auth)</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-box teal">Course Runtime<br>(in learner's browser)</div>
+          </div>
+          <div class="flow-down">↓</div>
+          <div class="flow-row">
+            <div class="flow-box dark">LRS<br>(stores statements)</div>
+            <div class="flow-arrow">←</div>
+            <div class="flow-box purple">HTTP POST<br>/statements</div>
+            <div class="flow-arrow">←</div>
+            <div class="flow-box">Execute JavaScript<br>Trigger fires</div>
+          </div>
+        </div>
+
+        <h3>Testing the connection — the minimal fetch test</h3>
+        <pre><code><span class="c">// Paste this in your browser console to test LRS connectivity</span>
+<span class="c">// before you build it into Storyline</span>
+<span class="k">fetch</span>(<span class="s">"https://yourlrs.com/statements"</span><span class="p">,</span> <span class="p">{</span>
+  <span class="n">method</span><span class="p">:</span>  <span class="s">"POST"</span><span class="p">,</span>
+  <span class="n">headers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">"Content-Type"</span><span class="p">:</span>             <span class="s">"application/json"</span><span class="p">,</span>
+    <span class="s">"Authorization"</span><span class="p">:</span>            <span class="s">"Basic "</span> <span class="p">+</span> <span class="fn">btoa</span>(<span class="s">"key:secret"</span>)<span class="p">,</span>
+    <span class="s">"X-Experience-API-Version"</span><span class="p">:</span> <span class="s">"1.0.3"</span>
+  <span class="p">},</span>
+  <span class="n">body</span><span class="p">:</span> <span class="fn">JSON</span>.<span class="fn">stringify</span>(<span class="p">{</span>
+    <span class="n">"actor"</span><span class="p">:</span>  <span class="p">{</span> <span class="n">"mbox"</span><span class="p">:</span> <span class="s">"mailto:test@example.com"</span> <span class="p">},</span>
+    <span class="n">"verb"</span><span class="p">:</span>   <span class="p">{</span> <span class="n">"id"</span><span class="p">:</span>   <span class="s">"http://adlnet.gov/expapi/verbs/experienced"</span><span class="p">,</span>
+              <span class="n">"display"</span><span class="p">:</span> <span class="p">{</span><span class="s">"en-US"</span><span class="p">:</span> <span class="s">"experienced"</span><span class="p">}}</span><span class="p">,</span>
+    <span class="n">"object"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"id"</span><span class="p">:</span>   <span class="s">"https://test.example.com/ping"</span> <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">})</span>.<span class="fn">then</span>(r <span class="p">=&gt;</span> <span class="fn">console</span>.<span class="fn">log</span>(r.<span class="n">status</span><span class="p">,</span> r.<span class="n">statusText</span>));
+<span class="c">// 200 OK → LRS accepts your credentials
+// 401 Unauthorized → wrong key/secret
+// 404 → wrong endpoint URL</span></code></pre>
+
+        <h3>Common LRS platforms and their endpoint format</h3>
+        <div style="overflow-x:auto;">
+          <table class="compare-table">
+            <thead><tr><th>LRS Platform</th><th>Endpoint format</th><th>Free tier?</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SCORM Cloud</strong></td><td><code>https://cloud.scorm.com/lrs/{id}/</code></td><td class="yes">Yes</td></tr>
+              <tr><td><strong>Learning Locker</strong></td><td><code>https://yourdomain/data/xAPI/</code></td><td class="partial">Self-host</td></tr>
+              <tr><td><strong>Watershed LRS</strong></td><td><code>https://watershedlrs.com/api/organizations/{id}/lrs/</code></td><td class="no">Paid</td></tr>
+              <tr><td><strong>VERACITY</strong></td><td><code>https://lrs.io/v1/statements/</code></td><td class="yes">Yes (dev)</td></tr>
+              <tr><td><strong>ADL LRS</strong></td><td><code>https://lrs.adlnet.gov/xapi/</code></td><td class="yes">Public test</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip">
+          <span class="callout-icon">🔧</span>
+          <div>Use <strong>ADL LRS</strong> (<code>lrs.adlnet.gov</code>) or <strong>SCORM Cloud's free LRS</strong> for all development and testing. Never send test statements to a client's production LRS — test data pollutes their reports.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(7)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(8,30);goTo(9)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 9 — SCENARIO -->
+    <div class="step" id="step-9">
+      <div class="xp-badge">🎭 Applied Scenario · 40 XP</div>
+      <div class="step-eyebrow">Step 10 — Practice</div>
+      <h1>Scenario: <em>tracking a custom business event</em></h1>
+      <p>You're building a compliance course in Storyline 360. The legal team needs to know exactly which policy clause each learner acknowledged — not just "passed the quiz." Here's how you design the script.</p>
+
+      <div class="scenario">
+        <div class="scenario-label">📋 Brief</div>
+        <h3>GDPR Awareness Course — Custom Acknowledgement Tracking</h3>
+        <p>The course has five policy clauses. On each clause slide there is an "I acknowledge this clause" button. When clicked, you need to send a custom xAPI statement recording <em>which clause</em> was acknowledged <em>by whom</em> and <em>at what time</em>.</p>
+        <ul>
+          <li>Publish target: xAPI (Tin Can) from Storyline 360</li>
+          <li>Verb: a custom "acknowledged" verb (not in ADL list)</li>
+          <li>Object ID: unique URI per clause (clause-1 through clause-5)</li>
+          <li>Context extension: include the Storyline variable <code>PolicyVersion</code></li>
+        </ul>
+      </div>
+
+      <div class="teach-card">
+        <h2>✏️ The solution script</h2>
+        <pre><code><span class="c">// Execute JavaScript trigger — fires on "I Acknowledge" button click
+// Set Storyline variable ClauseID = "clause-3" on each slide before this runs</span>
+
+(<span class="k">function</span>() <span class="p">{</span>
+  <span class="k">var</span> player       <span class="p">=</span> <span class="fn">GetPlayer</span>();
+  <span class="k">var</span> endpoint     <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanEndpoint"</span>);
+  <span class="k">var</span> auth         <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanAuth"</span>);
+  <span class="k">var</span> actorRaw     <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"TinCanActor"</span>);
+  <span class="k">var</span> clauseId     <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"ClauseID"</span>);       <span class="c">// "clause-3"</span>
+  <span class="k">var</span> policyVer    <span class="p">=</span> player.<span class="fn">GetVar</span>(<span class="s">"PolicyVersion"</span>);  <span class="c">// "2026-Q1"</span>
+
+  <span class="k">if</span> <span class="p">(!</span>endpoint <span class="p">||</span> <span class="p">!</span>auth <span class="p">||</span> <span class="p">!</span>clauseId<span class="p">)</span> <span class="k">return</span>;
+
+  <span class="k">var</span> statement <span class="p">= {</span>
+    <span class="n">"actor"</span><span class="p">:</span> <span class="fn">JSON</span>.<span class="fn">parse</span>(actorRaw)<span class="p">,</span>
+    <span class="n">"verb"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="c">// Custom verb — use your own domain as namespace</span>
+      <span class="n">"id"</span><span class="p">:</span> <span class="s">"https://yourplatform.com/verbs/acknowledged"</span><span class="p">,</span>
+      <span class="n">"display"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"acknowledged"</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">"object"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">"objectType"</span><span class="p">:</span> <span class="s">"Activity"</span><span class="p">,</span>
+      <span class="c">// Dynamic URI — clauseId changes per slide</span>
+      <span class="n">"id"</span><span class="p">:</span> <span class="s">"https://yourplatform.com/gdpr-course/policy/"</span> <span class="p">+</span> clauseId<span class="p">,</span>
+      <span class="n">"definition"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">"name"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"GDPR Policy Clause — "</span> <span class="p">+</span> clauseId <span class="p">},</span>
+        <span class="n">"type"</span><span class="p">:</span> <span class="s">"https://yourplatform.com/activities/policy-clause"</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">"result"</span><span class="p">:</span>  <span class="p">{</span> <span class="n">"completion"</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span> <span class="n">"success"</span><span class="p">:</span> <span class="k">true</span> <span class="p">},</span>
+    <span class="n">"context"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="n">"extensions"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"https://yourplatform.com/ext/policy-version"</span><span class="p">:</span> policyVer
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">"timestamp"</span><span class="p">:</span> <span class="k">new</span> <span class="fn">Date</span>().<span class="fn">toISOString</span>()
+  <span class="p">};</span>
+
+  <span class="k">var</span> xhr <span class="p">=</span> <span class="k">new</span> <span class="fn">XMLHttpRequest</span>();
+  xhr.<span class="fn">open</span>(<span class="s">"POST"</span><span class="p">,</span> endpoint <span class="p">+</span> <span class="s">"statements"</span><span class="p">,</span> <span class="k">true</span>);
+  xhr.<span class="fn">setRequestHeader</span>(<span class="s">"Content-Type"</span><span class="p">,</span>              <span class="s">"application/json"</span>);
+  xhr.<span class="fn">setRequestHeader</span>(<span class="s">"Authorization"</span><span class="p">,</span>            <span class="s">"Basic "</span> <span class="p">+</span> auth);
+  xhr.<span class="fn">setRequestHeader</span>(<span class="s">"X-Experience-API-Version"</span><span class="p">,</span> <span class="s">"1.0.3"</span>);
+  xhr.<span class="fn">send</span>(<span class="fn">JSON</span>.<span class="fn">stringify</span>(statement));
+
+<span class="p">})()</span>;</code></pre>
+
+        <h3>Storyline slide setup for this script</h3>
+        <ol style="padding-left:20px; font-size:14px; line-height:2.2;">
+          <li>Create a Text variable: <code>ClauseID</code> (default: empty)</li>
+          <li>Create a Text variable: <code>PolicyVersion</code> (default: "2026-Q1")</li>
+          <li>On each clause slide → add a Trigger: "Adjust Variable ClauseID = clause-1" when timeline starts</li>
+          <li>On the "I Acknowledge" button → add a Trigger: Execute JavaScript (paste script above)</li>
+          <li>Publish as xAPI → upload to LRS-enabled LMS</li>
+        </ol>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(8)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(9,40);goTo(10)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 10 — DEBUGGING -->
+    <div class="step" id="step-10">
+      <div class="xp-badge">🐛 Debugging · 25 XP</div>
+      <div class="step-eyebrow">Step 11 — Teach</div>
+      <h1>Debugging: <em>console, validators, and SCORM Cloud</em></h1>
+      <p>Your script sent — but did the LRS receive it? Here's the four-tool debugging workflow every ID developer needs.</p>
+
+      <div class="teach-card">
+        <h2>🔍 Tool 1: Browser DevTools → Network tab</h2>
+        <p>Open DevTools (F12) → Network tab. Filter by "statements". When your trigger fires you should see a POST request to your LRS endpoint. Check:</p>
+        <ul style="padding-left:20px; font-size:14px; line-height:1.9; margin-bottom:10px;">
+          <li><strong>Status 200</strong> — statement accepted</li>
+          <li><strong>Status 401</strong> — wrong credentials (check Base64 encoding)</li>
+          <li><strong>Status 400</strong> — malformed JSON (check your object IDs are valid URIs)</li>
+          <li><strong>CORS error</strong> — LRS doesn't allow requests from your origin (dev-mode issue; won't appear when hosted properly)</li>
+        </ul>
+
+        <h2>🧪 Tool 2: xAPI validator</h2>
+        <p>Paste your JSON at <strong>xAPIvalidator.com</strong> or use the ADL validator. It tells you exactly which required fields are missing or malformed before you ever upload to Storyline.</p>
+
+        <h2>☁️ Tool 3: SCORM Cloud</h2>
+        <p>Upload your xAPI ZIP to SCORM Cloud's free account. Launch it there — SCORM Cloud acts as LRS and LMS simultaneously and shows every statement it received in its "xAPI Statement Viewer." This is the most reliable way to verify your package before sending to a client LMS.</p>
+
+        <h2>📋 Tool 4: Console logging inside the trigger</h2>
+        <pre><code><span class="c">// Add this temporarily — remove before final publish</span>
+<span class="k">var</span> xhr <span class="p">=</span> <span class="k">new</span> <span class="fn">XMLHttpRequest</span>();
+xhr.<span class="fn">onreadystatechange</span> <span class="p">=</span> <span class="k">function</span>() <span class="p">{</span>
+  <span class="k">if</span> (xhr.<span class="n">readyState</span> <span class="p">===</span> <span class="v">4</span>) <span class="p">{</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="s">"LRS response:"</span><span class="p">,</span> xhr.<span class="n">status</span><span class="p">,</span> xhr.<span class="n">responseText</span>);
+  <span class="p">}</span>
+<span class="p">};</span>
+<span class="c">// ... rest of xhr.open / xhr.send as usual</span></code></pre>
+
+        <div class="callout warn">
+          <span class="callout-icon">⚠️</span>
+          <div><strong>Most common mistake:</strong> forgetting the trailing slash on the endpoint URL. <code>https://lrs.example.com/xapi</code> ≠ <code>https://lrs.example.com/xapi/</code>. The statements path becomes <code>endpoint + "statements"</code> — so the slash must be there.</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(9)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(10,25);goTo(11)">Next →</button>
+      </div>
+    </div>
+
+    <!-- STEP 11 — FINAL QUIZ -->
+    <div class="step" id="step-11">
+      <div class="xp-badge">🏆 Final Quiz · 40 XP</div>
+      <div class="step-eyebrow">Step 12 — Test</div>
+      <h1>End-to-end knowledge check</h1>
+      <p>Five questions. Each correct answer is worth 8 XP.</p>
+
+      <div class="quiz-card" id="fq0">
+        <div class="quiz-q"><span class="q-num">Q1 of 5</span>You want to track a custom "signed-off" event in a Storyline 360 course. The course is published as xAPI. What trigger type do you use?</div>
+        <button class="quiz-option" onclick="ans(this,'fq0',false)">A. Adjust Variable trigger on the button</button>
+        <button class="quiz-option" onclick="ans(this,'fq0',false)">B. Jump to URL trigger with an xAPI endpoint URL</button>
+        <button class="quiz-option" onclick="ans(this,'fq0',true)">C. Execute JavaScript trigger that POSTs to the LRS endpoint</button>
+        <button class="quiz-option" onclick="ans(this,'fq0',false)">D. Show Layer trigger combined with a result slide</button>
+        <div class="quiz-feedback" id="fq0-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq1">
+        <div class="quiz-q"><span class="q-num">Q2 of 5</span>Inside an Execute JavaScript trigger, how do you get the current learner's actor JSON to include in your xAPI statement?</div>
+        <button class="quiz-option" onclick="ans(this,'fq1',false)">A. Read document.cookie for the LMS session token</button>
+        <button class="quiz-option" onclick="ans(this,'fq1',true)">B. Call GetPlayer().GetVar("TinCanActor") and parse it with JSON.parse()</button>
+        <button class="quiz-option" onclick="ans(this,'fq1',false)">C. Access window.xAPIActor which Articulate sets globally</button>
+        <button class="quiz-option" onclick="ans(this,'fq1',false)">D. Query the LRS with a GET /agents request before sending</button>
+        <div class="quiz-feedback" id="fq1-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq2">
+        <div class="quiz-q"><span class="q-num">Q3 of 5</span>Your LRS returns HTTP 401 when your Storyline course fires the xAPI trigger. Most likely cause?</div>
+        <button class="quiz-option" onclick="ans(this,'fq2',false)">A. The JSON statement is missing the "timestamp" field</button>
+        <button class="quiz-option" onclick="ans(this,'fq2',false)">B. The endpoint URL is missing a trailing slash</button>
+        <button class="quiz-option" onclick="ans(this,'fq2',true)">C. The Base64-encoded key:secret is wrong or missing</button>
+        <button class="quiz-option" onclick="ans(this,'fq2',false)">D. The X-Experience-API-Version header was omitted</button>
+        <div class="quiz-feedback" id="fq2-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq3">
+        <div class="quiz-q"><span class="q-num">Q4 of 5</span>Which part of a Rise 360 xAPI publish can you NOT customise without embedding a Storyline block?</div>
+        <button class="quiz-option" onclick="ans(this,'fq3',false)">A. The completion tracking method (by quiz / by lesson)</button>
+        <button class="quiz-option" onclick="ans(this,'fq3',true)">B. Custom context extensions such as tenant ID or department</button>
+        <button class="quiz-option" onclick="ans(this,'fq3',false)">C. The activity ID used for the course object</button>
+        <button class="quiz-option" onclick="ans(this,'fq3',false)">D. Whether to send a "launched" statement on course open</button>
+        <div class="quiz-feedback" id="fq3-fb"></div>
+      </div>
+
+      <div class="quiz-card" id="fq4">
+        <div class="quiz-q"><span class="q-num">Q5 of 5</span>You use the same Execute JavaScript script on five different clause slides. Which variable makes each statement's object ID unique per slide?</div>
+        <button class="quiz-option" onclick="ans(this,'fq4',false)">A. TinCanActor — it changes per learner so the IRI is unique</button>
+        <button class="quiz-option" onclick="ans(this,'fq4',false)">B. ReportingLearnerID — concatenate it with the base URI</button>
+        <button class="quiz-option" onclick="ans(this,'fq4',true)">C. A custom Storyline variable (e.g. ClauseID) set per slide, concatenated into the object ID string</button>
+        <button class="quiz-option" onclick="ans(this,'fq4',false)">D. The slide timestamp — each slide fires at a different time</button>
+        <div class="quiz-feedback" id="fq4-fb"></div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-secondary" onclick="goTo(10)">← Back</button>
+        <button class="btn btn-primary" onclick="completeStep(11,40);goTo(12)">See my results →</button>
+      </div>
+    </div>
+
+    <!-- STEP 12 — SCORE -->
+    <div class="step" id="step-12">
+      <div class="score-screen">
+        <div class="score-ring">
+          <div class="score-num" id="finalScore">0</div>
+          <div class="score-label">XP EARNED</div>
+        </div>
+        <h1 class="score-title" id="scoreTitle">Module complete!</h1>
+        <div class="level-badge" id="levelBadge">Calculating…</div>
+        <p class="score-desc" id="scoreDesc"></p>
+
+        <div class="teach-card" style="text-align:left; margin: 0 auto; max-width:520px;">
+          <h2 style="margin-bottom:14px;">📁 Your Articulate 360 scripting toolkit</h2>
+          <p><strong>What you can do now:</strong></p>
+          <ul class="checklist" style="margin-top:12px;">
+            <li>Add Execute JavaScript triggers to any Storyline 360 slide</li>
+            <li>Read learner identity and LRS credentials with GetVar()</li>
+            <li>Build and POST a valid custom xAPI statement</li>
+            <li>Design unique activity IDs using Storyline variables</li>
+            <li>Understand Rise 360's xAPI ceiling and how to extend it</li>
+            <li>Debug a misfiring statement with DevTools + SCORM Cloud</li>
+            <li>Connect to any LRS endpoint with Basic auth</li>
+          </ul>
+
+          <h3 style="margin-top:20px;">Next steps — practice builds</h3>
+          <ol style="padding-left:20px; font-size:14px; line-height:2.2; margin-top:8px;">
+            <li>Open SCORM Cloud → create a free LRS → note the endpoint + key/secret</li>
+            <li>Build a 3-slide Storyline file with one "interacted" statement per slide</li>
+            <li>Publish as xAPI → upload to SCORM Cloud → launch and verify in Statement Viewer</li>
+            <li>Add a custom verb "https://yourdomain.com/verbs/bookmarked" — trigger it on a Bookmark button</li>
+            <li>Embed one Storyline block inside a Rise 360 lesson and send a custom extension from it</li>
+          </ol>
+        </div>
+
+        <div class="step-nav" style="justify-content:center; margin-top:28px;">
+          <button class="btn btn-secondary" onclick="goTo(0)">← Restart</button>
+          <a href="../index.html" class="btn btn-primary" style="text-decoration:none; display:inline-flex; align-items:center;">All tracks →</a>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  var totalXP = 0;
+  var currentStep = 0;
+  var completed = new Array(13).fill(false);
+
+  var stepXP = [20,20,25,30,30,35,30,25,30,40,25,40,0];
+
+  // quiz state
+  var quizAnswers = {
+    q0: null, q1: null, q2: null,
+    fq0: null, fq1: null, fq2: null, fq3: null, fq4: null
+  };
+
+  var feedback = {
+    q0: {
+      ok: "Correct. Triggers → Execute JavaScript is the only way to run custom code in Storyline 360.",
+      no: "Not quite. The Execute JavaScript action under Triggers is the entry point for all custom scripting in Storyline."
+    },
+    q1: {
+      ok: "Exactly. The three required fields — actor, verb, object — are mandatory. Result and context are optional but very useful.",
+      no: "The three required fields are actor, verb, and object. Result is optional — but very useful when you have score or success data."
+    },
+    q2: {
+      ok: "Correct. Articulate's runtime parses the URL at launch and stores the endpoint, auth, and actor in built-in variables accessible via GetVar.",
+      no: "The LRS endpoint is passed as a URL query parameter (?endpoint=…) at launch time. Articulate reads this and stores it in the TinCanEndpoint variable."
+    },
+    fq0: {
+      ok: "Correct. Execute JavaScript is the only trigger type in Storyline that lets you send HTTP requests to an LRS.",
+      no: "Custom xAPI events require Execute JavaScript triggers. No other trigger type can POST to an external endpoint."
+    },
+    fq1: {
+      ok: "Correct. GetVar('TinCanActor') returns the actor JSON string set at launch time — JSON.parse() turns it into an object you can include in your statement.",
+      no: "The actor data lives in the Storyline variable TinCanActor, populated from the launch URL's ?actor= parameter. Access it with GetPlayer().GetVar('TinCanActor')."
+    },
+    fq2: {
+      ok: "Right — 401 Unauthorized always means the credentials are wrong. Check that you're sending 'Basic ' + the correct Base64-encoded key:secret.",
+      no: "HTTP 401 means the LRS rejected your credentials. The auth header format must be 'Basic ' followed by btoa('key:secret') — check both the key/secret values and that you're not missing 'Basic '."
+    },
+    fq3: {
+      ok: "Correct. Rise 360 sends a fixed set of xAPI fields — you cannot inject custom context extensions without embedding a Storyline block that has JavaScript access.",
+      no: "Custom context extensions (like tenant ID) are not supported in plain Rise 360 xAPI output. You need to embed a Storyline 360 block with JavaScript to send those."
+    },
+    fq4: {
+      ok: "Exactly. A Storyline variable (ClauseID, SlideID, etc.) set per slide and concatenated into the object ID string is the standard pattern for making each statement unique.",
+      no: "The correct approach is a custom Storyline variable set to a different value on each slide (e.g. 'clause-1', 'clause-2') and concatenated into the base URI to create a unique activity ID."
+    }
+  };
+
+  function ans(btn, qId, correct) {
+    if (quizAnswers[qId] !== null) return;
+    quizAnswers[qId] = correct;
+
+    var card = document.getElementById(qId);
+    var btns = card.querySelectorAll('.quiz-option');
+    btns.forEach(function(b) {
+      b.classList.add('disabled');
+      if (b === btn) {
+        b.classList.add(correct ? 'correct' : 'wrong');
+      }
+    });
+
+    var fb = document.getElementById(qId + '-fb');
+    fb.textContent = correct ? '✅ ' + feedback[qId].ok : '❌ ' + feedback[qId].no;
+    fb.className = 'quiz-feedback show ' + (correct ? 'ok' : 'no');
+
+    if (correct) {
+      var xpGain = qId.startsWith('fq') ? 8 : 7;
+      gainXP(xpGain);
+    }
+  }
+
+  function gainXP(n) {
+    totalXP += n;
+    document.getElementById('headerXP').textContent = totalXP;
+    var toast = document.getElementById('xpToast');
+    toast.textContent = '+' + n + ' XP';
+    toast.classList.add('show');
+    setTimeout(function() { toast.classList.remove('show'); }, 1500);
+    updateRail();
+  }
+
+  function completeStep(idx, xp) {
+    if (!completed[idx]) {
+      completed[idx] = true;
+      var item = document.querySelector('[data-step="' + idx + '"]');
+      if (item) item.classList.add('done');
+    }
+    updateRail();
+  }
+
+  function goTo(idx) {
+    document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active'); });
+    document.getElementById('step-' + idx).classList.add('active');
+    document.querySelectorAll('.sidebar-item').forEach(function(s) { s.classList.remove('active'); });
+    var sideItem = document.querySelector('[data-step="' + idx + '"]');
+    if (sideItem) sideItem.classList.add('active');
+    currentStep = idx;
+    document.getElementById('headerStep').textContent = idx + 1;
+    if (idx === 12) updateScoreScreen();
+    window.scrollTo(0, 0);
+    updateRail();
+  }
+
+  function updateRail() {
+    var progress = Math.min((totalXP / 380) * 100, 100);
+    document.getElementById('railFill').style.width = progress + '%';
+
+    var labels = ['rl0','rl1','rl2','rl3','rl4'];
+    labels.forEach(function(id) { document.getElementById(id).classList.remove('active'); });
+
+    if (totalXP < 50)       document.getElementById('rl0').classList.add('active');
+    else if (totalXP < 130) document.getElementById('rl1').classList.add('active');
+    else if (totalXP < 220) document.getElementById('rl2').classList.add('active');
+    else if (totalXP < 310) document.getElementById('rl3').classList.add('active');
+    else                    document.getElementById('rl4').classList.add('active');
+  }
+
+  function updateScoreScreen() {
+    document.getElementById('finalScore').textContent = totalXP;
+
+    var title, badge, desc;
+    if (totalXP < 100) {
+      title = 'Foundation complete'; badge = '🌱 Builder';
+      desc = "Good start. You've covered the architecture — now build a real xAPI course in Storyline 360 and fire your first custom statement to a test LRS. The concepts click once you see the Network tab respond.";
+    } else if (totalXP < 200) {
+      title = 'Tracker level reached'; badge = '📡 Tracker';
+      desc = "You have the mental model down. Focus your next session on the Execute JavaScript trigger — build the three-slide test file and verify in SCORM Cloud. The debugging section will make much more sense with a real file open.";
+    } else if (totalXP < 300) {
+      title = 'Scripter level reached'; badge = '⚙️ Scripter';
+      desc = "Solid. You can build custom tracking into any Storyline course. Next challenge: add multi-tenant context extensions and test with two different LRS credentials to confirm data isolation.";
+    } else {
+      title = 'Architect level unlocked!'; badge = '🏛️ Architect';
+      desc = "You understand the full stack — from Articulate's publish output through xAPI statements to LRS storage, including multi-tenancy, cmi5 launch, and debugging. You can confidently design custom tracking for any Articulate 360 course.";
+    }
+
+    document.getElementById('scoreTitle').textContent = title;
+    document.getElementById('levelBadge').textContent = badge;
+    document.getElementById('scoreDesc').textContent = desc;
+  }
+
+  updateRail();
+</script>
+</body>
+</html>

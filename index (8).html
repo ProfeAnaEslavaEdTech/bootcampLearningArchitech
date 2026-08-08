@@ -1,0 +1,745 @@
+<!-- ============================================================
+     FILE: language-learning-experience-designer/index.html
+     WHAT IT IS: Track 15 — Language Learning Experience Designer
+     MLLDE engine · CEFR anchoring · AI tutor architecture · metrics
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Learning Experience Designer — MLLDE Bootcamp</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ── Ocean Ink v0.1 ── */
+:root {
+  --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
+  --line: #E6E8F2; --muted: #5B5F77;
+  --primary: #3B5BD6; --primary-deep: #22307C;
+  --on-primary: #FFFFFF; --accent: #E8A33D; --accent-text: #9A5B00;
+  --blue-50: #EEF2FD; --blue-100: #DCE4FB;
+  --focus-ring: #3B5BD6; --radius: 8px;
+  --tag-bg: #EEF2FD; --tag-text: #22307C;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+    --line: #2A2E50; --muted: #9A9DBF;
+    --primary: #7B9FFF; --primary-deep: #3B5BD6;
+    --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+    --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+    --tag-bg: #171A38; --tag-text: #7B9FFF;
+  }
+}
+:root[data-theme="light"] {
+  --tag-bg: #EEF2FD; --tag-text: #22307C;
+}
+:root[data-theme="dark"] {
+  --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
+  --line: #2A2E50; --muted: #9A9DBF;
+  --primary: #7B9FFF; --primary-deep: #3B5BD6;
+  --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
+  --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
+  --tag-bg: #171A38; --tag-text: #7B9FFF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+  left: 12px; top: 12px; background: var(--primary-deep); color: #fff;
+  padding: 8px 14px; border-radius: 8px; z-index: 200;
+  font-family: 'Inter', system-ui, sans-serif; font-size: 13px;
+}
+
+body {
+  background: var(--canvas); font-family: 'Inter', sans-serif;
+  color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased;
+}
+h1, h2 { font-family: 'Fraunces', serif; }
+
+#theme-btn {
+  position: fixed; top: 14px; right: 16px; z-index: 100;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+#theme-btn:hover { border-color: var(--primary); }
+#theme-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+
+/* TOP BAR */
+.top-bar {
+  background: var(--primary-deep); color: #fff;
+  padding: 10px 24px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+  display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
+}
+.back-link { color: rgba(255,255,255,0.7); text-decoration: none; }
+.back-link:hover { color: #fff; }
+.top-sep { opacity: 0.4; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--primary-deep) 0%, var(--primary) 60%, #E8A33D 100%);
+  color: #fff; padding: 52px 24px 44px; text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero {
+    background: linear-gradient(135deg, #08091A 0%, #1A2464 100%);
+  }
+}
+:root[data-theme="dark"] .hero {
+  background: linear-gradient(135deg, #08091A 0%, #1A2464 100%);
+}
+.hero-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.62); margin-bottom: 16px;
+}
+.hero h1 { font-size: clamp(22px, 4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; line-height: 1.1; }
+.hero h1 em { font-style: normal; color: #FDE68A; }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.82); max-width: 620px; margin: 0 auto 24px; line-height: 1.6; }
+
+.skill-grid { display: inline-flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.skill-chip {
+  background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; padding: 6px 14px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.skill-chip .chip-label { font-size: 9px; opacity: 0.6; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* XP */
+.xp-bar-wrap { max-width: 640px; margin: 0 auto; padding: 20px 24px 0; display: flex; align-items: center; gap: 12px; }
+.xp-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--primary); font-weight: 700; white-space: nowrap; }
+.xp-track { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.xp-fill  { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.5s ease; }
+.xp-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+/* MAP */
+.map-section { max-width: 640px; margin: 0 auto; padding: 24px 24px 60px; }
+.map-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+.level-card {
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius);
+  padding: 20px 22px; margin-bottom: 10px; cursor: pointer;
+  display: flex; align-items: flex-start; gap: 16px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  text-align: left; width: 100%; font-family: inherit; color: var(--ink);
+}
+.level-card:hover:not(.locked) { border-color: var(--accent); box-shadow: 0 4px 16px rgba(59,91,214,0.15); transform: translateY(-1px); }
+.level-card.locked { opacity: 0.45; cursor: default; }
+.level-card.done   { border-color: var(--primary); background: var(--blue-50); }
+
+.level-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  color: var(--primary); background: var(--blue-50); border-radius: 50%;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.level-card.done .level-num { background: var(--primary); color: var(--on-primary); }
+
+.level-body { flex: 1; }
+.level-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+.level-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.level-artifact { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--primary); font-weight: 700; }
+.level-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+.badge {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.badge-type { background: var(--tag-bg); color: var(--tag-text); }
+.badge-done { background: var(--primary); color: var(--on-primary); }
+.badge-lock { background: var(--line); color: var(--muted); }
+
+/* OVERLAY */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(15,17,32,0.75); z-index: 100;
+  align-items: flex-start; justify-content: center;
+  overflow-y: auto; padding: 32px 16px 64px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border-radius: 14px; max-width: 720px; width: 100%;
+  padding: 36px 36px 32px; position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; font-size: 22px;
+  color: var(--muted); cursor: pointer; line-height: 1; padding: 4px; font-family: inherit;
+}
+.modal-close:hover { color: var(--ink); }
+.modal-eyebrow {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px;
+}
+.modal h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.modal-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 24px; }
+hr.divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+.modal-ai-note {
+  margin-top: 20px; padding: 10px 14px;
+  background: var(--blue-50); border-radius: 6px;
+  font-size: 11px; color: var(--muted); line-height: 1.5;
+}
+.modal-ai-note a { color: var(--primary); }
+
+/* ARTIFACT BOX */
+.artifact-box {
+  background: var(--blue-50); border: 1.5px solid var(--line); border-radius: 8px;
+  padding: 14px 16px; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 700; color: var(--primary);
+}
+
+/* CHECKLIST */
+.check-group { margin-bottom: 20px; }
+.check-group-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line);
+}
+.checklist-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--line);
+}
+.checklist-item:last-child { border-bottom: none; }
+.check-box {
+  width: 20px; height: 20px; border: 2px solid var(--line); border-radius: 4px;
+  flex-shrink: 0; cursor: pointer; background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; transition: background 0.12s, border-color 0.12s; margin-top: 2px;
+}
+.check-box.checked { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.check-text { font-size: 14px; line-height: 1.5; font-weight: 600; }
+.check-note { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 400; }
+
+/* BUILDER */
+.builder-field { margin-bottom: 20px; }
+.builder-label { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block; }
+.builder-hint  { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-style: italic; }
+.builder-input {
+  width: 100%; min-height: 80px; padding: 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
+  background: var(--canvas); resize: vertical; line-height: 1.55; transition: border-color 0.12s;
+}
+.builder-input:focus { outline: none; border-color: var(--primary); }
+.model-answer {
+  display: none; margin-top: 10px; padding: 12px 14px;
+  background: var(--blue-50); border-left: 3px solid var(--primary);
+  border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--ink);
+}
+.model-answer strong { color: var(--primary); }
+
+/* BOSS */
+.boss-header { text-align: center; margin-bottom: 24px; }
+.boss-icon   { font-size: 44px; line-height: 1; margin-bottom: 8px; }
+.boss-title  { font-size: 18px; font-weight: 700; }
+.boss-sub    { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+.boss-q {
+  background: var(--blue-50); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
+  font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--primary);
+}
+.boss-input {
+  width: 100%; min-height: 96px; padding: 12px; border: 1.5px solid var(--line);
+  border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
+  background: var(--canvas); resize: vertical; line-height: 1.55;
+  transition: border-color 0.12s; margin-bottom: 6px;
+}
+.boss-input:focus { outline: none; border-color: var(--primary); }
+
+/* PROG NOTE */
+.prog-note {
+  background: var(--blue-50); border-left: 3px solid var(--primary);
+  border-radius: 6px; padding: 10px 14px; margin-bottom: 16px;
+  font-size: 13px; color: var(--ink); line-height: 1.5;
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: 8px; font-family: inherit;
+  font-size: 14px; font-weight: 700; cursor: pointer; border: none;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-primary:hover { background: var(--primary-deep); }
+.btn-ghost { background: var(--canvas); color: var(--ink); border: 1.5px solid var(--primary); }
+.btn-ghost:hover { border-color: var(--accent); }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+
+/* FINAL */
+.final-screen { display: none; text-align: center; padding: 48px 24px 64px; }
+.final-screen.show { display: block; }
+.final-icon { font-size: 56px; margin-bottom: 16px; }
+.final-screen h2 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+.final-screen p  { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 520px; margin: 0 auto 24px; }
+.final-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+.final-chip {
+  background: var(--blue-50); color: var(--primary);
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  padding: 5px 12px; border-radius: 20px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: #22307C; color: #fff; padding: 12px 22px; border-radius: 30px;
+  font-size: 14px; font-weight: 600; white-space: nowrap; z-index: 300;
+  transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+footer { text-align: center; padding: 24px; font-size: 12px; color: var(--muted); }
+footer a { color: var(--primary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+footer .ai-note { font-size: 10.5px; margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">🌓</button>
+
+<div class="top-bar">
+  <a href="../" class="back-link">← All tracks</a>
+  <span class="top-sep">|</span>
+  <strong>Track 15 · Language Learning Experience Designer</strong>
+  <span class="top-sep">·</span>
+  <span>MLLDE · CEFR · AI Tutor · Metrics</span>
+  <span class="top-sep">·</span>
+  <span>6 modules · pedagogy to proof</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">MLLDE methodology · Standards-anchored · Evidence-valid</div>
+  <h1>From pedagogy<br>to <em>proof.</em></h1>
+  <p class="hero-sub">Every language learning product you design anchors to CEFR, ships with an AI tutor contract, and generates statements — not claims. Six modules from the MLLDE engine to the investor pack.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">MLLDE 4-layer stack<span class="chip-label">engine · always</span></div>
+    <div class="skill-chip">CEFR Companion Volume<span class="chip-label">scale · always</span></div>
+    <div class="skill-chip">Avatar-as-Input flow<span class="chip-label">lesson design</span></div>
+    <div class="skill-chip">AI Tutor architecture<span class="chip-label">voice · persona</span></div>
+    <div class="skill-chip">xAPI + IRI registry<span class="chip-label">metrics · evidence</span></div>
+    <div class="skill-chip">Dual deliverables<span class="chip-label">engineer + owner</span></div>
+  </div>
+</div>
+
+<div class="xp-bar-wrap">
+  <span class="xp-label">Modules mastered</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+  <span class="xp-count" id="xpCount">0 / 6</span>
+</div>
+
+<div class="map-section" id="main">
+  <div class="map-title">Design modules</div>
+  <div id="map"></div>
+</div>
+
+<div class="final-screen" id="finalScreen">
+  <div class="final-icon">🌍</div>
+  <h2>MLLDE cycle complete.</h2>
+  <p>You can now design a language learning product from brief to investor pack — CEFR-anchored, AI-tutored, evidence-valid. Every module ends with a statement. Every statement feeds a report.</p>
+  <div class="final-chips">
+    <span class="final-chip">MLLDE 4-layer map</span>
+    <span class="final-chip">IPO lesson plan designed</span>
+    <span class="final-chip">CEFR scale named &amp; anchored</span>
+    <span class="final-chip">Tutor persona packed</span>
+    <span class="final-chip">Metric families mapped</span>
+    <span class="final-chip">Engineering + owner packs split</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../" class="btn btn-ghost">← All tracks</a>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalContent"></div>
+    <div class="modal-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <a href="../">← Learning Architect Bootcamp</a> · MLLDE methodology · Track 15 · Language Learning Experience Designer
+  <div class="ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a> · © Ana Eslava-Graterol · Ocean Ink v0.1</div>
+</footer>
+
+<script>
+const LEVELS = [
+  {
+    id: 1,
+    name: "MLLDE Architecture",
+    desc: "Master the 4-layer MLLDE stack and the engine/pack design principle — the foundation of every language learning product you design.",
+    type: "builder",
+    artifact: "→ Deliverable: Written layer map applied to one real or hypothetical client brief",
+    fields: [
+      {
+        label: "The four layers — define each in your own words",
+        hint: "Describe each of the four MLLDE layers. For each, state: what decisions it owns, what the stakeholder is, and what changes vs. stays constant. Work from the standards layer down to product.",
+        model: "<strong>Layer 1 — Standard (CEFR):</strong> The universal evaluation reference. Owns the what-learners-can-do anchors. Every task maps to a named CEFR descriptor scale — not just a level letter. Stakeholder: regulatory and quality frameworks. Constant: the CEFR scale inventory.<br><br><strong>Layer 2 — Method (MLLDE):</strong> The instructional engine. Owns how learning happens: IPO cycle, CLIL 4Cs, ESA staging, Lexical Approach, i+1 input, Avatar-as-Input flow, Immediate Assessment. Constant across projects — never redesigned. This is the engine.<br><br><strong>Layer 3 — Data (per-language reference):</strong> Language-specific content parameters: phoneme inventory (IPA), reference corpus (PCIC for Spanish, English Profile for English), pragmatic norms. Owns what examples and vocabulary instances to use. Filled once per language pair — part of the pack.<br><br><strong>Layer 4 — Product:</strong> The UI/UX, platform, delivery channel, and business model. Owns how learners access and experience the learning. Changes per client. Part of the pack."
+      },
+      {
+        label: "Engine vs. Pack — apply the design principle",
+        hint: "A new client wants a language learning app for professional Spanish for hotel staff (A1→B1). Using the engine/pack principle: list three things that stay in the engine and three things that go in the client's pack.",
+        model: "<strong>Engine (shared, constant, © Ana Eslava-Graterol — licensed, not rebuilt):</strong><br>• IPO lesson flow logic and Avatar-as-Input conversation architecture<br>• Immediate Assessment standard (amber, non-punitive, unlimited retry, 'Don't Give Up!' copy)<br>• xAPI statement schema and IRI registry<br>• CEFR mapping methodology and self-scaling rubric engine<br>• Lexical Approach chunk harvesting procedure<br><br><strong>Client's Pack (project-specific, client owns it):</strong><br>• Target learner persona: hotel staff, authentic missions (checking in a guest, handling a complaint in English)<br>• Language pair and level: Spanish A1→B1; PCIC A1–B1 vocabulary and grammar scope<br>• AI tutor persona: name, voice, character, cultural frame (Spanish city or neutral international hotel)<br>• Learner data — GDPR-scoped to this deployment<br>• Business rules: session length, push notification schedule, LMS integration<br><br><strong>The rule:</strong> designing a new project = filling packs, never redesigning the engine."
+      },
+      {
+        label: "First client call — layer-to-decision map",
+        hint: "A client says: 'We want a Spanish course for our customer service team. A1 to B1. They need to handle calls and write emails. Budget is €50K. We want AI.' Map their brief to the four MLLDE layers. What does each layer need from this brief?",
+        model: "<strong>Layer 1 (Standard):</strong> CEFR levels A1→B1 confirmed. Mode priority: Interaction (telephone calls) + Written Production (emails). Mediation not in scope until B2+. Name the CEFR Companion Volume scales before any content is written: 'Overall oral interaction' and 'Correspondence'.<br><br><strong>Layer 2 (Method):</strong> IPO cycle applies to both modes. Authentic missions: a customer service call and a follow-up email. Avatar delivers telephone dialogue chunks; My Cards harvests client-specific phrases. Immediate Assessment covers spoken and written output separately. Boss Battle = full call + full email at B1 level.<br><br><strong>Layer 3 (Data):</strong> PCIC A1–B1 references → vocabulary lists, grammar structures, phoneme priorities for phone intelligibility. Customer service corpus → real call scripts and email templates from the client (if available) or sector corpora.<br><br><strong>Layer 4 (Product):</strong> AI tutor confirms budget viability for MVP. Channel: mobile-first (staff use during commute). Session max 8 minutes. MVP scope = ONE mission first (the call), user-tested, then expand. €50K covers one fully designed and evidenced mission type."
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "Lesson Architecture — Avatar-as-Input Flow",
+    desc: "Design a complete language lesson using the Avatar-as-Input flow, ESA staging, and the mandatory Immediate Assessment. No lesson plan is complete without both.",
+    type: "checklist",
+    artifact: "→ Deliverable: Complete lesson plan for one authentic mission (one mode · one level · one CEFR scale named)",
+    groups: [
+      {
+        label: "Avatar-as-Input flow — six steps",
+        items: [
+          { text: "Query: Define the learner's real-world need and the artifact they bring. What does the learner want to do? What real situation triggers this session?", note: "The query is NOT a learning objective — it is the learner's actual goal: 'I have a meeting with a UK supplier tomorrow and I need to handle the price negotiation.' Real stakes, real urgency." },
+          { text: "Input: The avatar (AI tutor) models the language the learner needs — delivered by voice, not shown as text on screen. Two categories: Useful Language (chunks that transfer) and Task-Specific Language (phrases for this exact mission).", note: "i+1 rule: one level above what the learner can already process. The tutor models — the learner does not produce yet. Dual-coded: voice delivery + visual support (image, context card)." },
+          { text: "My Cards: The learner labels and categorises the language they noticed. They set their own level on each chunk and schedule spaced repetition. Record-and-listen-back is mandatory here.", note: "Learner agency is built into the card system — they own the pack, not the teacher. This is the Lexical Approach harvest moment. The learner decides what was useful, not the system." },
+          { text: "Processing: Drills generated from the card harvest — manipulation of chunks, not rote repetition. Forms, patterns, substitution drills, phoneme focus derived from what the learner harvested.", note: "Processing is NEVER the output itself. It builds towards output. Drills ≠ real communication. Processing is Study in ESA — efficient, focused, time-limited." },
+          { text: "Output: The authentic mission — a real-voice task in the target language. Record the learner's actual production. This is the evidence moment that generates xAPI statements.", note: "The output task must be authentic (real-world genre, real-world stakes) and must be producible at the learner's current level + i+1. A B1 learner does not write a B2 business email." },
+          { text: "End & Save: Session finalisation. Learner rates confidence (1–5). Cards saved to spaced repetition schedule. xAPI statement: completed + score + language mode + CEFR level extension.", note: "End & Save is not optional. Without it: no statements, no data, no evidence. The validity rule applies: no production = no statements = no pass." }
+        ]
+      },
+      {
+        label: "ESA staging and CLIL 4Cs overlay",
+        items: [
+          { text: "Map the IPO steps to ESA: Engage = Query + Input (activate prior knowledge, create genuine engagement with real need). Study = My Cards + Processing (focus on form — efficient, not overlong). Activate = Output + End & Save (fluency in real use).", note: "Activate must be longer than Study. The lesson is designed to produce real language, not to teach grammar points. If Study takes 70% of the lesson, the design is wrong." },
+          { text: "Check CLIL 4Cs coverage. Content: topic substance, not just language (the learner learns about the domain). Communication: authentic language use. Cognition: Bloom's-level task — not just recall. Culture: sociolinguistic norms, register, pragmatics.", note: "A lesson that hits only Communication is a language drill. A lesson that hits all 4Cs is a full MLLDE lesson — learners acquire content knowledge AND language simultaneously. Mark which Cs are present in your lesson plan." }
+        ]
+      },
+      {
+        label: "Mandatory: Immediate Assessment — 'Don't Give Up!'",
+        items: [
+          { text: "Every lesson plan includes one Immediate Assessment for the Output mode in scope. It fires immediately after the first output attempt — no waiting, no delay.", note: "This is non-negotiable in MLLDE. Missing Immediate Assessment = incomplete lesson plan." },
+          { text: "Assessment is amber (non-punitive — NEVER red / fail framing). Feedback is specific to the language: not 'try again' but 'you used «will» here — try the present tense for scheduled events'.", note: "'Don't give up!' is the learner-facing copy. The assessment engine does not lock the learner out, does not penalise attempts, and does not end the session for a wrong answer." },
+          { text: "If the learner cannot self-correct after 2 unaided attempts, escalation to the tutor fires. The tutor gives a graded hint — not the answer. The learner produces again.", note: "Tutor rule: the tutor coaches, never performs the learner's task. A tutor that gives the complete correct sentence is a broken tutor. It destroys the evidence chain." },
+          { text: "Self-assessment rubric must use named CEFR descriptor language — not invented criteria. 'Communicates the main point with some vocabulary gaps' maps to a B1 Interaction descriptor in the CEFR Companion Volume.", note: "Self-assessment (Metric Family 4) stays separate from evidenced production (Metric Family 2+3). Never conflate 'I rated myself B1' with 'my output was scored at B1 level on the rubric'." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "CEFR Standards Anchoring",
+    desc: "Every task maps to a named CEFR descriptor scale — not just a level letter. This is what makes design evidence-valid and assessment defensible.",
+    type: "builder",
+    artifact: "→ Deliverable: CEFR mapping table for three tasks (mode × competence × scale name × pass floor)",
+    fields: [
+      {
+        label: "Competence model — Linguistic, Sociolinguistic, Pragmatic",
+        hint: "A learner needs to apologise to a customer in a formal email after a service failure. Which competences are in play? Give one concrete example of what Linguistic, Sociolinguistic, and Pragmatic competence each look like in THIS specific task.",
+        model: "<strong>Linguistic competence:</strong> The vocabulary and grammar structures for a formal written apology: 'I sincerely apologise for…', 'please be assured that…', passive voice for institutional distancing ('your order was delayed'), conditional structures ('should you need further assistance'). Register-appropriate grammar selection at the structural level.<br><br><strong>Sociolinguistic competence:</strong> Understanding that a formal customer apology does NOT use the same register as an apology to a colleague. The email signals institutional formality — opening and closing formulae ('Dear Ms X', 'Yours sincerely'), use of company voice rather than personal voice. The learner chooses between warmth and distance based on the customer relationship and company culture.<br><br><strong>Pragmatic competence:</strong> Coherence and cohesion decisions — how to sequence acknowledgement → responsibility → remedy → commitment without sounding defensive or evasive. Discourse markers: 'First and foremost', 'To address your concern directly'. The pragmatic goal is to restore trust, not just to apologise grammatically correct."
+      },
+      {
+        label: "Mode mapping — Reception / Production / Interaction / Mediation",
+        hint: "For a B2 learner working as a bilingual community liaison: (1) Reading a technical report in English and summarising it for a Spanish-speaking colleague = which mode? (2) Conducting a live video call with a UK supplier = which mode? (3) Writing a follow-up email = which mode? (4) Translating a consent form for a family = which mode? Identify each mode and name one CEFR Companion Volume scale for each.",
+        model: "<strong>(1) Summarising a report in another language → Mediation.</strong> Specifically, written mediation. CEFR scale: 'Relaying specific information in writing' or 'Summarising'. Mediation only enters scope at B2 — do not assign it below that level.<br><br><strong>(2) Live video call with a supplier → Interaction (spoken).</strong> CEFR scale: 'Overall oral interaction' or 'Goal-oriented co-operation'. The bidirectional, real-time, co-constructed exchange defines Interaction mode.<br><br><strong>(3) Writing a follow-up email → Written Production.</strong> CEFR scale: 'Correspondence' or 'Reports and essays' depending on formality and length. Production mode = one direction, no real-time co-construction with a partner.<br><br><strong>(4) Translating a consent form → Mediation (written).</strong> CEFR scale: 'Processing text'. Requires formal register knowledge in both languages plus cultural/legal knowledge. This is not simple bilingual communication — it is a credentialing task that may require more than B2 in the source language."
+      },
+      {
+        label: "Task-to-scale mapping — write your own",
+        hint: "Pick one authentic mission from your current or planned project. Write: (a) the learner's task in one sentence, (b) CEFR level targeted, (c) exact CEFR Companion Volume scale name, (d) minimum performance the learner must show to pass the task gate.",
+        model: "<strong>Example — Language Passport / Hospitality A2:</strong><br>(a) Task: The learner checks in an English-speaking guest, confirms the reservation, and explains hotel breakfast times.<br>(b) Level: A2<br>(c) Scale: 'Overall oral interaction' — A2 descriptor from CEFR Companion Volume: 'Can interact with reasonable ease in structured situations and short conversations, provided the other person helps if necessary.'<br>(d) Task gate minimum: Learner produces at least 3 of 5 target chunks in context (reservation confirmation, room type, time reference, polite offer, closing phrase). Communication goal achieved even if minor grammar errors present. Evidence: recorded audio scored against the A2 rubric.<br><br><strong>The rule:</strong> if you cannot name the scale, you cannot assess the task. The scale name is not optional — it is the validity anchor. 'A2 level' is not a scale. 'Overall oral interaction, A2' is a scale."
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: "AI Voice Tutor Architecture",
+    desc: "Design the conversational AI tutor: the shared engine (pedagogy contract, pronunciation protocol, accessibility) plus the project persona pack (name, voice, city, cultural frame).",
+    type: "builder",
+    artifact: "→ Deliverable: Tutor persona pack spec + pedagogical contract (name, character, three hint levels, voice parameters)",
+    fields: [
+      {
+        label: "The pedagogical contract — what the tutor NEVER does",
+        hint: "A learner gets stuck trying to describe their hotel room in Spanish (A2). They ask the tutor: '¿Cómo se dice «the wardrobe is next to the window»?' Draft the tutor's response at three graded hint levels — without giving the learner the complete sentence at any level.",
+        model: "<strong>Why this rule matters:</strong> The tutor's job is to increase the learner's confidence in their own production. If the tutor speaks the full sentence, the learner never has to — and no learning evidence is generated. No production = no statements = no pass. The evidence chain is broken.<br><br><strong>Hint Level 1 (least support — retrieval cue):</strong> 'Think about the furniture vocabulary from your cards — what did you label the item next to the window?' No new information given. Just a pointer back to prior learning.<br><br><strong>Hint Level 2 (structure scaffold):</strong> 'You have «el armario» in your cards. Now think about the preposition — where is the wardrobe relative to the window? Try using «al lado de».' The structure is named but the learner assembles the sentence.<br><br><strong>Hint Level 3 (maximum scaffold — segment model):</strong> 'Let's say it in parts: El armario… [pause] …está al lado… [pause] …de la ventana. Now you say the whole thing.' The tutor models in fragments; the learner produces the complete sentence.<br><br>None of the three hints hand the learner a sentence they only need to repeat. Level 3 is the ceiling — go no further."
+      },
+      {
+        label: "Pronunciation ladder — Notice → Model → Invite → Move on",
+        hint: "A B1 Spanish learner consistently produces the English /θ/ (as in 'think') as /s/ — they say 'sink' instead of 'think'. Design the four-step pronunciation ladder sequence for this error. At which point does the tutor move on even if the error persists?",
+        model: "<strong>Notice:</strong> 'I noticed something interesting — «think» uses a sound that doesn't exist in Spanish. It's made with the tongue between the teeth. Did you notice that sound?' Raise awareness WITHOUT marking the production as wrong. No 'that's incorrect' — curiosity framing only.<br><br><strong>Model:</strong> 'Listen: /θɪŋk/. The tongue just touches the back of the upper front teeth. Try just the sound: /θ/.' Short, precise, IPA-referenced. One demonstration only — not repeated.<br><br><strong>Invite:</strong> 'Your turn — just /θ/, then the whole word «think».' Accept any production that moves toward intelligibility. Accent is never penalised. The goal is communication, not native phonology.<br><br><strong>Move on (always after one cycle):</strong> 'Good — let's carry on.' After one practice cycle, move on regardless. Do not drill repeatedly in context — it breaks communicative flow and damages confidence. The IPA target goes to the learner's card for spaced repetition revisit.<br><br><strong>Hard rule:</strong> Intelligibility is the standard, not native-speaker phonology. An accent is never an error — only a communication failure is."
+      },
+      {
+        label: "xAPI hand-off contract and IRI registry discipline",
+        hint: "Your AI tutor fires a statement when a learner completes an Output task. Design the full xAPI statement (actor, verb, object, result, context). Then name one new IRI concept you'd propose for MLLDE registry consideration — and explain why you would NOT mint it unilaterally.",
+        model: "<strong>xAPI statement — Output task completion:</strong><br>Actor: {account: {name: 'anon_learner_hash', homePage: 'https://languagepassport.app'}} — GDPR: no personal data in actor field; account hash links to identity in separate store.<br>Verb: {id: 'http://adlnet.gov/expapi/verbs/completed', display: {en: 'completed'}}<br>Object: {id: 'https://mllde.anaeslava.com/activities/mission/a2-hotel-checkin', definition: {name: {en: 'A2 Hotel Check-In Mission'}, type: 'http://adlnet.gov/expapi/activities/simulation'}}<br>Result: {completion: true, success: true, score: {raw: 4, max: 5}}<br>Context extensions: {'https://mllde.anaeslava.com/extensions/cefr-level': 'A2', 'https://mllde.anaeslava.com/extensions/mode': 'spoken-interaction', 'https://mllde.anaeslava.com/extensions/cefr-scale': 'overall-oral-interaction'}<br><br><strong>Proposed new IRI — 'noticed':</strong> A verb for the My Cards harvest moment — when a learner explicitly tags a chunk from the Input phase. Distinct from 'completed' or 'answered'. Marks the Lexical Approach harvest.<br><br><strong>Why not mint unilaterally:</strong> Every IRI in the MLLDE registry requires AE approval before production use. Minting independently creates registry drift — two deployments using incompatible IRIs for the same concept make LRS queries across products impossible. Propose → get approval → mint. The registry is the single source of truth for cross-product measurement validity."
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: "Learning Metrics & Evidence Architecture",
+    desc: "Design the measurement layer: the four metric families, task gates, self-scaling rubrics, and evidence tiers. A metric without a statement source is not a metric — it is a claim.",
+    type: "checklist",
+    artifact: "→ Deliverable: Metric family map + evidence source table for one language learning product",
+    groups: [
+      {
+        label: "The four metric families",
+        items: [
+          { text: "Family 1 — Engagement: sessions started, sessions completed, session length, return rate, cards created, output attempts. Statement source: xAPI 'launched', 'experienced', 'interacted'.", note: "Engagement metrics tell you if learners are using the product. They do not tell you if learners are learning. Never present engagement data as a learning outcome in a client report." },
+          { text: "Family 2 — Progress: CEFR level transitions (A1→A2, A2→B1), task gate pass rates per mission type, mode coverage (which modes the learner has produced evidence in). Source: xAPI 'completed' + task gate rubric scores.", note: "Progress metrics are evidence-based only when the task gate is passed, not when the learner self-reports. 'I feel like B1' is Family 4. 'Passed the B1 Interaction task gate' is Family 2." },
+          { text: "Family 3 — Quality of Production: rubric scores per output task, pronunciation score (if pronunciation API is integrated), fluency proxies (words per minute in spoken output), lexical range (unique chunks used vs. chunks modelled).", note: "Quality metrics require a scoring instrument — a rubric, pronunciation API, or human rater. Without the instrument, this family is empty for that learner. Do not report it as a zero; report it as 'not yet measured'." },
+          { text: "Family 4 — Learner Self-Report: confidence rating (1–5) post-session, self-assessed CEFR level at onboarding and post-milestone, 'useful language' ratings on cards. Source: xAPI survey statements.", note: "Self-report is valid data — it predicts engagement and learner agency. It is never the same as demonstrated production. Always store and report the two families separately in the LRS and in any report." }
+        ]
+      },
+      {
+        label: "Task gate, self-scaling rubric, evidence tiers",
+        items: [
+          { text: "Every authentic mission has a task gate — a minimum performance floor. Define it: minimum chunks produced in context, communication goal achieved (yes/no), or rubric score threshold (e.g. ≥ 3/5).", note: "A task gate without a rubric is an opinion. The rubric must use the named CEFR descriptor at the pass floor — not invented criteria that sound CEFR-adjacent. Name the scale." },
+          { text: "The self-scaling rubric adapts to the learner's current level — a B1 learner is assessed against B1 descriptors, not B2. The rubric floor = the CEFR descriptor for this mission at this level. It is set at design time, not at marking time.", note: "Self-scaling is not the same as adaptive assessment. It means the rubric is calibrated to the stated goal before the learner produces. The assessor does not move the goalposts after seeing the output." },
+          { text: "Declare the evidence tier for every reported metric: Tier 1 = produced and scored against rubric (highest validity). Tier 2 = attempted but not scored. Tier 3 = self-reported. Never aggregate across tiers without labelling.", note: "A portfolio that mixes Tier 1 and Tier 3 without labelling is misleading. In HR and credentialing contexts it is a liability. The MLLDE standard requires the evidence tier to be declared in every learner report." }
+        ]
+      },
+      {
+        label: "Validity rule and IRI registry audit",
+        items: [
+          { text: "Apply the validity rule: 'a report is a query over statements; no production, no statements, no pass.' Before finalising any metrics plan, trace every reported metric back to its xAPI statement source.", note: "If you cannot point to the statement type that generates it, the metric doesn't exist in the data — it exists only in the design doc. Remove it or add the production activity that would generate it." },
+          { text: "IRI registry audit: list every IRI used in your xAPI statements. Confirm each is from the approved MLLDE registry or a standard ADL/IEEE IRI. Flag any proposed new IRIs for AE approval — never use them in production before approval.", note: "Registry discipline is what makes the MLLDE measurement system portable and queryable across products and deployments. A non-standard IRI siloes your data." }
+        ]
+      }
+    ]
+  },
+  {
+    id: 6,
+    name: "Boss Battle — Design a Language Passport Destination",
+    desc: "Full-cycle design brief: pick a city, run all five MLLDE phases, and deliver the dual pack. This is the question they will actually ask you.",
+    type: "boss",
+    artifact: "→ Deliverable: Complete Language Passport destination pack (engineering brief summary + owner pitch key points)",
+    questions: [
+      {
+        q: "'Walk me through how you'd design a Language Passport destination from scratch — say, London for a B1 Spanish speaker with a job interview in English next month. What are the first three decisions you'd make before writing any lesson content?'",
+        model: "<strong>First: Force the MVP question.</strong> One priority skill first — not a full curriculum. For an interview in one month, the priority is Interaction (spoken): presenting professionally and answering competency questions. One mission, user-tested, before expanding. 'Fourteen features shipping in a month' is a fantasy. 'One evidenced interaction mission' is a portfolio.<br><br><strong>Second: Name the CEFR scale before writing anything.</strong> CEFR Companion Volume → 'Overall oral interaction' at B1: 'Can enter unprepared into conversations on familiar topics, participate in discussions on topics of personal interest.' Plus 'Goal-oriented co-operation' for the interview structure. These two scales set the pass floor. No scale → no valid assessment → no defensible claim.<br><br><strong>Third: Pack the persona and corpus.</strong> London destination pack = tutor persona (a London professional character — specific name, voice, city context), authentic missions (mock competency interview, 'tell me about yourself'), language corpus from English Profile B1 for professional interaction + Cambridge Business English for interview domain. The corpus defines what chunks the avatar models in the Input phase. Without the corpus, the avatar is inventing language."
+      },
+      {
+        q: "'What is the difference between a learner who self-reports B1 and a learner who has evidenced B1 in your system — and why does the distinction matter when you report to a client?'",
+        model: "<strong>Self-reported B1 = Metric Family 4 = Tier 3 evidence = a belief.</strong> The learner said 'I am B1' at onboarding or on a confidence scale. This is valid for tracking confidence and predicting engagement. It is not a CEFR certification claim. No statement source is a task gate — it is a survey response.<br><br><strong>Evidenced B1 = Family 2 + 3 combined = Tier 1 evidence = a claim with a source.</strong> The learner completed a B1 task gate (an authentic mission) and the output was scored above the pass floor on a rubric anchored to a named B1 CEFR Companion Volume descriptor. The scoring is logged as a 'passed' xAPI statement with the CEFR level and scale name in context extensions.<br><br><strong>Why it matters for the client report:</strong> If the client asks 'How many learners reached B1?' and you report self-assessed data, you are reporting belief. If you report evidenced data, you are reporting performance. Conflating them is a methodological error. In HR, credentialing, or grant-reporting contexts, it is a legal liability. The MLLDE report always labels the evidence tier. The client should never be able to misread a self-report figure as a demonstrated outcome."
+      },
+      {
+        q: "'You've designed the engineering pack for the London destination. Now the product owner asks for a slide deck for their board. What goes in the owner pack and what does NOT go in it?'",
+        model: "<strong>Owner pack contains:</strong><br>• Project summary — what the product does for learners in plain language (no IRI URLs, no JSON schema references)<br>• Pilot proposal — who tests it, how many learners, over what period, at what cost per learner<br>• ROI frame — Kirkpatrick Levels 1–4 (reaction → learning → behaviour → results) + Phillips Level 5 (monetary ROI calculation if budget permits): what the organisation gains per B1-evidenced learner<br>• Evidence design explained in plain language — 'we measure three types of learner progress: how often they practise, how well they perform on real tasks, and what they tell us about their confidence' — with the metric family distinction explained without jargon<br>• Improvement report format — what the owner receives after the pilot, what decisions it enables<br><br><strong>Owner pack does NOT contain:</strong><br>• xAPI statement schemas or IRI registry excerpts<br>• Sprint backlog or engineering rules<br>• Raw LRS query strings or JSON responses<br>• Any metric without its context, caveat, and evidence tier label<br><br><strong>The rule:</strong> Two packs, two decisions. The engineer needs to build it. The owner needs to fund it and trust it. Mixed documents serve neither reader and erode confidence in both directions."
+      }
+    ]
+  }
+];
+
+let completed = new Set();
+let checkState = {};
+
+function xp() {
+  const done = completed.size;
+  document.getElementById('xpFill').style.width = (done / LEVELS.length * 100) + '%';
+  document.getElementById('xpCount').textContent = done + ' / ' + LEVELS.length;
+}
+
+function renderMap() {
+  const map = document.getElementById('map');
+  map.innerHTML = '';
+  LEVELS.forEach((lvl, i) => {
+    const locked = i > 0 && !completed.has(LEVELS[i - 1].id);
+    const done = completed.has(lvl.id);
+    const btn = document.createElement('button');
+    btn.className = 'level-card' + (locked ? ' locked' : '') + (done ? ' done' : '');
+    btn.disabled = locked;
+    btn.onclick = () => !locked && openLevel(lvl.id);
+    btn.setAttribute('aria-label', lvl.name + (locked ? ' — locked' : '') + (done ? ' — complete' : ''));
+    btn.innerHTML = `
+      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-body">
+        <div class="level-name">${lvl.name}</div>
+        <div class="level-desc">${lvl.desc}</div>
+        <div class="level-artifact">${lvl.artifact}</div>
+        <div class="level-meta">
+          <span class="badge badge-type">${lvl.type}</span>
+          ${done ? '<span class="badge badge-done">Done ✓</span>' : ''}
+          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+        </div>
+      </div>`;
+    map.appendChild(btn);
+  });
+}
+
+function openLevel(id) {
+  const lvl = LEVELS.find(l => l.id === id);
+  if (!lvl) return;
+  checkState[id] = checkState[id] || {};
+  const overlay = document.getElementById('overlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  renderContent(lvl);
+}
+
+function renderContent(lvl) {
+  const c = document.getElementById('modalContent');
+  const header = `
+    <div class="modal-eyebrow">Module ${lvl.id} of ${LEVELS.length} · ${lvl.type}</div>
+    <h2 id="modalTitle">${lvl.name}</h2>
+    <div class="modal-desc">${lvl.desc}</div>
+    <div class="artifact-box">🎯 ${lvl.artifact}</div>
+    <hr class="divider">`;
+  if (lvl.type === 'checklist') c.innerHTML = header + buildChecklist(lvl);
+  else if (lvl.type === 'builder') c.innerHTML = header + buildBuilder(lvl);
+  else if (lvl.type === 'boss')    c.innerHTML = header + buildBoss(lvl);
+  attachEvents(lvl);
+}
+
+function buildChecklist(lvl) {
+  let html = '';
+  lvl.groups.forEach((grp, gi) => {
+    html += `<div class="check-group"><div class="check-group-label">${grp.label}</div>`;
+    grp.items.forEach((item, ii) => {
+      const key = gi + '-' + ii;
+      const isChecked = checkState[lvl.id] && checkState[lvl.id][key];
+      html += `
+        <div class="checklist-item">
+          <div class="check-box ${isChecked ? 'checked' : ''}" id="cb-${gi}-${ii}"
+            role="checkbox" aria-checked="${isChecked ? 'true' : 'false'}" tabindex="0"
+            onclick="toggleGroupCheck(${lvl.id},${gi},${ii})"
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '✓' : ''}</div>
+          <div>
+            <div class="check-text">${item.text}</div>
+            <div class="check-note">${item.note}</div>
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+  });
+  html += `<div class="prog-note">✦ Mark complete only when you can articulate the principle and apply it to a new example — not just after reading. Understanding without application is not mastered.</div>`;
+  html += `<div class="btn-row"><button class="btn btn-primary" id="completeBtn">Module mastered — mark complete →</button></div>`;
+  return html;
+}
+
+function buildBuilder(lvl) {
+  const fields = lvl.fields.map((f, i) => `
+    <div class="builder-field">
+      <label class="builder-label" for="bf${i}">${f.label}</label>
+      <div class="builder-hint">${f.hint}</div>
+      <textarea class="builder-input" id="bf${i}" placeholder="Write your answer here first — then check the model…"></textarea>
+      <div class="model-answer" id="ma${i}">${f.model}</div>
+    </div>`).join('');
+  return `<div>${fields}<div class="btn-row"><button class="btn btn-ghost" id="revealBtn">Show model answers</button><button class="btn btn-primary" id="completeBtn">Insights captured — mark complete →</button></div></div>`;
+}
+
+function buildBoss(lvl) {
+  const qs = lvl.questions.map((q, i) => `
+    <div class="boss-q">${q.q}</div>
+    <textarea class="boss-input" id="bq${i}" placeholder="Say it out loud first. Then write the key points here…"></textarea>
+    <div class="model-answer" id="bm${i}">${q.model}</div>
+    ${i < lvl.questions.length - 1 ? '<hr class="divider">' : ''}
+  `).join('');
+  return `
+    <div class="boss-header">
+      <div class="boss-icon">🎙️</div>
+      <div class="boss-title">Design Panel Rehearsal</div>
+      <div class="boss-sub">Speak the answer out loud before writing it. The panel is a conversation, not an essay.</div>
+    </div>
+    <div>${qs}<div class="btn-row" style="margin-top:16px;"><button class="btn btn-ghost" id="revealBtn">Show model structures</button><button class="btn btn-primary" id="completeBtn">Panel rehearsed — track complete →</button></div></div>`;
+}
+
+function attachEvents(lvl) {
+  const reveal = document.getElementById('revealBtn');
+  if (reveal) reveal.onclick = () => document.querySelectorAll('.model-answer').forEach(el => el.style.display = 'block');
+  const complete = document.getElementById('completeBtn');
+  if (complete) complete.onclick = () => completeLevel(lvl.id);
+}
+
+function toggleGroupCheck(lvlId, gi, ii) {
+  if (!checkState[lvlId]) checkState[lvlId] = {};
+  const key = gi + '-' + ii;
+  checkState[lvlId][key] = !checkState[lvlId][key];
+  const cb = document.getElementById('cb-' + gi + '-' + ii);
+  if (checkState[lvlId][key]) {
+    cb.classList.add('checked');
+    cb.setAttribute('aria-checked', 'true');
+    cb.textContent = '✓';
+  } else {
+    cb.classList.remove('checked');
+    cb.setAttribute('aria-checked', 'false');
+    cb.textContent = '';
+  }
+}
+
+function completeLevel(id) {
+  completed.add(id);
+  closeModal();
+  renderMap(); xp();
+  showToast('Module mastered ✓');
+  if (completed.size === LEVELS.length) {
+    setTimeout(() => {
+      document.getElementById('finalScreen').classList.add('show');
+      document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' });
+    }, 800);
+  }
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+document.getElementById('modalClose').onclick = closeModal;
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+renderMap(); xp();
+
+/* ── Theme toggle ── */
+(function () {
+  const btn   = document.getElementById('theme-btn');
+  const root  = document.documentElement;
+  const cycle = ['system', 'light', 'dark'];
+  const icons = { system: '🌓', light: '☀️', dark: '🌙' };
+  const labels = {
+    system: 'Colour theme: system (follows your OS). Click to switch to light.',
+    light:  'Colour theme: light. Click to switch to dark.',
+    dark:   'Colour theme: dark. Click to switch to system.'
+  };
+  let current = localStorage.getItem('oi-theme') || 'system';
+  function apply(t) {
+    if (t === 'system') { root.removeAttribute('data-theme'); }
+    else { root.setAttribute('data-theme', t); }
+    btn.textContent = icons[t];
+    btn.setAttribute('aria-label', labels[t]);
+    localStorage.setItem('oi-theme', t);
+    current = t;
+  }
+  apply(current);
+  btn.addEventListener('click', function () {
+    const next = cycle[(cycle.indexOf(current) + 1) % cycle.length];
+    apply(next);
+  });
+})();
+</script>
+</body>
+</html>

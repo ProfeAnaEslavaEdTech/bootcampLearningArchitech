@@ -1,0 +1,721 @@
+<!-- ============================================================
+     FILE: unicef-apply/index.html
+     UPLOAD TO: create folder "unicef-apply" → upload as index.html
+     WHAT IT IS: UNICEF Application Lab — 5 modules: evidence map,
+     cover letter, CV bullets, STAR rehearsal, gap-closing sprint
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNICEF Application Lab — How to Land This Role</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --cobalt: #1E3A8A;
+    --cobalt-bright: #2563EB;
+    --cobalt-mid: #3B82F6;
+    --cobalt-soft: #EFF6FF;
+    --paper: #F8FAFF;
+    --panel: #FFFFFF;
+    --line: #DBEAFE;
+    --ink: #0F172A;
+    --ink-soft: #475569;
+    --green: #166534; --green-soft: #DCFCE7;
+    --amber: #92400E; --amber-soft: #FEF3C7;
+    --red: #991B1B;   --red-soft: #FEE2E2;
+    --radius: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  *:focus-visible { outline: 3px solid var(--cobalt-bright); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: var(--cobalt); color: #fff;
+    padding: 10px 24px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
+  }
+  .top-bar strong { font-weight: 700; }
+  .top-bar-sep { opacity: 0.4; }
+  .back-link { color: rgba(255,255,255,0.7); text-decoration: none; }
+  .back-link:hover { color: #fff; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--cobalt) 0%, #1E40AF 100%);
+    color: #fff; padding: 52px 24px 44px; text-align: center;
+  }
+  .hero-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6); margin-bottom: 16px;
+  }
+  .hero h1 { font-size: clamp(24px, 4vw, 42px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; line-height: 1.1; }
+  .hero h1 em { font-style: normal; color: #93C5FD; }
+  .hero-sub { font-size: 15px; color: rgba(255,255,255,0.75); max-width: 580px; margin: 0 auto 24px; line-height: 1.6; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .hero-chip {
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px; padding: 4px 12px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.9);
+  }
+
+  /* XP BAR */
+  .xp-bar-wrap { max-width: 640px; margin: 0 auto; padding: 20px 24px 0; display: flex; align-items: center; gap: 12px; }
+  .xp-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--cobalt); font-weight: 700; white-space: nowrap; }
+  .xp-track { flex: 1; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .xp-fill  { height: 100%; background: var(--cobalt-bright); border-radius: 3px; transition: width 0.5s ease; }
+  .xp-count { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ink-soft); white-space: nowrap; }
+
+  /* MAP */
+  .map-section { max-width: 640px; margin: 0 auto; padding: 24px 24px 60px; }
+  .map-title { font-size: 12px; font-family: 'IBM Plex Mono', monospace; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+  .level-card {
+    background: var(--panel); border: 1.5px solid var(--line); border-radius: var(--radius);
+    padding: 20px 22px; margin-bottom: 10px; cursor: pointer;
+    display: flex; align-items: flex-start; gap: 16px;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    text-align: left; width: 100%; font-family: inherit;
+  }
+  .level-card:hover:not(.locked) { border-color: var(--cobalt-mid); box-shadow: 0 4px 16px rgba(37,99,235,0.12); transform: translateY(-1px); }
+  .level-card.locked { opacity: 0.45; cursor: default; }
+  .level-card.done   { border-color: var(--cobalt); background: var(--cobalt-soft); }
+
+  .level-num {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    color: var(--cobalt); background: var(--cobalt-soft); border-radius: 50%;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .level-card.done .level-num { background: var(--cobalt); color: #fff; }
+
+  .level-body { flex: 1; }
+  .level-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .level-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+  .level-meta { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .badge-type  { background: var(--cobalt-soft); color: var(--cobalt); }
+  .badge-done  { background: var(--cobalt); color: #fff; }
+  .badge-lock  { background: #F1F5F9; color: #64748B; }
+  .badge-high  { background: #FEE2E2; color: #991B1B; }
+  .badge-mod   { background: #FEF3C7; color: #92400E; }
+  .badge-low   { background: #DCFCE7; color: #166534; }
+
+  /* OVERLAY */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,23,42,0.65); z-index: 100;
+    align-items: flex-start; justify-content: center;
+    overflow-y: auto; padding: 32px 16px 64px;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: var(--panel); border-radius: 14px; max-width: 680px; width: 100%;
+    padding: 36px 36px 32px; position: relative;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; font-size: 22px;
+    color: var(--ink-soft); cursor: pointer; line-height: 1; padding: 4px; font-family: inherit;
+  }
+  .modal-close:hover { color: var(--ink); }
+  .modal-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--cobalt); margin-bottom: 10px;
+  }
+  .modal h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .modal-desc { font-size: 14px; color: var(--ink-soft); line-height: 1.6; margin-bottom: 24px; }
+  hr.divider { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+
+  /* QUIZ */
+  .quiz-scenario {
+    background: var(--cobalt-soft); border-left: 3px solid var(--cobalt-mid);
+    border-radius: 6px; padding: 14px 16px; margin-bottom: 20px;
+    font-size: 14px; line-height: 1.6; color: var(--ink);
+  }
+  .quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 14px; line-height: 1.4; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .quiz-option {
+    background: var(--paper); border: 1.5px solid var(--line); border-radius: 8px;
+    padding: 12px 16px; cursor: pointer; font-size: 14px; text-align: left;
+    font-family: inherit; color: var(--ink); transition: border-color 0.12s, background 0.12s;
+  }
+  .quiz-option:hover:not(:disabled) { border-color: var(--cobalt-mid); background: var(--cobalt-soft); }
+  .quiz-option.correct { border-color: #166534; background: var(--green-soft); color: #14532D; }
+  .quiz-option.wrong   { border-color: #991B1B; background: var(--red-soft); color: #7F1D1D; }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-feedback { font-size: 13px; line-height: 1.6; padding: 12px 14px; border-radius: 8px; margin-bottom: 16px; }
+  .quiz-feedback.pass { background: var(--green-soft); color: #14532D; border-left: 3px solid #166534; }
+  .quiz-feedback.fail { background: var(--amber-soft); color: #451A03; border-left: 3px solid var(--amber); }
+  .progress-dots { display: flex; gap: 6px; margin-bottom: 20px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .dot.done-dot { background: var(--cobalt); }
+  .dot.active-dot { background: var(--cobalt-mid); }
+
+  /* BUILDER */
+  .builder-field { margin-bottom: 20px; }
+  .builder-label { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: block; }
+  .builder-hint  { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; font-style: italic; }
+  .builder-input {
+    width: 100%; min-height: 88px; padding: 12px; border: 1.5px solid var(--line);
+    border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
+    background: var(--paper); resize: vertical; line-height: 1.55; transition: border-color 0.12s;
+  }
+  .builder-input:focus { outline: none; border-color: var(--cobalt-mid); }
+  .model-answer {
+    display: none; margin-top: 10px; padding: 12px 14px;
+    background: var(--cobalt-soft); border-left: 3px solid var(--cobalt-mid);
+    border-radius: 6px; font-size: 13px; line-height: 1.6; color: var(--ink);
+  }
+  .model-answer strong { color: var(--cobalt); }
+
+  /* CHECKLIST */
+  .checklist-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+  }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px; height: 20px; border: 2px solid var(--line); border-radius: 4px;
+    flex-shrink: 0; cursor: pointer; background: var(--panel);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; transition: background 0.12s, border-color 0.12s; margin-top: 2px;
+  }
+  .check-box.checked { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
+  .check-text { font-size: 14px; line-height: 1.5; font-weight: 600; }
+  .check-note { font-size: 12px; color: var(--ink-soft); margin-top: 3px; }
+  .check-priority { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-right: 4px; }
+  .p-red  { background: var(--red-soft);   color: var(--red); }
+  .p-amb  { background: var(--amber-soft); color: var(--amber); }
+  .p-grn  { background: var(--green-soft); color: var(--green); }
+
+  /* BOSS */
+  .boss-header { text-align: center; margin-bottom: 24px; }
+  .boss-icon   { font-size: 44px; line-height: 1; margin-bottom: 8px; }
+  .boss-title  { font-size: 18px; font-weight: 700; }
+  .boss-sub    { font-size: 13px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .boss-q {
+    background: var(--cobalt-soft); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px;
+    font-size: 14px; font-weight: 700; line-height: 1.45; color: var(--cobalt);
+  }
+  .boss-input {
+    width: 100%; min-height: 96px; padding: 12px; border: 1.5px solid var(--line);
+    border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--ink);
+    background: var(--paper); resize: vertical; line-height: 1.55;
+    transition: border-color 0.12s; margin-bottom: 6px;
+  }
+  .boss-input:focus { outline: none; border-color: var(--cobalt-mid); }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px; border-radius: 8px; font-family: inherit;
+    font-size: 14px; font-weight: 700; cursor: pointer; border: none;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--cobalt); color: #fff; }
+  .btn-primary:hover { background: var(--cobalt-bright); }
+  .btn-ghost { background: var(--paper); color: var(--ink); border: 1.5px solid var(--line); }
+  .btn-ghost:hover { border-color: var(--cobalt-mid); }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+
+  /* FINAL */
+  .final-screen { display: none; text-align: center; padding: 48px 24px 64px; }
+  .final-screen.show { display: block; }
+  .final-icon { font-size: 56px; margin-bottom: 16px; }
+  .final-screen h2 { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+  .final-screen p  { font-size: 15px; color: var(--ink-soft); line-height: 1.65; max-width: 520px; margin: 0 auto 24px; }
+  .final-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 20px; }
+  .final-chip {
+    background: var(--cobalt-soft); color: var(--cobalt);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+    padding: 5px 12px; border-radius: 20px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 30px;
+    font-size: 14px; font-weight: 600; white-space: nowrap; z-index: 300;
+    transition: transform 0.3s ease, opacity 0.3s ease; opacity: 0; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  footer { text-align: center; padding: 24px; font-size: 12px; color: var(--ink-soft); }
+  footer a { color: var(--cobalt); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="../" class="back-link">← All tracks</a>
+  <span class="top-bar-sep">|</span>
+  <strong>UNICEF Application Lab</strong>
+  <span class="top-bar-sep">·</span>
+  <span>ToR TMC0004741 · 5 modules · ~1h</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">Application strategy · Digital Learning Consultant</div>
+  <h1>How to <em>land</em> this role.</h1>
+  <p class="hero-sub">The job knowledge is one track. This is the other one — evidence mapping, cover letter craft, CV in ToR language, STAR stories, and the gap-closing sprint before you hit send.</p>
+  <div class="hero-chips">
+    <span class="hero-chip">Requirements → Evidence</span>
+    <span class="hero-chip">Cover letter draft</span>
+    <span class="hero-chip">ToR-aligned CV bullets</span>
+    <span class="hero-chip">3 STAR stories</span>
+    <span class="hero-chip">Gap-closing checklist</span>
+  </div>
+</div>
+
+<div class="xp-bar-wrap">
+  <span class="xp-label">Progress</span>
+  <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+  <span class="xp-count" id="xpCount">0 / 5</span>
+</div>
+
+<div class="map-section">
+  <div class="map-title">Modules</div>
+  <div id="map"></div>
+</div>
+
+<div class="final-screen" id="finalScreen">
+  <div class="final-icon">📨</div>
+  <h2>Application-ready.</h2>
+  <p>You've mapped your evidence, drafted the cover letter, rewritten the CV bullets, rehearsed three STAR stories, and checked off the gap-closing sprint. Submit when you're ready.</p>
+  <div class="final-chips">
+    <span class="final-chip">Evidence map complete</span>
+    <span class="final-chip">Cover letter drafted</span>
+    <span class="final-chip">CV in ToR language</span>
+    <span class="final-chip">STAR stories rehearsed</span>
+    <span class="final-chip">Gaps named honestly</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../unicef/" class="btn btn-ghost">← Job knowledge track</a>
+    <a href="../" class="btn btn-ghost">All tracks</a>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <a href="../">← Learning Architect Bootcamp</a> · Companion to the UNICEF job-knowledge track
+</footer>
+
+<script>
+const LEVELS = [
+  {
+    id: 1,
+    name: "Requirements → Evidence Map",
+    desc: "Go through every ToR requirement. For each one: what's your evidence, what's the gap, and how do you name it in the application?",
+    type: "quiz",
+    eyebrow: "Application strategy",
+    questions: [
+      {
+        scenario: "The ToR says: '5+ years of experience in instructional design, managing the full production cycle of e-learning.' Your actual experience combines teaching, freelance ID work, and the AWJ project.",
+        q: "How do you frame this in the application without misrepresenting your experience?",
+        options: [
+          "Write '5+ years' — teaching counts as instructional design",
+          "Write '[X] years ID + [Y] years teaching' and lead with the AWJ portfolio depth as evidence of full production cycle — needs analysis through published module",
+          "Skip the years and only show the portfolio",
+          "State '5 years combined experience' without breaking it down"
+        ],
+        correct: 1,
+        feedback: "<strong>Separate and combine honestly.</strong> Teaching is not instructional design — a screener knows the difference. But the AWJ project <em>is</em> a full production cycle. State your ID years accurately + your teaching years accurately + lead with the portfolio as the production-cycle proof. The portfolio does the heavy lifting CEFR screeners can't do."
+      },
+      {
+        scenario: "The ToR names 'Articulate 360 (Storyline and Rise)' in almost every deliverable. You have Rise experience; your Storyline is limited.",
+        q: "Which is the correct approach on the CV and in the cover letter?",
+        options: [
+          "List 'Articulate 360 (Storyline & Rise)' in skills — it's the same product suite",
+          "List 'Articulate Rise 360' in skills; note 'Storyline 360 — certification in progress' separately; build one Storyline sample before applying",
+          "List both under 'familiar with' to hedge",
+          "Omit Articulate entirely and emphasize other tools"
+        ],
+        correct: 1,
+        feedback: "<strong>Separate and honest, with a proof artifact.</strong> Listing 'Articulate 360' when you only have Rise fluency is a verifiable misrepresentation — they will ask you to do a Storyline task. 'Rise ✓, Storyline in progress' with a sample artifact is far more credible and protects you at the technical interview stage."
+      },
+      {
+        scenario: "Video production tools: the ToR mentions Synthesia avatars and video production. You've used Synthesia in the AWJ project.",
+        q: "What's the right application move?",
+        options: [
+          "Don't mention it — it's not a named requirement in this ToR",
+          "List 'Synthesia (AI avatar video)' in skills AND make sure the AWJ project is visible in your portfolio — it's the direct evidence they can't require and you already have",
+          "List Adobe Premiere instead to sound more professional",
+          "Only mention it in the cover letter, not the CV"
+        ],
+        correct: 1,
+        feedback: "<strong>Surface it actively.</strong> The ToR mentions 'video production' and Synthesia is listed as a capability in the UNICEF deliverables context. You have it; most applicants don't. Make the AWJ project visible on your portfolio and reference it explicitly. This is an asymmetric advantage — don't hide it."
+      },
+      {
+        scenario: "The ToR says 'English required; Spanish/French/Arabic desirable.' You are a native Spanish speaker with proficient English.",
+        q: "Where and how do you surface this most effectively?",
+        options: [
+          "Only in the skills line at the bottom of the CV",
+          "In the cover letter opening AND the skills line — Spanish is explicitly listed as desirable and you're a native speaker. Name it as a direct requirement match, not a bonus",
+          "Only mention it if asked — it's obvious from your name",
+          "Don't mention it; focus on technical skills"
+        ],
+        correct: 1,
+        feedback: "<strong>Foreground it.</strong> 'Spanish (native), English (proficient)' is a direct requirement hit — Spanish is listed as a desirable additional language. Put it in the cover letter opening paragraph (you understand first-hand what translation-ready materials require) AND in the skills line. It's not a bonus; it's a stated criterion you meet exactly."
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "Cover Letter: Three Power Paragraphs",
+    desc: "Draft the three paragraphs that do the most work: production-cycle evidence, design method, and honest tooling. Use the template from the application pack.",
+    type: "builder",
+    eyebrow: "Cover letter craft",
+    fields: [
+      {
+        label: "Paragraph 1 — Production cycle evidence",
+        hint: "State your years, name the full cycle (needs analysis → storyboard → development → test → publish), and show you know what 'end-to-end' means. Don't pad it.",
+        model: "<strong>Model draft:</strong> 'I am an instructional designer with [X] years of experience managing the full production cycle of e-learning — from needs analysis and storyboarding through interactive development, testing, and LMS integration. My work spans adult professional learners, language teaching, and (in the AWJ project) a full instructional-design build from business brief to published product. I apply ADDIE run the SAM way — rapid prototyping and iteration against real learner feedback, not waterfall delivery.'"
+      },
+      {
+        label: "Paragraph 2 — Design method and accessibility",
+        hint: "This is where you show you're not just a tool operator. UDL, CLT, WCAG, translation-ready — the method behind the decisions. Don't list frameworks; explain one decision that proves you use them.",
+        model: "<strong>Model draft:</strong> 'My practice is grounded in adult learning principles — cognitive load management, self-determination theory, communicative task design — and I build every course to be accessible (WCAG-aligned) and translation-ready for multilingual audiences. Native Spanish speaker working in English: I know what makes a resource genuinely work across languages versus what just sounds like a localization checkbox. That's a practical advantage for the Arabic, French, and UN-multilingual context of these deliverables.'"
+      },
+      {
+        label: "Paragraph 3 — Tooling (choose your honest version)",
+        hint: "Two versions exist: one for when you have the tools, one for when you're building toward them. Use the right one. Do NOT blend them to hedge — panelists notice.",
+        model: "<strong>If you have Articulate + Moodle:</strong> 'I develop courses in Articulate 360 (Storyline and Rise) and publish to LMS platforms including Moodle — the stack behind Agora. I have hands-on experience with [specific Rise/Storyline feature] and [specific Moodle/Totara step].'<br><br><strong>If you're still closing the gap:</strong> 'I am proficient across modern authoring and LMS tooling and am actively extending my Articulate Rise and Storyline work specifically to align with the Agora environment. I can show you the Rise module I built [this week / this month] as part of that sprint.' Never say 'actively learning' without a proof artifact to link."
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "CV in ToR Language",
+    desc: "Spot the weak bullet. Rewrite it in ToR language. Then apply the same test to two of your own lines.",
+    type: "quiz",
+    eyebrow: "CV craft",
+    questions: [
+      {
+        scenario: null,
+        q: "Which CV bullet matches the ToR's vocabulary and signals production-cycle fluency?",
+        options: [
+          "'Designed and delivered online courses for language learners using various tools and platforms'",
+          "'Managed end-to-end production of e-learning modules — needs analysis, storyboarding, interactive development, testing, and LMS integration — for adult professional learners'",
+          "'Created engaging educational content using technology'",
+          "'Responsible for e-learning development and delivery'"
+        ],
+        correct: 1,
+        feedback: "<strong>Option 2 hits every ToR keyword.</strong> 'End-to-end production', 'needs analysis', 'storyboarding', 'LMS integration', 'adult professional learners' — all direct ToR matches. Option 1 is vague on the cycle. Options 3 and 4 are filler that keyword screens reject. The test: read the ToR requirement, read the bullet, ask 'does a screener see the match immediately?' If not, rewrite."
+      },
+      {
+        scenario: null,
+        q: "The ToR requires 'testing each product for content accuracy, accessibility, and functionality before release.' Which bullet signals this skill?",
+        options: [
+          "'Ensured quality of course materials'",
+          "'Reviewed courses before publishing'",
+          "'Tested each module for content accuracy, WCAG compliance, and cross-browser functionality before release — used WAVE checker and screen-reader pass as sign-off criteria'",
+          "'Conducted quality assurance on e-learning products'"
+        ],
+        correct: 2,
+        feedback: "<strong>Specificity wins.</strong> Option 3 names the test criteria (accuracy + WCAG + functionality), names the tool (WAVE), and names the threshold (screen-reader pass as sign-off). A screener reading ToR requirement 8.c sees an exact match. The other options use the ToR's <em>category</em> words ('quality', 'review') without the specific evidence that proves the skill."
+      },
+      {
+        scenario: "Your skills line currently reads: 'Canva, HTML/CSS, GitHub Pages, Moodle, Articulate Rise 360'",
+        q: "How should the full skills line be restructured for this ToR?",
+        options: [
+          "Keep it as is — it lists the tools",
+          "Authoring: Articulate Rise 360 · [Storyline 360 — certification in progress] · Canva · HTML/CSS/JS · LMS: Moodle · GitHub Pages · Video: Synthesia · AI: [Articulate AI, ElevenLabs] · Standards: WCAG 2.2 · UDL · CEFR · SCORM/xAPI · Languages: Spanish (native) · English (proficient)",
+          "Put all tools in a comma-separated list alphabetically",
+          "Only list tools explicitly named in the ToR"
+        ],
+        correct: 1,
+        feedback: "<strong>Structured by category, honest about in-progress.</strong> A structured skills line signals professional thinking — you know tools belong to categories. 'Certification in progress' next to Storyline is honest and proactive. Listing WCAG, SCORM/xAPI, and CEFR signals standards fluency, which is rare and valued. Languages at the end picks up the desirable-language criterion. Alphabetical lists are for junior CVs."
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: "STAR Story Rehearsal",
+    desc: "Three questions a UNICEF panel will ask. Write your answer in full sentences — not bullets. Then compare to the model structure.",
+    type: "boss",
+    eyebrow: "Interview rehearsal",
+    questions: [
+      {
+        q: "Walk me through building a course from start to finish. Use a specific example.",
+        model: "<strong>Structure to hit:</strong> Situation — what was the brief/need? Task — your specific role in the production cycle. Action — name the steps: needs analysis with [who], storyboard decision [why], tool choice, prototype and feedback loop, accessibility check, publish and test. Result — what did the learner experience? What changed?<br><br><strong>AWJ is your strongest example</strong> because it's end-to-end with architecture-level decisions visible. If you name it: 'This was a full ADDIE build run on SAM principles — I prototyped the first module before building the full 15-hour curriculum, iterated on two stakeholder reviews, and published to a standard SCORM package with accessibility sign-off.' Don't just name the steps — show the <em>decisions</em> inside them."
+      },
+      {
+        q: "'This is procurement and supply-chain training, not language teaching. How do you adapt?'",
+        model: "<strong>This is the content-agnosticism question.</strong> They're checking whether you're a language-teaching specialist who is out of depth, or an instructional designer who happens to have worked in language education.<br><br><strong>Model answer:</strong> 'My method is content-agnostic — I run needs analysis with subject-matter experts and design to objectives, not to my own domain expertise. For a PCM or eProcurement module, I'd start with a task analysis: what do supply staff actually do, what decisions do they make, where do they make mistakes? The SME gives me the domain; I give the learner a structured path through it with appropriate practice and feedback. The AWJ project used the same approach — I had no background in the client's domain and delivered a 15-module curriculum by running structured SME interviews and mapping them to learning objectives.'"
+      },
+      {
+        q: "'Tell me about a time a design didn't work as planned and you had to change it based on feedback.'",
+        model: "<strong>SAM / iteration story.</strong> Find one specific example where a prototype round changed the design. Structure: what you designed → what the feedback showed → what you changed → what the result was.<br><br><strong>What they're testing:</strong> Do you treat the first draft as the final product, or do you build feedback loops into your process? The magic words: 'In the SAM cycle I use, the prototype review is a design input, not a sign-off gate.' Then name the specific change you made and why it was the right call, not a compromise. 'We cut two modules after the first learner trial showed the path to the job task was indirect — I reduced seat time by 30% and the task completion rate in the follow-up went up.' Real numbers, real decision."
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: "Gap-Closing Sprint",
+    desc: "Five actions before you submit. Priority order — highest impact first. Check them off as you complete them.",
+    type: "checklist",
+    eyebrow: "Pre-submission sprint",
+    items: [
+      {
+        text: "Articulate Rise — free 30-day trial → rebuild one existing course as a Rise module → host it → link in portfolio",
+        note: "Highest impact. Named in nearly every ToR deliverable. Without a visible Rise artifact, the skills line is unverifiable.",
+        priority: "p-red", pLabel: "🔴 Critical"
+      },
+      {
+        text: "Storyline 360 — one interactive slide (branching or variables) → publish → add to portfolio",
+        note: "You can do this inside the same 30-day trial. One slide with a decision consequence is enough to show you understand the authoring model.",
+        priority: "p-red", pLabel: "🔴 Critical"
+      },
+      {
+        text: "MoodleCloud free trial → publish the Rise module via SCORM → screenshot the completion dashboard",
+        note: "Half a day. Lets you say 'I have hands-on Moodle experience' and show a screenshot — the difference between a claim and evidence.",
+        priority: "p-red", pLabel: "🔴 Critical"
+      },
+      {
+        text: "Tailor CV with ToR-aligned bullets (production cycle, WCAG, SCORM/xAPI, translation-ready, skills line restructure)",
+        note: "Use the bullet patterns from Module 3. Every line should answer a specific ToR requirement.",
+        priority: "p-amb", pLabel: "🟡 High"
+      },
+      {
+        text: "Rehearse all three STAR stories out loud — 2 minutes each, no notes",
+        note: "Written rehearsal in Module 4 is not enough. Speaking them is different. Record yourself once — you'll hear the gaps.",
+        priority: "p-amb", pLabel: "🟡 High"
+      }
+    ]
+  }
+];
+
+let completed = new Set();
+let quizState = {};
+
+function xp() {
+  const done = completed.size;
+  document.getElementById('xpFill').style.width = (done / LEVELS.length * 100) + '%';
+  document.getElementById('xpCount').textContent = done + ' / ' + LEVELS.length;
+}
+
+function renderMap() {
+  const map = document.getElementById('map');
+  map.innerHTML = '';
+  LEVELS.forEach((lvl, i) => {
+    const locked = i > 0 && !completed.has(LEVELS[i - 1].id);
+    const done = completed.has(lvl.id);
+    const btn = document.createElement('button');
+    btn.className = 'level-card' + (locked ? ' locked' : '') + (done ? ' done' : '');
+    btn.disabled = locked;
+    btn.onclick = () => !locked && openLevel(lvl.id);
+    btn.innerHTML = `
+      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-body">
+        <div class="level-name">${lvl.name}</div>
+        <div class="level-desc">${lvl.desc}</div>
+        <div class="level-meta">
+          <span class="badge badge-type">${lvl.type}</span>
+          ${done ? '<span class="badge badge-done">Complete</span>' : ''}
+          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+        </div>
+      </div>`;
+    map.appendChild(btn);
+  });
+}
+
+function openLevel(id) {
+  const lvl = LEVELS.find(l => l.id === id);
+  if (!lvl) return;
+  quizState = { qi: 0 };
+  const overlay = document.getElementById('overlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  renderLevelContent(lvl);
+}
+
+function renderLevelContent(lvl) {
+  const c = document.getElementById('modalContent');
+  const header = `
+    <div class="modal-eyebrow">${lvl.eyebrow} · ${lvl.type}</div>
+    <h2>${lvl.name}</h2>
+    <div class="modal-desc">${lvl.desc}</div>
+    <hr class="divider">`;
+  if (lvl.type === 'quiz')       c.innerHTML = header + buildQuiz(lvl, 0);
+  else if (lvl.type === 'builder')   c.innerHTML = header + buildBuilder(lvl);
+  else if (lvl.type === 'checklist') c.innerHTML = header + buildChecklist(lvl);
+  else if (lvl.type === 'boss')      c.innerHTML = header + buildBoss(lvl);
+  attachInteractions(lvl);
+}
+
+function buildQuiz(lvl, qi) {
+  const q = lvl.questions[qi];
+  const dots = lvl.questions.map((_, i) =>
+    `<div class="dot ${i < qi ? 'done-dot' : i === qi ? 'active-dot' : ''}"></div>`
+  ).join('');
+  const scenario = q.scenario ? `<div class="quiz-scenario"><strong>Scenario:</strong> ${q.scenario}</div>` : '';
+  const opts = q.options.map((o, i) => `<button class="quiz-option" data-idx="${i}">${o}</button>`).join('');
+  return `<div id="quizWrap"><div class="progress-dots">${dots}</div>${scenario}<div class="quiz-q">${q.q}</div><div class="quiz-options" id="quizOpts">${opts}</div><div id="quizFeedback"></div><div class="btn-row" id="quizBtns"></div></div>`;
+}
+
+function buildBuilder(lvl) {
+  const fields = lvl.fields.map((f, i) => `
+    <div class="builder-field">
+      <label class="builder-label" for="bf${i}">${f.label}</label>
+      <div class="builder-hint">${f.hint}</div>
+      <textarea class="builder-input" id="bf${i}" placeholder="Draft your version…"></textarea>
+      <div class="model-answer" id="ma${i}">${f.model}</div>
+    </div>`).join('');
+  return `<div id="builderWrap">${fields}<div class="btn-row"><button class="btn btn-ghost" id="revealBtn">Reveal model drafts</button><button class="btn btn-primary" id="completeBtn">Mark complete →</button></div></div>`;
+}
+
+function buildChecklist(lvl) {
+  const items = lvl.items.map((item, i) => `
+    <div class="checklist-item">
+      <div class="check-box" id="cb${i}" role="checkbox" aria-checked="false" tabindex="0"
+        onclick="toggleCheck(${i})" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCheck(${i})"></div>
+      <div>
+        <div class="check-text"><span class="check-priority ${item.priority}">${item.pLabel}</span> ${item.text}</div>
+        <div class="check-note">${item.note}</div>
+      </div>
+    </div>`).join('');
+  return `<div id="checklistWrap">${items}<div class="btn-row" style="margin-top:16px;"><button class="btn btn-primary" id="completeBtn">Mark complete →</button></div></div>`;
+}
+
+function buildBoss(lvl) {
+  const qs = lvl.questions.map((bq, i) => `
+    <div class="boss-q">${bq.q}</div>
+    <textarea class="boss-input" id="bq${i}" placeholder="Write in full sentences — no bullet points…"></textarea>
+    <div class="model-answer" id="bm${i}">${bq.model}</div>
+    ${i < lvl.questions.length - 1 ? '<hr class="divider">' : ''}
+  `).join('');
+  return `
+    <div class="boss-header">
+      <div class="boss-icon">🎤</div>
+      <div class="boss-title">STAR Rehearsal</div>
+      <div class="boss-sub">Write each answer fully before revealing the model. Speaking practice matters — read yours aloud after comparing.</div>
+    </div>
+    <div id="bossWrap">${qs}<div class="btn-row" style="margin-top:16px;"><button class="btn btn-ghost" id="revealBtn">Reveal model structures</button><button class="btn btn-primary" id="completeBtn">Done — mark complete →</button></div></div>`;
+}
+
+function attachInteractions(lvl) {
+  if (lvl.type === 'quiz') {
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', () => handleAnswer(lvl, parseInt(btn.dataset.idx)));
+    });
+  } else {
+    const reveal = document.getElementById('revealBtn');
+    if (reveal) reveal.onclick = () => document.querySelectorAll('.model-answer').forEach(el => el.style.display = 'block');
+    const complete = document.getElementById('completeBtn');
+    if (complete) complete.onclick = () => completeLevel(lvl.id);
+  }
+}
+
+function handleAnswer(lvl, chosen) {
+  const qi = quizState.qi;
+  const q = lvl.questions[qi];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(b => b.disabled = true);
+  opts[q.correct].classList.add('correct');
+  if (chosen !== q.correct) opts[chosen].classList.add('wrong');
+  document.getElementById('quizFeedback').innerHTML =
+    `<div class="quiz-feedback ${chosen === q.correct ? 'pass' : 'fail'}">${chosen === q.correct ? '✓ ' : '✗ '}${q.feedback}</div>`;
+  const btns = document.getElementById('quizBtns');
+  const isLast = qi === lvl.questions.length - 1;
+  if (isLast) {
+    btns.innerHTML = `<button class="btn btn-primary" id="doneBtn">Complete module →</button>`;
+    document.getElementById('doneBtn').onclick = () => completeLevel(lvl.id);
+  } else {
+    btns.innerHTML = `<button class="btn btn-primary" id="nextBtn">Next →</button>`;
+    document.getElementById('nextBtn').onclick = () => advanceQuiz(lvl);
+  }
+}
+
+function advanceQuiz(lvl) {
+  quizState.qi++;
+  const qi = quizState.qi;
+  const q = lvl.questions[qi];
+  const dots = lvl.questions.map((_, i) =>
+    `<div class="dot ${i < qi ? 'done-dot' : i === qi ? 'active-dot' : ''}"></div>`
+  ).join('');
+  const scenario = q.scenario ? `<div class="quiz-scenario"><strong>Scenario:</strong> ${q.scenario}</div>` : '';
+  const opts = q.options.map((o, i) => `<button class="quiz-option" data-idx="${i}">${o}</button>`).join('');
+  document.getElementById('quizWrap').innerHTML = `
+    <div class="progress-dots">${dots}</div>${scenario}
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options" id="quizOpts">${opts}</div>
+    <div id="quizFeedback"></div><div class="btn-row" id="quizBtns"></div>`;
+  document.querySelectorAll('.quiz-option').forEach(btn => {
+    btn.addEventListener('click', () => handleAnswer(lvl, parseInt(btn.dataset.idx)));
+  });
+}
+
+function toggleCheck(i) {
+  const cb = document.getElementById('cb' + i);
+  const checked = cb.classList.toggle('checked');
+  cb.setAttribute('aria-checked', String(checked));
+  cb.textContent = checked ? '✓' : '';
+}
+
+function completeLevel(id) {
+  completed.add(id);
+  closeModal();
+  renderMap(); xp();
+  showToast('Module complete!');
+  if (completed.size === LEVELS.length) {
+    setTimeout(() => {
+      document.getElementById('finalScreen').classList.add('show');
+      document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' });
+    }, 800);
+  }
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+document.getElementById('modalClose').onclick = closeModal;
+document.getElementById('overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('overlay')) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+renderMap(); xp();
+</script>
+</body>
+</html>
