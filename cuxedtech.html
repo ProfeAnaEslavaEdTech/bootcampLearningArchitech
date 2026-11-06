@@ -239,17 +239,17 @@ footer {
   <h1>Integrated UX assistant.<br><em>Built to be reusable.</em></h1>
   <p class="hero-desc">CUXedTech connects user research, UX strategy, information architecture, interaction design, UI, UX Writing, accessibility, and usability evaluation into one governed AI assistant for digital products.</p>
   <div class="hero-cta">
-    <a href="./assets/cuxedtech-plugin.zip" class="btn-primary">
-      ⬇ Download plugin (.zip)
+    <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn-primary">
+      Evaluate my website with CUXedTech
     </a>
-    <a href="./ocean-ink.html" class="btn-secondary">
-      Ocean Ink design system →
+    <a href="./assets/cuxedtech-plugin.zip" class="btn-secondary">
+      ⬇ Claude Code plugin (.zip)
     </a>
   </div>
   <div class="version-row">
     <span class="version-chip">v0.1.8</span>
     <span class="version-chip">5 skills</span>
-    <span class="version-chip">Claude Code</span>
+    <span class="version-chip">ChatGPT + Claude Code</span>
     <span class="version-chip">© Ana Eslava-Graterol</span>
   </div>
 </header>
@@ -315,48 +315,84 @@ footer {
 
 <!-- HOW TO USE -->
 <section>
-  <p class="section-label">Getting started</p>
-  <h2 class="section-title">Install and use in Claude Code.</h2>
-  <p class="section-sub">The plugin works in Claude Code (CLI, desktop app, or cloud sessions). No external API keys required.</p>
+  <p class="section-label">What to expect</p>
+  <h2 class="section-title">What CUXedTech evaluates.</h2>
+  <p class="section-sub">The 12-dimension framework covers the full digital experience — from strategy to microcopy. Tell it which dimensions matter most for your project.</p>
 
   <div class="install-box">
-    <h3>Installation</h3>
-    <p>Download the zip, extract it, and place the <code>skills/</code> folder and <code>plugin.json</code> in your project's <code>.claude/</code> directory, or install it as a user plugin from Claude Code settings.</p>
-    <div class="code-block"># From your project root<br>unzip cuxedtech-plugin.zip -d .claude/plugins/cuxedtech<br># Then reload Claude Code — skills appear in /skills</div>
+    <h3>Twelve evaluation dimensions</h3>
+    <p>Share a URL, a screen, a component or a user journey. CUXedTech identifies what works, what creates friction, and what to prioritise.</p>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
-          <h4>Download and extract</h4>
-          <p>Use the button above to download <code>cuxedtech-plugin.zip</code>. Extract to your preferred plugins folder.</p>
+          <h4>User research &amp; UX strategy</h4>
+          <p>User needs, goals, context of use, product objectives, value proposition, success criteria.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
-          <h4>Call a skill</h4>
-          <p>In Claude Code, type <code>/ux-writing-travel-good</code> for UX Writing, <code>/ocean-ink-design-system</code> for brand work, or <code>/ux-quality-framework</code> for a full evaluation.</p>
+          <h4>Information architecture &amp; interaction design</h4>
+          <p>Navigation, labels, hierarchy, discoverability, component behaviour, feedback loops.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
-          <h4>Provide context</h4>
-          <p>Share your interface, screen, component or user flow. The skills handle the rest — analysis, recommendations, copy proposals, and attribution.</p>
+          <h4>UI, UX Writing &amp; accessibility</h4>
+          <p>Visual identity, microcopy, CTAs, error messages, plain language, WCAG POUR principles.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Responsive, multilingual &amp; usability</h4>
+          <p>Breakpoints, touch targets, language and market adaptation, usability heuristics and task success.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- EVALUATE CTA -->
-<section style="text-align:center; padding-block: 56px;">
-  <p class="section-label">Try it now</p>
-  <h2 class="section-title" style="margin-bottom:16px;">Evaluate a website with CUXedTech.</h2>
-  <p class="section-sub" style="margin: 0 auto 32px;">Download the plugin, install it in Claude Code, and use <code>/ux-quality-framework</code> or <code>/ux-writing-travel-good</code> to audit any digital experience.</p>
-  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-    <a href="./assets/cuxedtech-plugin.zip" class="btn-primary">⬇ Download plugin</a>
-    <a href="https://claude.ai" target="_blank" rel="noopener" class="btn-secondary">Open Claude →</a>
+<!-- ACCESS SECTION -->
+<section>
+  <p class="section-label">Try CUXedTech</p>
+  <h2 class="section-title">Two ways to use it.</h2>
+  <p class="section-sub">CUXedTech runs in ChatGPT (web, no install) and in Claude Code (download &amp; install). Both versions share the same 12-dimension evaluation framework.</p>
+
+  <div class="skills-grid" style="margin-top:36px;">
+
+    <div class="skill-card" style="border-top: 3px solid #10a37f;">
+      <div class="skill-card-icon">🟢</div>
+      <h3>ChatGPT — no install</h3>
+      <p>Open ChatGPT and search for <strong>@CUXedTech</strong> in the plugin directory. Paste your website URL and ask it to evaluate your digital experience using the relevant UX quality criteria.</p>
+      <div style="margin-top:16px; padding:12px 14px; background:var(--surface-alt); border-radius:8px; font-size:13px; color:var(--muted); line-height:1.6;">
+        <strong style="color:var(--ink);">Example prompt:</strong><br>
+        "Evaluate <em>[your URL]</em> using the relevant CUXedTech UX quality criteria. Focus on UX Writing, accessibility and information architecture."
+      </div>
+      <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+         style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:#10a37f;color:#fff;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;text-decoration:none;">
+        Open ChatGPT →
+      </a>
+      <div style="margin-top:10px;font-size:12px;color:var(--muted);">Visitors may need to find and select @CUXedTech in the plugin directory once inside ChatGPT.</div>
+    </div>
+
+    <div class="skill-card" style="border-top: 3px solid var(--primary);">
+      <div class="skill-card-icon">🔵</div>
+      <h3>Claude Code — download &amp; install</h3>
+      <p>Download the plugin zip, extract it, and place the <code>skills/</code> folder in your Claude Code project. Use <code>/ux-writing-travel-good</code>, <code>/ocean-ink-design-system</code> or <code>/ux-quality-framework</code> as slash commands.</p>
+      <div style="margin-top:16px; padding:12px 14px; background:var(--surface-alt); border-radius:8px; font-size:13px; color:var(--ink); font-family:monospace; line-height:1.7; overflow-x:auto;">
+        unzip cuxedtech-plugin.zip<br>
+        # then in Claude Code:<br>
+        /ux-quality-framework
+      </div>
+      <a href="./assets/cuxedtech-plugin.zip"
+         style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:var(--primary);color:var(--on-primary);border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;text-decoration:none;">
+        ⬇ Download plugin (.zip)
+      </a>
+    </div>
+
   </div>
 </section>
 
