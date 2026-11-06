@@ -127,10 +127,10 @@
   <div class="rail" aria-hidden="true">
     <div class="seg" data-r="0"></div><div class="seg" data-r="1"></div>
     <div class="seg" data-r="2"></div><div class="seg" data-r="3"></div>
-    <div class="seg" data-r="4"></div><div class="seg" data-r="5"></div>
+    <div class="seg" data-r="4"></div><div class="seg" data-r="5"></div><div class="seg" data-r="6"></div>
   </div>
   <div class="rail-labels" id="railLabels">
-    <span>Concept</span><span>Structure</span><span>Config</span><span>Scenarios</span><span>Code</span><span>Architect</span>
+    <span>Concept</span><span>Structure</span><span>Config</span><span>Scenarios</span><span>Code</span><span>Measure</span><span>Architect</span>
   </div>
 </header>
 
@@ -534,18 +534,150 @@
   </div>
 </section>
 
-<!-- STEP 12 · Completion -->
+<!-- STEP 12 · Veracity LRS: Reading xAPI Metrics -->
 <section class="step" data-step="12">
+  <div class="card">
+    <div class="eyebrow">Phase 3 · Practical · Veracity LRS</div>
+    <h2 class="display">Uploading &amp; Reading xAPI Data in Veracity</h2>
+    <p>Veracity LRS (see Step 4) is the recommended platform for this hybrid architecture. This step covers the full read-cycle: how statements get in, and how to find the learner-behaviour signals that drive redesign decisions.</p>
+    <div class="anchor"><b>Portfolio evidence:</b> Ana Eslava-Graterol's two Veracity reels demonstrate this workflow live — LRS Space creation, statement ingestion via Articulate dynamic launch, and dashboard navigation to surface completion and engagement patterns. Use them as worked examples when studying Steps 3–4 of the walkthrough below.</div>
+
+    <h3>1. Create an LRS Space</h3>
+    <p>In Veracity, go to <strong>LRS Spaces → New Space</strong>. Name it after the deployment context (e.g. "B2C Main" or "ClientCo Training"). Each Space gets its own:</p>
+    <ul>
+      <li><strong>Endpoint URL:</strong> <code class="mono">https://lrs.io/[your-space-id]/</code></li>
+      <li><strong>Key</strong> and <strong>Secret</strong> (Basic auth credentials)</li>
+    </ul>
+    <p>Copy these — they are the values you inject into the Articulate dynamic launch URL (Step 9) or into the backend statement POST.</p>
+
+    <h3>2. Send Statements In</h3>
+    <div class="scenario">
+      <div class="sc-card b2b">
+        <div class="sc-label">Via Articulate (cmi5 / xAPI)</div>
+        Dynamic launch URL with <code class="mono">?endpoint=</code>, <code class="mono">&amp;auth=Basic [B64]</code>, and <code class="mono">&amp;actor=</code> — Articulate writes statements automatically as the learner navigates slides and interactions.
+      </div>
+      <div class="sc-card b2c">
+        <div class="sc-label">Via direct POST (custom events)</div>
+        Your backend calls <code class="mono">POST [endpoint]statements/</code> with Basic auth header and the JSON statement body — for video milestones, React quiz responses, or any event that Articulate does not generate.
+      </div>
+    </div>
+
+    <h3>3. Read the Dashboard</h3>
+    <p>Navigate <strong>Activity Reports</strong> for content-centric views and <strong>Actor Reports</strong> for learner-centric views.</p>
+    <table>
+      <tr><th>Report view</th><th>What it shows</th><th>Redesign signal</th></tr>
+      <tr><td><strong>Activity → Completion</strong></td><td>% completed per module, by date range</td><td>Completion below 60% → structural issue</td></tr>
+      <tr><td><strong>Activity → Score</strong></td><td>Score distribution histogram</td><td>Bimodal distribution → content clarity gap</td></tr>
+      <tr><td><strong>Actor → Progress</strong></td><td>Individual learner journeys</td><td>Consistent drop-off point → screen-level fix</td></tr>
+    </table>
+    <div class="alert"><b>"Measure, Not Decide":</b> patterns in the dashboard identify <em>where to look</em> — they do not replace qualitative investigation. A drop-off at screen 7 is a hypothesis, not a verdict. The recommendation must cite the pattern AND propose a next investigation step.</div>
+
+    <h3>4. Write the One-Page Redesign Recommendation</h3>
+    <p>The TLO for this track requires a <strong>one-page redesign recommendation</strong>. Structure it as:</p>
+    <ol>
+      <li><strong>Pattern observed:</strong> cite verb + activity + date range from Veracity (e.g. "23 actors <code class="mono">attempted</code> module 3; 14 never sent <code class="mono">completed</code>")</li>
+      <li><strong>Hypothesis:</strong> one sentence explaining why (e.g. "screen 7 presents four simultaneous concepts — cognitive load issue")</li>
+      <li><strong>Recommendation:</strong> one specific design change</li>
+      <li><strong>Measurement:</strong> the xAPI event that would confirm improvement (e.g. a rise in <code class="mono">completed</code> statements for activity 3 within 30 days of the change)</li>
+    </ol>
+
+    <div class="quiz" data-xp="20">
+      <p class="qq">40% of actors who sent an <code class="mono">attempted</code> statement for module 2 never sent a <code class="mono">completed</code> statement. What is the correct next step?</p>
+      <button class="opt" data-ok="0">Rewrite the entire module immediately</button>
+      <button class="opt" data-ok="1">Form a hypothesis about where in module 2 the drop-off occurs, then investigate the specific screens or interactions at that point</button>
+      <button class="opt" data-ok="0">Raise the passing score threshold to force learners to re-attempt</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="20">
+      <p class="qq">Which Veracity report view best reveals whether a specific screen is causing drop-off (rather than a module-wide issue)?</p>
+      <button class="opt" data-ok="0">Activity → Completion (overall module completion rate only)</button>
+      <button class="opt" data-ok="1">Actor → Progress cross-referenced with Activity → Score for actors who did not complete</button>
+      <button class="opt" data-ok="0">The raw statement export CSV sorted by timestamp</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 13 · SCORM Cloud: Reading SCORM Reports -->
+<section class="step" data-step="13">
+  <div class="card">
+    <div class="eyebrow">Phase 3 · Practical · SCORM Cloud</div>
+    <h2 class="display">SCORM Package on SCORM Cloud: Upload to Report</h2>
+    <p>SCORM Cloud (by Rustici Software — the company that maintained the SCORM specification) is the industry-standard platform for hosting and testing SCORM packages. It also accepts xAPI and cmi5, making it a neutral testing ground for any standard.</p>
+    <div class="anchor"><b>Portfolio evidence:</b> Ana Eslava-Graterol's SCORM Cloud case demonstrates upload → registration → report-reading for a production SCORM module, alongside the equivalent xAPI data from Veracity, to compare data richness directly.</div>
+
+    <h3>1. Upload Your Package</h3>
+    <ol>
+      <li>Publish your Articulate Rise or Storyline module → <strong>LMS → SCORM 1.2</strong> (or SCORM 2004) → export .zip</li>
+      <li>In SCORM Cloud: <strong>Courses → Add Course → Upload .zip</strong></li>
+      <li>SCORM Cloud validates the manifest (<code class="mono">imsmanifest.xml</code>) and reports any import errors before you deploy to production</li>
+      <li>The course is now hosted at a unique URL — share it or embed it in your LMS via the standard launch link</li>
+    </ol>
+
+    <h3>2. Create a Registration and Launch</h3>
+    <p>Each learner attempt is a <strong>Registration</strong> in SCORM Cloud. For testing your own package:</p>
+    <ul>
+      <li>Select the course → <strong>Launch for preview</strong> (creates a test registration for you)</li>
+      <li>Complete the module — SCORM Cloud records all cmi data exactly as a production LMS would</li>
+      <li>Return to the registration detail page to read the report</li>
+    </ul>
+
+    <h3>3. Read the Registration Report</h3>
+    <table>
+      <tr><th>SCORM field</th><th>SCORM 1.2 path</th><th>What it means</th></tr>
+      <tr><td>Completion</td><td><code class="mono">cmi.core.lesson_status</code></td><td>"passed", "failed", "completed", "incomplete", "not attempted"</td></tr>
+      <tr><td>Score</td><td><code class="mono">cmi.core.score.raw</code></td><td>Numeric score (0–100 by convention)</td></tr>
+      <tr><td>Time</td><td><code class="mono">cmi.core.session_time</code></td><td>HH:MM:SS — total time in content</td></tr>
+      <tr><td>Interaction detail</td><td><code class="mono">cmi.interactions.n.*</code></td><td>Per-question: id, type, response, result, latency</td></tr>
+    </table>
+    <div class="anchor"><b>SCORM 2004</b> separates completion from pass/fail: <code class="mono">cmi.completion_status</code> ("completed" / "incomplete") and <code class="mono">cmi.success_status</code> ("passed" / "failed") are independent fields. Score uses <code class="mono">cmi.score.scaled</code> (0–1 range). Time uses ISO 8601 duration. The split is SCORM 2004's most important structural change.</div>
+
+    <h3>4. When SCORM Cloud Beats Your LMS for Diagnosis</h3>
+    <ul>
+      <li>Your LMS reports "failed" but learners say they answered correctly — SCORM Cloud shows the raw <code class="mono">cmi.interactions</code> per question, so you can see exactly what response the SCORM package recorded</li>
+      <li>Suspect a publish error — SCORM Cloud's import validator flags manifest or packaging issues before production</li>
+      <li>Comparing standards — test the same content as SCORM 1.2, then as cmi5, to see the data richness difference</li>
+    </ul>
+
+    <h3>5. xAPI vs SCORM: Data Richness Comparison</h3>
+    <table>
+      <tr><th>Dimension</th><th>SCORM (via SCORM Cloud)</th><th>xAPI (via Veracity LRS)</th></tr>
+      <tr><td>Granularity</td><td>Module-level + discrete interactions</td><td>Any event — video pause, page hover, chat message</td></tr>
+      <tr><td>Actor context</td><td>Logged-in LMS user only</td><td>Any actor, any device, offline via queue</td></tr>
+      <tr><td>Verb vocabulary</td><td>Fixed (passed / failed / completed)</td><td>Open — ADL registry + custom extensions</td></tr>
+      <tr><td>Analysis</td><td>Built-in reports</td><td>Query language over raw statements</td></tr>
+    </table>
+
+    <div class="quiz" data-xp="20">
+      <p class="qq">A SCORM module shows "failed" in your LMS, but learners say they answered correctly. What does SCORM Cloud give you that your LMS does not?</p>
+      <button class="opt" data-ok="0">The ability to override the completion status directly</button>
+      <button class="opt" data-ok="1">Raw <code class="mono">cmi.interactions</code> data showing exactly which question was marked incorrect and what response the package recorded</button>
+      <button class="opt" data-ok="0">An automatic re-grade with a different passing threshold</button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+    <div class="quiz" data-xp="20">
+      <p class="qq">In SCORM 2004, which field tells you a learner finished the content — independent of whether they passed the assessment?</p>
+      <button class="opt" data-ok="0"><code class="mono">cmi.success_status</code></button>
+      <button class="opt" data-ok="1"><code class="mono">cmi.completion_status</code></button>
+      <button class="opt" data-ok="0"><code class="mono">cmi.core.lesson_status</code></button>
+      <p class="fb" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- STEP 14 · Completion -->
+<section class="step" data-step="14">
   <div class="card" style="text-align:center;">
     <div class="eyebrow">Module Complete</div>
     <h2 class="display">Your Architecture Score</h2>
-    <p class="score-line">Total: <span class="gold" id="finalXP">0</span> XP of a possible 340</p>
+    <p class="score-line">Total: <span class="gold" id="finalXP">0</span> XP of a possible 420</p>
     <div class="big-level display" id="finalLevel">—</div>
     <p id="finalMsg" style="margin:12px 0 20px;"></p>
     <div class="anchor" style="text-align:left;">
       <b>Next actions:</b>
       <ul style="margin:8px 0 0 18px;">
-        <li>Open Veracity LRS (free tier) and create two LRS Spaces — one for B2C, one test B2B tenant</li>
+        <li>Open Veracity LRS (free tier), create two LRS Spaces (B2C + one test B2B tenant), and work through the Step 12 walkthrough — produce a one-page redesign recommendation from real statement data</li>
+        <li>Upload a SCORM module to SCORM Cloud and inspect the raw <code class="mono">cmi.interactions</code> data as shown in Step 13</li>
         <li>Publish one Articulate Rise module as cmi5 and test the dynamic launch URL with both tenant credentials</li>
         <li>Write the backend <code class="mono">/api/lrs/statements</code> route in your framework of choice</li>
         <li>Configure one Statement Forwarding rule to a second LRS Space to simulate Scenario B end-to-end</li>
@@ -586,7 +718,7 @@
     backBtn.disabled = (i === 0);
     nextBtn.textContent = i === 0 ? 'Begin' : (i === total-1 ? 'Restart' : 'Continue');
     countEl.textContent = 'Step ' + (i+1) + ' of ' + total;
-    var r = Math.min(5, Math.floor(i * 6 / total));
+    var r = Math.min(6, Math.floor(i * 7 / total));
     segs.forEach(function(s,k){ s.classList.toggle('done', k <= r && i > 0); });
     for(var k=0;k<labels.length;k++){ labels[k].classList.toggle('now', k===r && i>0); }
     if(i === total-1) finish();
@@ -634,7 +766,7 @@
 
   function finish(){
     document.getElementById('finalXP').textContent = xp;
-    var pct = xp/340;
+    var pct = xp/420;
     var lvl, msg;
     if(pct>=0.85){ lvl='Architect'; msg='You can design and defend this system in a client conversation. Time to build the proof-of-concept.'; }
     else if(pct>=0.65){ lvl='Engineer'; msg='Solid structural understanding. One more pass through the implementation steps and you are ready to present this architecture.'; }
