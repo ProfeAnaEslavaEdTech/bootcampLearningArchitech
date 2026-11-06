@@ -122,7 +122,6 @@
 <header>
   <div class="head-row">
     <h1 class="display">LRS Architecture · Hybrid B2C + B2B Platform</h1>
-    <div class="xp" aria-live="polite">XP <span id="xp">0</span></div>
   </div>
   <div class="rail" aria-hidden="true">
     <div class="seg" data-r="0"></div><div class="seg" data-r="1"></div>
@@ -162,7 +161,7 @@
   <div class="card">
     <div class="eyebrow">Phase 1 · Test · Baseline</div>
     <h2 class="display">What do you already know?</h2>
-    <p>Answer from instinct — wrong answers cost nothing and show you where to focus. +10 XP per correct answer.</p>
+    <p>Answer from instinct — wrong answers cost nothing and show you where to focus.</p>
 
     <div class="quiz" data-xp="10">
       <p class="qq">1. Why can't you use a single flat LRS endpoint for both B2C users and B2B corporate clients?</p>
@@ -345,7 +344,7 @@
           filtered view        external LRS / LMS</div>
     <div class="anchor"><b>The tenant_id is the architectural spine.</b> Every statement, every permission filter, every forwarding rule, and every Articulate launch URL traces back to a single field: the <code class="mono">tenant_id</code> resolved at login.</div>
     <details>
-      <summary>See the user login routing logic (+10 XP)</summary>
+      <summary>See the user login routing logic</summary>
       <div class="diagram">[ User Logs In ]
        │
        ├── account_type = B2C ──► Global LRS credentials injected
@@ -470,7 +469,7 @@
   <div class="card">
     <div class="eyebrow">Phase 3 · Test · Scored</div>
     <h2 class="display">Architecture Certification Check</h2>
-    <p>Harder form of the same knowledge. +30 XP per correct answer, first attempt counts.</p>
+    <p>Harder form of the same knowledge. First attempt counts toward your assessment summary.</p>
 
     <div class="quiz" data-xp="30">
       <p class="qq">1. A new corporate client signs a contract. What must you provision in your LRS before their employees begin training?</p>
@@ -518,17 +517,17 @@
     <p>A prospect asks three questions during a sales call. Answer out loud before revealing.</p>
 
     <h3>(a) "We have 300 employees. Our HR director wants to log in on Friday afternoons and see who completed what."</h3>
-    <details><summary>Reveal recommendation (+10 XP)</summary>
+    <details><summary>Reveal recommendation</summary>
       <p><strong>Scenario A.</strong> Provision a Scenario A dashboard — filtered read-only access to their tenant in your LRS. White-label with their logo if needed. Include in the standard Business tier. No forwarding pipe required.</p>
     </details>
 
     <h3>(b) "We use Cornerstone for all our HR data. We need learning completions to appear there automatically."</h3>
-    <details><summary>Reveal recommendation (+10 XP)</summary>
+    <details><summary>Reveal recommendation</summary>
       <p><strong>Scenario B.</strong> Configure a Statement Forwarding rule. Collect their Cornerstone LRS endpoint URL, API Key, and API Secret. All statements matching their <code class="mono">tenant_id</code> will be replicated in real-time via HTTPS POST. Charge the integration fee.</p>
     </details>
 
     <h3>(c) "We sell to both consumers online and to corporations. Can one platform handle both?"</h3>
-    <details><summary>Reveal recommendation (+10 XP)</summary>
+    <details><summary>Reveal recommendation</summary>
       <p><strong>Yes — this is the B2X model.</strong> Route B2C users to a global tenant with aggregated analytics. Route each B2B corporate client to their own isolated tenant. Offer Scenario A dashboards in standard plans, Scenario B forwarding as a premium add-on. Veracity LRS or LearningLocker Enterprise recommended as the LRS layer.</p>
     </details>
   </div>
@@ -669,10 +668,9 @@
 <section class="step" data-step="14">
   <div class="card" style="text-align:center;">
     <div class="eyebrow">Module Complete</div>
-    <h2 class="display">Your Architecture Score</h2>
-    <p class="score-line">Total: <span class="gold" id="finalXP">0</span> XP of a possible 420</p>
-    <div class="big-level display" id="finalLevel">—</div>
-    <p id="finalMsg" style="margin:12px 0 20px;"></p>
+    <h2 class="display">Assessment Summary</h2>
+    <p style="font-size:1.1rem;margin-bottom:8px;">Questions correct: <strong id="finalScore">—</strong></p>
+    <p id="finalMsg" style="margin:8px 0 20px;color:var(--navy);"></p>
     <div class="anchor" style="text-align:left;">
       <b>Next actions:</b>
       <ul style="margin:8px 0 0 18px;">
@@ -700,15 +698,41 @@
 (function(){
   var steps = document.querySelectorAll('.step');
   var total = steps.length;
-  var i = 0, xp = 0;
-  var xpEl = document.getElementById('xp');
+  var i = 0;
   var backBtn = document.getElementById('back');
   var nextBtn = document.getElementById('next');
   var countEl = document.getElementById('count');
   var segs = document.querySelectorAll('.rail .seg');
   var labels = document.getElementById('railLabels').children;
 
-  function addXP(n){ xp += n; xpEl.textContent = xp; }
+  function buildXAPIStmt(qEl, responseText, correct, maxXP){
+    var allQ = document.querySelectorAll('.quiz');
+    var idx = Array.prototype.indexOf.call(allQ, qEl) + 1;
+    var qqEl = qEl.querySelector('.qq');
+    var desc = qqEl ? qqEl.textContent.replace(/\s+/g,' ').trim() : '';
+    if(desc.length > 80) desc = desc.substring(0,77) + '…';
+    return {
+      actor: { name: 'Learner', mbox: 'mailto:learner@example.com' },
+      verb: {
+        id: 'http://adlnet.gov/expapi/verbs/answered',
+        display: { 'en-US': 'answered' }
+      },
+      object: {
+        id: 'https://bootcamp.profeanaeslavaedtech.com/lrs/quiz/q' + idx,
+        definition: {
+          type: 'http://adlnet.gov/expapi/activities/cmi.interaction',
+          interactionType: 'choice',
+          description: { 'en-US': desc }
+        }
+      },
+      result: {
+        success: correct,
+        score: { scaled: correct ? 1.0 : 0.0, raw: correct ? 1 : 0, min: 0, max: 1 },
+        response: responseText.replace(/\s+/g,' ').trim().substring(0, 100)
+      },
+      timestamp: new Date().toISOString()
+    };
+  }
 
   function show(n){
     steps[i].classList.remove('active');
@@ -745,34 +769,43 @@
           if(x.getAttribute('data-ok')==='1') x.classList.add('right');
         });
         if(ok){
-          addXP(award);
           fb.className='fb show good';
-          fb.textContent='Correct · +'+award+' XP';
+          fb.textContent='Correct';
         } else {
           o.classList.add('wrong');
           fb.className='fb show bad';
           fb.innerHTML='Not quite — the highlighted answer is the keeper.<span class="why">Re-read the card above before the post-test.</span>';
         }
+        var stmt = buildXAPIStmt(q, o.textContent, ok, award);
+        var det = document.createElement('details');
+        det.style.marginTop = '10px';
+        var sum = document.createElement('summary');
+        sum.style.fontSize = '.8rem';
+        sum.textContent = '↳ xAPI statement generated';
+        var pre = document.createElement('pre');
+        pre.style.marginTop = '8px';
+        pre.textContent = JSON.stringify(stmt, null, 2);
+        det.appendChild(sum);
+        det.appendChild(pre);
+        q.appendChild(det);
       });
     });
   });
 
-  document.querySelectorAll('details').forEach(function(d){
-    var given=false;
-    d.addEventListener('toggle',function(){
-      if(d.open && !given){ given=true; addXP(10); }
-    });
-  });
-
   function finish(){
-    document.getElementById('finalXP').textContent = xp;
-    var pct = xp/420;
-    var lvl, msg;
-    if(pct>=0.85){ lvl='Architect'; msg='You can design and defend this system in a client conversation. Time to build the proof-of-concept.'; }
-    else if(pct>=0.65){ lvl='Engineer'; msg='Solid structural understanding. One more pass through the implementation steps and you are ready to present this architecture.'; }
-    else if(pct>=0.45){ lvl='Designer'; msg='The concepts are in place. Revisit the cards you missed — the post-test shows you exactly which ones.'; }
-    else { lvl='Analyst'; msg='Good start. Run the module again after a short break — spaced repetition closes the gaps quickly.'; }
-    document.getElementById('finalLevel').textContent = lvl;
+    var quizzes = document.querySelectorAll('.quiz');
+    var correct = 0;
+    quizzes.forEach(function(q){
+      var rightBtn = q.querySelector('.opt.right');
+      if(rightBtn) correct++;
+    });
+    var total_q = quizzes.length;
+    document.getElementById('finalScore').textContent = correct + ' / ' + total_q;
+    var pct = total_q > 0 ? correct / total_q : 0;
+    var msg;
+    if(pct >= 0.85){ msg = 'Strong performance — you can design and defend this system in a client conversation.'; }
+    else if(pct >= 0.65){ msg = 'Solid understanding. One more pass through the implementation steps and you are ready to present this architecture.'; }
+    else { msg = 'Good start. Run the module again — revisit the cards on any question you missed.'; }
     document.getElementById('finalMsg').textContent = msg;
   }
 
