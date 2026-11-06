@@ -280,9 +280,22 @@ code {
   padding: 24px;
 }
 .skill-icon {
-  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--primary);
   margin-bottom: 14px;
   line-height: 1;
+  text-transform: uppercase;
 }
 .skill-card h3 {
   font-family: var(--font-display);
@@ -484,7 +497,7 @@ code {
   <div class="nav-right">
     <a href="./index.html" class="nav-link">← Learning Architect</a>
     <a href="./ocean-ink.html" class="nav-link">Ocean Ink</a>
-    <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">🌓</button>
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle light/dark theme">◑</button>
   </div>
 </nav>
 
@@ -498,7 +511,7 @@ code {
       Evaluate my website with CUXedTech <span aria-hidden="true">(opens in a new tab)</span>
     </a>
     <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline">
-      ⬇ Claude Code plugin (.zip)
+      ↓ Claude Code plugin (.zip)
     </a>
   </div>
 </header>
@@ -526,31 +539,31 @@ code {
 
   <div class="skills-grid">
     <div class="skill-card">
-      <div class="skill-icon" aria-hidden="true">✍️</div>
+      <div class="skill-icon" aria-hidden="true">UX</div>
       <h3>UX Writing & Content Design</h3>
       <p>Analyses interfaces, drafts and audits microcopy, CTAs, errors, onboarding, empty states and notifications. Applies Grice's maxims and WCAG. Includes the Travel Good style guide as a worked case.</p>
       <span class="skill-label">Built after Antonio's masterclass</span>
     </div>
     <div class="skill-card">
-      <div class="skill-icon" aria-hidden="true">🎨</div>
+      <div class="skill-icon" aria-hidden="true">OI</div>
       <h3>Ocean Ink Design System</h3>
       <p>Applies Ana's personal brand identity — Indigo Blue, Warm Gold, Deep Blue — to every visual deliverable. WCAG 2.1 AA verified. Light and dark themes. Fraunces + Inter typography.</p>
       <span class="skill-label">Ana's own system</span>
     </div>
     <div class="skill-card">
-      <div class="skill-icon" aria-hidden="true">📐</div>
+      <div class="skill-icon" aria-hidden="true">FW</div>
       <h3>Integrated UX Quality Framework</h3>
       <p>Coordinates all 12 evaluation dimensions: user research, strategy, IA, interaction, UI, UX Writing, accessibility, responsive design, multilingual UX, technical experience and usability.</p>
       <span class="skill-label">12-dimension framework</span>
     </div>
     <div class="skill-card">
-      <div class="skill-icon" aria-hidden="true">📋</div>
+      <div class="skill-icon" aria-hidden="true">AI</div>
       <h3>AI Disclosure Suite</h3>
       <p>Generates EU AI Act Art. 50 disclosure statements. Governs what can and cannot be attributed to AI, and produces the standard disclosure footer for portfolio pieces and published content.</p>
       <span class="skill-label">EU AI Act · Art. 50</span>
     </div>
     <div class="skill-card">
-      <div class="skill-icon" aria-hidden="true">🔀</div>
+      <div class="skill-icon" aria-hidden="true">DR</div>
       <h3>Design & Disclosure Routing</h3>
       <p>Routes incoming requests to the right skill — Ocean Ink for visual work, UX Writing for content tasks, the quality framework for evaluations, the disclosure suite for publication.</p>
       <span class="skill-label">Internal routing</span>
@@ -611,7 +624,7 @@ code {
       </div>
 
       <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline" style="width:100%;justify-content:center;">
-        ⬇ Download plugin (.zip)
+        ↓ Download plugin (.zip)
       </a>
     </div>
 
