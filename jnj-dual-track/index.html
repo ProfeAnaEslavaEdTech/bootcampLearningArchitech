@@ -718,8 +718,8 @@ function goToTrackSwitch() {
   document.getElementById("mapSection").classList.remove("hidden");
   document.getElementById("levelDetail").classList.remove("active");
   document.getElementById("finalScreen").classList.remove("active");
-  document.getElementById("trackSub").textContent = "Choose your track";
-  document.getElementById("xpLabel").textContent = "0/0 modules";
+  document.getElementById("trackSub").innerHTML = "Choose your track";
+  document.getElementById("xpLabel").innerHTML = "0/0 modules";
   document.getElementById("xpBar").style.width = "0%";
   document.getElementById("levelGrid").innerHTML = "";
   currentTrackKey = null;
@@ -772,7 +772,7 @@ function renderMap() {
     card.innerHTML = `
       <div class="level-top-row">
         <span class="level-num">${String(i + 1).padStart(2, "0")}</span>
-        <span class="level-status">${complete ? "<span class="status-ok">OK</span>" : (unlocked ? "" : "")}</span>
+        <span class="level-status">${complete ? "<span class='status-ok'>OK</span>" : (unlocked ? "" : "")}</span>
       </div>
       <div class="level-name">${level.name}</div>
       <div class="level-focus">${level.focus}</div>
@@ -825,7 +825,7 @@ function openLevel(id) {
   bodyHTML += `
     <div class="complete-row">
       <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel('${level.id}')" style="background:${track.accent}">
-        ${progress.completed[level.id] ? "<span class="status-ok">OK</span> Completed — replay anytime" : "Mark as practiced →"}
+        ${progress.completed[level.id] ? "<span class='status-ok'>OK</span> Completed — replay anytime" : "Mark as practiced →"}
       </button>
     </div>
   `;
@@ -839,9 +839,9 @@ function copyAnswer(levelId) {
   const level = currentTrack().levels.find(l => l.id === levelId);
   navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
     const btn = document.getElementById(`copyBtn-${levelId}`);
-    btn.textContent = "Copied ";
+    btn.innerHTML = "Copied ";
     btn.classList.add("copied");
-    setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
+    setTimeout(() => { btn.innerHTML = "Copy answer"; btn.classList.remove("copied"); }, 1800);
   });
 }
 
@@ -1052,7 +1052,7 @@ function completeLevel(id) {
   }
 
   const btn = document.getElementById(`completeBtn-${id}`);
-  if (btn) btn.textContent = "<span class="status-ok">OK</span> Completed — replay anytime";
+  if (btn) btn.innerHTML = "<span class='status-ok'>OK</span> Completed — replay anytime";
 
   const allDone = track.levels.every(l => progress.completed[l.id]);
   if (allDone) {

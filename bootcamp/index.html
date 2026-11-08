@@ -1234,7 +1234,7 @@ function renderMap() {
     card.innerHTML = `
       <div class="level-top-row">
         <span class="level-num">LEVEL ${String(level.id).padStart(2,"0")}</span>
-        <span class="level-status">${complete ? "<span class="status-ok">OK</span>" : (unlocked ? level.badge : "")}</span>
+        <span class="level-status">${complete ? "<span class='status-ok'>OK</span>" : (unlocked ? level.badge : "")}</span>
       </div>
       <div class="level-name">${level.name}</div>
       <div class="level-focus">${level.focus}</div>
@@ -1306,7 +1306,7 @@ function openLevel(id) {
   bodyHTML += `
     <div class="complete-row">
       <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel(${level.id})">
-        ${progress.completed[level.id] ? "<span class="status-ok">OK</span> Completed — replay anytime" : "Mark level complete →"}
+        ${progress.completed[level.id] ? "<span class='status-ok'>OK</span> Completed — replay anytime" : "Mark level complete →"}
       </button>
     </div>
   `;
@@ -1320,9 +1320,9 @@ function copyAnswer(levelId) {
   const level = LEVELS.find(l => l.id === levelId);
   navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
     const btn = document.getElementById(`copyBtn-${levelId}`);
-    btn.textContent = "Copied ";
+    btn.innerHTML = "Copied ";
     btn.classList.add("copied");
-    setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
+    setTimeout(() => { btn.innerHTML = "Copy answer"; btn.classList.remove("copied"); }, 1800);
   });
 }
 
@@ -1349,7 +1349,7 @@ function renderInteractive(level) {
 // ── Checklist ─────────────────────────────────────────────────────
 function renderChecklist(level, zone) {
   const saved = progress.scales[`checklist-${level.id}`] || {};
-  let html = `<div class="block"><div class="block-label"><span class="status-ok">OK</span> Self-check</div>`;
+  let html = `<div class="block"><div class="block-label"><span class='status-ok'>OK</span> Self-check</div>`;
   level.content.checklist.forEach((item, i) => {
     const checked = saved[i] ? "checked" : "";
     html += `
@@ -1570,7 +1570,7 @@ function resetTimer() {
   timerInterval = null;
   timerSeconds = 0;
   const display = document.getElementById("timerDisplay");
-  if (display) { display.textContent = "00:00"; display.className = "timer-display"; }
+  if (display) { display.innerHTML = "00:00"; display.className = "timer-display"; }
 }
 
 // ── Boss level — sequential reveal Q&A ─────────────────────────────
@@ -1610,7 +1610,7 @@ function completeLevel(id) {
   }
 
   const btn = document.getElementById(`completeBtn-${id}`);
-  if (btn) btn.textContent = "<span class="status-ok">OK</span> Completed — replay anytime";
+  if (btn) btn.innerHTML = "<span class='status-ok'>OK</span> Completed — replay anytime";
 
   const allDone = LEVELS.every(l => progress.completed[l.id]);
   if (allDone) {
