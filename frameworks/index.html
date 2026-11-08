@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Framework Fluency — A Micro-Course</title>
+<link rel="stylesheet" href="../shared/oi.css">
 <style>
   :root{
     --navy:#1F3864; --blue:#2E5395; --ink:#1D2433; --mist:#EEF1F7;
@@ -97,7 +98,17 @@
 </style>
 </head>
 <body>
-
+<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
+<header class="oi-site-header">
+  <div class="oi-brand">
+    <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+  </div>
+  <div class="oi-ctrl-row">
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
+  </div>
+</header>
 <header>
   <div class="head-row">
     <h1 class="display">Framework Fluency · EU Digital Competency Frameworks</h1>
@@ -112,7 +123,7 @@
   </div>
 </header>
 
-<main>
+<main id="main-content">
 
   <!-- STEP 0 · Welcome -->
   <section class="step active" data-step="0">
@@ -468,6 +479,26 @@
   }
 
   show(0);
+})();
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('oi-theme-btn');
+  if(!btn)return;
+  var root=document.documentElement;
+  var cycle=['dark','light','system'];
+  var nextLabel={dark:'Light',light:'Auto',system:'Dark'};
+  var saved=localStorage.getItem('oi-theme')||'dark';
+  function apply(t){
+    if(t==='system') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    var ni=(cycle.indexOf(t)+1)%cycle.length;
+    btn.textContent=nextLabel[cycle[ni]];
+    localStorage.setItem('oi-theme',t);
+    saved=t;
+  }
+  apply(saved);
+  btn.addEventListener('click',function(){apply(cycle[(cycle.indexOf(saved)+1)%cycle.length]);});
 })();
 </script>
 </body>

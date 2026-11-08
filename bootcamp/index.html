@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mission: Learning Architect — Nexthink Interview Prep</title>
+<link rel="stylesheet" href="../shared/oi.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -715,7 +716,17 @@
 </style>
 </head>
 <body>
-
+<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
+<header class="oi-site-header">
+  <div class="oi-brand">
+    <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+  </div>
+  <div class="oi-ctrl-row">
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
+  </div>
+</header>
 <a href="#main" class="skip-link">Skip to content</a>
 
 <div class="top-bar">
@@ -1587,6 +1598,26 @@ if (allDoneOnLoad) {
   showFinalScreen();
 }
 
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('oi-theme-btn');
+  if(!btn)return;
+  var root=document.documentElement;
+  var cycle=['dark','light','system'];
+  var nextLabel={dark:'Light',light:'Auto',system:'Dark'};
+  var saved=localStorage.getItem('oi-theme')||'dark';
+  function apply(t){
+    if(t==='system') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    var ni=(cycle.indexOf(t)+1)%cycle.length;
+    btn.textContent=nextLabel[cycle[ni]];
+    localStorage.setItem('oi-theme',t);
+    saved=t;
+  }
+  apply(saved);
+  btn.addEventListener('click',function(){apply(cycle[(cycle.indexOf(saved)+1)%cycle.length]);});
+})();
 </script>
 </body>
 </html>

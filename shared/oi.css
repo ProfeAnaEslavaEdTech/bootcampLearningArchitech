@@ -1,0 +1,145 @@
+/*
+ * Ocean Ink — shared design layer for all bootcamp subpages
+ * Injected before each subpage's own <style> block.
+ * Provides: tokens, fonts, site-header, back-nav, base resets.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,600;9..144,0,700;9..144,1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ── Tokens ── */
+:root {
+  --oi-canvas:       #0C0E1C;
+  --oi-surface:      #161929;
+  --oi-surface2:     #1E2240;
+  --oi-line:         #262A44;
+  --oi-ink:          #EEF0FC;
+  --oi-muted:        #9199C0;
+  --oi-primary:      #A9B8F5;
+  --oi-primary-btn:  #3B5BD6;
+  --oi-primary-deep: #C6D2FB;
+  --oi-accent:       #F3B861;
+  --oi-berry:        #E0A6B8;
+  --oi-focus:        #A9B8F5;
+  --oi-radius:       8px;
+
+  /* Light overrides ─ set by [data-theme=light] */
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --oi-canvas: #F7F8FC; --oi-surface: #FFFFFF; --oi-surface2: #EEF2FD;
+    --oi-line: #E6E8F2; --oi-ink: #1C1E2E; --oi-muted: #5B5F77;
+    --oi-primary: #3B5BD6; --oi-primary-btn: #3B5BD6; --oi-primary-deep: #293B83;
+    --oi-accent: #E8A33C; --oi-berry: #8F3B59; --oi-focus: #3B5BD6;
+  }
+}
+:root[data-theme="light"] {
+  --oi-canvas: #F7F8FC; --oi-surface: #FFFFFF; --oi-surface2: #EEF2FD;
+  --oi-line: #E6E8F2; --oi-ink: #1C1E2E; --oi-muted: #5B5F77;
+  --oi-primary: #3B5BD6; --oi-primary-btn: #3B5BD6; --oi-primary-deep: #293B83;
+  --oi-accent: #E8A33C; --oi-berry: #8F3B59; --oi-focus: #3B5BD6;
+}
+
+/* ── Base overrides ── */
+html { color-scheme: dark; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { color-scheme: light; } }
+:root[data-theme="light"] { color-scheme: light; }
+
+body {
+  background: var(--oi-canvas) !important;
+  color: var(--oi-ink) !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  background-image: none !important;
+}
+
+h1, h2, h3 {
+  font-family: 'Fraunces', 'Palatino Linotype', Georgia, serif !important;
+  color: var(--oi-ink) !important;
+}
+
+/* ── Site header ── */
+.oi-site-header {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--oi-canvas);
+  border-bottom: 1px solid var(--oi-line);
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 max(24px, env(safe-area-inset-left, 0px));
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+}
+.oi-brand { display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+.oi-brand-name {
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-size: 15px; font-weight: 700; color: var(--oi-ink) !important;
+  letter-spacing: -0.01em; text-decoration: none;
+}
+.oi-brand-name:hover { color: var(--oi-primary) !important; }
+.oi-brand-role {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--oi-primary) !important;
+}
+.oi-ctrl-row { display: flex; align-items: center; gap: 8px; }
+.oi-ctrl-btn {
+  height: 34px; border-radius: 17px;
+  border: 1px solid var(--oi-line); background: var(--oi-surface); color: var(--oi-ink);
+  padding: 0 14px; cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  display: inline-flex; align-items: center; gap: 5px;
+  transition: border-color 0.15s, background 0.15s;
+  white-space: nowrap; text-decoration: none;
+}
+.oi-ctrl-btn:hover { border-color: var(--oi-primary); background: var(--oi-surface2); color: var(--oi-primary); }
+.oi-ctrl-btn:focus-visible { outline: 3px solid var(--oi-focus); outline-offset: 2px; }
+.oi-back-btn::before { content: '← '; }
+
+/* ── Page hero override ── */
+.hero, section.hero {
+  background: var(--oi-canvas) !important;
+  border-bottom: 1px solid var(--oi-line);
+  padding: 64px 24px 56px;
+}
+.hero h1, section.hero h1 {
+  font-size: clamp(28px, 4vw, 48px) !important;
+  font-weight: 700 !important; letter-spacing: -0.025em !important;
+  color: var(--oi-ink) !important; text-wrap: balance;
+}
+.hero em, section.hero em { color: var(--oi-accent) !important; font-style: italic; }
+.hero p, section.hero p { color: var(--oi-muted) !important; }
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important; font-weight: 600 !important;
+  letter-spacing: 0.16em !important; text-transform: uppercase !important;
+  color: var(--oi-primary) !important; margin-bottom: 16px;
+}
+
+/* ── Level / step cards ── */
+.level-card, .step-card, .project-card {
+  background: var(--oi-surface) !important;
+  border: 1px solid var(--oi-line) !important;
+  border-radius: var(--oi-radius) !important;
+  color: var(--oi-ink) !important;
+}
+.level-card h2, .step-card h2, .project-card h2,
+.level-card h3, .step-card h3, .project-card h3 { color: var(--oi-ink) !important; }
+
+/* ── Top-bar override (hide old, show oi-site-header) ── */
+.top-bar { display: none !important; }
+
+/* ── XP / progress bar ── */
+.xp-bar-outer, .progress-track {
+  background: var(--oi-line) !important; border-radius: 4px;
+}
+.xp-bar-inner, .progress-fill {
+  background: var(--oi-primary-btn) !important;
+}
+
+/* ── Focus ring ── */
+*:focus-visible { outline: 3px solid var(--oi-focus) !important; outline-offset: 2px; }
+
+/* ── Buttons ── */
+.btn-primary, button.primary, a.btn-primary {
+  background: var(--oi-primary-btn) !important;
+  color: #fff !important; border-color: transparent !important;
+}
