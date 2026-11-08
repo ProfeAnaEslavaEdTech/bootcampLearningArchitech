@@ -310,17 +310,27 @@ footer a { color: var(--primary); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 
 /* ── THEME TOGGLE ── */
-#theme-btn {
-  position: fixed; top: 14px; right: 16px; z-index: 100;
-  width: 40px; height: 40px; border-radius: 50%;
+#theme-btn, #lang-btn {
+  position: fixed; z-index: 100;
+  height: 40px; border-radius: 20px;
   border: 1px solid var(--line); background: var(--surface); color: var(--ink);
-  font-size: 18px; line-height: 1; cursor: pointer;
+  line-height: 1; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   transition: border-color 0.15s, box-shadow 0.15s;
 }
-#theme-btn:hover { border-color: var(--primary); box-shadow: 0 2px 12px rgba(59,91,214,0.18); }
-#theme-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+#theme-btn {
+  top: 14px; right: 16px;
+  width: 40px; font-size: 18px;
+}
+#lang-btn {
+  top: 14px; right: 64px;
+  padding: 0 14px;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+}
+#theme-btn:hover, #lang-btn:hover { border-color: var(--primary); box-shadow: 0 2px 12px rgba(59,91,214,0.18); }
+#theme-btn:focus-visible, #lang-btn:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
 
 /* ── SECTOR HEADERS ── */
 .tracks-panel { gap: 0; }
@@ -347,28 +357,29 @@ footer a:hover { text-decoration: underline; }
 </head>
 <body>
 
-<a href="#panel-tracks" class="skip-link">Skip to content</a>
+<a href="#panel-tracks" class="skip-link" data-i18n="skip-link">Skip to content</a>
+<button id="lang-btn" aria-label="Cambiar a español">ES</button>
 <button id="theme-btn" aria-label="Colour theme: system. Click to switch.">◑</button>
 
 <!-- HERO -->
 <div class="hero-band">
-  <p class="hero-eyebrow">Profe Ana Eslava EdTech · Language Learning Architect</p>
-  <h1>Six sectors.<br><em>Twenty tracks.</em></h1>
-  <p class="hero-sub">Each sector maps to a real segment of the L&amp;D market — from enterprise SaaS to UN consultancy. Every track begins with an actual job posting or interview brief. The MLLDE sector is Ana's own design method, developed after industry conversations revealed the gap.</p>
+  <p class="hero-eyebrow" data-i18n="eyebrow">Profe Ana Eslava EdTech · Language Learning Architect</p>
+  <h1 data-i18n="hero-h1">Six sectors.<br><em>Twenty tracks.</em></h1>
+  <p class="hero-sub" data-i18n="hero-sub">Each sector maps to a real segment of the L&amp;D market — from enterprise SaaS to UN consultancy. Every track begins with an actual job posting or interview brief. The MLLDE sector is Ana's own design method, developed after industry conversations revealed the gap.</p>
   <div class="hero-chips">
     <span class="hero-chip">Ana Eslava-Graterol</span>
     <span class="hero-chip">HDD · Transformación Educativa Digital</span>
-    <a class="hero-chip" href="https://profeanaeslavaedtech.github.io/portofolio/" target="_blank" rel="noopener">Portfolio →</a>
-    <a class="hero-chip" href="assets/Ana-Eslava-Graterol-CV.pdf" download="Ana-Eslava-Graterol-CV.pdf">Download CV ↓</a>
+    <a class="hero-chip" href="https://profeanaeslavaedtech.github.io/portofolio/" target="_blank" rel="noopener" data-i18n="chip-portfolio">Portfolio →</a>
+    <a class="hero-chip" href="assets/Ana-Eslava-Graterol-CV.pdf" download="Ana-Eslava-Graterol-CV.pdf" data-i18n="chip-cv">Download CV ↓</a>
   </div>
 </div>
 
 <!-- TAB BAR -->
 <div class="tab-bar-wrapper">
   <div role="tablist" aria-label="Portfolio sections" class="tab-bar">
-    <button role="tab" id="tab-tracks"     aria-controls="panel-tracks"     aria-selected="true" >Tracks</button>
-    <button role="tab" id="tab-glossary"   aria-controls="panel-glossary"   aria-selected="false">Glossary</button>
-    <button role="tab" id="tab-references" aria-controls="panel-references" aria-selected="false">References</button>
+    <button role="tab" id="tab-tracks"     aria-controls="panel-tracks"     aria-selected="true"  data-i18n="tab-tracks">Tracks</button>
+    <button role="tab" id="tab-glossary"   aria-controls="panel-glossary"   aria-selected="false" data-i18n="tab-glossary">Glossary</button>
+    <button role="tab" id="tab-references" aria-controls="panel-references" aria-selected="false" data-i18n="tab-references">References</button>
   </div>
 </div>
 
@@ -379,44 +390,44 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 1 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <h2 class="sector-name">Enterprise SaaS &amp; Technical Stack</h2>
-      <p class="sector-context">Nexthink · SaaS Learning Architect · 2024–2025 interview prep</p>
+      <h2 class="sector-name" data-i18n="s1-name">Enterprise SaaS &amp; Technical Stack</h2>
+      <p class="sector-context" data-i18n="s1-ctx">Nexthink · SaaS Learning Architect · 2024–2025 interview prep</p>
     </div>
     <div class="card-row card-row-5">
       <a class="nav-card" href="./bootcamp/index.html">
-        <span class="nav-card-tag">Knowledge &amp; rehearsal</span>
+        <span class="nav-card-tag" data-i18n="c1-tag">Knowledge &amp; rehearsal</span>
         <div class="nav-card-icon" aria-hidden="true">🧭</div>
-        <h3>SaaS Training Bootcamp</h3>
-        <p>Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.</p>
-        <div class="nav-card-meta"><span>10 levels · ~3h</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c1-title">SaaS Training Bootcamp</h3>
+        <p data-i18n="c1-desc">Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.</p>
+        <div class="nav-card-meta"><span data-i18n="c1-meta">10 levels · ~3h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./handson/index.html">
-        <span class="nav-card-tag">Real artifacts</span>
+        <span class="nav-card-tag" data-i18n="c2-tag">Real artifacts</span>
         <div class="nav-card-icon" aria-hidden="true">🛠️</div>
-        <h3>SaaS Hands-On Track</h3>
-        <p>Fourteen scoped mini-projects covering the full Learning Architect role. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
-        <div class="nav-card-meta"><span>14 projects · 20–60 min each</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c2-title">SaaS Hands-On Track</h3>
+        <p data-i18n="c2-desc">Fourteen scoped mini-projects covering the full Learning Architect role. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
+        <div class="nav-card-meta"><span data-i18n="c2-meta">14 projects · 20–60 min each</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./articulate360/index.html">
-        <span class="nav-card-tag">Tool mastery</span>
+        <span class="nav-card-tag" data-i18n="c3-tag">Tool mastery</span>
         <div class="nav-card-icon" aria-hidden="true">🎨</div>
-        <h3>Articulate 360</h3>
-        <p>Fourteen projects across Rise 360 and Storyline 360 — from building your first block-based course to publishing SCORM packages, adding branching logic, and designing interactive assessments.</p>
-        <div class="nav-card-meta"><span>14 projects · Rise + Storyline</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c3-title">Articulate 360</h3>
+        <p data-i18n="c3-desc">Fourteen projects across Rise 360 and Storyline 360 — from building your first block-based course to publishing SCORM packages, adding branching logic, and designing interactive assessments.</p>
+        <div class="nav-card-meta"><span data-i18n="c3-meta">14 projects · Rise + Storyline</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./lrs/index.html">
-        <span class="nav-card-tag">Architecture</span>
+        <span class="nav-card-tag" data-i18n="c4-tag">Architecture</span>
         <div class="nav-card-icon" aria-hidden="true">🗄️</div>
-        <h3>LRS Architecture</h3>
-        <p>Hybrid B2C + B2B platform design — multi-tenancy, xAPI statement forwarding, permission scopes, cmi5 dynamic launch, and a full annotated code walkthrough of the two-scenario architecture.</p>
-        <div class="nav-card-meta"><span>15 steps · ~45 min</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c4-title">LRS Architecture</h3>
+        <p data-i18n="c4-desc">Hybrid B2C + B2B platform design — multi-tenancy, xAPI statement forwarding, permission scopes, cmi5 dynamic launch, and a full annotated code walkthrough of the two-scenario architecture.</p>
+        <div class="nav-card-meta"><span data-i18n="c4-meta">15 steps · ~45 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./scripting/index.html">
-        <span class="nav-card-tag">Developer track</span>
+        <span class="nav-card-tag" data-i18n="c5-tag">Developer track</span>
         <div class="nav-card-icon" aria-hidden="true">⚙️</div>
-        <h3>xAPI Scripting in Articulate 360</h3>
-        <p>Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.</p>
-        <div class="nav-card-meta"><span>13 steps · ~50 min</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c5-title">xAPI Scripting in Articulate 360</h3>
+        <p data-i18n="c5-desc">Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.</p>
+        <div class="nav-card-meta"><span data-i18n="c5-meta">13 steps · ~50 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
     </div>
   </div>
@@ -424,23 +435,23 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 2 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <h2 class="sector-name">Healthcare &amp; Corporate L&amp;D</h2>
-      <p class="sector-context">Johnson &amp; Johnson · R-085222 · Senior Learning Designer</p>
+      <h2 class="sector-name" data-i18n="s2-name">Healthcare &amp; Corporate L&amp;D</h2>
+      <p class="sector-context" data-i18n="s2-ctx">Johnson &amp; Johnson · R-085222 · Senior Learning Designer</p>
     </div>
     <div class="card-row card-row-2">
       <a class="nav-card" href="./jnj-bootcamp/index.html">
-        <span class="nav-card-tag">Duty-by-duty drill</span>
+        <span class="nav-card-tag" data-i18n="c6-tag">Duty-by-duty drill</span>
         <div class="nav-card-icon" aria-hidden="true">🏥</div>
-        <h3>Learning Designer Practice Lab</h3>
-        <p>Ten real cases mapped one-to-one to an actual qualifications list — storyboard a decision frame, audit an accessibility slide, diagnose misleading performance data, and build in Articulate Rise.</p>
-        <div class="nav-card-meta"><span>10 modules · ~3h</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c6-title">Learning Designer Practice Lab</h3>
+        <p data-i18n="c6-desc">Ten real cases mapped one-to-one to an actual qualifications list — storyboard a decision frame, audit an accessibility slide, diagnose misleading performance data, and build in Articulate Rise.</p>
+        <div class="nav-card-meta"><span data-i18n="c6-meta">10 modules · ~3h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./jnj-dual-track/index.html">
-        <span class="nav-card-tag">Bloom's progression</span>
+        <span class="nav-card-tag" data-i18n="c7-tag">Bloom's progression</span>
         <div class="nav-card-icon" aria-hidden="true">🧠</div>
-        <h3>Dual-Track: Designer vs. LXA</h3>
-        <p>Switch between the execution track (Learning Designer) and the strategy track (Learning Experience Architect). Every module is tagged Remember through Create — two full HLD-from-scratch exercises included.</p>
-        <div class="nav-card-meta"><span>10 + 8 modules · ~4h</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c7-title">Dual-Track: Designer vs. LXA</h3>
+        <p data-i18n="c7-desc">Switch between the execution track (Learning Designer) and the strategy track (Learning Experience Architect). Every module is tagged Remember through Create — two full HLD-from-scratch exercises included.</p>
+        <div class="nav-card-meta"><span data-i18n="c7-meta">10 + 8 modules · ~4h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
     </div>
   </div>
@@ -448,37 +459,37 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 3 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <h2 class="sector-name">AI &amp; Digital Literacy</h2>
-      <p class="sector-context">AI-enabled instructional design · Sector fluency</p>
+      <h2 class="sector-name" data-i18n="s3-name">AI &amp; Digital Literacy</h2>
+      <p class="sector-context" data-i18n="s3-ctx">AI-enabled instructional design · Sector fluency</p>
     </div>
     <div class="card-row card-row-4">
       <a class="nav-card" href="./ai-literacy/index.html">
-        <span class="nav-card-tag">AI fluency</span>
+        <span class="nav-card-tag" data-i18n="c8-tag">AI fluency</span>
         <div class="nav-card-icon" aria-hidden="true">🤖</div>
-        <h3>AI Literacy for IDs</h3>
-        <p>How RLHF works, why models hallucinate, and how instruction following succeeds or breaks — then translating it into safer prompt patterns and smarter AI-assisted design in Articulate 360.</p>
-        <div class="nav-card-meta"><span>12 steps · ~45 min · Curious → Strategist</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c8-title">AI Literacy for IDs</h3>
+        <p data-i18n="c8-desc">How RLHF works, why models hallucinate, and how instruction following succeeds or breaks — then translating it into safer prompt patterns and smarter AI-assisted design in Articulate 360.</p>
+        <div class="nav-card-meta"><span data-i18n="c8-meta">12 steps · ~45 min · Curious → Strategist</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./ai-skills-architect/index.html">
-        <span class="nav-card-tag">AI system design</span>
+        <span class="nav-card-tag" data-i18n="c9-tag">AI system design</span>
         <div class="nav-card-icon" aria-hidden="true">🧩</div>
-        <h3>AI Skills System Architect</h3>
-        <p>Five modules on designing, auditing and governing custom Claude skills for L&amp;D production — one-role-one-skill principle, trigger design, engine + pack, boundary declarations, and a live skills audit.</p>
-        <div class="nav-card-meta"><span>5 modules · governance · Claude</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c9-title">AI Skills System Architect</h3>
+        <p data-i18n="c9-desc">Five modules on designing, auditing and governing custom Claude skills for L&amp;D production — one-role-one-skill principle, trigger design, engine + pack, boundary declarations, and a live skills audit.</p>
+        <div class="nav-card-meta"><span data-i18n="c9-meta">5 modules · governance · Claude</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./tooling-sprint/index.html">
-        <span class="nav-card-tag">Skill build</span>
+        <span class="nav-card-tag" data-i18n="c10-tag">Skill build</span>
         <div class="nav-card-icon" aria-hidden="true">🔧</div>
-        <h3>Tooling Sprint</h3>
-        <p>Five hands-on modules to build fluency with the tools Learning Architects actually use — from AI-powered prototyping workflows to production-ready artifact templates and version control habits.</p>
-        <div class="nav-card-meta"><span>5 modules · hands-on</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c10-title">Tooling Sprint</h3>
+        <p data-i18n="c10-desc">Five hands-on modules to build fluency with the tools Learning Architects actually use — from AI-powered prototyping workflows to production-ready artifact templates and version control habits.</p>
+        <div class="nav-card-meta"><span data-i18n="c10-meta">5 modules · hands-on</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./cuxedtech.html">
-        <span class="nav-card-tag">AI plugin · UX design</span>
+        <span class="nav-card-tag" data-i18n="c11-tag">AI plugin · UX design</span>
         <div class="nav-card-icon" aria-hidden="true">✍️</div>
-        <h3>CUXedTech Plugin</h3>
-        <p>Claude plugin built after attending Antonio Estévez Funes's (BBVA) masterclass on UX Writing at the UPV. Five skills: UX Writing, Ocean Ink design system, integrated UX quality framework, AI disclosure, and routing. Learning by doing.</p>
-        <div class="nav-card-meta"><span>5 skills · v0.1.8 · downloadable</span><span class="nav-card-cta">Explore →</span></div>
+        <h3 data-i18n="c11-title">CUXedTech Plugin</h3>
+        <p data-i18n="c11-desc">Claude plugin built after attending Antonio Estévez Funes's (BBVA) masterclass on UX Writing at the UPV. Five skills: UX Writing, Ocean Ink design system, integrated UX quality framework, AI disclosure, and routing. Learning by doing.</p>
+        <div class="nav-card-meta"><span data-i18n="c11-meta">5 skills · v0.1.8 · downloadable</span><span class="nav-card-cta" data-i18n="cta-explore">Explore →</span></div>
       </a>
     </div>
   </div>
@@ -486,30 +497,30 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 4 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <h2 class="sector-name">Language Learning &amp; MLLDE</h2>
-      <p class="sector-context">MLLDE © Ana Eslava-Graterol · Born from Codeway &amp; Paltech interviews</p>
+      <h2 class="sector-name" data-i18n="s4-name">Language Learning &amp; MLLDE</h2>
+      <p class="sector-context" data-i18n="s4-ctx">MLLDE © Ana Eslava-Graterol · Born from Codeway &amp; Paltech interviews</p>
     </div>
     <div class="card-row card-row-3">
       <a class="nav-card" href="./language-learning-experience-designer/index.html">
-        <span class="nav-card-tag">Language design</span>
+        <span class="nav-card-tag" data-i18n="c12-tag">Language design</span>
         <div class="nav-card-icon" aria-hidden="true">🌐</div>
-        <h3>Language Learning Experience Designer</h3>
-        <p>Six modules from the MLLDE engine to the investor pack — CEFR anchoring, Avatar-as-Input lesson flow, AI tutor architecture, evidence metrics, and a full Language Passport destination design challenge.</p>
-        <div class="nav-card-meta"><span>6 modules · pedagogy to proof</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c12-title">Language Learning Experience Designer</h3>
+        <p data-i18n="c12-desc">Six modules from the MLLDE engine to the investor pack — CEFR anchoring, Avatar-as-Input lesson flow, AI tutor architecture, evidence metrics, and a full Language Passport destination design challenge.</p>
+        <div class="nav-card-meta"><span data-i18n="c12-meta">6 modules · pedagogy to proof</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./cefr-metrics-architect/index.html">
-        <span class="nav-card-tag">Measurement arm</span>
+        <span class="nav-card-tag" data-i18n="c13-tag">Measurement arm</span>
         <div class="nav-card-icon" aria-hidden="true">📊</div>
-        <h3>CEFR Learning Metrics Architect</h3>
-        <p>Five modules on designing defensible language learning metrics — the four evidence families, task gates, self-scaling rubrics, xAPI statement architecture, IRI registry discipline, and D1–D4 client deliverables.</p>
-        <div class="nav-card-meta"><span>5 modules · evidence · xAPI</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c13-title">CEFR Learning Metrics Architect</h3>
+        <p data-i18n="c13-desc">Five modules on designing defensible language learning metrics — the four evidence families, task gates, self-scaling rubrics, xAPI statement architecture, IRI registry discipline, and D1–D4 client deliverables.</p>
+        <div class="nav-card-meta"><span data-i18n="c13-meta">5 modules · evidence · xAPI</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./frameworks/index.html">
-        <span class="nav-card-tag">Framework fluency</span>
+        <span class="nav-card-tag" data-i18n="c14-tag">Framework fluency</span>
         <div class="nav-card-icon" aria-hidden="true">🏛️</div>
-        <h3>EU Frameworks</h3>
-        <p>Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.</p>
-        <div class="nav-card-meta"><span>~45 min · Newcomer → Pioneer</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c14-title">EU Frameworks</h3>
+        <p data-i18n="c14-desc">Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.</p>
+        <div class="nav-card-meta"><span data-i18n="c14-meta">~45 min · Newcomer → Pioneer</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
     </div>
   </div>
@@ -517,30 +528,30 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 5 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <h2 class="sector-name">International &amp; NGO</h2>
-      <p class="sector-context">UNICEF Supply Division · TMC0004741 · K-12 ELL gap</p>
+      <h2 class="sector-name" data-i18n="s5-name">International &amp; NGO</h2>
+      <p class="sector-context" data-i18n="s5-ctx">UNICEF Supply Division · TMC0004741 · K-12 ELL gap</p>
     </div>
     <div class="card-row card-row-3">
       <a class="nav-card" href="./unicef/index.html">
-        <span class="nav-card-tag">UN consultancy</span>
+        <span class="nav-card-tag" data-i18n="c15-tag">UN consultancy</span>
         <div class="nav-card-icon" aria-hidden="true">🌍</div>
-        <h3>UNICEF Digital Learning Consultant</h3>
-        <p>Ten modules built from the real UNICEF Supply Division ToR — Agora LMS, multilingual Rise workflows, vendor governance, and a full panel simulation for the ToR TMC0004741 brief.</p>
-        <div class="nav-card-meta"><span>10 modules · ~3h</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c15-title">UNICEF Digital Learning Consultant</h3>
+        <p data-i18n="c15-desc">Ten modules built from the real UNICEF Supply Division ToR — Agora LMS, multilingual Rise workflows, vendor governance, and a full panel simulation for the ToR TMC0004741 brief.</p>
+        <div class="nav-card-meta"><span data-i18n="c15-meta">10 modules · ~3h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./wida-k12/index.html">
-        <span class="nav-card-tag">Gap module</span>
+        <span class="nav-card-tag" data-i18n="c16-tag">Gap module</span>
         <div class="nav-card-icon" aria-hidden="true">📚</div>
-        <h3>WIDA &amp; US K-12 ELL</h3>
-        <p>Five targeted modules closing the US K-12 knowledge gap — WIDA standards, ELL proficiency levels, BICS vs. CALP, IEP/504 intersections, and applying federal policy in instructional design.</p>
-        <div class="nav-card-meta"><span>5 modules · ~1.5h</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c16-title">WIDA &amp; US K-12 ELL</h3>
+        <p data-i18n="c16-desc">Five targeted modules closing the US K-12 knowledge gap — WIDA standards, ELL proficiency levels, BICS vs. CALP, IEP/504 intersections, and applying federal policy in instructional design.</p>
+        <div class="nav-card-meta"><span data-i18n="c16-meta">5 modules · ~1.5h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./unicef-apply/index.html">
-        <span class="nav-card-tag">Application craft</span>
+        <span class="nav-card-tag" data-i18n="c17-tag">Application craft</span>
         <div class="nav-card-icon" aria-hidden="true">📝</div>
-        <h3>UNICEF Application Strategy</h3>
-        <p>Five modules on turning a UNICEF posting into a winning application — cover letter architecture, competency framing, ToR decoding, digital skills vocabulary, and a complete submission checklist.</p>
-        <div class="nav-card-meta"><span>5 modules · ~1h</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c17-title">UNICEF Application Strategy</h3>
+        <p data-i18n="c17-desc">Five modules on turning a UNICEF posting into a winning application — cover letter architecture, competency framing, ToR decoding, digital skills vocabulary, and a complete submission checklist.</p>
+        <div class="nav-card-meta"><span data-i18n="c17-meta">5 modules · ~1h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
     </div>
   </div>
@@ -548,44 +559,44 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 6 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <h2 class="sector-name">Career &amp; Transversal</h2>
-      <p class="sector-context">L&amp;D job market strategy · Portfolio positioning · Transversal competencies</p>
+      <h2 class="sector-name" data-i18n="s6-name">Career &amp; Transversal</h2>
+      <p class="sector-context" data-i18n="s6-ctx">L&amp;D job market strategy · Portfolio positioning · Transversal competencies</p>
     </div>
     <div class="card-row card-row-5">
       <a class="nav-card" href="./job-search/index.html">
-        <span class="nav-card-tag">Search intelligence</span>
+        <span class="nav-card-tag" data-i18n="c18-tag">Search intelligence</span>
         <div class="nav-card-icon" aria-hidden="true">🔍</div>
-        <h3>Job Search Intelligence</h3>
-        <p>Five modules on reading the L&amp;D job market like a strategist — posting decoding, compensation research, networking through evidence, application timing, and a live job-search audit checklist.</p>
-        <div class="nav-card-meta"><span>5 modules · ~45 min</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c18-title">Job Search Intelligence</h3>
+        <p data-i18n="c18-desc">Five modules on reading the L&amp;D job market like a strategist — posting decoding, compensation research, networking through evidence, application timing, and a live job-search audit checklist.</p>
+        <div class="nav-card-meta"><span data-i18n="c18-meta">5 modules · ~45 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./change-management/index.html">
-        <span class="nav-card-tag">ADKAR · Change</span>
+        <span class="nav-card-tag" data-i18n="c19-tag">ADKAR · Change</span>
         <div class="nav-card-icon" aria-hidden="true">🔄</div>
-        <h3>Change Management for L&amp;D</h3>
-        <p>Prosci ADKAR model applied to learning initiatives — stakeholder mapping, resistance diagnosis, adoption metrics, and a change-impact analysis artefact. Anchored to real enterprise postings (Bacardi, Air Canada, Blackbaud).</p>
-        <div class="nav-card-meta"><span>4 modules · ~40 min</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c19-title">Change Management for L&amp;D</h3>
+        <p data-i18n="c19-desc">Prosci ADKAR model applied to learning initiatives — stakeholder mapping, resistance diagnosis, adoption metrics, and a change-impact analysis artefact. Anchored to real enterprise postings (Bacardi, Air Canada, Blackbaud).</p>
+        <div class="nav-card-meta"><span data-i18n="c19-meta">4 modules · ~40 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./facilitation/index.html">
-        <span class="nav-card-tag">Virtual delivery</span>
+        <span class="nav-card-tag" data-i18n="c20-tag">Virtual delivery</span>
         <div class="nav-card-icon" aria-hidden="true">🎙️</div>
-        <h3>Live Facilitation &amp; Webinar Design</h3>
-        <p>Design and deliver a 30-minute virtual session from scratch — facilitation principles, slide-to-workshop conversion, Zoom/Teams engagement techniques. Deliverable: a recorded webinar on MLLDE or accessibility (portfolio-ready).</p>
-        <div class="nav-card-meta"><span>3 modules · ~50 min</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c20-title">Live Facilitation &amp; Webinar Design</h3>
+        <p data-i18n="c20-desc">Design and deliver a 30-minute virtual session from scratch — facilitation principles, slide-to-workshop conversion, Zoom/Teams engagement techniques. Deliverable: a recorded webinar on MLLDE or accessibility (portfolio-ready).</p>
+        <div class="nav-card-meta"><span data-i18n="c20-meta">3 modules · ~50 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./ux-ui/index.html">
-        <span class="nav-card-tag">Design evidence</span>
+        <span class="nav-card-tag" data-i18n="c21-tag">Design evidence</span>
         <div class="nav-card-icon" aria-hidden="true">🖼️</div>
-        <h3>UX/UI Design for Learning</h3>
-        <p>Evidence-led UX/UI: wireframes, usability testing (AWJ 10/10), interface design (Ocean Ink system), and the learner-experience layer of TK CoachAI for Talketika. Converts existing work into public portfolio evidence.</p>
-        <div class="nav-card-meta"><span>4 modules · ~45 min</span><span class="nav-card-cta">Enter →</span></div>
+        <h3 data-i18n="c21-title">UX/UI Design for Learning</h3>
+        <p data-i18n="c21-desc">Evidence-led UX/UI: wireframes, usability testing (AWJ 10/10), interface design (Ocean Ink system), and the learner-experience layer of TK CoachAI for Talketika. Converts existing work into public portfolio evidence.</p>
+        <div class="nav-card-meta"><span data-i18n="c21-meta">4 modules · ~45 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
       </a>
       <a class="nav-card" href="./cuxedtech.html">
-        <span class="nav-card-tag">Applied design</span>
+        <span class="nav-card-tag" data-i18n="c22-tag">Applied design</span>
         <div class="nav-card-icon" aria-hidden="true">◈</div>
-        <h3>CUXedTech in body</h3>
-        <p>Learning looks good. Ocean Ink applied to real learning interfaces, UX Writing in live microcopy, and 12 quality dimensions made visible in a deployable Claude plugin.</p>
-        <div class="nav-card-meta"><span>5 skills · v0.1.8 · interactive</span><span class="nav-card-cta">Explore →</span></div>
+        <h3 data-i18n="c22-title">CUXedTech in body</h3>
+        <p data-i18n="c22-desc">Learning looks good. Ocean Ink applied to real learning interfaces, UX Writing in live microcopy, and 12 quality dimensions made visible in a deployable Claude plugin.</p>
+        <div class="nav-card-meta"><span data-i18n="c22-meta">5 skills · v0.1.8 · interactive</span><span class="nav-card-cta" data-i18n="cta-explore">Explore →</span></div>
       </a>
     </div>
   </div>
@@ -596,10 +607,10 @@ footer a:hover { text-decoration: underline; }
 <!-- ═══════════════════════════════════════════ PANEL: GLOSSARY ═══ -->
 <div id="panel-glossary" role="tabpanel" aria-labelledby="tab-glossary" hidden>
 <div class="glossary-wrapper">
-  <h2 class="panel-title">Glossary of Acronyms</h2>
-  <p class="panel-subtitle">Every acronym used across the twenty tracks, defined in full. Jump to a letter or scroll through.</p>
+  <h2 class="panel-title" data-i18n="gl-title">Glossary of Acronyms</h2>
+  <p class="panel-subtitle" data-i18n="gl-sub">Every acronym used across the twenty tracks, defined in full. Jump to a letter or scroll through.</p>
 
-  <nav class="alpha-nav" aria-label="Jump to letter">
+  <nav class="alpha-nav" aria-label="Jump to letter" data-i18n-label="gl-nav-label">
     <a href="#gl-a" class="has-entries">A</a>
     <a href="#gl-b" class="has-entries">B</a>
     <a href="#gl-c" class="has-entries">C</a>
@@ -1223,10 +1234,10 @@ footer a:hover { text-decoration: underline; }
 <!-- ═══════════════════════════════════════════ PANEL: REFERENCES ═══ -->
 <div id="panel-references" role="tabpanel" aria-labelledby="tab-references" hidden>
 <div class="refs-wrapper">
-  <h2 class="panel-title">References</h2>
-  <p class="panel-subtitle" style="margin-bottom:32px">Sources and further reading, organized by topic. APA 7th edition · DOI included where available.</p>
+  <h2 class="panel-title" data-i18n="ref-title">References</h2>
+  <p class="panel-subtitle" style="margin-bottom:32px" data-i18n="ref-sub">Sources and further reading, organized by topic. APA 7th edition · DOI included where available.</p>
 
-  <h3 class="refs-section-title">eLearning Technology &amp; Standards</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s1">eLearning Technology &amp; Standards</h3>
   <ol class="refs-list">
     <li>ADL Initiative. (2016). <em>xAPI specification v1.0.3.</em> Advanced Distributed Learning.<br><a href="https://github.com/adlnet/xAPI-Spec">https://github.com/adlnet/xAPI-Spec</a></li>
     <li>ADL / AICC. (2023). <em>cmi5 specification v1.0.0.</em> ADL Initiative.<br><a href="https://aicc.github.io/CMI-5_Spec_Current/">https://aicc.github.io/CMI-5_Spec_Current/</a></li>
@@ -1235,7 +1246,7 @@ footer a:hover { text-decoration: underline; }
     <li>Rustici Software. (2024). <em>SCORM explained.</em><br><a href="https://scorm.com/scorm-explained/">https://scorm.com/scorm-explained/</a></li>
   </ol>
 
-  <h3 class="refs-section-title">Instructional Design Models &amp; Cognitive Theory</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s2">Instructional Design Models &amp; Cognitive Theory</h3>
   <ol class="refs-list">
     <li>Allen, M. W. (2012). <em>Leaving ADDIE for SAM: An agile model for developing the best learning experiences.</em> ASTD Press.</li>
     <li>Bloom, B. S., Engelhart, M. D., Furst, E. J., Hill, W. H., &amp; Krathwohl, D. R. (1956). <em>Taxonomy of educational objectives: Handbook 1: Cognitive domain.</em> David McKay.</li>
@@ -1249,7 +1260,7 @@ footer a:hover { text-decoration: underline; }
     <li>Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. <em>Cognitive Science, 12</em>(2), 257–285.</li>
   </ol>
 
-  <h3 class="refs-section-title">Language Learning, CEFR &amp; MLLDE</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s3">Language Learning, CEFR &amp; MLLDE</h3>
   <ol class="refs-list">
     <li>Council of Europe. (2001). <em>Common European Framework of Reference for Languages: Learning, teaching, assessment.</em> Cambridge University Press.</li>
     <li>Council of Europe. (2020). <em>Common European Framework of Reference for Languages: Learning, teaching, assessment — Companion volume.</em><br><a href="https://www.coe.int/en/web/common-european-framework-reference-languages">https://www.coe.int/en/web/common-european-framework-reference-languages</a></li>
@@ -1262,7 +1273,7 @@ footer a:hover { text-decoration: underline; }
     <li>Scrivener, J. (2011). <em>Learning teaching: The essential guide to English language teaching</em> (3rd ed.). Macmillan Education.</li>
   </ol>
 
-  <h3 class="refs-section-title">EU Digital Competency Frameworks</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s4">EU Digital Competency Frameworks</h3>
   <ol class="refs-list">
     <li>CEN. (2014). <em>European e-Competence Framework (e-CF) 3.0</em> (CWA 16234). European Committee for Standardisation.</li>
     <li>ENISA. (2022). <em>European Cybersecurity Skills Framework (ECSF).</em><br><a href="https://www.enisa.europa.eu/topics/cybersecurity-education/european-cybersecurity-skills-framework">https://www.enisa.europa.eu/topics/cybersecurity-education</a></li>
@@ -1272,7 +1283,7 @@ footer a:hover { text-decoration: underline; }
     <li>Vuorikari, R., Kluzer, S., &amp; Punie, Y. (2022). <em>DigComp 2.2: The Digital Competence Framework for Citizens</em> (JRC128415). Publications Office of the EU.<br><a href="https://doi.org/10.2760/115376">https://doi.org/10.2760/115376</a></li>
   </ol>
 
-  <h3 class="refs-section-title">US K-12 ELL Policy &amp; Assessment</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s5">US K-12 ELL Policy &amp; Assessment</h3>
   <ol class="refs-list">
     <li>California Department of Education. (2023). <em>ELPAC: English Language Proficiency Assessments for California.</em><br><a href="https://www.elpac.org">https://www.elpac.org</a></li>
     <li>Cummins, J. (1979). Cognitive/academic language proficiency, linguistic interdependence, the optimum age question and some other matters. <em>Working Papers on Bilingualism, 19,</em> 121–129.</li>
@@ -1282,21 +1293,21 @@ footer a:hover { text-decoration: underline; }
     <li>WIDA Consortium. (2020). <em>WIDA English Language Development Standards Framework, 2020 edition: Kindergarten–Grade 12.</em> Board of Regents of the University of Wisconsin System.</li>
   </ol>
 
-  <h3 class="refs-section-title">Artificial Intelligence &amp; Learning</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s6">Artificial Intelligence &amp; Learning</h3>
   <ol class="refs-list">
     <li>Holmes, W., Bialik, M., &amp; Fadel, C. (2019). <em>Artificial intelligence in education: Promises and implications for teaching and learning.</em> Center for Curriculum Redesign.</li>
     <li>Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C., Mishkin, P., Zhang, C., Agarwal, S., Slama, K., Ray, A., Schulman, J., Hilton, J., Kelton, F., Miller, L., Simens, M., Askell, A., Welinder, P., Christiano, P., Leike, J., &amp; Lowe, R. (2022). Training language models to follow instructions with human feedback. <em>Advances in Neural Information Processing Systems, 35,</em> 27730–27744.<br><a href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a></li>
     <li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017). Attention is all you need. <em>Advances in Neural Information Processing Systems, 30.</em><br><a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
   </ol>
 
-  <h3 class="refs-section-title">Accessibility Standards</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s7">Accessibility Standards</h3>
   <ol class="refs-list">
     <li>European Parliament &amp; Council. (2019). <em>Directive (EU) 2019/882 on the accessibility requirements for products and services (European Accessibility Act).</em></li>
     <li>W3C Web Accessibility Initiative. (2018). <em>Web Content Accessibility Guidelines (WCAG) 2.1.</em><br><a href="https://www.w3.org/TR/WCAG21/">https://www.w3.org/TR/WCAG21/</a></li>
     <li>W3C Web Accessibility Initiative. (2023). <em>Web Content Accessibility Guidelines (WCAG) 2.2.</em><br><a href="https://www.w3.org/TR/WCAG22/">https://www.w3.org/TR/WCAG22/</a></li>
   </ol>
 
-  <h3 class="refs-section-title">Legal &amp; Data Protection</h3>
+  <h3 class="refs-section-title" data-i18n="ref-s8">Legal &amp; Data Protection</h3>
   <ol class="refs-list">
     <li>European Parliament &amp; Council. (2016). <em>Regulation (EU) 2016/679 on the protection of natural persons with regard to the processing of personal data (GDPR).</em><br><a href="https://gdpr-info.eu">https://gdpr-info.eu</a></li>
     <li>European Parliament &amp; Council. (2024). <em>Regulation (EU) 2024/1689 of the European Parliament and of the Council of 13 June 2024 laying down harmonised rules on artificial intelligence (Artificial Intelligence Act).</em> Official Journal of the European Union, OJ L 2024/1689, 12 July 2024. Art. 50: Transparency obligations — providers of AI systems that generate or manipulate text, images, audio or video must ensure outputs are marked as AI-generated in a machine-readable format; providers of AI systems intended to interact directly with natural persons must inform users they are interacting with an AI.<br><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689">https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689</a></li>
@@ -1313,12 +1324,346 @@ footer a:hover { text-decoration: underline; }
 </div><!-- /panel-references -->
 
 <footer>
-  Built for learning. <a href="https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech">View source on GitHub</a>
+  <span data-i18n="footer-built">Built for learning.</span> <a href="https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech" data-i18n="footer-gh">View source on GitHub</a>
   &nbsp;·&nbsp; AE Evolution — Ocean Ink · November 2026
-  <br>¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a>
+  <br><span data-i18n="footer-ai">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer</span> · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a>
 </footer>
 
 <script>
+/* ── i18n — bilingual EN / ES ── */
+(function () {
+  var T = {
+    en: {
+      'page-title':   'Language Learning Architect Bootcamp — Ana Eslava-Graterol',
+      'skip-link':    'Skip to content',
+      'eyebrow':      'Profe Ana Eslava EdTech · Language Learning Architect',
+      'hero-h1':      'Six sectors.<br><em>Twenty tracks.</em>',
+      'hero-sub':     'Each sector maps to a real segment of the L&amp;D market — from enterprise SaaS to UN consultancy. Every track begins with an actual job posting or interview brief. The MLLDE sector is Ana\'s own design method, developed after industry conversations revealed the gap.',
+      'chip-portfolio':'Portfolio →',
+      'chip-cv':      'Download CV ↓',
+      'tab-tracks':   'Tracks',
+      'tab-glossary': 'Glossary',
+      'tab-references':'References',
+      /* Sectors */
+      's1-name': 'Enterprise SaaS &amp; Technical Stack',
+      's1-ctx':  'Nexthink · SaaS Learning Architect · 2024–2025 interview prep',
+      's2-name': 'Healthcare &amp; Corporate L&amp;D',
+      's2-ctx':  'Johnson &amp; Johnson · R-085222 · Senior Learning Designer',
+      's3-name': 'AI &amp; Digital Literacy',
+      's3-ctx':  'AI-enabled instructional design · Sector fluency',
+      's4-name': 'Language Learning &amp; MLLDE',
+      's4-ctx':  'MLLDE © Ana Eslava-Graterol · Born from Codeway &amp; Paltech interviews',
+      's5-name': 'International &amp; NGO',
+      's5-ctx':  'UNICEF Supply Division · TMC0004741 · K-12 ELL gap',
+      's6-name': 'Career &amp; Transversal',
+      's6-ctx':  'L&amp;D job market strategy · Portfolio positioning · Transversal competencies',
+      /* CTAs */
+      'cta-enter':   'Enter →',
+      'cta-explore': 'Explore →',
+      /* Cards — Sector 1 */
+      'c1-tag':   'Knowledge &amp; rehearsal',
+      'c1-title': 'SaaS Training Bootcamp',
+      'c1-desc':  'Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.',
+      'c1-meta':  '10 levels · ~3h',
+      'c2-tag':   'Real artifacts',
+      'c2-title': 'SaaS Hands-On Track',
+      'c2-desc':  'Fourteen scoped mini-projects covering the full Learning Architect role. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.',
+      'c2-meta':  '14 projects · 20–60 min each',
+      'c3-tag':   'Tool mastery',
+      'c3-title': 'Articulate 360',
+      'c3-desc':  'Fourteen projects across Rise 360 and Storyline 360 — from building your first block-based course to publishing SCORM packages, adding branching logic, and designing interactive assessments.',
+      'c3-meta':  '14 projects · Rise + Storyline',
+      'c4-tag':   'Architecture',
+      'c4-title': 'LRS Architecture',
+      'c4-desc':  'Hybrid B2C + B2B platform design — multi-tenancy, xAPI statement forwarding, permission scopes, cmi5 dynamic launch, and a full annotated code walkthrough of the two-scenario architecture.',
+      'c4-meta':  '15 steps · ~45 min',
+      'c5-tag':   'Developer track',
+      'c5-title': 'xAPI Scripting in Articulate 360',
+      'c5-desc':  'Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.',
+      'c5-meta':  '13 steps · ~50 min',
+      /* Cards — Sector 2 */
+      'c6-tag':   'Duty-by-duty drill',
+      'c6-title': 'Learning Designer Practice Lab',
+      'c6-desc':  'Ten real cases mapped one-to-one to an actual qualifications list — storyboard a decision frame, audit an accessibility slide, diagnose misleading performance data, and build in Articulate Rise.',
+      'c6-meta':  '10 modules · ~3h',
+      'c7-tag':   "Bloom's progression",
+      'c7-title': 'Dual-Track: Designer vs. LXA',
+      'c7-desc':  'Switch between the execution track (Learning Designer) and the strategy track (Learning Experience Architect). Every module is tagged Remember through Create — two full HLD-from-scratch exercises included.',
+      'c7-meta':  '10 + 8 modules · ~4h',
+      /* Cards — Sector 3 */
+      'c8-tag':   'AI fluency',
+      'c8-title': 'AI Literacy for IDs',
+      'c8-desc':  'How RLHF works, why models hallucinate, and how instruction following succeeds or breaks — then translating it into safer prompt patterns and smarter AI-assisted design in Articulate 360.',
+      'c8-meta':  '12 steps · ~45 min · Curious → Strategist',
+      'c9-tag':   'AI system design',
+      'c9-title': 'AI Skills System Architect',
+      'c9-desc':  'Five modules on designing, auditing and governing custom Claude skills for L&amp;D production — one-role-one-skill principle, trigger design, engine + pack, boundary declarations, and a live skills audit.',
+      'c9-meta':  '5 modules · governance · Claude',
+      'c10-tag':  'Skill build',
+      'c10-title':'Tooling Sprint',
+      'c10-desc': 'Five hands-on modules to build fluency with the tools Learning Architects actually use — from AI-powered prototyping workflows to production-ready artifact templates and version control habits.',
+      'c10-meta': '5 modules · hands-on',
+      'c11-tag':  'AI plugin · UX design',
+      'c11-title':'CUXedTech Plugin',
+      'c11-desc': 'Claude plugin built after attending Antonio Estévez Funes\'s (BBVA) masterclass on UX Writing at the UPV. Five skills: UX Writing, Ocean Ink design system, integrated UX quality framework, AI disclosure, and routing. Learning by doing.',
+      'c11-meta': '5 skills · v0.1.8 · downloadable',
+      /* Cards — Sector 4 */
+      'c12-tag':  'Language design',
+      'c12-title':'Language Learning Experience Designer',
+      'c12-desc': 'Six modules from the MLLDE engine to the investor pack — CEFR anchoring, Avatar-as-Input lesson flow, AI tutor architecture, evidence metrics, and a full Language Passport destination design challenge.',
+      'c12-meta': '6 modules · pedagogy to proof',
+      'c13-tag':  'Measurement arm',
+      'c13-title':'CEFR Learning Metrics Architect',
+      'c13-desc': 'Five modules on designing defensible language learning metrics — the four evidence families, task gates, self-scaling rubrics, xAPI statement architecture, IRI registry discipline, and D1–D4 client deliverables.',
+      'c13-meta': '5 modules · evidence · xAPI',
+      'c14-tag':  'Framework fluency',
+      'c14-title':'EU Frameworks',
+      'c14-desc': 'Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.',
+      'c14-meta': '~45 min · Newcomer → Pioneer',
+      /* Cards — Sector 5 */
+      'c15-tag':  'UN consultancy',
+      'c15-title':'UNICEF Digital Learning Consultant',
+      'c15-desc': 'Ten modules built from the real UNICEF Supply Division ToR — Agora LMS, multilingual Rise workflows, vendor governance, and a full panel simulation for the ToR TMC0004741 brief.',
+      'c15-meta': '10 modules · ~3h',
+      'c16-tag':  'Gap module',
+      'c16-title':'WIDA &amp; US K-12 ELL',
+      'c16-desc': 'Five targeted modules closing the US K-12 knowledge gap — WIDA standards, ELL proficiency levels, BICS vs. CALP, IEP/504 intersections, and applying federal policy in instructional design.',
+      'c16-meta': '5 modules · ~1.5h',
+      'c17-tag':  'Application craft',
+      'c17-title':'UNICEF Application Strategy',
+      'c17-desc': 'Five modules on turning a UNICEF posting into a winning application — cover letter architecture, competency framing, ToR decoding, digital skills vocabulary, and a complete submission checklist.',
+      'c17-meta': '5 modules · ~1h',
+      /* Cards — Sector 6 */
+      'c18-tag':  'Search intelligence',
+      'c18-title':'Job Search Intelligence',
+      'c18-desc': 'Five modules on reading the L&amp;D job market like a strategist — posting decoding, compensation research, networking through evidence, application timing, and a live job-search audit checklist.',
+      'c18-meta': '5 modules · ~45 min',
+      'c19-tag':  'ADKAR · Change',
+      'c19-title':'Change Management for L&amp;D',
+      'c19-desc': 'Prosci ADKAR model applied to learning initiatives — stakeholder mapping, resistance diagnosis, adoption metrics, and a change-impact analysis artefact. Anchored to real enterprise postings (Bacardi, Air Canada, Blackbaud).',
+      'c19-meta': '4 modules · ~40 min',
+      'c20-tag':  'Virtual delivery',
+      'c20-title':'Live Facilitation &amp; Webinar Design',
+      'c20-desc': 'Design and deliver a 30-minute virtual session from scratch — facilitation principles, slide-to-workshop conversion, Zoom/Teams engagement techniques. Deliverable: a recorded webinar on MLLDE or accessibility (portfolio-ready).',
+      'c20-meta': '3 modules · ~50 min',
+      'c21-tag':  'Design evidence',
+      'c21-title':'UX/UI Design for Learning',
+      'c21-desc': 'Evidence-led UX/UI: wireframes, usability testing (AWJ 10/10), interface design (Ocean Ink system), and the learner-experience layer of TK CoachAI for Talketika. Converts existing work into public portfolio evidence.',
+      'c21-meta': '4 modules · ~45 min',
+      'c22-tag':  'Applied design',
+      'c22-title':'CUXedTech in body',
+      'c22-desc': 'Learning looks good. Ocean Ink applied to real learning interfaces, UX Writing in live microcopy, and 12 quality dimensions made visible in a deployable Claude plugin.',
+      'c22-meta': '5 skills · v0.1.8 · interactive',
+      /* Glossary */
+      'gl-title':     'Glossary of Acronyms',
+      'gl-sub':       'Every acronym used across the twenty tracks, defined in full. Jump to a letter or scroll through.',
+      'gl-nav-label': 'Jump to letter',
+      /* References */
+      'ref-title': 'References',
+      'ref-sub':   'Sources and further reading, organized by topic. APA 7th edition · DOI included where available.',
+      'ref-s1': 'eLearning Technology &amp; Standards',
+      'ref-s2': 'Instructional Design Models &amp; Cognitive Theory',
+      'ref-s3': 'Language Learning, CEFR &amp; MLLDE',
+      'ref-s4': 'EU Digital Competency Frameworks',
+      'ref-s5': 'US K-12 ELL Policy &amp; Assessment',
+      'ref-s6': 'Artificial Intelligence &amp; Learning',
+      'ref-s7': 'Accessibility Standards',
+      'ref-s8': 'Legal &amp; Data Protection',
+      /* Footer */
+      'footer-built': 'Built for learning.',
+      'footer-gh':    'View source on GitHub',
+      'footer-ai':    '¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer'
+    },
+
+    es: {
+      'page-title':   'Bootcamp Arquitecta de Aprendizaje de Lenguas — Ana Eslava-Graterol',
+      'skip-link':    'Ir al contenido',
+      'eyebrow':      'Profe Ana Eslava EdTech · Arquitecta de Aprendizaje de Lenguas',
+      'hero-h1':      'Seis sectores.<br><em>Veinte itinerarios.</em>',
+      'hero-sub':     'Cada sector mapea un segmento real del mercado de L&amp;D — desde SaaS empresarial hasta consultoría en la ONU. Cada itinerario parte de una oferta de trabajo real o de un brief de entrevista. El sector MLLDE es el método de diseño propio de Ana, desarrollado tras conversaciones con la industria que revelaron el vacío.',
+      'chip-portfolio':'Portafolio →',
+      'chip-cv':      'Descargar CV ↓',
+      'tab-tracks':   'Itinerarios',
+      'tab-glossary': 'Glosario',
+      'tab-references':'Referencias',
+      /* Sectors */
+      's1-name': 'Enterprise SaaS y Stack Técnico',
+      's1-ctx':  'Nexthink · SaaS Learning Architect · Prep. entrevista 2024–2025',
+      's2-name': 'Sanidad y L&amp;D Corporativo',
+      's2-ctx':  'Johnson &amp; Johnson · R-085222 · Senior Learning Designer',
+      's3-name': 'IA y Cultura Digital',
+      's3-ctx':  'Diseño instruccional con IA · Fluidez sectorial',
+      's4-name': 'Aprendizaje de Lenguas y MLLDE',
+      's4-ctx':  'MLLDE © Ana Eslava-Graterol · Surgido de entrevistas Codeway &amp; Paltech',
+      's5-name': 'Internacional y ONG',
+      's5-ctx':  'UNICEF Supply Division · TMC0004741 · Brecha K-12 ELL',
+      's6-name': 'Carrera y Transversales',
+      's6-ctx':  'Estrategia en el mercado L&amp;D · Posicionamiento de portafolio · Competencias transversales',
+      /* CTAs */
+      'cta-enter':   'Entrar →',
+      'cta-explore': 'Explorar →',
+      /* Cards — Sector 1 */
+      'c1-tag':   'Conocimiento y práctica',
+      'c1-title': 'Bootcamp SaaS',
+      'c1-desc':  'Diez niveles gamificados: SCORM vs. xAPI, Rise vs. Storyline, telemetría en LMS, gamificación para adultos y un simulacro de panel completo — cronometrado, estructurado, sin segundas oportunidades.',
+      'c1-meta':  '10 niveles · ~3h',
+      'c2-tag':   'Artefactos reales',
+      'c2-title': 'Prácticas SaaS',
+      'c2-desc':  'Catorce miniproyectos acotados que cubren el rol completo de Learning Architect. Cada uno produce algo real que puedes abrir y mostrar: un storyboard, una lección Rise publicada, un blueprint de certificación.',
+      'c2-meta':  '14 proyectos · 20–60 min c/u',
+      'c3-tag':   'Dominio de herramientas',
+      'c3-title': 'Articulate 360',
+      'c3-desc':  'Catorce proyectos en Rise 360 y Storyline 360 — desde tu primer curso basado en bloques hasta paquetes SCORM publicados, lógica de ramificación y evaluaciones interactivas.',
+      'c3-meta':  '14 proyectos · Rise + Storyline',
+      'c4-tag':   'Arquitectura',
+      'c4-title': 'Arquitectura de LRS',
+      'c4-desc':  'Diseño de plataforma híbrida B2C + B2B — multi-tenant, reenvío de sentencias xAPI, permisos, lanzamiento dinámico cmi5 y un recorrido completo del código de la arquitectura de dos escenarios.',
+      'c4-meta':  '15 pasos · ~45 min',
+      'c5-tag':   'Itinerario desarrollador',
+      'c5-title': 'xAPI Scripting en Articulate 360',
+      'c5-desc':  'Escribe JavaScript que conecta tus cursos de Storyline 360 y Rise 360 a un LRS. Sentencias personalizadas, triggers Execute JavaScript, parámetros cmi5, patrones GetVar() y flujo de depuración.',
+      'c5-meta':  '13 pasos · ~50 min',
+      /* Cards — Sector 2 */
+      'c6-tag':   'Simulacros tarea a tarea',
+      'c6-title': 'Laboratorio del Learning Designer',
+      'c6-desc':  'Diez casos reales mapeados uno a uno con una lista de cualificaciones real — redacta un marco de decisión, audita una diapositiva de accesibilidad, diagnostica datos de rendimiento engañosos y construye en Articulate Rise.',
+      'c6-meta':  '10 módulos · ~3h',
+      'c7-tag':   'Progresión de Bloom',
+      'c7-title': 'Itinerario Dual: Designer vs. LXA',
+      'c7-desc':  'Alterna entre el itinerario de ejecución (Learning Designer) y el de estrategia (Learning Experience Architect). Cada módulo está etiquetado de Recordar hasta Crear — dos ejercicios completos de HDD desde cero incluidos.',
+      'c7-meta':  '10 + 8 módulos · ~4h',
+      /* Cards — Sector 3 */
+      'c8-tag':   'Fluidez en IA',
+      'c8-title': 'Alfabetización en IA para Diseñadores',
+      'c8-desc':  'Cómo funciona RLHF, por qué los modelos alucinan y cómo funciona (o falla) el seguimiento de instrucciones — y cómo traducirlo en patrones de prompt más seguros y un diseño asistido por IA más inteligente en Articulate 360.',
+      'c8-meta':  '12 pasos · ~45 min · Curioso → Estratega',
+      'c9-tag':   'Diseño de sistemas de IA',
+      'c9-title': 'Arquitecto de Skills de IA',
+      'c9-desc':  'Cinco módulos sobre diseño, auditoría y gobernanza de skills personalizadas de Claude para producción L&amp;D — principio un-rol-una-skill, diseño de triggers, motor + pack, declaraciones de frontera y una auditoría de skills en vivo.',
+      'c9-meta':  '5 módulos · gobernanza · Claude',
+      'c10-tag':  'Construcción de competencias',
+      'c10-title':'Sprint de Herramientas',
+      'c10-desc': 'Cinco módulos prácticos para adquirir fluidez con las herramientas que realmente usan los Learning Architects — desde flujos de prototipado con IA hasta plantillas de artefactos listas para producción y hábitos de control de versiones.',
+      'c10-meta': '5 módulos · práctico',
+      'c11-tag':  'Plugin de IA · UX design',
+      'c11-title':'Plugin CUXedTech',
+      'c11-desc': 'Plugin de Claude creado tras asistir al masterclass de UX Writing de Antonio Estévez Funes (BBVA) en la UPV. Cinco skills: UX Writing, sistema de diseño Ocean Ink, marco de calidad UX integrado, declaración de IA y enrutamiento. Aprender haciendo.',
+      'c11-meta': '5 skills · v0.1.8 · descargable',
+      /* Cards — Sector 4 */
+      'c12-tag':  'Diseño de aprendizaje de lenguas',
+      'c12-title':'Language Learning Experience Designer',
+      'c12-desc': 'Seis módulos desde el motor MLLDE hasta el investor pack — anclaje MCER, flujo de lección Avatar-as-Input, arquitectura de tutor de IA, métricas de evidencia y un desafío de diseño de Language Passport destination completo.',
+      'c12-meta': '6 módulos · pedagogía a evidencia',
+      'c13-tag':  'Brazo de medición',
+      'c13-title':'Arquitecto de Métricas MCER',
+      'c13-desc': 'Cinco módulos sobre el diseño de métricas de aprendizaje de lenguas defendibles — las cuatro familias de evidencia, puertas de tareas, rúbricas auto-escalables, arquitectura de sentencias xAPI, disciplina de registro IRI y entregables D1–D4 para clientes.',
+      'c13-meta': '5 módulos · evidencia · xAPI',
+      'c14-tag':  'Fluidez en marcos',
+      'c14-title':'Marcos UE',
+      'c14-desc': 'Microcurso sobre los cinco marcos de competencia digital de la UE — DigComp 2.2, DigCompEdu, e-CF, SFIA y ENISA ECSF. Estructura Test-Teach-Test con XP, cuestionarios y escenarios de consultoría.',
+      'c14-meta': '~45 min · Recién llegado → Pionero',
+      /* Cards — Sector 5 */
+      'c15-tag':  'Consultoría ONU',
+      'c15-title':'Consultora de Aprendizaje Digital UNICEF',
+      'c15-desc': 'Diez módulos construidos desde los TdR reales de UNICEF Supply Division — LMS Agora, flujos multilingüe en Rise, gobernanza de proveedores y una simulación completa de panel para el brief TMC0004741.',
+      'c15-meta': '10 módulos · ~3h',
+      'c16-tag':  'Módulo de brecha',
+      'c16-title':'WIDA y K-12 ELL en EE. UU.',
+      'c16-desc': 'Cinco módulos específicos para cerrar la brecha de conocimiento K-12 en EE. UU. — estándares WIDA, niveles de competencia ELL, BICS vs. CALP, intersecciones IEP/504 y aplicación de la política federal en diseño instruccional.',
+      'c16-meta': '5 módulos · ~1.5h',
+      'c17-tag':  'Estrategia de candidatura',
+      'c17-title':'Estrategia de Candidatura UNICEF',
+      'c17-desc': 'Cinco módulos para convertir una convocatoria de UNICEF en una candidatura ganadora — arquitectura de carta de motivación, presentación por competencias, decodificación de TdR, vocabulario de competencias digitales y una checklist de envío completa.',
+      'c17-meta': '5 módulos · ~1h',
+      /* Cards — Sector 6 */
+      'c18-tag':  'Inteligencia de búsqueda',
+      'c18-title':'Inteligencia para la Búsqueda de Empleo',
+      'c18-desc': 'Cinco módulos para leer el mercado L&amp;D como estratega — decodificación de ofertas, investigación salarial, networking por evidencia, timing de candidatura y una checklist de auditoría de búsqueda en vivo.',
+      'c18-meta': '5 módulos · ~45 min',
+      'c19-tag':  'ADKAR · Cambio',
+      'c19-title':'Gestión del Cambio para L&amp;D',
+      'c19-desc': 'Modelo Prosci ADKAR aplicado a iniciativas de aprendizaje — mapeo de stakeholders, diagnóstico de resistencia, métricas de adopción y un artefacto de análisis del impacto del cambio. Anclado en ofertas empresariales reales (Bacardi, Air Canada, Blackbaud).',
+      'c19-meta': '4 módulos · ~40 min',
+      'c20-tag':  'Impartición virtual',
+      'c20-title':'Facilitación en Vivo y Diseño de Webinar',
+      'c20-desc': 'Diseña e imparte una sesión virtual de 30 minutos desde cero — principios de facilitación, conversión diapositivas-taller, técnicas de participación en Zoom/Teams. Entregable: un webinar grabado sobre MLLDE o accesibilidad (apto para portafolio).',
+      'c20-meta': '3 módulos · ~50 min',
+      'c21-tag':  'Evidencia de diseño',
+      'c21-title':'Diseño UX/UI para el Aprendizaje',
+      'c21-desc': 'UX/UI basado en evidencia: wireframes, pruebas de usabilidad (AWJ 10/10), diseño de interfaces (sistema Ocean Ink) y la capa de experiencia del aprendiz de TK CoachAI para Talketika. Convierte trabajo existente en evidencia pública de portafolio.',
+      'c21-meta': '4 módulos · ~45 min',
+      'c22-tag':  'Diseño aplicado',
+      'c22-title':'CUXedTech en la práctica',
+      'c22-desc': 'El aprendizaje queda bien. Ocean Ink aplicado a interfaces de aprendizaje reales, UX Writing en microcopy activo y 12 dimensiones de calidad visibles en un plugin de Claude desplegable.',
+      'c22-meta': '5 skills · v0.1.8 · interactivo',
+      /* Glossary */
+      'gl-title':     'Glosario de Acrónimos',
+      'gl-sub':       'Todos los acrónimos usados en los veinte itinerarios, definidos en su totalidad. Salta a una letra o desplázate.',
+      'gl-nav-label': 'Ir a la letra',
+      /* References */
+      'ref-title': 'Referencias',
+      'ref-sub':   'Fuentes y lecturas complementarias, organizadas por tema. APA 7.ª edición · DOI incluido cuando está disponible.',
+      'ref-s1': 'Tecnología eLearning y Estándares',
+      'ref-s2': 'Modelos de Diseño Instruccional y Teoría Cognitiva',
+      'ref-s3': 'Aprendizaje de Lenguas, MCER y MLLDE',
+      'ref-s4': 'Marcos de Competencia Digital de la UE',
+      'ref-s5': 'Política y Evaluación K-12 ELL en EE. UU.',
+      'ref-s6': 'Inteligencia Artificial y Aprendizaje',
+      'ref-s7': 'Estándares de Accesibilidad',
+      'ref-s8': 'Marco Legal y Protección de Datos',
+      /* Footer */
+      'footer-built': 'Construido para aprender.',
+      'footer-gh':    'Ver código en GitHub',
+      'footer-ai':    '¹ Contenido instruccional asistido por IA · Revisado, adaptado y aprobado por la diseñadora instruccional'
+    }
+  };
+
+  var currentLang = 'en';
+
+  function setLang(lang) {
+    var dict = T[lang];
+    if (!dict) return;
+    currentLang = lang;
+
+    /* Update html[lang] */
+    document.documentElement.lang = lang;
+
+    /* Update page title */
+    document.title = dict['page-title'];
+
+    /* Update all data-i18n elements */
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n');
+      if (dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+
+    /* Update aria-label on data-i18n-label elements */
+    document.querySelectorAll('[data-i18n-label]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n-label');
+      if (dict[key] !== undefined) el.setAttribute('aria-label', dict[key]);
+    });
+
+    /* Update lang button — shows the OTHER language */
+    var btn = document.getElementById('lang-btn');
+    if (btn) {
+      btn.textContent = lang === 'en' ? 'ES' : 'EN';
+      btn.setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
+    }
+
+    try { localStorage.setItem('oi-lang', lang); } catch (e) {}
+  }
+
+  /* Init — restore saved preference */
+  var saved = 'en';
+  try { saved = localStorage.getItem('oi-lang') || 'en'; } catch (e) {}
+  setLang(saved);
+
+  /* Button click — toggle */
+  document.getElementById('lang-btn').addEventListener('click', function () {
+    setLang(currentLang === 'en' ? 'es' : 'en');
+  });
+})();
+
 /* ── Theme toggle ── */
 (function () {
   var btn   = document.getElementById('theme-btn');
