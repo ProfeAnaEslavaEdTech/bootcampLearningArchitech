@@ -123,7 +123,7 @@
   .level-node.unlocked { border-color: var(--indigo); }
   .level-node.done     { border-color: var(--indigo); background: var(--indigo-soft); }
   .level-node.done::after {
-    content: '✓';
+    content: '';
     position: absolute; bottom: -4px; right: -4px;
     background: var(--indigo); color: white;
     font-size: 10px; font-weight: 700;
@@ -393,7 +393,7 @@
 </div>
 
 <div class="final-screen" id="final-screen">
-  <div class="final-icon">🎯</div>
+  <div class="final-icon"></div>
   <h2>Session intelligence locked in.</h2>
   <p>You can now triage a posting in 30 seconds, state every gap honestly, explain why requirements lists mislead, make the Equipping ELLs case, and produce CV bullets that match the posting's own language.</p>
   <div class="btn-row" style="justify-content:center">
@@ -404,7 +404,7 @@
 
 <div class="modal-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <button class="modal-close" id="modal-close" aria-label="Close"></button>
     <div id="modal-content"></div>
   </div>
 </div>
@@ -415,7 +415,7 @@
 const LEVELS = [
   {
     id: 'triage',
-    icon: '🚦',
+    icon: '',
     title: 'Triage: Three Hard Gates',
     tag: 'quiz · 4 questions',
     type: 'quiz',
@@ -471,7 +471,7 @@ const LEVELS = [
   },
   {
     id: 'gaps',
-    icon: '🗂️',
+    icon: '️',
     title: 'Gap Register: Honest Architecture',
     tag: 'builder · 3 reflection fields',
     type: 'builder',
@@ -480,7 +480,7 @@ const LEVELS = [
     intro: 'Gaps are not equal. Three types need different strategies. Map the register from today\'s session.',
     insight: {
       label: 'The three gap types',
-      body: `<strong>Closeable through study/artefacts:</strong> WIDA (closeable via mapping artefact), Storyline (in progress ✅), Camtasia (learn next), xAPI/LRS portfolio evidence.<br><br>
+      body: `<strong>Closeable through study/artefacts:</strong> WIDA (closeable via mapping artefact), Storyline (in progress <span class="status-ok">OK</span>), Camtasia (learn next), xAPI/LRS portfolio evidence.<br><br>
 <strong>Structural — not closeable through study:</strong> #3 Technical content/webinar production (no evidence yet), #4 SaaS/scale-up employment (no product-company employment), #5 Institutional-scale team leadership (no line management). Handle with honest gap statement + transferable-strength pivot.<br><br>
 <strong>Role-specific eligibility filters:</strong> French, German — these eliminate the role at triage. US K-12 ELL system context — state honestly in the cover letter, do not claim.`
     },
@@ -504,7 +504,7 @@ const LEVELS = [
   },
   {
     id: 'requirements',
-    icon: '🔬',
+    icon: '',
     title: 'Why Requirements Lists Mislead',
     tag: 'quiz · 3 questions',
     type: 'quiz',
@@ -549,7 +549,7 @@ const LEVELS = [
   },
   {
     id: 'equipping-ells',
-    icon: '✅',
+    icon: '<span class="status-ok">OK</span>',
     title: 'Equipping ELLs: The Recommended Application',
     tag: 'boss · 3 questions',
     type: 'boss',
@@ -580,7 +580,7 @@ Why this works: (1) It shows you engaged with the actual framework at the level 
   },
   {
     id: 'cv-wording',
-    icon: '📝',
+    icon: '',
     title: 'CV & Cover Letter Wording',
     tag: 'checklist · agreed language from today',
     type: 'checklist',
@@ -663,7 +663,7 @@ function renderMap() {
     const info = document.createElement('div');
     info.className = 'level-info';
     info.innerHTML = `<div class="level-title">${lvl.title}<span class="level-tag">${lvl.tag}</span></div>
-      <div class="level-meta">${done ? '✓ Complete · ' : ''}+${lvl.xp} XP</div>`;
+      <div class="level-meta">${done ? ' Complete · ' : ''}+${lvl.xp} XP</div>`;
 
     if (unlocked && !done) info.addEventListener('click', () => openModal(i));
 
@@ -825,7 +825,7 @@ function renderChecklist(lvl, container) {
     lvl.items.forEach((item, ii) => {
       const isChecked = !!checkState[lvl.id][ii];
       html += `<div class="check-item${isChecked ? ' checked' : ''}" data-ii="${ii}" tabindex="0" role="checkbox" aria-checked="${isChecked}">
-        <div class="check-box">${isChecked ? '✓' : ''}</div>
+        <div class="check-box">${isChecked ? '' : ''}</div>
         <div class="check-text">
           <div class="check-title">${item.title}</div>
           <div class="check-desc">${item.desc}</div>

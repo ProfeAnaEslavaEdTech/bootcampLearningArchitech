@@ -315,7 +315,7 @@
 </div>
 
 <div class="final-screen" id="finalScreen">
-  <div class="final-icon">📨</div>
+  <div class="final-icon"></div>
   <h2>Application-ready.</h2>
   <p>You've mapped your evidence, drafted the cover letter, rewritten the CV bullets, rehearsed three STAR stories, and checked off the gap-closing sprint. Submit when you're ready.</p>
   <div class="final-chips">
@@ -333,7 +333,7 @@
 
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="modalClose" aria-label="Close"></button>
     <div id="modalContent"></div>
   </div>
 </div>
@@ -375,7 +375,7 @@ const LEVELS = [
           "Omit Articulate entirely and emphasize other tools"
         ],
         correct: 1,
-        feedback: "<strong>Separate and honest, with a proof artifact.</strong> Listing 'Articulate 360' when you only have Rise fluency is a verifiable misrepresentation — they will ask you to do a Storyline task. 'Rise ✓, Storyline in progress' with a sample artifact is far more credible and protects you at the technical interview stage."
+        feedback: "<strong>Separate and honest, with a proof artifact.</strong> Listing 'Articulate 360' when you only have Rise fluency is a verifiable misrepresentation — they will ask you to do a Storyline task. 'Rise , Storyline in progress' with a sample artifact is far more credible and protects you at the technical interview stage."
       },
       {
         scenario: "Video production tools: the ToR mentions Synthesia avatars and video production. You've used Synthesia in the AWJ project.",
@@ -503,27 +503,27 @@ const LEVELS = [
       {
         text: "Articulate Rise — free 30-day trial → rebuild one existing course as a Rise module → host it → link in portfolio",
         note: "Highest impact. Named in nearly every ToR deliverable. Without a visible Rise artifact, the skills line is unverifiable.",
-        priority: "p-red", pLabel: "🔴 Critical"
+        priority: "p-red", pLabel: "<span class="status-no" aria-hidden="true">●</span> Critical"
       },
       {
         text: "Storyline 360 — one interactive slide (branching or variables) → publish → add to portfolio",
         note: "You can do this inside the same 30-day trial. One slide with a decision consequence is enough to show you understand the authoring model.",
-        priority: "p-red", pLabel: "🔴 Critical"
+        priority: "p-red", pLabel: "<span class="status-no" aria-hidden="true">●</span> Critical"
       },
       {
         text: "MoodleCloud free trial → publish the Rise module via SCORM → screenshot the completion dashboard",
         note: "Half a day. Lets you say 'I have hands-on Moodle experience' and show a screenshot — the difference between a claim and evidence.",
-        priority: "p-red", pLabel: "🔴 Critical"
+        priority: "p-red", pLabel: "<span class="status-no" aria-hidden="true">●</span> Critical"
       },
       {
         text: "Tailor CV with ToR-aligned bullets (production cycle, WCAG, SCORM/xAPI, translation-ready, skills line restructure)",
         note: "Use the bullet patterns from Module 3. Every line should answer a specific ToR requirement.",
-        priority: "p-amb", pLabel: "🟡 High"
+        priority: "p-amb", pLabel: "<span class="status-warn" aria-hidden="true">●</span> High"
       },
       {
         text: "Rehearse all three STAR stories out loud — 2 minutes each, no notes",
         note: "Written rehearsal in Module 4 is not enough. Speaking them is different. Record yourself once — you'll hear the gaps.",
-        priority: "p-amb", pLabel: "🟡 High"
+        priority: "p-amb", pLabel: "<span class="status-warn" aria-hidden="true">●</span> High"
       }
     ]
   }
@@ -549,14 +549,14 @@ function renderMap() {
     btn.disabled = locked;
     btn.onclick = () => !locked && openLevel(lvl.id);
     btn.innerHTML = `
-      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-num">${done ? '' : lvl.id}</div>
       <div class="level-body">
         <div class="level-name">${lvl.name}</div>
         <div class="level-desc">${lvl.desc}</div>
         <div class="level-meta">
           <span class="badge badge-type">${lvl.type}</span>
           ${done ? '<span class="badge badge-done">Complete</span>' : ''}
-          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+          ${locked ? '<span class="badge badge-lock"> locked</span>' : ''}
         </div>
       </div>`;
     map.appendChild(btn);
@@ -630,7 +630,7 @@ function buildBoss(lvl) {
   `).join('');
   return `
     <div class="boss-header">
-      <div class="boss-icon">🎤</div>
+      <div class="boss-icon"></div>
       <div class="boss-title">STAR Rehearsal</div>
       <div class="boss-sub">Write each answer fully before revealing the model. Speaking practice matters — read yours aloud after comparing.</div>
     </div>
@@ -658,7 +658,7 @@ function handleAnswer(lvl, chosen) {
   opts[q.correct].classList.add('correct');
   if (chosen !== q.correct) opts[chosen].classList.add('wrong');
   document.getElementById('quizFeedback').innerHTML =
-    `<div class="quiz-feedback ${chosen === q.correct ? 'pass' : 'fail'}">${chosen === q.correct ? '✓ ' : '✗ '}${q.feedback}</div>`;
+    `<div class="quiz-feedback ${chosen === q.correct ? 'pass' : 'fail'}">${chosen === q.correct ? ' ' : ' '}${q.feedback}</div>`;
   const btns = document.getElementById('quizBtns');
   const isLast = qi === lvl.questions.length - 1;
   if (isLast) {
@@ -693,7 +693,7 @@ function toggleCheck(i) {
   const cb = document.getElementById('cb' + i);
   const checked = cb.classList.toggle('checked');
   cb.setAttribute('aria-checked', String(checked));
-  cb.textContent = checked ? '✓' : '';
+  cb.textContent = checked ? '' : '';
 }
 
 function completeLevel(id) {

@@ -332,7 +332,7 @@
 </div>
 
 <div class="final-screen" id="finalScreen">
-  <div class="final-icon">🚀</div>
+  <div class="final-icon"></div>
   <h2>Sprint complete. Four tools, four artifacts.</h2>
   <p>You can now demonstrate — not claim — Rise, Storyline, SCORM reporting, and video production. Each artifact is a screener blocker closed.</p>
   <div class="final-chips">
@@ -350,7 +350,7 @@
 
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="modalClose" aria-label="Close"></button>
     <div id="modalContent"></div>
   </div>
 </div>
@@ -536,15 +536,15 @@ function renderMap() {
     btn.disabled = locked;
     btn.onclick = () => !locked && openLevel(lvl.id);
     btn.innerHTML = `
-      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-num">${done ? '' : lvl.id}</div>
       <div class="level-body">
         <div class="level-name">${lvl.name}</div>
         <div class="level-desc">${lvl.desc}</div>
         <div class="level-artifact">${lvl.artifact}</div>
         <div class="level-meta">
           <span class="badge badge-type">${lvl.type}</span>
-          ${done ? '<span class="badge badge-done">Shipped ✓</span>' : ''}
-          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+          ${done ? '<span class="badge badge-done">Shipped </span>' : ''}
+          ${locked ? '<span class="badge badge-lock"> locked</span>' : ''}
         </div>
       </div>`;
     map.appendChild(btn);
@@ -566,7 +566,7 @@ function renderContent(lvl) {
     <div class="modal-eyebrow">Module ${lvl.id} · ${lvl.type}</div>
     <h2>${lvl.name}</h2>
     <div class="modal-desc">${lvl.desc}</div>
-    <div class="artifact-box">🎯 ${lvl.artifact}</div>
+    <div class="artifact-box"> ${lvl.artifact}</div>
     <hr class="divider">`;
   if (lvl.type === 'checklist') c.innerHTML = header + buildChecklist(lvl);
   else if (lvl.type === 'builder') c.innerHTML = header + buildBuilder(lvl);
@@ -586,7 +586,7 @@ function buildChecklist(lvl) {
           <div class="check-box ${isChecked ? 'checked' : ''}" id="cb-${gi}-${ii}"
             role="checkbox" aria-checked="${isChecked ? 'true' : 'false'}" tabindex="0"
             onclick="toggleGroupCheck(${lvl.id},${gi},${ii})"
-            onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '✓' : ''}</div>
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '' : ''}</div>
           <div>
             <div class="check-text">${item.text}</div>
             <div class="check-note">${item.note}</div>
@@ -595,7 +595,7 @@ function buildChecklist(lvl) {
     });
     html += '</div>';
   });
-  html += `<div class="prog-note">⚠️ Mark this module complete only when you have a shareable artifact link. "I did it in my head" doesn't close the screening gap.</div>`;
+  html += `<div class="prog-note">!️ Mark this module complete only when you have a shareable artifact link. "I did it in my head" doesn't close the screening gap.</div>`;
   html += `<div class="btn-row"><button class="btn btn-primary" id="completeBtn">I have the artifact — mark complete →</button></div>`;
   return html;
 }
@@ -620,7 +620,7 @@ function buildBoss(lvl) {
   `).join('');
   return `
     <div class="boss-header">
-      <div class="boss-icon">🎙️</div>
+      <div class="boss-icon">️</div>
       <div class="boss-title">Portfolio Walk-Through Rehearsal</div>
       <div class="boss-sub">Say it out loud before you write it. An interview is not a writing exercise.</div>
     </div>
@@ -642,7 +642,7 @@ function toggleGroupCheck(lvlId, gi, ii) {
   if (checkState[lvlId][key]) {
     cb.classList.add('checked');
     cb.setAttribute('aria-checked', 'true');
-    cb.textContent = '✓';
+    cb.textContent = '';
   } else {
     cb.classList.remove('checked');
     cb.setAttribute('aria-checked', 'false');
@@ -654,7 +654,7 @@ function completeLevel(id) {
   completed.add(id);
   closeModal();
   renderMap(); xp();
-  showToast('Artifact shipped! ✓');
+  showToast('Artifact shipped! ');
   if (completed.size === LEVELS.length) {
     setTimeout(() => {
       document.getElementById('finalScreen').classList.add('show');

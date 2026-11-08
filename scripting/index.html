@@ -349,7 +349,7 @@
 
 <header class="site-header">
   <div class="header-brand">
-    <div class="header-icon">⚙️</div>
+    <div class="header-icon">️</div>
     <div>
       <div class="header-title">Scripting for xAPI & SCORM</div>
       <div class="header-sub">Articulate 360 Developer Track · Instructional Designer Path</div>
@@ -472,7 +472,7 @@
 
     <!-- STEP 0 — DIAGNOSTIC -->
     <div class="step active" id="step-0">
-      <div class="xp-badge">🎯 Diagnostic · 20 XP available</div>
+      <div class="xp-badge"> Diagnostic · 20 XP available</div>
       <div class="step-eyebrow">Step 01 — Test First</div>
       <h1>What do you already know about <em>xAPI scripts</em>?</h1>
       <p>Three quick questions before we teach anything. Answer honestly — there's no penalty for wrong answers, and they help calibrate how deep we go.</p>
@@ -511,13 +511,13 @@
 
     <!-- STEP 1 — WHAT ARTICULATE PUBLISHES -->
     <div class="step" id="step-1">
-      <div class="xp-badge">📦 Foundation · 20 XP</div>
+      <div class="xp-badge"> Foundation · 20 XP</div>
       <div class="step-eyebrow">Step 02 — Teach</div>
       <h1>What Articulate 360 <em>actually publishes</em></h1>
       <p>Before you write a single line of script, you need a clear mental model of what Articulate 360 outputs — because each format connects to the LRS in a completely different way.</p>
 
       <div class="teach-card">
-        <h2>🗂️ Four publish targets in Articulate 360</h2>
+        <h2>️ Four publish targets in Articulate 360</h2>
         <div style="overflow-x:auto;">
           <table class="compare-table">
             <thead><tr><th>Format</th><th>Tool</th><th>Tracking standard</th><th>LRS required?</th></tr></thead>
@@ -537,7 +537,7 @@
         <p>Same ZIP structure, but instead of calling an LMS API, the course sends <strong>HTTP POST requests</strong> to an LRS endpoint. The endpoint URL, auth credentials, and actor identity are passed as <strong>URL query parameters</strong> at launch.</p>
 
         <div class="callout info">
-          <span class="callout-icon">💡</span>
+          <span class="callout-icon"></span>
           <div>The key insight: SCORM relies on the LMS being the "parent window" that injects an API. xAPI relies on the course making HTTP calls to an LRS. These are fundamentally different architectures — and where you put your custom script depends entirely on which one you're using.</div>
         </div>
       </div>
@@ -550,13 +550,13 @@
 
     <!-- STEP 2 — SCORM vs xAPI -->
     <div class="step" id="step-2">
-      <div class="xp-badge">📊 Comparison · 25 XP</div>
+      <div class="xp-badge"> Comparison · 25 XP</div>
       <div class="step-eyebrow">Step 03 — Teach</div>
       <h1>SCORM 1.2 vs 2004 vs <em>xAPI</em>: the real differences</h1>
       <p>Every ID has heard "SCORM vs xAPI." Here is what that actually means at the code level, so you know which format to choose before you open Storyline's publish dialog.</p>
 
       <div class="teach-card">
-        <h2>🔌 How the LMS/LRS gets data</h2>
+        <h2> How the LMS/LRS gets data</h2>
 
         <h3>SCORM 1.2 — synchronous, session-bound</h3>
         <pre><code><span class="c">// SCORM 1.2 — LMS injects API into parent window</span>
@@ -583,7 +583,7 @@
         <p>Can capture <em>any</em> event you can name with a verb — video paused, hotspot clicked, branching path chosen. No fixed field limit.</p>
 
         <div class="callout tip">
-          <span class="callout-icon">✅</span>
+          <span class="callout-icon"><span class="status-ok">OK</span></span>
           <div><strong>Rule of thumb:</strong> If your LMS only supports SCORM, use SCORM. If you have an LRS (or want full custom tracking), use xAPI. If you need guaranteed cmi5 AU launch spec compliance, use cmi5 — which is xAPI with a stricter launch protocol.</div>
         </div>
       </div>
@@ -596,13 +596,13 @@
 
     <!-- STEP 3 — xAPI ANATOMY -->
     <div class="step" id="step-3">
-      <div class="xp-badge">🧬 Anatomy · 30 XP</div>
+      <div class="xp-badge"> Anatomy · 30 XP</div>
       <div class="step-eyebrow">Step 04 — Teach</div>
       <h1>The xAPI statement <em>anatomy</em></h1>
       <p>Every xAPI statement is a JSON object that describes one learning event. If you can build a valid statement from scratch, you can script anything.</p>
 
       <div class="teach-card">
-        <h2>📐 Required fields (Actor · Verb · Object)</h2>
+        <h2> Required fields (Actor · Verb · Object)</h2>
         <pre><code><span class="p">{</span>
   <span class="c">// ── ACTOR — WHO did it? ──────────────────────</span>
   <span class="n">"actor"</span><span class="p">:</span> <span class="p">{</span>
@@ -665,7 +665,7 @@
         </div>
 
         <div class="callout info">
-          <span class="callout-icon">💡</span>
+          <span class="callout-icon"></span>
           <div>You can define your own verbs using any unique URL as the ID — e.g. <code>https://yourplatform.com/verbs/watched-video</code>. ADL verbs are just conventions, not enforced. Use them when they fit, make your own when they don't.</div>
         </div>
       </div>
@@ -678,13 +678,13 @@
 
     <!-- STEP 4 — EXECUTE JAVASCRIPT IN STORYLINE -->
     <div class="step" id="step-4">
-      <div class="xp-badge">⚡ Storyline 360 · 30 XP</div>
+      <div class="xp-badge"> Storyline 360 · 30 XP</div>
       <div class="step-eyebrow">Step 05 — Teach</div>
       <h1>The <em>Execute JavaScript</em> trigger in Storyline 360</h1>
       <p>This is your main entry point for custom scripting. Every custom xAPI statement you send from Storyline goes through this trigger.</p>
 
       <div class="teach-card">
-        <h2>🔧 How to add the trigger</h2>
+        <h2> How to add the trigger</h2>
         <ol style="padding-left:20px; margin-bottom:12px; font-size:14px; line-height:2;">
           <li>Open the <strong>Triggers</strong> panel (right side of Storyline)</li>
           <li>Click <strong>+ Create a new trigger</strong></li>
@@ -705,7 +705,7 @@ player.<span class="fn">SetVar</span>(<span class="s">"Confirmed"</span>, <span 
 player.<span class="fn">GoToSlide</span>(<span class="s">"2.3"</span>);</code></pre>
 
         <div class="callout warn">
-          <span class="callout-icon">⚠️</span>
+          <span class="callout-icon">!️</span>
           <div><code>GetPlayer()</code> only works inside Storyline's published output — it will throw a reference error if you test in a plain browser without the Storyline runtime. Always test in SCORM Cloud or your LMS/LRS, not by double-clicking the HTML file.</div>
         </div>
 
@@ -747,13 +747,13 @@ player.<span class="fn">GoToSlide</span>(<span class="s">"2.3"</span>);</code></
 
     <!-- STEP 5 — CUSTOM xAPI STATEMENTS -->
     <div class="step" id="step-5">
-      <div class="xp-badge">📡 Custom Statements · 35 XP</div>
+      <div class="xp-badge"> Custom Statements · 35 XP</div>
       <div class="step-eyebrow">Step 06 — Teach</div>
       <h1>Writing <em>custom xAPI statements</em> from Storyline 360</h1>
       <p>This is the full reusable script you'll drop into any Execute JavaScript trigger. Study every line — then adapt the verb, object ID, and result to match the event you want to track.</p>
 
       <div class="teach-card">
-        <h2>📜 The reusable statement sender</h2>
+        <h2> The reusable statement sender</h2>
         <pre><code><span class="c">// ── Full custom xAPI statement from Storyline 360 ──────────</span>
 (<span class="k">function</span>() <span class="p">{</span>
 
@@ -770,20 +770,20 @@ player.<span class="fn">GoToSlide</span>(<span class="s">"2.3"</span>);</code></
   <span class="k">var</span> statement <span class="p">= {</span>
     <span class="n">"actor"</span><span class="p">:</span>  <span class="fn">JSON</span>.<span class="fn">parse</span>(actorRaw),
     <span class="n">"verb"</span><span class="p">:</span> <span class="p">{</span>
-      <span class="c">// ✏️ Change this verb to match your event</span>
+      <span class="c">// ️ Change this verb to match your event</span>
       <span class="n">"id"</span><span class="p">:</span>      <span class="s">"http://adlnet.gov/expapi/verbs/interacted"</span><span class="p">,</span>
       <span class="n">"display"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"interacted"</span> <span class="p">}</span>
     <span class="p">},</span>
     <span class="n">"object"</span><span class="p">:</span> <span class="p">{</span>
       <span class="n">"objectType"</span><span class="p">:</span> <span class="s">"Activity"</span><span class="p">,</span>
-      <span class="c">// ✏️ Use a stable, unique URI for this activity</span>
+      <span class="c">// ️ Use a stable, unique URI for this activity</span>
       <span class="n">"id"</span><span class="p">:</span> <span class="s">"https://yourplatform.com/activities/module3/hotspot-risk-matrix"</span><span class="p">,</span>
       <span class="n">"definition"</span><span class="p">:</span> <span class="p">{</span>
         <span class="n">"name"</span><span class="p">:</span> <span class="p">{</span> <span class="n">"en-US"</span><span class="p">:</span> <span class="s">"Risk Matrix Hotspot Interaction"</span> <span class="p">},</span>
         <span class="n">"type"</span><span class="p">:</span> <span class="s">"http://adlnet.gov/expapi/activities/interaction"</span>
       <span class="p">}</span>
     <span class="p">},</span>
-    <span class="c">// ✏️ Add result fields only when relevant</span>
+    <span class="c">// ️ Add result fields only when relevant</span>
     <span class="n">"result"</span><span class="p">:</span> <span class="p">{</span>
       <span class="n">"response"</span><span class="p">:</span>   player.<span class="fn">GetVar</span>(<span class="s">"HotspotChoice"</span>)<span class="p">,</span>
       <span class="n">"completion"</span><span class="p">:</span> <span class="k">true</span>
@@ -807,7 +807,7 @@ player.<span class="fn">GoToSlide</span>(<span class="s">"2.3"</span>);</code></
 <span class="p">})()</span>; <span class="c">// IIFE — runs immediately, no leaking to global scope</span></code></pre>
 
         <div class="callout good">
-          <span class="callout-icon">✅</span>
+          <span class="callout-icon"><span class="status-ok">OK</span></span>
           <div><strong>Why an IIFE?</strong> Wrapping your code in <code>(function(){ … })()</code> keeps all variables local. Multiple triggers on the same slide won't collide on variable names like <code>statement</code> or <code>xhr</code>.</div>
         </div>
 
@@ -827,13 +827,13 @@ player.<span class="fn">GoToSlide</span>(<span class="s">"2.3"</span>);</code></
 
     <!-- STEP 6 — cmi5 LAUNCH PARAMETERS -->
     <div class="step" id="step-6">
-      <div class="xp-badge">🚀 cmi5 · 30 XP</div>
+      <div class="xp-badge"> cmi5 · 30 XP</div>
       <div class="step-eyebrow">Step 07 — Teach</div>
       <h1>cmi5 launch parameters — <em>the full URL anatomy</em></h1>
       <p>When you publish a cmi5 or xAPI package from Articulate and an LRS/LMS launches it, all the connection data travels in the URL. This is the contract between your course and the LRS.</p>
 
       <div class="teach-card">
-        <h2>🔗 The launch URL structure</h2>
+        <h2> The launch URL structure</h2>
         <pre><code><span class="c"># Full launch URL anatomy (line-wrapped for readability)</span>
 https://yourplatform.com/courses/onboarding/index.html
   ?endpoint=<span class="s">https://yourlrs.com/tenant_abc/</span>
@@ -877,7 +877,7 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
 <span class="c">// the LRS/LMS injects the right endpoint at launch time</span></code></pre>
 
         <div class="callout info">
-          <span class="callout-icon">💡</span>
+          <span class="callout-icon"></span>
           <div>The <code>auth</code> value is Base64-encoded <em>key:secret</em>. To generate it manually: <code>btoa("mykey:mysecret")</code> in a browser console. The LRS will give you the key/secret pair when you set up credentials — never hardcode them in your Storyline file.</div>
         </div>
       </div>
@@ -890,13 +890,13 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
 
     <!-- STEP 7 — RISE 360 + xAPI LIMITS -->
     <div class="step" id="step-7">
-      <div class="xp-badge">📐 Rise 360 · 25 XP</div>
+      <div class="xp-badge"> Rise 360 · 25 XP</div>
       <div class="step-eyebrow">Step 08 — Teach</div>
       <h1>Rise 360 + xAPI — <em>what's built in and what's not</em></h1>
       <p>Rise 360 is the "no scripting needed" tool — which means it also has a hard ceiling on what you can track. Know where the ceiling is before you promise a client full custom telemetry from a Rise course.</p>
 
       <div class="teach-card">
-        <h2>✅ What Rise sends automatically (xAPI publish)</h2>
+        <h2><span class="status-ok">OK</span> What Rise sends automatically (xAPI publish)</h2>
         <ul class="checklist">
           <li>Course launched (initialized)</li>
           <li>Course completed (completed verb)</li>
@@ -907,7 +907,7 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
           <li>Sorting activity completed</li>
         </ul>
 
-        <h2 style="margin-top:20px;">❌ What Rise cannot do (without Storyline embed)</h2>
+        <h2 style="margin-top:20px;"><span class="status-no"></span> What Rise cannot do (without Storyline embed)</h2>
         <ul class="checklist">
           <li>Custom verbs — you cannot add "evaluated" or "endorsed" etc.</li>
           <li>Custom context extensions (tenant ID, department, custom metadata)</li>
@@ -917,7 +917,7 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
         </ul>
 
         <div class="callout tip">
-          <span class="callout-icon">🔧</span>
+          <span class="callout-icon"></span>
           <div><strong>The hybrid workaround:</strong> Embed a Storyline 360 interaction block inside your Rise lesson. That Storyline block has full JavaScript access and can send any custom xAPI statement you need while the Rise shell handles the lesson-level tracking automatically.</div>
         </div>
 
@@ -938,13 +938,13 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
 
     <!-- STEP 8 — LRS ENDPOINT CONNECTION -->
     <div class="step" id="step-8">
-      <div class="xp-badge">🔗 LRS Connect · 30 XP</div>
+      <div class="xp-badge"> LRS Connect · 30 XP</div>
       <div class="step-eyebrow">Step 09 — Teach</div>
       <h1>Connecting your course to the <em>LRS endpoint</em></h1>
       <p>The LRS is the database that stores all xAPI statements. Knowing how to set up the connection — and test it — is the ID developer's equivalent of "does the file save?"</p>
 
       <div class="teach-card">
-        <h2>🗺️ The connection flow</h2>
+        <h2>️ The connection flow</h2>
         <div class="flow">
           <div class="flow-row">
             <div class="flow-box amber">Articulate 360<br>Published Package</div>
@@ -999,7 +999,7 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
         </div>
 
         <div class="callout tip">
-          <span class="callout-icon">🔧</span>
+          <span class="callout-icon"></span>
           <div>Use <strong>ADL LRS</strong> (<code>lrs.adlnet.gov</code>) or <strong>SCORM Cloud's free LRS</strong> for all development and testing. Never send test statements to a client's production LRS — test data pollutes their reports.</div>
         </div>
       </div>
@@ -1012,13 +1012,13 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
 
     <!-- STEP 9 — SCENARIO -->
     <div class="step" id="step-9">
-      <div class="xp-badge">🎭 Applied Scenario · 40 XP</div>
+      <div class="xp-badge"> Applied Scenario · 40 XP</div>
       <div class="step-eyebrow">Step 10 — Practice</div>
       <h1>Scenario: <em>tracking a custom business event</em></h1>
       <p>You're building a compliance course in Storyline 360. The legal team needs to know exactly which policy clause each learner acknowledged — not just "passed the quiz." Here's how you design the script.</p>
 
       <div class="scenario">
-        <div class="scenario-label">📋 Brief</div>
+        <div class="scenario-label"> Brief</div>
         <h3>GDPR Awareness Course — Custom Acknowledgement Tracking</h3>
         <p>The course has five policy clauses. On each clause slide there is an "I acknowledge this clause" button. When clicked, you need to send a custom xAPI statement recording <em>which clause</em> was acknowledged <em>by whom</em> and <em>at what time</em>.</p>
         <ul>
@@ -1030,7 +1030,7 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
       </div>
 
       <div class="teach-card">
-        <h2>✏️ The solution script</h2>
+        <h2>️ The solution script</h2>
         <pre><code><span class="c">// Execute JavaScript trigger — fires on "I Acknowledge" button click
 // Set Storyline variable ClauseID = "clause-3" on each slide before this runs</span>
 
@@ -1096,13 +1096,13 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
 
     <!-- STEP 10 — DEBUGGING -->
     <div class="step" id="step-10">
-      <div class="xp-badge">🐛 Debugging · 25 XP</div>
+      <div class="xp-badge"> Debugging · 25 XP</div>
       <div class="step-eyebrow">Step 11 — Teach</div>
       <h1>Debugging: <em>console, validators, and SCORM Cloud</em></h1>
       <p>Your script sent — but did the LRS receive it? Here's the four-tool debugging workflow every ID developer needs.</p>
 
       <div class="teach-card">
-        <h2>🔍 Tool 1: Browser DevTools → Network tab</h2>
+        <h2> Tool 1: Browser DevTools → Network tab</h2>
         <p>Open DevTools (F12) → Network tab. Filter by "statements". When your trigger fires you should see a POST request to your LRS endpoint. Check:</p>
         <ul style="padding-left:20px; font-size:14px; line-height:1.9; margin-bottom:10px;">
           <li><strong>Status 200</strong> — statement accepted</li>
@@ -1111,13 +1111,13 @@ endpoint = <span class="s">"https://yourlrs.com/tenant_acme_corp/"</span>
           <li><strong>CORS error</strong> — LRS doesn't allow requests from your origin (dev-mode issue; won't appear when hosted properly)</li>
         </ul>
 
-        <h2>🧪 Tool 2: xAPI validator</h2>
+        <h2> Tool 2: xAPI validator</h2>
         <p>Paste your JSON at <strong>xAPIvalidator.com</strong> or use the ADL validator. It tells you exactly which required fields are missing or malformed before you ever upload to Storyline.</p>
 
-        <h2>☁️ Tool 3: SCORM Cloud</h2>
+        <h2>️ Tool 3: SCORM Cloud</h2>
         <p>Upload your xAPI ZIP to SCORM Cloud's free account. Launch it there — SCORM Cloud acts as LRS and LMS simultaneously and shows every statement it received in its "xAPI Statement Viewer." This is the most reliable way to verify your package before sending to a client LMS.</p>
 
-        <h2>📋 Tool 4: Console logging inside the trigger</h2>
+        <h2> Tool 4: Console logging inside the trigger</h2>
         <pre><code><span class="c">// Add this temporarily — remove before final publish</span>
 <span class="k">var</span> xhr <span class="p">=</span> <span class="k">new</span> <span class="fn">XMLHttpRequest</span>();
 xhr.<span class="fn">onreadystatechange</span> <span class="p">=</span> <span class="k">function</span>() <span class="p">{</span>
@@ -1128,7 +1128,7 @@ xhr.<span class="fn">onreadystatechange</span> <span class="p">=</span> <span cl
 <span class="c">// ... rest of xhr.open / xhr.send as usual</span></code></pre>
 
         <div class="callout warn">
-          <span class="callout-icon">⚠️</span>
+          <span class="callout-icon">!️</span>
           <div><strong>Most common mistake:</strong> forgetting the trailing slash on the endpoint URL. <code>https://lrs.example.com/xapi</code> ≠ <code>https://lrs.example.com/xapi/</code>. The statements path becomes <code>endpoint + "statements"</code> — so the slash must be there.</div>
         </div>
       </div>
@@ -1141,7 +1141,7 @@ xhr.<span class="fn">onreadystatechange</span> <span class="p">=</span> <span cl
 
     <!-- STEP 11 — FINAL QUIZ -->
     <div class="step" id="step-11">
-      <div class="xp-badge">🏆 Final Quiz · 40 XP</div>
+      <div class="xp-badge"> Final Quiz · 40 XP</div>
       <div class="step-eyebrow">Step 12 — Test</div>
       <h1>End-to-end knowledge check</h1>
       <p>Five questions. Each correct answer is worth 8 XP.</p>
@@ -1209,7 +1209,7 @@ xhr.<span class="fn">onreadystatechange</span> <span class="p">=</span> <span cl
         <p class="score-desc" id="scoreDesc"></p>
 
         <div class="teach-card" style="text-align:left; margin: 0 auto; max-width:520px;">
-          <h2 style="margin-bottom:14px;">📁 Your Articulate 360 scripting toolkit</h2>
+          <h2 style="margin-bottom:14px;"> Your Articulate 360 scripting toolkit</h2>
           <p><strong>What you can do now:</strong></p>
           <ul class="checklist" style="margin-top:12px;">
             <li>Add Execute JavaScript triggers to any Storyline 360 slide</li>
@@ -1303,7 +1303,7 @@ xhr.<span class="fn">onreadystatechange</span> <span class="p">=</span> <span cl
     });
 
     var fb = document.getElementById(qId + '-fb');
-    fb.textContent = correct ? '✅ ' + feedback[qId].ok : '❌ ' + feedback[qId].no;
+    fb.textContent = correct ? '<span class="status-ok">OK</span> ' + feedback[qId].ok : '<span class="status-no"></span> ' + feedback[qId].no;
     fb.className = 'quiz-feedback show ' + (correct ? 'ok' : 'no');
 
     if (correct) {
@@ -1363,16 +1363,16 @@ xhr.<span class="fn">onreadystatechange</span> <span class="p">=</span> <span cl
 
     var title, badge, desc;
     if (totalXP < 100) {
-      title = 'Foundation complete'; badge = '🌱 Builder';
+      title = 'Foundation complete'; badge = ' Builder';
       desc = "Good start. You've covered the architecture — now build a real xAPI course in Storyline 360 and fire your first custom statement to a test LRS. The concepts click once you see the Network tab respond.";
     } else if (totalXP < 200) {
-      title = 'Tracker level reached'; badge = '📡 Tracker';
+      title = 'Tracker level reached'; badge = ' Tracker';
       desc = "You have the mental model down. Focus your next session on the Execute JavaScript trigger — build the three-slide test file and verify in SCORM Cloud. The debugging section will make much more sense with a real file open.";
     } else if (totalXP < 300) {
-      title = 'Scripter level reached'; badge = '⚙️ Scripter';
+      title = 'Scripter level reached'; badge = '️ Scripter';
       desc = "Solid. You can build custom tracking into any Storyline course. Next challenge: add multi-tenant context extensions and test with two different LRS credentials to confirm data isolation.";
     } else {
-      title = 'Architect level unlocked!'; badge = '🏛️ Architect';
+      title = 'Architect level unlocked!'; badge = '️ Architect';
       desc = "You understand the full stack — from Articulate's publish output through xAPI statements to LRS storage, including multi-tenancy, cmi5 launch, and debugging. You can confidently design custom tracking for any Articulate 360 course.";
     }
 

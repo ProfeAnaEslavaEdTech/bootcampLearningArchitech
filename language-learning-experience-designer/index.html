@@ -322,7 +322,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   </div>
 </header>
 <a href="#main" class="skip-link">Skip to content</a>
-<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">🌓</button>
+<button id="theme-btn" aria-label="Colour theme: system. Click to switch."></button>
 
 <div class="top-bar">
   <a href="../" class="back-link">← All tracks</a>
@@ -360,7 +360,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 </div>
 
 <div class="final-screen" id="finalScreen">
-  <div class="final-icon">🌍</div>
+  <div class="final-icon"></div>
   <h2>MLLDE cycle complete.</h2>
   <p>You can now design a language learning product from brief to investor pack — CEFR-anchored, AI-tutored, evidence-valid. Every module ends with a statement. Every statement feeds a report.</p>
   <div class="final-chips">
@@ -378,7 +378,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="modalClose" aria-label="Close"></button>
     <div id="modalContent"></div>
     <div class="modal-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a></div>
   </div>
@@ -578,15 +578,15 @@ function renderMap() {
     btn.onclick = () => !locked && openLevel(lvl.id);
     btn.setAttribute('aria-label', lvl.name + (locked ? ' — locked' : '') + (done ? ' — complete' : ''));
     btn.innerHTML = `
-      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-num">${done ? '' : lvl.id}</div>
       <div class="level-body">
         <div class="level-name">${lvl.name}</div>
         <div class="level-desc">${lvl.desc}</div>
         <div class="level-artifact">${lvl.artifact}</div>
         <div class="level-meta">
           <span class="badge badge-type">${lvl.type}</span>
-          ${done ? '<span class="badge badge-done">Done ✓</span>' : ''}
-          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+          ${done ? '<span class="badge badge-done">Done </span>' : ''}
+          ${locked ? '<span class="badge badge-lock"> locked</span>' : ''}
         </div>
       </div>`;
     map.appendChild(btn);
@@ -609,7 +609,7 @@ function renderContent(lvl) {
     <div class="modal-eyebrow">Module ${lvl.id} of ${LEVELS.length} · ${lvl.type}</div>
     <h2 id="modalTitle">${lvl.name}</h2>
     <div class="modal-desc">${lvl.desc}</div>
-    <div class="artifact-box">🎯 ${lvl.artifact}</div>
+    <div class="artifact-box"> ${lvl.artifact}</div>
     <hr class="divider">`;
   if (lvl.type === 'checklist') c.innerHTML = header + buildChecklist(lvl);
   else if (lvl.type === 'builder') c.innerHTML = header + buildBuilder(lvl);
@@ -629,7 +629,7 @@ function buildChecklist(lvl) {
           <div class="check-box ${isChecked ? 'checked' : ''}" id="cb-${gi}-${ii}"
             role="checkbox" aria-checked="${isChecked ? 'true' : 'false'}" tabindex="0"
             onclick="toggleGroupCheck(${lvl.id},${gi},${ii})"
-            onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '✓' : ''}</div>
+            onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '' : ''}</div>
           <div>
             <div class="check-text">${item.text}</div>
             <div class="check-note">${item.note}</div>
@@ -638,7 +638,7 @@ function buildChecklist(lvl) {
     });
     html += '</div>';
   });
-  html += `<div class="prog-note">✦ Mark complete only when you can articulate the principle and apply it to a new example — not just after reading. Understanding without application is not mastered.</div>`;
+  html += `<div class="prog-note"> Mark complete only when you can articulate the principle and apply it to a new example — not just after reading. Understanding without application is not mastered.</div>`;
   html += `<div class="btn-row"><button class="btn btn-primary" id="completeBtn">Module mastered — mark complete →</button></div>`;
   return html;
 }
@@ -663,7 +663,7 @@ function buildBoss(lvl) {
   `).join('');
   return `
     <div class="boss-header">
-      <div class="boss-icon">🎙️</div>
+      <div class="boss-icon">️</div>
       <div class="boss-title">Design Panel Rehearsal</div>
       <div class="boss-sub">Speak the answer out loud before writing it. The panel is a conversation, not an essay.</div>
     </div>
@@ -685,7 +685,7 @@ function toggleGroupCheck(lvlId, gi, ii) {
   if (checkState[lvlId][key]) {
     cb.classList.add('checked');
     cb.setAttribute('aria-checked', 'true');
-    cb.textContent = '✓';
+    cb.textContent = '';
   } else {
     cb.classList.remove('checked');
     cb.setAttribute('aria-checked', 'false');
@@ -697,7 +697,7 @@ function completeLevel(id) {
   completed.add(id);
   closeModal();
   renderMap(); xp();
-  showToast('Module mastered ✓');
+  showToast('Module mastered ');
   if (completed.size === LEVELS.length) {
     setTimeout(() => {
       document.getElementById('finalScreen').classList.add('show');
@@ -730,7 +730,7 @@ renderMap(); xp();
   const btn   = document.getElementById('theme-btn');
   const root  = document.documentElement;
   const cycle = ['system', 'light', 'dark'];
-  const icons = { system: '🌓', light: '☀️', dark: '🌙' };
+  const icons = { system: '', light: 'Light️', dark: 'Dark' };
   const labels = {
     system: 'Colour theme: system (follows your OS). Click to switch to light.',
     light:  'Colour theme: light. Click to switch to dark.',

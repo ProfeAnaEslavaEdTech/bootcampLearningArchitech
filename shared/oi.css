@@ -143,3 +143,259 @@ h1, h2, h3 {
   background: var(--oi-primary-btn) !important;
   color: #fff !important; border-color: transparent !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENT LAYER — overrides each page's local navy/blue CSS
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Typography ── */
+h2, h3, h4 {
+  font-family: 'Fraunces', Georgia, serif !important;
+  color: var(--oi-primary-deep) !important;
+}
+p, li, td, label { color: var(--oi-ink) !important; }
+strong, b { color: var(--oi-ink) !important; font-weight: 700; }
+a { color: var(--oi-primary) !important; }
+a:hover { color: var(--oi-primary-deep) !important; }
+
+/* ── Course header / progress rail ── */
+header:not(.oi-site-header) {
+  background: var(--oi-surface) !important;
+  border-bottom: 1px solid var(--oi-line) !important;
+  color: var(--oi-ink) !important;
+}
+.head-row h1, .head-row .display {
+  color: var(--oi-ink) !important;
+  font-family: 'Fraunces', Georgia, serif !important;
+}
+.xp { color: var(--oi-accent) !important; font-weight: 700; }
+.rail .seg { background: var(--oi-line) !important; }
+.rail .seg.done { background: var(--oi-primary-btn) !important; }
+.rail-labels { color: var(--oi-muted) !important; }
+.rail-labels span.now { color: var(--oi-accent) !important; font-weight: 700; }
+
+/* ── Eyebrow / kicker labels ── */
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.7rem !important; letter-spacing: 0.14em !important;
+  text-transform: uppercase !important; font-weight: 600 !important;
+  color: var(--oi-primary) !important; margin-bottom: 8px;
+}
+
+/* ── Content cards ── */
+.card {
+  background: var(--oi-surface) !important;
+  border: 1px solid var(--oi-line) !important;
+  border-radius: var(--oi-radius) !important;
+  color: var(--oi-ink) !important;
+}
+
+/* ── Callout blocks (anchor = amber, alert = cobalt) ── */
+.anchor {
+  border-left: 4px solid var(--oi-accent) !important;
+  background: color-mix(in srgb, var(--oi-accent) 12%, var(--oi-surface)) !important;
+  color: var(--oi-ink) !important;
+  border-radius: 0 var(--oi-radius) var(--oi-radius) 0 !important;
+}
+.anchor b, .anchor strong { color: var(--oi-accent) !important; }
+.alert {
+  border-left: 4px solid var(--oi-primary) !important;
+  background: color-mix(in srgb, var(--oi-primary) 10%, var(--oi-surface)) !important;
+  color: var(--oi-ink) !important;
+  border-radius: 0 var(--oi-radius) var(--oi-radius) 0 !important;
+}
+.alert b, .alert strong { color: var(--oi-primary-deep) !important; }
+
+/* ── Quiz container ── */
+.quiz {
+  border: 1px solid var(--oi-line) !important;
+  border-radius: var(--oi-radius) !important;
+  background: var(--oi-surface2) !important;
+  padding: 18px 20px !important;
+}
+.quiz .qq { color: var(--oi-ink) !important; font-weight: 600; }
+
+/* ── Quiz option buttons ── */
+.opt {
+  background: var(--oi-surface) !important;
+  border: 1.5px solid var(--oi-line) !important;
+  color: var(--oi-ink) !important;
+  border-radius: 8px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  text-align: left !important;
+  width: 100% !important; display: block !important;
+  padding: 10px 14px !important; margin-bottom: 8px !important;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.opt:hover { border-color: var(--oi-primary) !important; background: var(--oi-surface2) !important; }
+.opt:focus-visible { outline: 3px solid var(--oi-focus) !important; outline-offset: 2px; }
+.opt.right {
+  border-color: var(--oi-berry) !important;
+  background: color-mix(in srgb, var(--oi-berry) 15%, var(--oi-surface)) !important;
+  font-weight: 600 !important;
+}
+.opt.wrong {
+  border-color: var(--oi-accent) !important;
+  background: color-mix(in srgb, var(--oi-accent) 12%, var(--oi-surface)) !important;
+}
+.opt:disabled { cursor: default !important; opacity: 0.85 !important; }
+
+/* ── Quiz feedback ── */
+.fb.good { color: var(--oi-berry) !important; font-weight: 600; }
+.fb.bad  { color: var(--oi-accent) !important; }
+.fb .why { color: var(--oi-muted) !important; }
+
+/* ── Tables ── */
+table { color: var(--oi-ink) !important; }
+th {
+  background: var(--oi-surface2) !important;
+  color: var(--oi-primary-deep) !important;
+  border-bottom: 2px solid var(--oi-line) !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.78rem !important; letter-spacing: 0.06em !important;
+}
+td {
+  border-bottom: 1px solid var(--oi-line) !important;
+  color: var(--oi-ink) !important;
+  vertical-align: top;
+}
+tr:nth-child(even) td { background: var(--oi-surface2) !important; }
+
+/* ── Inline code ── */
+code {
+  background: var(--oi-surface2) !important;
+  border: 1px solid var(--oi-line) !important;
+  color: var(--oi-primary) !important;
+  border-radius: 4px !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.875em !important;
+  padding: 2px 6px !important;
+}
+
+/* ── Code blocks (pre) ── */
+pre {
+  background: var(--oi-surface2) !important;
+  border: 1px solid var(--oi-line) !important;
+  border-radius: var(--oi-radius) !important;
+  color: var(--oi-ink) !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.82rem !important; line-height: 1.6 !important;
+}
+pre .c { color: var(--oi-muted) !important; }
+pre .k { color: var(--oi-berry) !important; }
+pre .s { color: var(--oi-primary) !important; }
+pre .n { color: var(--oi-primary-deep) !important; }
+pre .v { color: var(--oi-accent) !important; }
+
+/* ── ASCII / text diagrams ── */
+.diagram {
+  background: var(--oi-surface2) !important;
+  border: 1px solid var(--oi-line) !important;
+  border-radius: var(--oi-radius) !important;
+  color: var(--oi-primary) !important;
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.8rem !important; line-height: 1.7 !important;
+}
+
+/* ── Scenario / comparison cards ── */
+.scenario { gap: 16px; }
+.sc-card {
+  border: 1.5px solid var(--oi-line) !important;
+  background: var(--oi-surface) !important;
+  color: var(--oi-ink) !important;
+  border-radius: var(--oi-radius) !important;
+}
+.sc-card.b2c, .sc-card.retail, .sc-card.learner, .sc-card.individual {
+  border-color: var(--oi-berry) !important;
+}
+.sc-card.b2b, .sc-card.corporate, .sc-card.enterprise, .sc-card.org {
+  border-color: var(--oi-primary) !important;
+}
+.sc-label {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 0.7rem !important; font-weight: 700 !important;
+  text-transform: uppercase !important; letter-spacing: 0.1em !important;
+  margin-bottom: 8px;
+}
+.sc-card.b2c .sc-label, .sc-card.retail .sc-label,
+.sc-card.learner .sc-label, .sc-card.individual .sc-label {
+  color: var(--oi-berry) !important;
+}
+.sc-card.b2b .sc-label, .sc-card.corporate .sc-label,
+.sc-card.enterprise .sc-label, .sc-card.org .sc-label {
+  color: var(--oi-primary) !important;
+}
+
+/* ── Details / accordion ── */
+details {
+  border: 1px solid var(--oi-line) !important;
+  background: var(--oi-surface) !important;
+  border-radius: var(--oi-radius) !important;
+  color: var(--oi-ink) !important;
+}
+summary {
+  color: var(--oi-primary) !important;
+  cursor: pointer !important; font-weight: 600 !important;
+}
+summary:hover { color: var(--oi-primary-deep) !important; }
+details[open] { background: var(--oi-surface2) !important; }
+
+/* ── Bottom nav / footer ── */
+nav:not(.oi-site-nav) {
+  background: var(--oi-surface) !important;
+  border-top: 1px solid var(--oi-line) !important;
+}
+.btn {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  background: var(--oi-surface) !important;
+  border: 1.5px solid var(--oi-line) !important;
+  color: var(--oi-ink) !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.btn:hover { border-color: var(--oi-primary) !important; color: var(--oi-primary) !important; }
+.btn.primary, .btn-primary {
+  background: var(--oi-primary-btn) !important;
+  border-color: var(--oi-primary-btn) !important;
+  color: #fff !important;
+}
+.btn.primary:hover, .btn-primary:hover {
+  background: var(--oi-primary-deep) !important;
+  border-color: var(--oi-primary-deep) !important;
+}
+.btn.ghost { background: transparent !important; }
+.btn[disabled], .btn:disabled { opacity: 0.35 !important; cursor: not-allowed !important; }
+.stepcount { color: var(--oi-muted) !important; font-size: 0.8rem !important; }
+
+/* ── Score / result blocks ── */
+.big-level { color: var(--oi-primary-deep) !important; }
+.score-line { color: var(--oi-ink) !important; }
+.gold, .xp-label { color: var(--oi-accent) !important; font-weight: 700; }
+
+/* ── Checklist / status items ── */
+.status-ok, .pass   { color: var(--oi-berry) !important; }
+.status-warn, .warn { color: var(--oi-accent) !important; }
+.status-no, .fail   { color: var(--oi-muted) !important; }
+
+/* ── Locked / badge ── */
+.locked, [data-state="locked"] {
+  opacity: 0.45 !important;
+  pointer-events: none !important;
+}
+.badge, .pill, .tag {
+  font-family: 'IBM Plex Mono', monospace !important;
+  background: var(--oi-surface2) !important;
+  color: var(--oi-primary) !important;
+  border: 1px solid var(--oi-line) !important;
+  border-radius: 999px !important;
+  font-size: 0.7rem !important; padding: 2px 10px !important;
+  letter-spacing: 0.08em !important; font-weight: 600 !important;
+  text-transform: uppercase !important;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .scenario, [class*="grid-"] { grid-template-columns: 1fr !important; }
+}

@@ -302,7 +302,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The scenario",
-        icon: "📋",
+        icon: "",
         html: `<div class="case-card">
           <div class="ct">A well-meaning first draft</div>
           <div class="cd">A junior SME drafts a module on a new pricing policy. Their draft opens with: "By the end of this module, you will recall the 6 tiers of the new pricing structure." It's followed by 14 slides of tier definitions, then a 20-question multiple choice exam.</div>
@@ -325,7 +325,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The brief you're given",
-        icon: "📋",
+        icon: "",
         html: `<div class="case-card">
           <div class="ct">Solution direction from the Lead Architect</div>
           <div class="cd">"We need a 5-minute digital module teaching field reps how to respond when a healthcare provider asks an off-label usage question during a sales call. Tone: calm, compliant, confident. Must end with a knowledge check on the correct escalation path."</div>
@@ -333,7 +333,7 @@ const LEVELS = [
       },
       {
         label: "Your task",
-        icon: "✏️",
+        icon: "️",
         html: `<p>Build one storyboard frame (frame 3 of 5, the "decision point" frame). Fill in: screen description, on-screen text, narration script, and the interaction.</p>`
       }
     ],
@@ -362,7 +362,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The current knowledge check",
-        icon: "📋",
+        icon: "",
         html: `<div class="case-card">
           <div class="ct">Question as drafted</div>
           <div class="cd">"True or False: Field reps must escalate any off-label question to Medical Affairs within 24 hours." Learning objective: "Recognize an off-label question in real time and redirect the conversation appropriately during the live interaction."</div>
@@ -396,7 +396,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The scenario",
-        icon: "🧩",
+        icon: "",
         html: `<div class="case-card">
           <div class="ct">What you've been handed</div>
           <div class="cd">A vendor-produced 15-minute video on device sterilization exists from 2 years ago. It's well-produced, but references an older device model, uses a different visual brand, and has no closed captions.</div>
@@ -423,7 +423,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The blueprint vs. the draft",
-        icon: "🔍",
+        icon: "",
         html: `<div class="storyboard-frame">
           <div class="sf-header"><span>BLUEPRINT</span><span>vs DRAFT v1</span></div>
           <div class="sf-body">
@@ -455,7 +455,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The draft slide you're reviewing",
-        icon: "🔍",
+        icon: "",
         html: `<div class="storyboard-frame">
           <div class="sf-header"><span>SLIDE 7 — DRAFT v1</span><span>module: dosing_guidelines.pptx</span></div>
           <div class="sf-body">
@@ -488,7 +488,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The data pattern",
-        icon: "📊",
+        icon: "",
         html: `<div class="case-card">
           <div class="ct">Post-launch data, 3 months in</div>
           <div class="cd">Completion rate: 94%. Average quiz score: 91%. But field coaching reports show reps are still mishandling the exact scenario the module was built to address — the on-the-job behavior hasn't changed despite high completion and quiz scores.</div>
@@ -522,7 +522,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The scenario",
-        icon: "⚖️",
+        icon: "️",
         html: `<div class="case-card">
           <div class="ct">Three feedback notes on the same draft module</div>
           <div class="cd"><strong>SME:</strong> "This needs three more slides of mechanism-of-action detail, it's not complete without it."<br><strong>Digital Experience Designer:</strong> "It's already too text-heavy, we need to cut, not add."<br><strong>Business partner:</strong> "Reps are telling us they need this live, not by Friday's deadline."</div>
@@ -545,7 +545,7 @@ const LEVELS = [
     blocks: [
       {
         label: "The situation",
-        icon: "🗂️",
+        icon: "️",
         html: `<p>You're three modules into a 12-module compliance series. Each module has a storyboard, a Storyline source file, exported SCORM packages in 2 languages, and a stakeholder review log. Define the system now, before module 4 starts — and note what you'd do if this system breaks down by module 8.</p>`
       }
     ],
@@ -623,7 +623,7 @@ function renderMap() {
     card.innerHTML = `
       <div class="level-top-row">
         <span class="level-num">${String(level.id).padStart(2,"0")}</span>
-        <span class="level-status">${complete ? "✅" : (unlocked ? "" : "🔒")}</span>
+        <span class="level-status">${complete ? "<span class="status-ok">OK</span>" : (unlocked ? "" : "")}</span>
       </div>
       <div class="level-name">${level.name}</div>
       <div class="level-focus">${level.focus}</div>
@@ -683,7 +683,7 @@ function openLevel(id) {
   bodyHTML += `
     <div class="complete-row">
       <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel(${level.id})">
-        ${progress.completed[level.id] ? "✅ Completed — replay anytime" : "Mark as practiced →"}
+        ${progress.completed[level.id] ? "<span class="status-ok">OK</span> Completed — replay anytime" : "Mark as practiced →"}
       </button>
     </div>
   `;
@@ -697,7 +697,7 @@ function copyAnswer(levelId) {
   const level = LEVELS.find(l => l.id === levelId);
   navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
     const btn = document.getElementById(`copyBtn-${levelId}`);
-    btn.textContent = "Copied ✓";
+    btn.textContent = "Copied ";
     btn.classList.add("copied");
     setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
   });
@@ -767,7 +767,7 @@ function renderChecklist(level, zone) {
     html += `
       <div class="checklist-item ${checked}" onclick="toggleCheck(${level.id}, ${i})" tabindex="0" role="checkbox" aria-checked="${!!saved[i]}"
            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCheck(${level.id},${i})}">
-        <div class="checklist-box">${saved[i] ? "✓" : ""}</div>
+        <div class="checklist-box">${saved[i] ? "" : ""}</div>
         <div class="checklist-text">${item}</div>
       </div>
     `;
@@ -881,7 +881,7 @@ function completeLevel(id) {
   }
 
   const btn = document.getElementById(`completeBtn-${id}`);
-  if (btn) btn.textContent = "✅ Completed — replay anytime";
+  if (btn) btn.textContent = "<span class="status-ok">OK</span> Completed — replay anytime";
 
   const allDone = LEVELS.every(l => progress.completed[l.id]);
   if (allDone) {
