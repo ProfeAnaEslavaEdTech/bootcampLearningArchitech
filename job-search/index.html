@@ -123,7 +123,7 @@
   .level-node.unlocked { border-color: var(--indigo); }
   .level-node.done     { border-color: var(--indigo); background: var(--indigo-soft); }
   .level-node.done::after {
-    content: '✓';
+    content: '';
     position: absolute; bottom: -4px; right: -4px;
     background: var(--indigo); color: white;
     font-size: 10px; font-weight: 700;
@@ -357,6 +357,56 @@
     .modal { padding: 28px 20px 22px; }
   }
 </style>
+<style>/* OI token remap — applied after local tokens */
+:root{
+  --paper:var(--oi-surface);
+  --panel:var(--oi-surface2);
+  --ink:var(--oi-ink);
+  --ink-soft:var(--oi-muted);
+  --line:var(--oi-line);
+  --teal:var(--oi-primary);
+  --teal-bright:var(--oi-primary);
+  --teal-soft:var(--oi-surface2);
+  --amber:var(--oi-accent);
+  --amber-bright:var(--oi-accent);
+  --amber-soft:var(--oi-surface2);
+  --amber-pale:var(--oi-surface2);
+  --amber-glow:var(--oi-accent);
+  --blue:var(--oi-primary);
+  --blue-soft:var(--oi-surface2);
+  --indigo:var(--oi-primary-deep);
+  --indigo-bright:var(--oi-primary);
+  --indigo-mid:var(--oi-primary);
+  --indigo-soft:var(--oi-surface2);
+  --green:var(--oi-berry);
+  --green-bright:var(--oi-berry);
+  --green-glow:var(--oi-berry);
+  --green-soft:var(--oi-surface2);
+  --green-pale:var(--oi-surface2);
+  --purple:var(--oi-primary-deep);
+  --purple-soft:var(--oi-surface2);
+  --coral:var(--oi-berry);
+  --coral-soft:var(--oi-surface2);
+  --red:var(--oi-muted);
+  --red-soft:var(--oi-surface2);
+  --sky:var(--oi-primary);
+  --sky-dark:var(--oi-primary-deep);
+  --sky-light:var(--oi-primary);
+  --sky-soft:var(--oi-surface2);
+  --cobalt:var(--oi-primary);
+  --cobalt-bright:var(--oi-primary);
+  --cobalt-mid:var(--oi-primary);
+  --cobalt-soft:var(--oi-surface2);
+  --fire:var(--oi-accent);
+  --fire-bright:var(--oi-accent);
+  --fire-mid:var(--oi-accent);
+  --fire-soft:var(--oi-surface2);
+  --rose:var(--oi-berry);
+  --rose-bright:var(--oi-berry);
+  --rose-mid:var(--oi-berry);
+  --rose-soft:var(--oi-surface2);
+}
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
@@ -393,7 +443,7 @@
 </div>
 
 <div class="final-screen" id="final-screen">
-  <div class="final-icon">🎯</div>
+  <div class="final-icon"></div>
   <h2>Session intelligence locked in.</h2>
   <p>You can now triage a posting in 30 seconds, state every gap honestly, explain why requirements lists mislead, make the Equipping ELLs case, and produce CV bullets that match the posting's own language.</p>
   <div class="btn-row" style="justify-content:center">
@@ -404,7 +454,7 @@
 
 <div class="modal-overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <button class="modal-close" id="modal-close" aria-label="Close"></button>
     <div id="modal-content"></div>
   </div>
 </div>
@@ -415,7 +465,7 @@
 const LEVELS = [
   {
     id: 'triage',
-    icon: '🚦',
+    icon: '',
     title: 'Triage: Three Hard Gates',
     tag: 'quiz · 4 questions',
     type: 'quiz',
@@ -471,7 +521,7 @@ const LEVELS = [
   },
   {
     id: 'gaps',
-    icon: '🗂️',
+    icon: '️',
     title: 'Gap Register: Honest Architecture',
     tag: 'builder · 3 reflection fields',
     type: 'builder',
@@ -480,7 +530,7 @@ const LEVELS = [
     intro: 'Gaps are not equal. Three types need different strategies. Map the register from today\'s session.',
     insight: {
       label: 'The three gap types',
-      body: `<strong>Closeable through study/artefacts:</strong> WIDA (closeable via mapping artefact), Storyline (in progress ✅), Camtasia (learn next), xAPI/LRS portfolio evidence.<br><br>
+      body: `<strong>Closeable through study/artefacts:</strong> WIDA (closeable via mapping artefact), Storyline (in progress <span class="status-ok">OK</span>), Camtasia (learn next), xAPI/LRS portfolio evidence.<br><br>
 <strong>Structural — not closeable through study:</strong> #3 Technical content/webinar production (no evidence yet), #4 SaaS/scale-up employment (no product-company employment), #5 Institutional-scale team leadership (no line management). Handle with honest gap statement + transferable-strength pivot.<br><br>
 <strong>Role-specific eligibility filters:</strong> French, German — these eliminate the role at triage. US K-12 ELL system context — state honestly in the cover letter, do not claim.`
     },
@@ -504,7 +554,7 @@ const LEVELS = [
   },
   {
     id: 'requirements',
-    icon: '🔬',
+    icon: '',
     title: 'Why Requirements Lists Mislead',
     tag: 'quiz · 3 questions',
     type: 'quiz',
@@ -549,7 +599,7 @@ const LEVELS = [
   },
   {
     id: 'equipping-ells',
-    icon: '✅',
+    icon: '<span class="status-ok">OK</span>',
     title: 'Equipping ELLs: The Recommended Application',
     tag: 'boss · 3 questions',
     type: 'boss',
@@ -580,7 +630,7 @@ Why this works: (1) It shows you engaged with the actual framework at the level 
   },
   {
     id: 'cv-wording',
-    icon: '📝',
+    icon: '',
     title: 'CV & Cover Letter Wording',
     tag: 'checklist · agreed language from today',
     type: 'checklist',
@@ -663,7 +713,7 @@ function renderMap() {
     const info = document.createElement('div');
     info.className = 'level-info';
     info.innerHTML = `<div class="level-title">${lvl.title}<span class="level-tag">${lvl.tag}</span></div>
-      <div class="level-meta">${done ? '✓ Complete · ' : ''}+${lvl.xp} XP</div>`;
+      <div class="level-meta">${done ? ' Complete · ' : ''}+${lvl.xp} XP</div>`;
 
     if (unlocked && !done) info.addEventListener('click', () => openModal(i));
 
@@ -825,7 +875,7 @@ function renderChecklist(lvl, container) {
     lvl.items.forEach((item, ii) => {
       const isChecked = !!checkState[lvl.id][ii];
       html += `<div class="check-item${isChecked ? ' checked' : ''}" data-ii="${ii}" tabindex="0" role="checkbox" aria-checked="${isChecked}">
-        <div class="check-box">${isChecked ? '✓' : ''}</div>
+        <div class="check-box">${isChecked ? '' : ''}</div>
         <div class="check-text">
           <div class="check-title">${item.title}</div>
           <div class="check-desc">${item.desc}</div>

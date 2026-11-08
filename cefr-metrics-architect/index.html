@@ -185,7 +185,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   </div>
 </header>
 <a href="#main" class="skip-link">Skip to content</a>
-<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">🌓</button>
+<button id="theme-btn" aria-label="Colour theme: system. Click to switch."></button>
 
 <div class="top-bar">
   <a href="../" class="back-link">← All tracks</a>
@@ -222,7 +222,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 </div>
 
 <div class="final-screen" id="finalScreen">
-  <div class="final-icon">📊</div>
+  <div class="final-icon"></div>
   <h2>Measurement arm complete.</h2>
   <p>You can now design, defend, and deliver a full CEFR-anchored metrics system — from statement source to client report. Every metric traceable. Every claim evidenced.</p>
   <div class="final-chips">
@@ -240,7 +240,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="modalClose" aria-label="Close"></button>
     <div id="modalContent"></div>
     <div class="modal-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a></div>
   </div>
@@ -405,15 +405,15 @@ function renderMap() {
     btn.onclick = () => !locked && openLevel(lvl.id);
     btn.setAttribute('aria-label', lvl.name + (locked ? ' — locked' : '') + (done ? ' — complete' : ''));
     btn.innerHTML = `
-      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-num">${done ? '' : lvl.id}</div>
       <div class="level-body">
         <div class="level-name">${lvl.name}</div>
         <div class="level-desc">${lvl.desc}</div>
         <div class="level-artifact">${lvl.artifact}</div>
         <div class="level-meta">
           <span class="badge badge-type">${lvl.type}</span>
-          ${done ? '<span class="badge badge-done">Done ✓</span>' : ''}
-          ${locked ? '<span class="badge badge-lock">🔒 locked</span>' : ''}
+          ${done ? '<span class="badge badge-done">Done </span>' : ''}
+          ${locked ? '<span class="badge badge-lock"> locked</span>' : ''}
         </div>
       </div>`;
     map.appendChild(btn);
@@ -432,7 +432,7 @@ function openLevel(id) {
 
 function renderContent(lvl) {
   const c = document.getElementById('modalContent');
-  const header = `<div class="modal-eyebrow">Module ${lvl.id} of ${LEVELS.length} · ${lvl.type}</div><h2 id="modalTitle">${lvl.name}</h2><div class="modal-desc">${lvl.desc}</div><div class="artifact-box">🎯 ${lvl.artifact}</div><hr class="divider">`;
+  const header = `<div class="modal-eyebrow">Module ${lvl.id} of ${LEVELS.length} · ${lvl.type}</div><h2 id="modalTitle">${lvl.name}</h2><div class="modal-desc">${lvl.desc}</div><div class="artifact-box"> ${lvl.artifact}</div><hr class="divider">`;
   if (lvl.type === 'checklist') c.innerHTML = header + buildChecklist(lvl);
   else if (lvl.type === 'builder') c.innerHTML = header + buildBuilder(lvl);
   else if (lvl.type === 'boss')    c.innerHTML = header + buildBoss(lvl);
@@ -446,11 +446,11 @@ function buildChecklist(lvl) {
     grp.items.forEach((item, ii) => {
       const key = gi + '-' + ii;
       const isChecked = checkState[lvl.id] && checkState[lvl.id][key];
-      html += `<div class="checklist-item"><div class="check-box ${isChecked ? 'checked' : ''}" id="cb-${gi}-${ii}" role="checkbox" aria-checked="${isChecked ? 'true' : 'false'}" tabindex="0" onclick="toggleGroupCheck(${lvl.id},${gi},${ii})" onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '✓' : ''}</div><div><div class="check-text">${item.text}</div><div class="check-note">${item.note}</div></div></div>`;
+      html += `<div class="checklist-item"><div class="check-box ${isChecked ? 'checked' : ''}" id="cb-${gi}-${ii}" role="checkbox" aria-checked="${isChecked ? 'true' : 'false'}" tabindex="0" onclick="toggleGroupCheck(${lvl.id},${gi},${ii})" onkeydown="if(event.key==='Enter'||event.key===' ')toggleGroupCheck(${lvl.id},${gi},${ii})">${isChecked ? '' : ''}</div><div><div class="check-text">${item.text}</div><div class="check-note">${item.note}</div></div></div>`;
     });
     html += '</div>';
   });
-  html += `<div class="prog-note">✦ Mark complete only when you can apply these principles to a new product — not just after reading them.</div>`;
+  html += `<div class="prog-note"> Mark complete only when you can apply these principles to a new product — not just after reading them.</div>`;
   html += `<div class="btn-row"><button class="btn btn-primary" id="completeBtn">Module mastered →</button></div>`;
   return html;
 }
@@ -462,7 +462,7 @@ function buildBuilder(lvl) {
 
 function buildBoss(lvl) {
   const qs = lvl.questions.map((q, i) => `<div class="boss-q">${q.q}</div><textarea class="boss-input" id="bq${i}" placeholder="Say it out loud first. Then write the key points…"></textarea><div class="model-answer" id="bm${i}">${q.model}</div>${i < lvl.questions.length - 1 ? '<hr class="divider">' : ''}`).join('');
-  return `<div class="boss-header"><div class="boss-icon">🎙️</div><div class="boss-title">Client Metrics Panel</div><div class="boss-sub">Speak first, write second. A client panel is a conversation, not a report.</div></div><div>${qs}<div class="btn-row" style="margin-top:16px;"><button class="btn btn-ghost" id="revealBtn">Show model answers</button><button class="btn btn-primary" id="completeBtn">Panel complete →</button></div></div>`;
+  return `<div class="boss-header"><div class="boss-icon">️</div><div class="boss-title">Client Metrics Panel</div><div class="boss-sub">Speak first, write second. A client panel is a conversation, not a report.</div></div><div>${qs}<div class="btn-row" style="margin-top:16px;"><button class="btn btn-ghost" id="revealBtn">Show model answers</button><button class="btn btn-primary" id="completeBtn">Panel complete →</button></div></div>`;
 }
 
 function attachEvents(lvl) {
@@ -477,7 +477,7 @@ function toggleGroupCheck(lvlId, gi, ii) {
   const key = gi + '-' + ii;
   checkState[lvlId][key] = !checkState[lvlId][key];
   const cb = document.getElementById('cb-' + gi + '-' + ii);
-  if (checkState[lvlId][key]) { cb.classList.add('checked'); cb.setAttribute('aria-checked', 'true'); cb.textContent = '✓'; }
+  if (checkState[lvlId][key]) { cb.classList.add('checked'); cb.setAttribute('aria-checked', 'true'); cb.textContent = ''; }
   else { cb.classList.remove('checked'); cb.setAttribute('aria-checked', 'false'); cb.textContent = ''; }
 }
 
@@ -485,7 +485,7 @@ function completeLevel(id) {
   completed.add(id);
   closeModal();
   renderMap(); xp();
-  showToast('Module mastered ✓');
+  showToast('Module mastered ');
   if (completed.size === LEVELS.length) {
     setTimeout(() => { document.getElementById('finalScreen').classList.add('show'); document.getElementById('finalScreen').scrollIntoView({ behavior: 'smooth' }); }, 800);
   }
@@ -504,7 +504,7 @@ renderMap(); xp();
   const btn = document.getElementById('theme-btn');
   const root = document.documentElement;
   const cycle = ['system', 'light', 'dark'];
-  const icons = { system: '🌓', light: '☀️', dark: '🌙' };
+  const icons = { system: '', light: 'Light️', dark: 'Dark' };
   const labels = { system: 'Colour theme: system. Click to switch to light.', light: 'Colour theme: light. Click to switch to dark.', dark: 'Colour theme: dark. Click to switch to system.' };
   let current = localStorage.getItem('oi-theme') || 'system';
   function apply(t) {

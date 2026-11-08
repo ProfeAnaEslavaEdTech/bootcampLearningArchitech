@@ -211,8 +211,8 @@
     list-style: none; padding: 0; font-size: 13.5px; line-height: 1.8; color: #E5E2D6;
   }
   .portfolio-list li { padding-left: 22px; position: relative; margin-bottom: 4px; }
-  .portfolio-list li::before { content: '☐'; position: absolute; left: 0; color: var(--teal-bright); }
-  .portfolio-list li.checked::before { content: '☑'; }
+  .portfolio-list li::before { content: ''; position: absolute; left: 0; color: var(--teal-bright); }
+  .portfolio-list li.checked::before { content: ''; }
   .portfolio-list li.checked { color: #8A8575; text-decoration: line-through; }
 
   footer { text-align: center; padding: 20px 24px 50px; font-size: 12px; color: #8A8575; }
@@ -222,6 +222,56 @@
     .progress-bar-outer { width: 90px; }
     .project-body { padding-left: 20px; }
   }
+</style>
+<style>/* OI token remap — applied after local tokens */
+:root{
+  --paper:var(--oi-surface);
+  --panel:var(--oi-surface2);
+  --ink:var(--oi-ink);
+  --ink-soft:var(--oi-muted);
+  --line:var(--oi-line);
+  --teal:var(--oi-primary);
+  --teal-bright:var(--oi-primary);
+  --teal-soft:var(--oi-surface2);
+  --amber:var(--oi-accent);
+  --amber-bright:var(--oi-accent);
+  --amber-soft:var(--oi-surface2);
+  --amber-pale:var(--oi-surface2);
+  --amber-glow:var(--oi-accent);
+  --blue:var(--oi-primary);
+  --blue-soft:var(--oi-surface2);
+  --indigo:var(--oi-primary-deep);
+  --indigo-bright:var(--oi-primary);
+  --indigo-mid:var(--oi-primary);
+  --indigo-soft:var(--oi-surface2);
+  --green:var(--oi-berry);
+  --green-bright:var(--oi-berry);
+  --green-glow:var(--oi-berry);
+  --green-soft:var(--oi-surface2);
+  --green-pale:var(--oi-surface2);
+  --purple:var(--oi-primary-deep);
+  --purple-soft:var(--oi-surface2);
+  --coral:var(--oi-berry);
+  --coral-soft:var(--oi-surface2);
+  --red:var(--oi-muted);
+  --red-soft:var(--oi-surface2);
+  --sky:var(--oi-primary);
+  --sky-dark:var(--oi-primary-deep);
+  --sky-light:var(--oi-primary);
+  --sky-soft:var(--oi-surface2);
+  --cobalt:var(--oi-primary);
+  --cobalt-bright:var(--oi-primary);
+  --cobalt-mid:var(--oi-primary);
+  --cobalt-soft:var(--oi-surface2);
+  --fire:var(--oi-accent);
+  --fire-bright:var(--oi-accent);
+  --fire-mid:var(--oi-accent);
+  --fire-soft:var(--oi-surface2);
+  --rose:var(--oi-berry);
+  --rose-bright:var(--oi-berry);
+  --rose-mid:var(--oi-berry);
+  --rose-soft:var(--oi-surface2);
+}
 </style>
 </head>
 <body>
@@ -573,7 +623,7 @@ function renderGroups() {
       html += `
         <div class="project-card ${isDone ? 'done' : ''}" id="card-${key}">
           <div class="project-head" onclick="toggleProject('${key}')">
-            <div class="project-checkbox" onclick="event.stopPropagation(); toggleDone('${key}')">${isDone ? '✓' : ''}</div>
+            <div class="project-checkbox" onclick="event.stopPropagation(); toggleDone('${key}')">${isDone ? '' : ''}</div>
             <div class="project-meta">
               <div class="project-jd-line">${p.jdLine}</div>
               <div class="project-name">${p.name}</div>
@@ -590,18 +640,18 @@ function renderGroups() {
               </div>
             </div>
             <div class="pb-block">
-              <div class="pb-label amber">🛠 The task</div>
+              <div class="pb-label amber"> The task</div>
               ${p.task}
             </div>
             <div class="pb-block">
-              <div class="pb-label blue">📦 Deliverable</div>
+              <div class="pb-label blue"> Deliverable</div>
               <div class="deliverable-box">${p.deliverable}</div>
             </div>
             <div class="pb-block">
-              <div class="pb-label coral">🎤 How this shows up in the interview</div>
+              <div class="pb-label coral"> How this shows up in the interview</div>
               <div class="interview-link-box">${p.interview}</div>
             </div>
-            <button class="mark-done-btn" onclick="toggleDone('${key}')">${isDone ? '✓ Marked complete — click to undo' : 'Mark as complete'}</button>
+            <button class="mark-done-btn" onclick="toggleDone('${key}')">${isDone ? ' Marked complete — click to undo' : 'Mark as complete'}</button>
           </div>
         </div>
       `;
@@ -624,9 +674,9 @@ function toggleDone(key) {
   const card = document.getElementById(`card-${key}`);
   card.classList.toggle("done", doneState[key]);
   const checkbox = card.querySelector(".project-checkbox");
-  checkbox.textContent = doneState[key] ? "✓" : "";
+  checkbox.textContent = doneState[key] ? "" : "";
   const btn = card.querySelector(".mark-done-btn");
-  btn.textContent = doneState[key] ? "✓ Marked complete — click to undo" : "Mark as complete";
+  btn.textContent = doneState[key] ? " Marked complete — click to undo" : "Mark as complete";
   updateProgress();
 }
 

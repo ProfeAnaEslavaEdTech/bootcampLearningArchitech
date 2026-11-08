@@ -293,6 +293,56 @@
     padding: 8px 20px; border-radius: 99px; border: 1px solid var(--green-bright); margin-bottom: 24px;
   }
 </style>
+<style>/* OI token remap — applied after local tokens */
+:root{
+  --paper:var(--oi-surface);
+  --panel:var(--oi-surface2);
+  --ink:var(--oi-ink);
+  --ink-soft:var(--oi-muted);
+  --line:var(--oi-line);
+  --teal:var(--oi-primary);
+  --teal-bright:var(--oi-primary);
+  --teal-soft:var(--oi-surface2);
+  --amber:var(--oi-accent);
+  --amber-bright:var(--oi-accent);
+  --amber-soft:var(--oi-surface2);
+  --amber-pale:var(--oi-surface2);
+  --amber-glow:var(--oi-accent);
+  --blue:var(--oi-primary);
+  --blue-soft:var(--oi-surface2);
+  --indigo:var(--oi-primary-deep);
+  --indigo-bright:var(--oi-primary);
+  --indigo-mid:var(--oi-primary);
+  --indigo-soft:var(--oi-surface2);
+  --green:var(--oi-berry);
+  --green-bright:var(--oi-berry);
+  --green-glow:var(--oi-berry);
+  --green-soft:var(--oi-surface2);
+  --green-pale:var(--oi-surface2);
+  --purple:var(--oi-primary-deep);
+  --purple-soft:var(--oi-surface2);
+  --coral:var(--oi-berry);
+  --coral-soft:var(--oi-surface2);
+  --red:var(--oi-muted);
+  --red-soft:var(--oi-surface2);
+  --sky:var(--oi-primary);
+  --sky-dark:var(--oi-primary-deep);
+  --sky-light:var(--oi-primary);
+  --sky-soft:var(--oi-surface2);
+  --cobalt:var(--oi-primary);
+  --cobalt-bright:var(--oi-primary);
+  --cobalt-mid:var(--oi-primary);
+  --cobalt-soft:var(--oi-surface2);
+  --fire:var(--oi-accent);
+  --fire-bright:var(--oi-accent);
+  --fire-mid:var(--oi-accent);
+  --fire-soft:var(--oi-surface2);
+  --rose:var(--oi-berry);
+  --rose-bright:var(--oi-berry);
+  --rose-mid:var(--oi-berry);
+  --rose-soft:var(--oi-surface2);
+}
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
@@ -310,7 +360,7 @@
 
 <header class="site-header">
   <div class="header-brand">
-    <div class="header-icon">🤖</div>
+    <div class="header-icon"></div>
     <div>
       <div class="header-title">AI Literacy for Instructional Designers</div>
       <div class="header-sub">RLHF · Instruction Following · Prompt Design · Authoring Workflow</div>
@@ -388,7 +438,7 @@
 
     <!-- STEP 0 — DIAGNOSTIC -->
     <div class="step active" id="step-0">
-      <div class="xp-badge">🎯 Diagnostic · 25 XP</div>
+      <div class="xp-badge"> Diagnostic · 25 XP</div>
       <div class="step-eyebrow">Step 01 — Test First</div>
       <h1>How much do you already know about <em>AI under the hood</em>?</h1>
       <p>Five quick questions. These are genuinely tricky — don't worry about getting them right. The goal is to surface what you already have and what the module needs to fill in.</p>
@@ -445,13 +495,13 @@
 
     <!-- STEP 1 — BASE MODEL -->
     <div class="step" id="step-1">
-      <div class="xp-badge">🧠 Foundation · 20 XP</div>
+      <div class="xp-badge"> Foundation · 20 XP</div>
       <div class="step-eyebrow">Step 02 — Teach</div>
       <h1>Before RLHF: <em>the base model</em></h1>
       <p>Every AI tool you use — ChatGPT, Claude, Copilot in Storyline — started as a base model. Understanding what a base model is (and is not) explains why RLHF had to be invented.</p>
 
       <div class="teach-card">
-        <h2>📖 What a base model actually does</h2>
+        <h2> What a base model actually does</h2>
         <p>A base language model is trained on hundreds of billions of words — books, websites, code, articles — using one simple objective: <strong>predict the next word</strong> (technically, token) given everything that came before.</p>
 
         <div class="diagram">
@@ -468,7 +518,7 @@
         <p>Base models also have no concept of "I shouldn't say this" or "the user wants a short answer." They produce whatever token sequence has the highest probability given their training data — including harmful, biased, or just plain wrong content — because probability ≠ accuracy or appropriateness.</p>
 
         <div class="callout info">
-          <span class="callout-icon">💡</span>
+          <span class="callout-icon"></span>
           <div><strong>Key insight for IDs:</strong> When an AI tool gives you a plausible-sounding but factually wrong learning objective or quiz question, that's base model behavior leaking through the RLHF layer. The model predicts text that <em>looks</em> like a correct answer, not text that <em>is</em> a correct answer.</div>
         </div>
       </div>
@@ -481,13 +531,13 @@
 
     <!-- STEP 2 — SFT -->
     <div class="step" id="step-2">
-      <div class="xp-badge">✍️ RLHF Phase 1 · 25 XP</div>
+      <div class="xp-badge">️ RLHF Phase 1 · 25 XP</div>
       <div class="step-eyebrow">Step 03 — Teach</div>
       <h1>RLHF Phase 1: <em>Supervised Fine-Tuning</em></h1>
       <p>The first phase of RLHF turns the "next-word predictor" into something that at least tries to be helpful. This is where human trainers get involved for the first time.</p>
 
       <div class="teach-card">
-        <h2>📋 What happens in SFT</h2>
+        <h2> What happens in SFT</h2>
 
         <div class="phase-card ph1">
           <h4>Phase 1 — Supervised Fine-Tuning (SFT)</h4>
@@ -506,7 +556,7 @@
         <p>SFT examples are expensive to create — you can only write so many. The model generalizes from those examples, but it still makes things up with confidence, still gets edge cases wrong, and still doesn't reliably know when it's uncertain. That's what Phases 2 and 3 address.</p>
 
         <div class="callout tip">
-          <span class="callout-icon">✅</span>
+          <span class="callout-icon"><span class="status-ok">OK</span></span>
           <div><strong>ID parallel:</strong> SFT is like onboarding a new instructional designer by showing them your best past work. They learn your format and tone quickly, but they still need feedback loops — which is exactly what Phases 2 and 3 provide.</div>
         </div>
       </div>
@@ -519,13 +569,13 @@
 
     <!-- STEP 3 — REWARD MODEL -->
     <div class="step" id="step-3">
-      <div class="xp-badge">⚖️ RLHF Phase 2 · 25 XP</div>
+      <div class="xp-badge">️ RLHF Phase 2 · 25 XP</div>
       <div class="step-eyebrow">Step 04 — Teach</div>
       <h1>RLHF Phase 2: <em>the reward model</em></h1>
       <p>This is the most important phase to understand as an ID — because the reward model is the mechanism that shapes what your AI tool thinks "good" means. And it has a specific, exploitable weakness.</p>
 
       <div class="teach-card">
-        <h2>📊 Building the reward model</h2>
+        <h2> Building the reward model</h2>
 
         <div class="phase-card ph2">
           <h4>Phase 2 — Reward Model Training</h4>
@@ -555,7 +605,7 @@
         </ul>
 
         <div class="callout warn">
-          <span class="callout-icon">⚠️</span>
+          <span class="callout-icon">!️</span>
           <div><strong>This is why AI tools hallucinate so confidently.</strong> The reward model was trained to prefer confident-sounding responses. So the optimized model learns to sound confident — even when it's generating plausible nonsense. As an ID, you must verify every fact an AI tool gives you, especially statistics, citations, and technical specs.</div>
         </div>
       </div>
@@ -568,13 +618,13 @@
 
     <!-- STEP 4 — PPO -->
     <div class="step" id="step-4">
-      <div class="xp-badge">🔄 RLHF Phase 3 · 25 XP</div>
+      <div class="xp-badge"> RLHF Phase 3 · 25 XP</div>
       <div class="step-eyebrow">Step 05 — Teach</div>
       <h1>RLHF Phase 3: <em>optimization with RL</em></h1>
       <p>The third phase is where the model is actually trained to maximize its reward score. This is what makes it behave like an assistant — and where the most interesting failure modes emerge.</p>
 
       <div class="teach-card">
-        <h2>🎮 Reinforcement Learning loop</h2>
+        <h2> Reinforcement Learning loop</h2>
 
         <div class="phase-card ph3">
           <h4>Phase 3 — RL Optimization (PPO)</h4>
@@ -618,13 +668,13 @@
 
     <!-- STEP 5 — INSTRUCTION FOLLOWING -->
     <div class="step" id="step-5">
-      <div class="xp-badge">📋 Instruction Following · 25 XP</div>
+      <div class="xp-badge"> Instruction Following · 25 XP</div>
       <div class="step-eyebrow">Step 06 — Teach</div>
       <h1>What <em>instruction following</em> actually means</h1>
       <p>Instruction following is the AI capability that matters most for IDs using authoring tools and AI assistants. It's not about whether the model "understands" your intent — it's about whether it precisely obeys multi-part constraints without drifting.</p>
 
       <div class="teach-card">
-        <h2>🎯 The spectrum of instruction compliance</h2>
+        <h2> The spectrum of instruction compliance</h2>
         <div style="overflow-x:auto;">
           <table class="compare-table">
             <thead><tr><th>Instruction type</th><th>Example</th><th>How well models follow it</th></tr></thead>
@@ -643,7 +693,7 @@
         <p>RLHF trained the model on human preferences — but human raters in Phase 2 were usually comparing two complete responses, not checking whether every constraint was met. A response that hits 4 out of 5 constraints but reads well might score higher than a response that hits all 5 but is awkwardly phrased. The model learns to optimize for "sounds good" over "obeyed every rule."</p>
 
         <div class="callout ai">
-          <span class="callout-icon">🤖</span>
+          <span class="callout-icon"></span>
           <div><strong>OpenAI's instruction-following research</strong> found that models fail most often when: (1) instructions are ambiguous, (2) there are more than 3 simultaneous constraints, or (3) a constraint conflicts with what the reward model finds "natural." Newer models are significantly better, but the pattern holds.</div>
         </div>
 
@@ -659,13 +709,13 @@
 
     <!-- STEP 6 — REWARD HACKING -->
     <div class="step" id="step-6">
-      <div class="xp-badge">⚠️ Failure Modes · 25 XP</div>
+      <div class="xp-badge">!️ Failure Modes · 25 XP</div>
       <div class="step-eyebrow">Step 07 — Teach</div>
       <h1>Why AI fails: <em>reward hacking & hallucination</em></h1>
       <p>Two failure modes you will encounter regularly as an ID. Understanding their root causes is what lets you design prompts and review processes that catch them.</p>
 
       <div class="teach-card">
-        <h2>🎯 Reward Hacking</h2>
+        <h2> Reward Hacking</h2>
         <p><strong>Definition:</strong> The model learns to score high on the reward model without actually being helpful — it finds shortcuts the reward model didn't anticipate.</p>
 
         <h3>Examples you'll see as an ID</h3>
@@ -675,14 +725,14 @@
           <li><strong>Confidence without knowledge:</strong> States facts it doesn't know with the same tone as facts it does know — because the reward model couldn't distinguish confidence-in-knowledge from confidence-in-fabrication.</li>
         </ul>
 
-        <h2 style="margin-top:20px;">🌀 Hallucination</h2>
+        <h2 style="margin-top:20px;"> Hallucination</h2>
         <p><strong>Definition:</strong> The model generates plausible-sounding but factually false information, stated confidently.</p>
 
         <h3>Why hallucination is a specific RLHF artifact</h3>
         <p>A base model that's uncertain might just produce low-probability tokens or trail off. But RLHF trained the model that confident, complete-sounding answers score well. So when the model doesn't know something, it generates the most probable completion of a confident-sounding sentence — which is a fabricated but plausible answer.</p>
 
         <div class="callout warn">
-          <span class="callout-icon">⚠️</span>
+          <span class="callout-icon">!️</span>
           <div><strong>High-risk ID tasks:</strong> Asking AI to generate statistics ("what percentage of learners…"), citations ("cite a study on…"), regulatory details ("the GDPR article that covers…"), or product specifications ("what does Articulate Rise support…"). All are high hallucination risk. Always verify with primary sources.</div>
         </div>
 
@@ -710,12 +760,12 @@
 
     <!-- STEP 7 — SCENARIO -->
     <div class="step" id="step-7">
-      <div class="xp-badge">🎭 Scenario · 35 XP</div>
+      <div class="xp-badge"> Scenario · 35 XP</div>
       <div class="step-eyebrow">Step 08 — Practice</div>
       <h1>Scenario: <em>diagnosing AI output</em></h1>
 
       <div class="scenario">
-        <div class="scenario-label">📋 Brief</div>
+        <div class="scenario-label"> Brief</div>
         <h3>You used AI to draft course content. Something's wrong.</h3>
         <p>You asked your AI assistant: "Write 3 learning objectives for a GDPR awareness module for marketing employees. Make them measurable." Here is what you got:</p>
         <ul>
@@ -760,13 +810,13 @@
 
     <!-- STEP 8 — PROMPT DESIGN -->
     <div class="step" id="step-8">
-      <div class="xp-badge">✍️ Prompt Design · 30 XP</div>
+      <div class="xp-badge">️ Prompt Design · 30 XP</div>
       <div class="step-eyebrow">Step 09 — Apply</div>
       <h1>Prompt design for IDs: <em>making instruction following work</em></h1>
       <p>Now that you know how the model works, you can write prompts that work with its architecture instead of against it. Four principles that directly counteract RLHF failure modes.</p>
 
       <div class="teach-card">
-        <h2>✏️ Principle 1: Role + Task + Constraints + Format</h2>
+        <h2>️ Principle 1: Role + Task + Constraints + Format</h2>
         <p>Structure every significant prompt in four parts. This maps directly to what RLHF training taught the model to respond to.</p>
 
         <div class="prompt-box">
@@ -803,7 +853,7 @@
         <p>Appending "Check that each objective starts with a measurable verb" forces the model to re-read its own output against a specific criterion before it finishes — a lightweight version of chain-of-thought reasoning that catches the most common drift.</p>
 
         <div class="callout tip">
-          <span class="callout-icon">🔧</span>
+          <span class="callout-icon"></span>
           <div><strong>For Articulate 360 workflows specifically:</strong> When using AI to draft Rise 360 block content, always specify the block type ("write this as a labeled graphic caption, max 40 words"), the learner action ("what the learner should DO after reading this"), and a fact you want included. This anchors the output and makes verification easier.</div>
         </div>
       </div>
@@ -816,13 +866,13 @@
 
     <!-- STEP 9 — WORKFLOW -->
     <div class="step" id="step-9">
-      <div class="xp-badge">🔄 Workflow · 25 XP</div>
+      <div class="xp-badge"> Workflow · 25 XP</div>
       <div class="step-eyebrow">Step 10 — Apply</div>
       <h1>AI in your <em>Articulate 360 authoring workflow</em></h1>
       <p>Where AI genuinely accelerates ID work, where it introduces risk, and the minimum verification step for each task.</p>
 
       <div class="teach-card">
-        <h2>🗺️ AI-assisted ID workflow</h2>
+        <h2>️ AI-assisted ID workflow</h2>
         <div style="overflow-x:auto;">
           <table class="compare-table">
             <thead><tr><th>ID Task</th><th>AI role</th><th>Risk level</th><th>Minimum verify step</th></tr></thead>
@@ -846,7 +896,7 @@
         </ol>
 
         <div class="callout info">
-          <span class="callout-icon">💡</span>
+          <span class="callout-icon"></span>
           <div>AI tools are best used as a <strong>first draft engine</strong>, not a final content producer. The ID's job shifts from "write from scratch" to "brief clearly, review critically, edit precisely." That's a genuine productivity gain — as long as the review step isn't skipped.</div>
         </div>
       </div>
@@ -859,7 +909,7 @@
 
     <!-- STEP 10 — FINAL QUIZ -->
     <div class="step" id="step-10">
-      <div class="xp-badge">🏆 Final Quiz · 40 XP</div>
+      <div class="xp-badge"> Final Quiz · 40 XP</div>
       <div class="step-eyebrow">Step 11 — Test Again</div>
       <h1>End-to-end check</h1>
       <p>Five questions. 8 XP each for correct answers.</p>
@@ -927,7 +977,7 @@
         <p class="score-desc" id="scoreDesc"></p>
 
         <div class="teach-card" style="text-align:left; margin: 0 auto; max-width:540px;">
-          <h2 style="margin-bottom:14px;">🧰 What you can explain now</h2>
+          <h2 style="margin-bottom:14px;"> What you can explain now</h2>
           <ul style="padding-left:18px; font-size:14px; line-height:2.2; color:#2D4A34;">
             <li>What RLHF is and why it was needed after base model training</li>
             <li>Why AI tools hallucinate confidently (reward model preference for certainty)</li>
@@ -986,7 +1036,7 @@
     btn.classList.add(correct ? 'correct' : 'wrong');
 
     var fbEl = document.getElementById(qId + '-fb');
-    fbEl.textContent = correct ? '✅ ' + fb[qId].ok : '❌ ' + fb[qId].no;
+    fbEl.textContent = correct ? '<span class="status-ok">OK</span> ' + fb[qId].ok : '<span class="status-no"></span> ' + fb[qId].no;
     fbEl.className = 'quiz-feedback show ' + (correct ? 'ok' : 'no');
 
     if (correct) gainXP(qId.startsWith('fq') ? 8 : 5);
@@ -1039,16 +1089,16 @@
     document.getElementById('finalScore').textContent = totalXP;
     var title, badge, desc;
     if (totalXP < 100) {
-      title = 'Good start'; badge = '🌱 Curious';
+      title = 'Good start'; badge = ' Curious';
       desc = "You've been introduced to the concepts. Come back to steps 3-4 (reward model + optimization) — that's where the practical insight for IDs lives. Once those click, your AI tool reviews will be much sharper.";
     } else if (totalXP < 180) {
-      title = 'AI Aware'; badge = '👀 Aware';
+      title = 'AI Aware'; badge = ' Aware';
       desc = "Solid foundation. Focus your next session on the scenario (step 8) and prompt design (step 9) — that's where the theory becomes workflow. Try rewriting one real prompt you've used with the Role + Task + Constraints + Format structure.";
     } else if (totalXP < 260) {
-      title = 'AI Literate'; badge = '📚 Literate';
+      title = 'AI Literate'; badge = ' Literate';
       desc = "You can explain RLHF to a colleague and have a defensible point of view on AI tool risks. Next step: apply the two-step review on your next AI-assisted Rise 360 or Storyline module and document what you catch.";
     } else {
-      title = 'AI Strategist'; badge = '🧭 Strategist';
+      title = 'AI Strategist'; badge = ' Strategist';
       desc = "Excellent. You understand the mechanism, the failure modes, and the workflow integration. You can now design an AI-assisted ID process that your team can follow safely — including which tasks to trust AI with and which to flag for human review.";
     }
     document.getElementById('scoreTitle').textContent = title;

@@ -714,6 +714,56 @@
     .xp-bar-outer { width: 100px; }
   }
 </style>
+<style>/* OI token remap — applied after local tokens */
+:root{
+  --paper:var(--oi-surface);
+  --panel:var(--oi-surface2);
+  --ink:var(--oi-ink);
+  --ink-soft:var(--oi-muted);
+  --line:var(--oi-line);
+  --teal:var(--oi-primary);
+  --teal-bright:var(--oi-primary);
+  --teal-soft:var(--oi-surface2);
+  --amber:var(--oi-accent);
+  --amber-bright:var(--oi-accent);
+  --amber-soft:var(--oi-surface2);
+  --amber-pale:var(--oi-surface2);
+  --amber-glow:var(--oi-accent);
+  --blue:var(--oi-primary);
+  --blue-soft:var(--oi-surface2);
+  --indigo:var(--oi-primary-deep);
+  --indigo-bright:var(--oi-primary);
+  --indigo-mid:var(--oi-primary);
+  --indigo-soft:var(--oi-surface2);
+  --green:var(--oi-berry);
+  --green-bright:var(--oi-berry);
+  --green-glow:var(--oi-berry);
+  --green-soft:var(--oi-surface2);
+  --green-pale:var(--oi-surface2);
+  --purple:var(--oi-primary-deep);
+  --purple-soft:var(--oi-surface2);
+  --coral:var(--oi-berry);
+  --coral-soft:var(--oi-surface2);
+  --red:var(--oi-muted);
+  --red-soft:var(--oi-surface2);
+  --sky:var(--oi-primary);
+  --sky-dark:var(--oi-primary-deep);
+  --sky-light:var(--oi-primary);
+  --sky-soft:var(--oi-surface2);
+  --cobalt:var(--oi-primary);
+  --cobalt-bright:var(--oi-primary);
+  --cobalt-mid:var(--oi-primary);
+  --cobalt-soft:var(--oi-surface2);
+  --fire:var(--oi-accent);
+  --fire-bright:var(--oi-accent);
+  --fire-mid:var(--oi-accent);
+  --fire-soft:var(--oi-surface2);
+  --rose:var(--oi-berry);
+  --rose-bright:var(--oi-berry);
+  --rose-mid:var(--oi-berry);
+  --rose-soft:var(--oi-surface2);
+}
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
@@ -762,7 +812,7 @@
 
   <section class="final-screen" id="finalScreen">
     <div class="hero-eyebrow">Mission complete</div>
-    <h2>Diamond Crown of Readiness 👑</h2>
+    <h2>Diamond Crown of Readiness </h2>
     <p style="color:#4A4639; font-size:15px; line-height:1.6;">You've cleared every level. You know SCORM from xAPI, you can talk Rise vs. Storyline with confidence, you've drafted your gamified onboarding pitch, and you've rehearsed your STAR stories out loud. That's not luck — that's preparation. Go get the offer.</p>
     <div class="badge-grid" id="badgeGrid"></div>
     <button class="back-btn" onclick="goToMap()" style="margin-top:10px;">↺ Replay any level</button>
@@ -773,7 +823,7 @@
 <footer>Built for one interview. Use it as many times as you need.</footer>
 
 <div class="toast" id="toast">
-  <span class="toast-icon" id="toastIcon">🏅</span>
+  <span class="toast-icon" id="toastIcon"></span>
   <span class="toast-text" id="toastText"></span>
 </div>
 
@@ -791,19 +841,19 @@ const LEVELS = [
   name: "The Brief",
   focus: "Decode the Nexthink Learning Architect job description",
   xp: 150,
-  badge: "🧭",
+  badge: "",
   type: "checklist",
   content: {
     intro: "Before touching any tool, map exactly what this role tests. Every level after this one trains a specific line from the JD.",
     blocks: [
       {
         label: "Mission",
-        icon: "🎯",
+        icon: "",
         html: `<p>Nexthink's Product Education team needs someone who can take a complex IT product and turn it into learning content that actually changes behaviour — for adults, at scale, blended across self-paced and instructor-led formats.</p>`
       },
       {
         label: "The five pillars this bootcamp trains",
-        icon: "📋",
+        icon: "",
         html: `<ul>
           <li><strong>SCORM &amp; xAPI</strong> — the standards that let your content talk to an LMS</li>
           <li><strong>LMS telemetry</strong> — using completion/drop-off data to redesign content, not just report on it</li>
@@ -829,14 +879,14 @@ const LEVELS = [
   name: "Self-Audit",
   focus: "Honest skill inventory — where you're strong, where you'll bridge the gap",
   xp: 150,
-  badge: "🔍",
+  badge: "",
   type: "scale",
   content: {
     intro: "No interview prep works if it starts from denial. Rate yourself honestly on each skill — the app will remember your answers so you know exactly where to spend your remaining prep time.",
     blocks: [
       {
         label: "Why this matters",
-        icon: "💡",
+        icon: "",
         html: `<p>You already have deep, real expertise in pedagogy, gamification design, and AI-assisted workflows — that's not in question. The gap is tool-specific fluency: Storyline, SCORM packaging mechanics, and Nexthink's own product. Naming the gap precisely is what lets you close it efficiently instead of panicking about all of it equally.</p>`
       }
     ],
@@ -859,20 +909,20 @@ const LEVELS = [
   name: "SCORM vs. xAPI",
   focus: "The standard that lets your course talk to an LMS — both versions",
   xp: 200,
-  badge: "📡",
+  badge: "",
   type: "quiz",
   content: {
     intro: "This is the single most-asked technical concept in instructional design interviews. You don't need to write SCORM manifest XML by hand — you need to explain, fluently, what it does and when xAPI is the better choice.",
     blocks: [
       {
         label: "Core concept",
-        icon: "📡",
+        icon: "",
         html: `<p><strong>SCORM</strong> (Sharable Content Object Reference Model) is a packaging standard. It lets a course built in Rise or Storyline talk to almost any LMS using a shared language: "this learner started," "this learner scored 80%," "this learner completed."</p>
         <p style="margin-top:10px;"><strong>xAPI</strong> (Experience API, formerly Tin Can) is the more flexible successor. Instead of one big "completed/not completed" signal, it logs granular statements: <em>"Ana watched Video 3," "Ana clicked Hint on Question 4," "Ana practiced the scenario in the sandbox."</em> It can also track learning that happens outside an LMS entirely — a simulation, a mobile app, a VR session.</p>`
       },
       {
         label: "The one-line answer for the interview",
-        icon: "🎤",
+        icon: "",
         html: ``
       }
     ],
@@ -898,14 +948,14 @@ const LEVELS = [
   name: "Rise or Storyline?",
   focus: "Match the format to the learning need — the decision Nexthink makes daily",
   xp: 200,
-  badge: "🛠️",
+  badge: "️",
   type: "match",
   content: {
     intro: "Drag each learning need to the tool that fits it best. There's no trick — the logic is genuinely simple once it clicks, and once it clicks you'll never confuse them again.",
     blocks: [
       {
         label: "The real difference",
-        icon: "🛠️",
+        icon: "️",
         html: `<p><strong>Rise</strong> = fast, responsive, block-based. Perfect for structured, linear content consumed on any device. Minimal design skill required, built-in mobile responsiveness.</p>
         <p style="margin-top:8px;"><strong>Storyline</strong> = slide-based with full creative control — triggers, variables, branching logic, custom interactions. Best when you need a simulation, a non-linear scenario, or pixel-level design control. Steeper build time, no native mobile responsiveness without extra work.</p>`
       }
@@ -926,14 +976,14 @@ const LEVELS = [
   name: "Telemetry Thinking",
   focus: "Turn LMS data into a redesign decision — not just a report",
   xp: 250,
-  badge: "📊",
+  badge: "",
   type: "scenario",
   content: {
     intro: "Nexthink's entire business is digital experience telemetry. They will absolutely test whether you think about your own learning content the same way they think about employee endpoints — with data, not vibes.",
     blocks: [
       {
         label: "The dataset",
-        icon: "📊",
+        icon: "",
         html: `<p>You shipped a Rise module on a new Nexthink feature. After 3 weeks:</p>
         <ul>
           <li><strong>Completion rate:</strong> 58% (target: 80%)</li>
@@ -944,7 +994,7 @@ const LEVELS = [
       },
       {
         label: "What this pattern actually tells you",
-        icon: "🔬",
+        icon: "",
         html: `<p>High time-on-task + low quiz score + mass drop-off at the same lesson is not a motivation problem — it's a <strong>content clarity problem</strong>. Learners are trying, struggling, and giving up. The fix isn't "make it more fun," it's "the explanation at Lesson 3 doesn't match the learner's current mental model."</p>`
       }
     ],
@@ -970,14 +1020,14 @@ const LEVELS = [
   name: "The Adult Learner",
   focus: "Why gamification for professionals ≠ gamification for kids",
   xp: 200,
-  badge: "🧠",
+  badge: "",
   type: "checklist",
   content: {
     intro: "Nexthink's learners are IT professionals on the clock. A points-and-confetti system designed for a language app will feel patronizing here. This level recalibrates your gamification instincts for a professional, time-pressured, expertise-driven audience.",
     blocks: [
       {
         label: "What changes for adult professional learners",
-        icon: "🧠",
+        icon: "",
         html: `<ul>
           <li><strong>Autonomy over points</strong> — adults disengage fast from systems that feel like school. Optional challenge paths beat mandatory leaderboards.</li>
           <li><strong>Competence signals, not just rewards</strong> — a badge means more when it maps to a real skill they can put on a resume or cite to their manager, not just "you clicked through."</li>
@@ -988,7 +1038,7 @@ const LEVELS = [
       },
       {
         label: "Translate your own AWJ experience",
-        icon: "🌉",
+        icon: "",
         html: `<p>You already built this instinct once: the AWJ's "researcher identity" narrative worked because it mapped onto something the learner aspired to be. For Nexthink, the equivalent move is a "DEX practitioner" identity arc — IT certifications already work this way (Basic → Pro → Master), so you're not inventing the wheel, you're refining one that already exists in their ecosystem.</p>`
       }
     ],
@@ -1008,14 +1058,14 @@ const LEVELS = [
   name: "Build the Pitch",
   focus: "Design a gamified onboarding flow for a real Nexthink feature, live",
   xp: 300,
-  badge: "🏗️",
+  badge: "️",
   type: "builder",
   content: {
     intro: "This is the level that turns theory into something you could actually say out loud in the interview. Fill in your own answers — the app saves them so you can review and refine before the real thing.",
     blocks: [
       {
         label: "The brief",
-        icon: "🏗️",
+        icon: "️",
         html: `<p>Design a short, gamified, blended learning path to onboard a new IT admin to <strong>Nexthink's Alert &amp; Incident Resolution feature</strong> (or substitute any feature you're more familiar with — the structure matters more than the specific product knowledge).</p>`
       }
     ],
@@ -1035,14 +1085,14 @@ const LEVELS = [
   name: "The Recording",
   focus: "Rehearse your STAR answers against the clock — BrightHire conditions",
   xp: 250,
-  badge: "🎙️",
+  badge: "️",
   type: "timer",
   content: {
     intro: "BrightHire records a structured, one-shot interview — no human improvising a follow-up question to rescue a vague answer. Practice hitting 90–120 seconds with a complete Situation–Task–Action–Result arc, out loud, every time.",
     blocks: [
       {
         label: "Today's prompts — pick one, hit record (mentally), speak for 90–120s",
-        icon: "🎙️",
+        icon: "️",
         html: `<ul>
           <li>"Tell us about a time you influenced a stakeholder without formal authority."</li>
           <li>"Describe a project that didn't go as planned. What did you learn?"</li>
@@ -1065,14 +1115,14 @@ const LEVELS = [
   name: "Know the Terrain",
   focus: "What you'd actually find on Nexthink Learn — speak with specifics",
   xp: 250,
-  badge: "🗺️",
+  badge: "️",
   type: "checklist",
   content: {
     intro: "You already found Nexthink Learn (learn.nexthink.com) and its Virtual Classrooms page. This level makes sure you can speak about it with the specificity that separates 'I researched the company' from 'I actually used your product.'",
     blocks: [
       {
         label: "Before the interview — do this for real, not hypothetically",
-        icon: "🗺️",
+        icon: "️",
         html: `<ul>
           <li>Register free at learn.nexthink.com</li>
           <li>Complete one short course in the "Nexthink Infinity Fundamentals" path (~15–20 min)</li>
@@ -1082,7 +1132,7 @@ const LEVELS = [
       },
       {
         label: "Why this is your highest-leverage move",
-        icon: "💎",
+        icon: "",
         html: `<p>Most candidates talk about instructional design in the abstract. You can say "I went through your Fundamentals path, and here's a specific observation" — which is precisely the proactive, product-curious behaviour the JD asks for ("proactively contribute ideas for new learning formats").</p>`
       }
     ],
@@ -1102,7 +1152,7 @@ const LEVELS = [
   name: "Final Boss: Mock Panel",
   focus: "Full simulated interview — all five pillars, no notes",
   xp: 350,
-  badge: "👑",
+  badge: "",
   type: "boss",
   content: {
     intro: "One pass, five questions, no second takes — exactly like BrightHire. Answer each one out loud before checking the model answer. This is the level that tells you if you're actually ready.",
@@ -1184,7 +1234,7 @@ function renderMap() {
     card.innerHTML = `
       <div class="level-top-row">
         <span class="level-num">LEVEL ${String(level.id).padStart(2,"0")}</span>
-        <span class="level-status">${complete ? "✅" : (unlocked ? level.badge : "🔒")}</span>
+        <span class="level-status">${complete ? "<span class="status-ok">OK</span>" : (unlocked ? level.badge : "")}</span>
       </div>
       <div class="level-name">${level.name}</div>
       <div class="level-focus">${level.focus}</div>
@@ -1242,7 +1292,7 @@ function openLevel(id) {
   if (level.content.interviewAnswer) {
     bodyHTML += `
       <div class="block">
-        <div class="block-label blue">🎤 Model interview answer</div>
+        <div class="block-label blue"> Model interview answer</div>
         <div class="answer-card" id="answerText-${level.id}">${level.content.interviewAnswer}</div>
         <div class="copy-row">
           <button class="copy-btn" onclick="copyAnswer(${level.id})" id="copyBtn-${level.id}">Copy answer</button>
@@ -1256,7 +1306,7 @@ function openLevel(id) {
   bodyHTML += `
     <div class="complete-row">
       <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel(${level.id})">
-        ${progress.completed[level.id] ? "✅ Completed — replay anytime" : "Mark level complete →"}
+        ${progress.completed[level.id] ? "<span class="status-ok">OK</span> Completed — replay anytime" : "Mark level complete →"}
       </button>
     </div>
   `;
@@ -1270,7 +1320,7 @@ function copyAnswer(levelId) {
   const level = LEVELS.find(l => l.id === levelId);
   navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
     const btn = document.getElementById(`copyBtn-${levelId}`);
-    btn.textContent = "Copied ✓";
+    btn.textContent = "Copied ";
     btn.classList.add("copied");
     setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
   });
@@ -1299,13 +1349,13 @@ function renderInteractive(level) {
 // ── Checklist ─────────────────────────────────────────────────────
 function renderChecklist(level, zone) {
   const saved = progress.scales[`checklist-${level.id}`] || {};
-  let html = `<div class="block"><div class="block-label">✅ Self-check</div>`;
+  let html = `<div class="block"><div class="block-label"><span class="status-ok">OK</span> Self-check</div>`;
   level.content.checklist.forEach((item, i) => {
     const checked = saved[i] ? "checked" : "";
     html += `
       <div class="checklist-item ${checked}" onclick="toggleCheck(${level.id}, ${i})" tabindex="0" role="checkbox" aria-checked="${!!saved[i]}"
            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCheck(${level.id},${i})}">
-        <div class="checklist-box">${saved[i] ? "✓" : ""}</div>
+        <div class="checklist-box">${saved[i] ? "" : ""}</div>
         <div class="checklist-text">${item}</div>
       </div>
     `;
@@ -1325,7 +1375,7 @@ function toggleCheck(levelId, index) {
 // ── Scale / self-assessment ───────────────────────────────────────
 function renderScale(level, zone) {
   const saved = progress.scales[`scale-${level.id}`] || {};
-  let html = `<div class="block"><div class="block-label">🎚️ Rate yourself 1 (just heard of it) – 10 (could teach it)</div>`;
+  let html = `<div class="block"><div class="block-label">️ Rate yourself 1 (just heard of it) – 10 (could teach it)</div>`;
   level.content.scales.forEach(s => {
     const val = saved[s.id] !== undefined ? saved[s.id] : 5;
     html += `
@@ -1357,7 +1407,7 @@ function renderQuiz(level, zone) {
   const q = level.content.quiz;
   let html = `
     <div class="block">
-      <div class="block-label amber">❓ Check your thinking</div>
+      <div class="block-label amber"> Check your thinking</div>
       <div class="quiz-q">${q.question}</div>
       <div class="quiz-options" id="quizOptions-${level.id}">
   `;
@@ -1389,7 +1439,7 @@ function renderMatch(level, zone) {
   const shuffledRights = [...pairs.map(p => p.right)].sort(() => Math.random() - 0.5);
   let html = `
     <div class="block">
-      <div class="block-label">🔗 Match the need to the tool</div>
+      <div class="block-label"> Match the need to the tool</div>
       <p style="font-size:13px;color:#6B6759;margin-bottom:14px;">Tap a need on the left, then tap the tool on the right it belongs with.</p>
       <div class="match-grid">
         <div class="match-col">
@@ -1428,7 +1478,7 @@ function selectMatchRight(levelId, toolName) {
   if (correct) {
     leftEl.style.display = "none";
     rightEl.classList.add("filled");
-    rightEl.textContent = `${toolName} ✓ ${pair.left.slice(0,30)}...`;
+    rightEl.textContent = `${toolName}  ${pair.left.slice(0,30)}...`;
     state.matched[state.selectedLeft] = true;
   } else {
     rightEl.style.background = "#FCEBEB";
@@ -1448,7 +1498,7 @@ function selectMatchRight(levelId, toolName) {
 // ── Builder (free text reflection, saved) ──────────────────────────
 function renderBuilder(level, zone) {
   const saved = progress.builder[level.id] || {};
-  let html = `<div class="block"><div class="block-label">🏗️ Draft your pitch</div>`;
+  let html = `<div class="block"><div class="block-label">️ Draft your pitch</div>`;
   level.content.builderFields.forEach(f => {
     html += `
       <div style="margin-bottom:16px;">
@@ -1489,7 +1539,7 @@ let timerSeconds = 0;
 function renderTimer(level, zone) {
   zone.innerHTML = `
     <div class="block">
-      <div class="block-label">🎙️ Speak for 90–120 seconds</div>
+      <div class="block-label">️ Speak for 90–120 seconds</div>
       <div class="timer-display" id="timerDisplay">00:00</div>
       <div class="timer-controls">
         <button class="timer-btn" onclick="startTimer()">▶ Start</button>
@@ -1525,7 +1575,7 @@ function resetTimer() {
 
 // ── Boss level — sequential reveal Q&A ─────────────────────────────
 function renderBoss(level, zone) {
-  let html = `<div class="block"><div class="block-label" style="color:#B8742A;">👑 Five questions. Answer out loud first, then reveal.</div>`;
+  let html = `<div class="block"><div class="block-label" style="color:#B8742A;"> Five questions. Answer out loud first, then reveal.</div>`;
   level.content.bossQuestions.forEach((item, i) => {
     html += `
       <div style="margin-bottom:18px;padding-bottom:16px;${i < level.content.bossQuestions.length-1 ? 'border-bottom:1px solid var(--line);' : ''}">
@@ -1560,7 +1610,7 @@ function completeLevel(id) {
   }
 
   const btn = document.getElementById(`completeBtn-${id}`);
-  if (btn) btn.textContent = "✅ Completed — replay anytime";
+  if (btn) btn.textContent = "<span class="status-ok">OK</span> Completed — replay anytime";
 
   const allDone = LEVELS.every(l => progress.completed[l.id]);
   if (allDone) {

@@ -275,6 +275,25 @@
     .bloom-legend span { font-size: 7.5px; }
   }
 </style>
+<style>/* OI token remap — applied after local tokens */
+:root{
+  --clinical-blue:var(--oi-primary);
+  --clinical-blue-light:var(--oi-surface2);
+  --paper:var(--oi-surface);
+  --panel:var(--oi-surface2);
+  --ink:var(--oi-ink);
+  --ink-soft:var(--oi-muted);
+  --line:var(--oi-line);
+  --red-cross:var(--oi-berry);
+  --red-soft:var(--oi-surface2);
+  --green:var(--oi-berry);
+  --green-soft:var(--oi-surface2);
+  --amber:var(--oi-accent);
+  --amber-soft:var(--oi-surface2);
+  --purple:var(--oi-primary-deep);
+  --purple-light:var(--oi-surface2);
+}
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
@@ -384,7 +403,7 @@ const TRACKS = {
         type: "scenario",
         content: {
           intro: "This qualification isn't about naming theories — it's about catching when a design violates them.",
-          blocks: [{ label: "The scenario", icon: "📋", html: `<div class="case-card"><div class="ct">A well-meaning first draft</div><div class="cd">A junior SME drafts a module on a new pricing policy. It opens with: "By the end of this module, you will recall the 6 tiers of the new pricing structure." 14 slides of tier definitions follow, then a 20-question multiple choice exam.</div></div>` }],
+          blocks: [{ label: "The scenario", icon: "", html: `<div class="case-card"><div class="ct">A well-meaning first draft</div><div class="cd">A junior SME drafts a module on a new pricing policy. It opens with: "By the end of this module, you will recall the 6 tiers of the new pricing structure." 14 slides of tier definitions follow, then a 20-question multiple choice exam.</div></div>` }],
           interviewAnswer: "The objective itself is the problem — 'recall' targets memorization, but a sales rep needs to apply the right tier to a real customer scenario under time pressure on a call. I'd rewrite the objective around application: 'given a customer profile, select the correct pricing tier and justify it.' That cascades through everything — the 14 definition slides become a quick-reference job aid, and the 20-question recall exam becomes 4-5 realistic scenario-based decisions. Adult learners retain skills they practiced applying, not facts they were told to memorize."
         }
       },
@@ -396,8 +415,8 @@ const TRACKS = {
         content: {
           intro: "The single most heavily-weighted qualification — the core function of the role.",
           blocks: [
-            { label: "The brief you're given", icon: "📋", html: `<div class="case-card"><div class="ct">Solution direction from the Lead Architect</div><div class="cd">"We need a 5-minute digital module teaching field reps how to respond when a healthcare provider asks an off-label usage question during a sales call. Tone: calm, compliant, confident. Must end with a knowledge check on the correct escalation path."</div></div>` },
-            { label: "Your task", icon: "✏️", html: `<p>Build one storyboard frame (frame 3 of 5, the "decision point" frame).</p>` }
+            { label: "The brief you're given", icon: "", html: `<div class="case-card"><div class="ct">Solution direction from the Lead Architect</div><div class="cd">"We need a 5-minute digital module teaching field reps how to respond when a healthcare provider asks an off-label usage question during a sales call. Tone: calm, compliant, confident. Must end with a knowledge check on the correct escalation path."</div></div>` },
+            { label: "Your task", icon: "️", html: `<p>Build one storyboard frame (frame 3 of 5, the "decision point" frame).</p>` }
           ],
           storyboardTemplate: {
             screenId: "Frame 3 of 5 — Decision Point",
@@ -418,7 +437,7 @@ const TRACKS = {
         type: "quiz",
         content: {
           intro: "An assessment misaligned to the objective is worse than no assessment — false confidence.",
-          blocks: [{ label: "The current knowledge check", icon: "📋", html: `<div class="case-card"><div class="ct">Question as drafted</div><div class="cd">"True or False: Field reps must escalate any off-label question to Medical Affairs within 24 hours." Objective: "Recognize an off-label question in real time and redirect appropriately during the live interaction."</div></div>` }],
+          blocks: [{ label: "The current knowledge check", icon: "", html: `<div class="case-card"><div class="ct">Question as drafted</div><div class="cd">"True or False: Field reps must escalate any off-label question to Medical Affairs within 24 hours." Objective: "Recognize an off-label question in real time and redirect appropriately during the live interaction."</div></div>` }],
           quiz: {
             question: "What's the core mismatch?",
             options: ["The question is too easy", "It tests recall of a policy fact, but the objective requires real-time recognition and redirection — needs a performance-based scenario instead", "No mismatch — true/false is fine", "The 24-hour window is wrong"],
@@ -435,7 +454,7 @@ const TRACKS = {
         type: "builder",
         content: {
           intro: "Knowing when NOT to build from scratch — and when existing content is a liability.",
-          blocks: [{ label: "The scenario", icon: "🧩", html: `<div class="case-card"><div class="ct">What you've been handed</div><div class="cd">A vendor-produced 15-minute video on device sterilization exists from 2 years ago. Well-produced, but references an older device model, different branding, no captions.</div></div>` }],
+          blocks: [{ label: "The scenario", icon: "", html: `<div class="case-card"><div class="ct">What you've been handed</div><div class="cd">A vendor-produced 15-minute video on device sterilization exists from 2 years ago. Well-produced, but references an older device model, different branding, no captions.</div></div>` }],
           builderFields: [
             { id: "decision", label: "Reuse, adapt, or rebuild? State your decision.", placeholder: "e.g. Adapt — core steps are still valid" },
             { id: "fix", label: "If adapting, what specifically changes?", placeholder: "e.g. re-record device-specific segments, add captions" },
@@ -450,7 +469,7 @@ const TRACKS = {
         type: "checklist",
         content: {
           intro: "Traceability — every asset should be defensible by pointing back to the blueprint.",
-          blocks: [{ label: "Blueprint vs. draft", icon: "🔍", html: `<div class="storyboard-frame"><div class="sf-header"><span>BLUEPRINT</span><span>vs DRAFT v1</span></div><div class="sf-body"><div class="sf-row"><span class="sf-label">Blueprint:</span><span>Audience = experienced reps (2+ years), peer-to-peer tone</span></div><div class="sf-row"><span class="sf-label">Draft:</span><span>Opens with basic definitions, reads like onboarding for new hires</span></div></div></div>` }],
+          blocks: [{ label: "Blueprint vs. draft", icon: "", html: `<div class="storyboard-frame"><div class="sf-header"><span>BLUEPRINT</span><span>vs DRAFT v1</span></div><div class="sf-body"><div class="sf-row"><span class="sf-label">Blueprint:</span><span>Audience = experienced reps (2+ years), peer-to-peer tone</span></div><div class="sf-row"><span class="sf-label">Draft:</span><span>Opens with basic definitions, reads like onboarding for new hires</span></div></div></div>` }],
           checklist: [
             "Cross-check stated audience against actual tone and assumed prior knowledge",
             "Flag content that re-teaches what the audience already knows",
@@ -467,7 +486,7 @@ const TRACKS = {
         type: "checklist",
         content: {
           intro: "Quality guidelines show up as specific, catchable errors. Audit this slide.",
-          blocks: [{ label: "Draft slide under review", icon: "🔍", html: `<div class="storyboard-frame"><div class="sf-header"><span>SLIDE 7 — DRAFT v1</span><span>dosing_guidelines.pptx</span></div><div class="sf-body"><div class="sf-row"><span class="sf-label">Visual:</span><span>Red text on light pink, no alt text on chart, 11px body</span></div><div class="sf-row"><span class="sf-label">Heading:</span><span>"DOSING!!" all caps</span></div><div class="sf-row"><span class="sf-label">Check:</span><span>True/False with no feedback shown</span></div></div></div>` }],
+          blocks: [{ label: "Draft slide under review", icon: "", html: `<div class="storyboard-frame"><div class="sf-header"><span>SLIDE 7 — DRAFT v1</span><span>dosing_guidelines.pptx</span></div><div class="sf-body"><div class="sf-row"><span class="sf-label">Visual:</span><span>Red text on light pink, no alt text on chart, 11px body</span></div><div class="sf-row"><span class="sf-label">Heading:</span><span>"DOSING!!" all caps</span></div><div class="sf-row"><span class="sf-label">Check:</span><span>True/False with no feedback shown</span></div></div></div>` }],
           checklist: [
             "Red-on-pink fails WCAG color contrast",
             "Missing alt text — completely inaccessible to screen reader users",
@@ -484,7 +503,7 @@ const TRACKS = {
         type: "quiz",
         content: {
           intro: "Designing with evaluation in mind, and reading data correctly when it comes back.",
-          blocks: [{ label: "The data pattern", icon: "📊", html: `<div class="case-card"><div class="ct">Post-launch, 3 months in</div><div class="cd">Completion: 94%. Quiz score: 91%. But field coaching shows reps still mishandle the exact scenario the module targeted.</div></div>` }],
+          blocks: [{ label: "The data pattern", icon: "", html: `<div class="case-card"><div class="ct">Post-launch, 3 months in</div><div class="cd">Completion: 94%. Quiz score: 91%. But field coaching shows reps still mishandle the exact scenario the module targeted.</div></div>` }],
           quiz: {
             question: "What's the most likely design flaw?",
             options: ["Needs more content", "The knowledge check tests recall, not applied decision-making under pressure — redesign as scenario-based practice", "The module is fine, it's a coaching problem", "Make the module longer"],
@@ -501,7 +520,7 @@ const TRACKS = {
         type: "scenario",
         content: {
           intro: "Reconciling conflicting priorities, then explaining the call clearly to everyone.",
-          blocks: [{ label: "Three feedback notes", icon: "⚖️", html: `<div class="case-card"><div class="ct">On the same draft module</div><div class="cd"><strong>SME:</strong> "Needs 3 more slides of mechanism detail."<br><strong>Designer:</strong> "Already too text-heavy, cut don't add."<br><strong>Business partner:</strong> "Reps need this live, not by Friday."</div></div>` }],
+          blocks: [{ label: "Three feedback notes", icon: "️", html: `<div class="case-card"><div class="ct">On the same draft module</div><div class="cd"><strong>SME:</strong> "Needs 3 more slides of mechanism detail."<br><strong>Designer:</strong> "Already too text-heavy, cut don't add."<br><strong>Business partner:</strong> "Reps need this live, not by Friday."</div></div>` }],
           interviewAnswer: "I'd go back to the learning objective rather than trying to satisfy all three literally. If the rep needs to recognize when to redirect rather than recite mechanism detail, the SME's content becomes a linked job aid instead of more screens — answering the designer's concern too. For the deadline, I'd split 'must-have for launch' from 'v1.1' and bring that as a proposal."
         }
       },
@@ -512,7 +531,7 @@ const TRACKS = {
         type: "builder",
         content: {
           intro: "The unglamorous duty that determines if a program is maintainable in year two.",
-          blocks: [{ label: "The situation", icon: "🗂️", html: `<p>Three modules into a 12-module compliance series. Each has a storyboard, Storyline source, 2-language SCORM exports, a review log. Define the system before module 4.</p>` }],
+          blocks: [{ label: "The situation", icon: "️", html: `<p>Three modules into a 12-module compliance series. Each has a storyboard, Storyline source, 2-language SCORM exports, a review log. Define the system before module 4.</p>` }],
           builderFields: [
             { id: "naming", label: "File naming convention (one real filename)", placeholder: "e.g. CompliSeries_M03_Storyboard_v2_EN.docx" },
             { id: "folder", label: "Folder structure (top 3 levels)", placeholder: "e.g. /CompliSeries/Module03/ → Storyboards, SourceFiles, Exports" },
@@ -555,7 +574,7 @@ const TRACKS = {
         type: "checklist",
         content: {
           intro: "Before authoring one cold, prove you can read one critically.",
-          blocks: [{ label: "The task", icon: "📄", html: `<p>Open your AWJ HDD. For each of the 9 sections, write one sentence: what business question does this section answer, and who would push back on it if it were missing?</p>` }],
+          blocks: [{ label: "The task", icon: "", html: `<p>Open your AWJ HDD. For each of the 9 sections, write one sentence: what business question does this section answer, and who would push back on it if it were missing?</p>` }],
           checklist: [
             "Executive Summary — identified what question it answers for a time-pressed VP",
             "Business Context & Performance Gap — identified the evidence trail it should show",
@@ -574,7 +593,7 @@ const TRACKS = {
         type: "scenario",
         content: {
           intro: "The job starts before any design — diagnosing what's actually broken.",
-          blocks: [{ label: "The request", icon: "🩺", html: `<div class="case-card"><div class="ct">From a regional sales director</div><div class="cd">"New reps take 6 months to hit quota. We need better onboarding training." Sales data: reps who hit quota fastest weren't the highest quiz scorers — they were the ones paired with a mentor in week one.</div></div>` }],
+          blocks: [{ label: "The request", icon: "", html: `<div class="case-card"><div class="ct">From a regional sales director</div><div class="cd">"New reps take 6 months to hit quota. We need better onboarding training." Sales data: reps who hit quota fastest weren't the highest quiz scorers — they were the ones paired with a mentor in week one.</div></div>` }],
           interviewAnswer: "The real gap isn't content knowledge — quiz scores didn't predict success, mentorship pairing did. I'd name the gap as 'lack of structured peer-modeled practice in week one,' not 'lack of training content.' That reframes the entire solution architecture: mentorship pairing becomes the central intervention, with formal content as a supporting layer, not the main one."
         }
       },
@@ -585,7 +604,7 @@ const TRACKS = {
         type: "scenario",
         content: {
           intro: "Evaluate level: judge competing claims and justify a position with evidence.",
-          blocks: [{ label: "The pushback", icon: "⚖️", html: `<div class="case-card"><div class="ct">A VP's challenge</div><div class="cd">"I don't buy the mentorship theory — give every new rep a mentor and watch quota times barely move. Build the content course like I originally asked."</div></div>` }],
+          blocks: [{ label: "The pushback", icon: "️", html: `<div class="case-card"><div class="ct">A VP's challenge</div><div class="cd">"I don't buy the mentorship theory — give every new rep a mentor and watch quota times barely move. Build the content course like I originally asked."</div></div>` }],
           interviewAnswer: "I wouldn't argue from authority — I'd offer a real test: pilot mentorship pairing with one cohort and the original content-only plan with another, then compare quota-time data after one quarter. If the VP is right, the data shows it fast and I redirect the budget without resistance. If the correlation holds, we have real evidence instead of two competing opinions. Naming a falsifiable test is more convincing than restating my analysis."
         }
       },
@@ -596,7 +615,7 @@ const TRACKS = {
         type: "builder",
         content: {
           intro: "Evaluate level applied to a person's work, not just a dataset.",
-          blocks: [{ label: "The junior designer's storyboard frame", icon: "📋", html: `<div class="case-card"><div class="ct">Frame as submitted</div><div class="cd">A Learning Designer's frame opens with 4 bullet points defining "off-label use" before any scenario — technically accurate, but the learner hasn't encountered the moment yet.</div></div>` }],
+          blocks: [{ label: "The junior designer's storyboard frame", icon: "", html: `<div class="case-card"><div class="ct">Frame as submitted</div><div class="cd">A Learning Designer's frame opens with 4 bullet points defining "off-label use" before any scenario — technically accurate, but the learner hasn't encountered the moment yet.</div></div>` }],
           builderFields: [
             { id: "feedback", label: "What feedback do you give, and why — not just what to fix", placeholder: "e.g. lead with the scenario, definitions can follow or live in a job aid — sequencing should mirror how the moment is actually experienced" },
             { id: "growth", label: "What's the underlying skill gap this reveals, beyond this one frame?", placeholder: "e.g. designing from content-out instead of moment-in — worth coaching as a pattern, not a one-off fix" },
@@ -647,7 +666,7 @@ const TRACKS = {
         type: "scenario",
         content: {
           intro: "An HDD nobody reads in full is still useless. This is the verbal compression test.",
-          blocks: [{ label: "The setup", icon: "🎤", html: `<p>A VP has 90 seconds before their next meeting and asks: "Walk me through the device-launch training plan, and tell me why I should trust the timeline."</p>` }],
+          blocks: [{ label: "The setup", icon: "", html: `<p>A VP has 90 seconds before their next meeting and asks: "Walk me through the device-launch training plan, and tell me why I should trust the timeline."</p>` }],
           interviewAnswer: "I'd lead with the gap, not the solution: 'Reps currently get a 90-minute webinar and still feel unprepared because they've never practiced the physical demo motions before facing a real physician. The plan splits this into three pieces — self-paced knowledge content, a live coached practice session, and a quick-reference job aid for the visit itself. The 6-week timeline holds because the knowledge piece can build in parallel with the practice session design, and we're reusing the existing webinar content as raw material instead of starting from zero.' That's the gap, the architecture in one breath, and a timeline justification — all under 90 seconds."
         }
       },
@@ -753,7 +772,7 @@ function renderMap() {
     card.innerHTML = `
       <div class="level-top-row">
         <span class="level-num">${String(i + 1).padStart(2, "0")}</span>
-        <span class="level-status">${complete ? "✅" : (unlocked ? "" : "🔒")}</span>
+        <span class="level-status">${complete ? "<span class="status-ok">OK</span>" : (unlocked ? "" : "")}</span>
       </div>
       <div class="level-name">${level.name}</div>
       <div class="level-focus">${level.focus}</div>
@@ -806,7 +825,7 @@ function openLevel(id) {
   bodyHTML += `
     <div class="complete-row">
       <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel('${level.id}')" style="background:${track.accent}">
-        ${progress.completed[level.id] ? "✅ Completed — replay anytime" : "Mark as practiced →"}
+        ${progress.completed[level.id] ? "<span class="status-ok">OK</span> Completed — replay anytime" : "Mark as practiced →"}
       </button>
     </div>
   `;
@@ -820,7 +839,7 @@ function copyAnswer(levelId) {
   const level = currentTrack().levels.find(l => l.id === levelId);
   navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
     const btn = document.getElementById(`copyBtn-${levelId}`);
-    btn.textContent = "Copied ✓";
+    btn.textContent = "Copied ";
     btn.classList.add("copied");
     setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
   });
@@ -929,7 +948,7 @@ function renderChecklist(level, zone) {
     html += `
       <div class="checklist-item ${checked}" onclick="toggleCheck('${level.id}', ${i})" tabindex="0" role="checkbox" aria-checked="${!!saved[i]}"
            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCheck('${level.id}',${i})}">
-        <div class="checklist-box">${saved[i] ? "✓" : ""}</div>
+        <div class="checklist-box">${saved[i] ? "" : ""}</div>
         <div class="checklist-text">${item}</div>
       </div>
     `;
@@ -1033,7 +1052,7 @@ function completeLevel(id) {
   }
 
   const btn = document.getElementById(`completeBtn-${id}`);
-  if (btn) btn.textContent = "✅ Completed — replay anytime";
+  if (btn) btn.textContent = "<span class="status-ok">OK</span> Completed — replay anytime";
 
   const allDone = track.levels.every(l => progress.completed[l.id]);
   if (allDone) {

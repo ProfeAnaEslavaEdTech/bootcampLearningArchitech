@@ -795,7 +795,7 @@ details.platform-detail[open] > summary::after { content: '−'; }
   const uri = 'plugin://cuxedtech@openai-curated-remote?remotePluginId=plugins_6aee1736a6cc81918d7de246a1c85b80';
   copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(uri).then(() => {
-      copyBtn.textContent = '✓ Copied';
+      copyBtn.textContent = ' Copied';
       setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1800);
     }).catch(() => {
       const el = document.getElementById('pluginUri');

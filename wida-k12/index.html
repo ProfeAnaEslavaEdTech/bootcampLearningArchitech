@@ -298,6 +298,25 @@
   footer a { color: var(--rose); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
 </style>
+<style>/* OI token remap — applied after local tokens */
+:root{
+  --rose:var(--oi-berry);
+  --rose-bright:var(--oi-berry);
+  --rose-mid:var(--oi-berry);
+  --rose-soft:var(--oi-surface2);
+  --paper:var(--oi-surface);
+  --panel:var(--oi-surface2);
+  --ink:var(--oi-ink);
+  --ink-soft:var(--oi-muted);
+  --line:var(--oi-line);
+  --green:var(--oi-berry);
+  --green-soft:var(--oi-surface2);
+  --amber:var(--oi-accent);
+  --amber-soft:var(--oi-surface2);
+  --red:var(--oi-muted);
+  --red-soft:var(--oi-surface2);
+}
+</style>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
@@ -346,7 +365,7 @@
 </div>
 
 <div class="final-screen" id="finalScreen">
-  <div class="final-icon">🎯</div>
+  <div class="final-icon"></div>
   <h2>Gaps closed. Answers rehearsed.</h2>
   <p>You can now speak to every gap honestly and specifically — which is more persuasive in a US K-12 ELL panel than pretending the gap isn't there.</p>
   <div class="final-chips">
@@ -366,7 +385,7 @@
 
 <div class="overlay" id="overlay" role="dialog" aria-modal="true">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <button class="modal-close" id="modalClose" aria-label="Close"></button>
     <div id="modalContent"></div>
   </div>
 </div>
@@ -627,7 +646,7 @@ function renderMap() {
     const sevClass = lvl.sev === 'high' ? 'badge-high' : lvl.sev === 'mod' ? 'badge-mod' : lvl.sev === 'boss' ? 'badge-type' : 'badge-low';
     const sevLabel = lvl.sev === 'high' ? 'High gap' : lvl.sev === 'mod' ? 'Moderate gap' : lvl.sev === 'boss' ? 'Boss' : 'Low gap';
     btn.innerHTML = `
-      <div class="level-num">${done ? '✓' : lvl.id}</div>
+      <div class="level-num">${done ? '' : lvl.id}</div>
       <div class="level-body">
         <div class="level-name">${lvl.name}</div>
         <div class="level-desc">${lvl.desc}</div>
@@ -635,7 +654,7 @@ function renderMap() {
           <span class="badge badge-type">${lvl.type}</span>
           <span class="badge ${sevClass}">${sevLabel}</span>
           ${done ? '<span class="badge badge-done">Complete</span>' : ''}
-          ${locked ? '<span class="badge badge-gap">🔒 locked</span>' : ''}
+          ${locked ? '<span class="badge badge-gap"> locked</span>' : ''}
         </div>
       </div>`;
     map.appendChild(btn);
@@ -655,7 +674,7 @@ function openLevel(id) {
 
 function renderLevelContent(lvl) {
   const c = document.getElementById('modalContent');
-  const sevLabel = lvl.sev === 'high' ? '🔴 High gap' : lvl.sev === 'mod' ? '🟡 Moderate gap' : lvl.sev === 'boss' ? '⚔️ Boss level' : '🟢 Low gap';
+  const sevLabel = lvl.sev === 'high' ? '<span class="status-no" aria-hidden="true">●</span> High gap' : lvl.sev === 'mod' ? '<span class="status-warn" aria-hidden="true">●</span> Moderate gap' : lvl.sev === 'boss' ? '️ Boss level' : '<span class="status-ok" aria-hidden="true">●</span> Low gap';
   const header = `
     <div class="modal-eyebrow">${sevLabel} · ${lvl.type}</div>
     <h2>${lvl.name}</h2>
@@ -730,7 +749,7 @@ function renderBoss(lvl) {
   `).join('');
   return `
     <div class="boss-header">
-      <div class="boss-icon">⚔️</div>
+      <div class="boss-icon">️</div>
       <div class="boss-title">Boss Level — Interview Rehearsal</div>
       <div class="boss-sub">Write your answer in full sentences. Then reveal the model. Compare — not to copy, but to calibrate.</div>
     </div>
@@ -765,7 +784,7 @@ function handleQuizAnswer(lvl, chosen) {
   if (!pass) opts[chosen].classList.add('wrong');
 
   const fb = document.getElementById('quizFeedback');
-  fb.innerHTML = `<div class="quiz-feedback ${pass ? 'pass' : 'fail'}">${pass ? '✓ ' : '✗ '}${q.feedback}</div>`;
+  fb.innerHTML = `<div class="quiz-feedback ${pass ? 'pass' : 'fail'}">${pass ? ' ' : ' '}${q.feedback}</div>`;
 
   const btns = document.getElementById('quizBtns');
   const isLast = qi === lvl.questions.length - 1;
@@ -807,7 +826,7 @@ function toggleCheck(i) {
   const cb = document.getElementById('cb' + i);
   const checked = cb.classList.toggle('checked');
   cb.setAttribute('aria-checked', String(checked));
-  cb.textContent = checked ? '✓' : '';
+  cb.textContent = checked ? '' : '';
 }
 
 function completeLevel(id) {
