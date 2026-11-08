@@ -76,8 +76,8 @@
     color: var(--purple); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px;
   }
   .hero h1 { font-size: clamp(28px, 5vw, 46px); line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
-  .hero h1 em { font-style: normal; color: var(--purple); text-decoration: underline; text-decoration-color: #8B5CF6; text-decoration-thickness: 4px; text-underline-offset: 6px; }
-  .hero p { font-size: 16px; color: #4A4639; max-width: 640px; margin: 0 auto 8px; line-height: 1.65; }
+  .hero h1 em { font-style: normal; color: var(--purple); text-decoration: underline; text-decoration-color: var(--oi-primary); text-decoration-thickness: 4px; text-underline-offset: 6px; }
+  .hero p { font-size: 16px; color: var(--oi-muted); max-width: 640px; margin: 0 auto 8px; line-height: 1.65; }
 
   /* SECTION NAV */
   .section-nav { max-width: 1000px; margin: 0 auto; padding: 20px 24px 8px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
@@ -90,10 +90,10 @@
 
   /* PROJECT GROUPS */
   .project-section { max-width: 860px; margin: 0 auto; padding: 40px 24px 0; }
-  .group-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--ink); }
-  .group-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; color: var(--panel); background: var(--ink); border-radius: 6px; padding: 3px 9px; }
+  .group-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--oi-line); }
+  .group-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 700; color: #fff; background: var(--oi-primary-btn); border-radius: 6px; padding: 3px 9px; }
   .group-title { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-  .group-subtitle { font-size: 13px; color: #6B6759; font-style: italic; margin-bottom: 24px; line-height: 1.6; border-left: 2px solid var(--line); padding-left: 12px; }
+  .group-subtitle { font-size: 13px; color: var(--oi-muted); font-style: italic; margin-bottom: 24px; line-height: 1.6; border-left: 2px solid var(--line); padding-left: 12px; }
 
   /* PROJECT CARD */
   .project-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; }
@@ -112,9 +112,9 @@
   .track-rise { color: var(--teal); }
   .track-storyline { color: var(--purple); }
   .project-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
-  .project-card.done .project-name { color: #6B6759; }
-  .project-tagline { font-size: 13px; color: #6B6759; line-height: 1.5; }
-  .project-toggle { font-size: 13px; color: #8A8575; margin-top: 4px; flex-shrink: 0; }
+  .project-card.done .project-name { color: var(--oi-muted); }
+  .project-tagline { font-size: 13px; color: var(--oi-muted); line-height: 1.5; }
+  .project-toggle { font-size: 13px; color: var(--oi-muted); margin-top: 4px; flex-shrink: 0; }
 
   /* PROJECT BODY */
   .project-body { display: none; padding: 0 20px 22px 58px; }
@@ -131,34 +131,34 @@
   .pb-label.coral { color: var(--coral); }
   .pb-label.purple { color: var(--purple); }
 
-  .pb-block p, .pb-block li { font-size: 14px; line-height: 1.7; color: #2B2A24; }
+  .pb-block p, .pb-block li { font-size: 14px; line-height: 1.7; color: var(--oi-ink); }
   .pb-block ul { list-style: none; padding: 0; }
   .pb-block ul li { padding-left: 18px; position: relative; margin-bottom: 6px; }
   .pb-block ul li::before { content: '→'; position: absolute; left: 0; color: var(--teal-bright); font-weight: 700; }
 
-  .deliverable-box { background: var(--teal-soft); border: 1px solid var(--teal-bright); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: #085041; }
-  .tip-box { background: var(--purple-soft); border: 1px solid #8B5CF6; border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: #3B0764; }
+  .deliverable-box { background: var(--teal-soft); border: 1px solid var(--teal-bright); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: var(--oi-ink); }
+  .tip-box { background: var(--purple-soft); border: 1px solid var(--oi-primary); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13.5px; line-height: 1.6; color: var(--oi-ink); }
 
   .toolstack-row { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tool-pill { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; background: var(--blue-soft); color: #0C447C; border-radius: 20px; padding: 4px 11px; }
-  .time-pill { display: inline-flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; background: var(--amber-soft); color: #633806; border-radius: 20px; padding: 4px 11px; }
+  .tool-pill { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; background: var(--blue-soft); color: var(--oi-primary); border-radius: 20px; padding: 4px 11px; }
+  .time-pill { display: inline-flex; align-items: center; gap: 5px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; background: var(--amber-soft); color: var(--oi-accent); border-radius: 20px; padding: 4px 11px; }
 
-  .mark-done-btn { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; background: var(--ink); color: white; border: none; border-radius: 20px; padding: 9px 18px; cursor: pointer; margin-top: 6px; }
+  .mark-done-btn { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; background: var(--oi-primary-btn); color: white; border: none; border-radius: 20px; padding: 9px 18px; cursor: pointer; margin-top: 6px; }
   .mark-done-btn:hover { background: var(--teal); }
   .project-card.done .mark-done-btn { background: var(--teal-bright); }
 
   /* CHECKLIST FOOTER */
   .portfolio-section { max-width: 860px; margin: 0 auto; padding: 50px 24px 80px; }
-  .portfolio-box { background: var(--ink); color: var(--paper); border-radius: var(--radius); padding: 32px 28px; text-align: center; }
+  .portfolio-box { background: var(--oi-surface2); color: var(--oi-ink); border-radius: var(--radius); padding: 32px 28px; text-align: center; border: 1px solid var(--oi-line); }
   .portfolio-box h2 { font-size: 22px; margin-bottom: 10px; font-weight: 700; }
-  .portfolio-box p { font-size: 14px; color: #C9C5B8; line-height: 1.6; max-width: 560px; margin: 0 auto 18px; }
-  .portfolio-list { text-align: left; max-width: 520px; margin: 0 auto 20px; list-style: none; padding: 0; font-size: 13px; line-height: 1.8; color: #E5E2D6; display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  .portfolio-box p { font-size: 14px; color: var(--oi-muted); line-height: 1.6; max-width: 560px; margin: 0 auto 18px; }
+  .portfolio-list { text-align: left; max-width: 520px; margin: 0 auto 20px; list-style: none; padding: 0; font-size: 13px; line-height: 1.8; color: var(--oi-ink); display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
   .portfolio-list li { padding-left: 20px; position: relative; margin-bottom: 4px; }
-  .portfolio-list li::before { content: ''; position: absolute; left: 0; color: #8B5CF6; }
+  .portfolio-list li::before { content: ''; position: absolute; left: 0; color: var(--oi-primary); }
   .portfolio-list li.checked::before { content: ''; }
-  .portfolio-list li.checked { color: #8A8575; text-decoration: line-through; }
+  .portfolio-list li.checked { color: var(--oi-muted); text-decoration: line-through; }
 
-  footer { text-align: center; padding: 20px 24px 50px; font-size: 12px; color: #8A8575; }
+  footer { text-align: center; padding: 20px 24px 50px; font-size: 12px; color: var(--oi-muted); }
 
   @media (max-width: 600px) {
     .hero { padding: 36px 18px 20px; }
@@ -669,6 +669,7 @@ function renderChecklist() {
 
 renderGroups();
 updateProgress();
+renderChecklist();
 </script>
 <script>
 (function(){
