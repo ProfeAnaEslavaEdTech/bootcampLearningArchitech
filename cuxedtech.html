@@ -1,0 +1,819 @@
+<title>CUXedTech</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* ── TOKENS ── */
+:root {
+  --ink: #1C1E2E;
+  --canvas: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-alt: #F0F2FA;
+  --line: #E6E8F2;
+  --muted: #5B5F77;
+  --primary: #3B5BD6;
+  --primary-deep: #22307C;
+  --on-primary: #FFFFFF;
+  --accent: #E8A33D;
+  --accent-text: #9A5B00;
+  --focus-ring: #3B5BD6;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink: #EEF0F8;
+    --canvas: #0F1120;
+    --surface: #171A2B;
+    --surface-alt: #1E2238;
+    --line: #2A2D44;
+    --muted: #A6ADC8;
+    --primary: #9DB2FF;
+    --primary-deep: #B9C8F6;
+    --on-primary: #131A44;
+    --accent: #EEC272;
+    --accent-text: #EEC272;
+    --focus-ring: #9DB2FF;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #EEF0F8;
+  --canvas: #0F1120;
+  --surface: #171A2B;
+  --surface-alt: #1E2238;
+  --line: #2A2D44;
+  --muted: #A6ADC8;
+  --primary: #9DB2FF;
+  --primary-deep: #B9C8F6;
+  --on-primary: #131A44;
+  --accent: #EEC272;
+  --accent-text: #EEC272;
+  --focus-ring: #9DB2FF;
+}
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--canvas);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+a { color: var(--primary); }
+code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875em;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── NAV ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px max(32px, env(safe-area-inset-left, 0px)) 14px max(32px, env(safe-area-inset-right, 0px));
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-deep);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.nav-brand em { font-style: normal; color: var(--accent-text); }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+}
+.nav-link:hover { color: var(--primary); }
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.theme-toggle:hover { background: var(--surface-alt); }
+
+/* ── HERO ── */
+.hero {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-block: 80px 64px;
+  text-align: center;
+}
+.hero-kicker {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5.5vw, 54px);
+  font-weight: 700;
+  color: var(--primary-deep);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+.hero h1 em { font-style: italic; color: var(--accent-text); }
+.hero-desc {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 40px;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  cursor: pointer;
+  border: none;
+}
+.btn:hover { opacity: 0.85; }
+.btn-filled {
+  background: #3B5BD6;
+  color: #FFFFFF;
+  padding: 13px 26px;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  padding: 12px 24px;
+}
+.btn-outline:hover { background: var(--surface-alt); }
+.btn-block { width: 100%; justify-content: center; margin-top: 20px; }
+
+/* ── SECTION ── */
+.section {
+  max-width: 880px;
+  margin: 0 auto;
+  padding-block: 64px;
+}
+.section + .section { border-top: 1px solid var(--line); }
+.section-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-bottom: 12px;
+}
+.section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  color: var(--primary-deep);
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  text-wrap: balance;
+  margin-bottom: 10px;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 540px;
+}
+
+/* ── DETAILS RESET ── */
+details { list-style: none; }
+details > summary {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::marker { display: none; content: ''; }
+
+/* ── ATTRIBUTION ACCORDION ── */
+details.attribution {
+  margin-top: 36px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  overflow: hidden;
+}
+details.attribution > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-deep);
+}
+.toggle-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-style: normal;
+  color: var(--accent-text);
+  font-family: var(--font-body);
+  transition: transform 0.2s;
+}
+details.attribution[open] .toggle-icon { transform: rotate(45deg); }
+.attribution-body {
+  border-top: 1px solid var(--line);
+  padding: 20px 24px 24px;
+}
+.attribution-body p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.75;
+}
+.attribution-body p + p { margin-top: 12px; }
+.attribution-body strong { color: var(--ink); font-weight: 600; }
+.attribution-note {
+  margin-top: 14px;
+  background: var(--surface-alt);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── SKILLS GRID ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+  margin-top: 32px;
+}
+details.skill-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.skill-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+}
+.skill-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  text-transform: uppercase;
+}
+.skill-title-group { flex: 1; min-width: 0; }
+.skill-title-group h3 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary-deep);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.skill-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 2px 7px;
+}
+.skill-chevron {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: var(--muted);
+  transition: transform 0.2s;
+  line-height: 1;
+}
+details.skill-card[open] .skill-chevron { transform: rotate(90deg); }
+.skill-body {
+  border-top: 1px solid var(--line);
+  padding: 14px 20px 18px;
+}
+.skill-body p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ── TWO-PLATFORM GRID ── */
+.platform-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 36px;
+}
+.platform-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px;
+}
+.platform-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.platform-card h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-deep);
+  margin-bottom: 10px;
+}
+.platform-card > p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+details.platform-detail {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+details.platform-detail > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface-alt);
+  letter-spacing: 0.01em;
+}
+details.platform-detail > summary::after {
+  content: '+';
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--muted);
+}
+details.platform-detail[open] > summary::after { content: '−'; }
+.platform-detail-body {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.platform-detail-body code { display: block; margin-bottom: 6px; }
+.platform-detail-body code:last-child { margin-bottom: 0; }
+
+/* ── CODE ROW ── */
+.code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.code-row code {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 11px;
+  overflow-x: auto;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.copy-btn {
+  flex-shrink: 0;
+  background: var(--line);
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.copy-btn:hover { background: var(--primary); color: var(--on-primary); }
+
+/* ── DIMENSIONS ── */
+.dim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  margin-top: 32px;
+}
+.dim-item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.dim-num {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--line);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.dim-item h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-deep);
+  margin-bottom: 2px;
+}
+.dim-item p {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.dim-toggle-btn {
+  display: block;
+  margin: 20px auto 0;
+  background: none;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.dim-toggle-btn:hover { background: var(--surface-alt); }
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 48px max(32px, env(safe-area-inset-left, 0px)) 56px;
+  text-align: center;
+}
+.footer-links {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.footer-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+}
+.footer-links a:hover { text-decoration: underline; }
+.footer-copy {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  .hero { padding-block: 56px 48px; }
+  .platform-grid { grid-template-columns: 1fr; }
+  .platform-card { padding: 20px; }
+  .nav { padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+}
+</style>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="./index.html" class="nav-brand">CUX<em>ed</em>Tech</a>
+  <div class="nav-right">
+    <a href="./index.html" class="nav-link">← Portfolio</a>
+    <a href="./ocean-ink.html" class="nav-link">Ocean Ink</a>
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle light/dark theme">◑</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <span class="hero-kicker">Claude plugin · v 0.1.8</span>
+  <h1>Twelve dimensions.<br><em>One evaluation.</em></h1>
+  <p class="hero-desc">UX Writing · Accessibility · Information architecture · Interaction design — and eight more. Available in ChatGPT and Claude Code.</p>
+  <div class="hero-actions">
+    <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn btn-filled">
+      Try in ChatGPT <span style="font-size:12px;opacity:0.7;">(opens in a new tab)</span>
+    </a>
+    <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline">
+      ↓ Claude Code plugin (.zip)
+    </a>
+  </div>
+</header>
+
+<!-- ── ATTRIBUTION ── -->
+<section class="section">
+  <p class="section-kicker">Origin</p>
+  <h2>Born from a masterclass.</h2>
+  <p class="section-sub">Not taken from a slide — rebuilt into something reusable.</p>
+
+  <details class="attribution">
+    <summary>
+      Formative attribution
+      <span class="toggle-icon" aria-hidden="true">+</span>
+    </summary>
+    <div class="attribution-body">
+      <p>UX Writing principles derived from the masterclass by <strong>Antonio Estévez Funes, Conversational Designer at BBVA</strong> — Instructional Design School, UPV, 6 Nov 2026. The session covered the difference between copywriting and UX Writing; the three principles (clear, consistent, useful); voice versus tone; plain language; CTA patterns; error feedback; and the relationship between UX Writing and WCAG accessibility.</p>
+      <p>Synthesis, Travel Good case study, and all extensions: <strong>Ana Eslava-Graterol's own adaptation</strong>. Not reviewed or endorsed by Antonio Estévez Funes, BBVA, or the UPV.</p>
+      <div class="attribution-note">The A/B test data point (33% → 59% login comprehension) was shared publicly during the session. If cited outside this portfolio, attribute it to the session, not to CUXedTech.</div>
+    </div>
+  </details>
+</section>
+
+<!-- ── SKILLS ── -->
+<section class="section">
+  <p class="section-kicker">What's inside</p>
+  <h2>Five skills.</h2>
+  <p class="section-sub">Tap each skill to expand.</p>
+
+  <div class="skills-grid">
+    <details class="skill-card">
+      <summary class="skill-header">
+        <div class="skill-icon" aria-hidden="true">UX</div>
+        <div class="skill-title-group">
+          <h3>UX Writing & Content Design</h3>
+          <span class="skill-label">After Antonio's masterclass</span>
+        </div>
+        <span class="skill-chevron" aria-hidden="true">›</span>
+      </summary>
+      <div class="skill-body">
+        <p>Analyses microcopy, CTAs, errors, onboarding, empty states and notifications. Applies Grice's maxims and WCAG. Includes the Travel Good style guide as a worked case study.</p>
+      </div>
+    </details>
+
+    <details class="skill-card">
+      <summary class="skill-header">
+        <div class="skill-icon" aria-hidden="true">OI</div>
+        <div class="skill-title-group">
+          <h3>Ocean Ink Design System</h3>
+          <span class="skill-label">Ana's own system</span>
+        </div>
+        <span class="skill-chevron" aria-hidden="true">›</span>
+      </summary>
+      <div class="skill-body">
+        <p>Applies Ana's personal brand identity — Indigo Blue, Deep Blue, Gold — to every visual deliverable. WCAG 2.1 AA verified. Light and dark themes. Fraunces + Inter typography.</p>
+      </div>
+    </details>
+
+    <details class="skill-card">
+      <summary class="skill-header">
+        <div class="skill-icon" aria-hidden="true">FW</div>
+        <div class="skill-title-group">
+          <h3>Integrated UX Quality Framework</h3>
+          <span class="skill-label">12-dimension framework</span>
+        </div>
+        <span class="skill-chevron" aria-hidden="true">›</span>
+      </summary>
+      <div class="skill-body">
+        <p>Coordinates all 12 evaluation dimensions: user research, strategy, IA, interaction, UI, UX Writing, accessibility, responsive design, multilingual UX, personalisation, technical experience and usability.</p>
+      </div>
+    </details>
+
+    <details class="skill-card">
+      <summary class="skill-header">
+        <div class="skill-icon" aria-hidden="true">AI</div>
+        <div class="skill-title-group">
+          <h3>AI Disclosure Suite</h3>
+          <span class="skill-label">EU AI Act · Art. 50</span>
+        </div>
+        <span class="skill-chevron" aria-hidden="true">›</span>
+      </summary>
+      <div class="skill-body">
+        <p>Generates EU AI Act Art. 50 disclosure statements. Governs what can and cannot be attributed to AI, and produces the standard disclosure footer for portfolio pieces and published content.</p>
+      </div>
+    </details>
+
+    <details class="skill-card">
+      <summary class="skill-header">
+        <div class="skill-icon" aria-hidden="true">DR</div>
+        <div class="skill-title-group">
+          <h3>Design & Disclosure Routing</h3>
+          <span class="skill-label">Internal routing</span>
+        </div>
+        <span class="skill-chevron" aria-hidden="true">›</span>
+      </summary>
+      <div class="skill-body">
+        <p>Routes incoming requests to the right skill — Ocean Ink for visual work, UX Writing for content tasks, the quality framework for evaluations, the disclosure suite for publication.</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ── TWO PLATFORMS ── -->
+<section class="section">
+  <p class="section-kicker">Try CUXedTech</p>
+  <h2>Two ways to use it.</h2>
+  <p class="section-sub">ChatGPT — no install. Claude Code — download and add to your project.</p>
+
+  <div class="platform-grid">
+
+    <div class="platform-card">
+      <div class="platform-label"><span aria-hidden="true">◆</span> ChatGPT — no install</div>
+      <h3>Evaluate any digital experience</h3>
+      <p>Open ChatGPT → search <strong>@CUXedTech</strong> → paste your URL.</p>
+
+      <details class="platform-detail">
+        <summary>Plugin URI — paste inside ChatGPT</summary>
+        <div class="platform-detail-body">
+          <div class="code-row">
+            <code id="pluginUri">plugin://cuxedtech@openai-curated-remote?remotePluginId=plugins_6aee1736a6cc81918d7de246a1c85b80</code>
+            <button class="copy-btn" id="copyUriBtn">Copy</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="platform-detail">
+        <summary>Example prompt</summary>
+        <div class="platform-detail-body">
+          "Evaluate [your URL] using the relevant CUXedTech UX quality criteria. Focus on UX Writing, accessibility and information architecture."
+        </div>
+      </details>
+
+      <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn btn-filled btn-block">
+        Open ChatGPT (opens in a new tab) →
+      </a>
+    </div>
+
+    <div class="platform-card">
+      <div class="platform-label"><span aria-hidden="true">◇</span> Claude Code — download &amp; install</div>
+      <h3>Slash commands in your project</h3>
+      <p>Download → unzip → add to your Claude Code project.</p>
+
+      <details class="platform-detail">
+        <summary>Available commands</summary>
+        <div class="platform-detail-body">
+          <code>/ux-writing-travel-good</code>
+          <code>/ocean-ink-design-system</code>
+          <code>/ux-quality-framework</code>
+          <code>/ai-disclosure-suite</code>
+        </div>
+      </details>
+
+      <details class="platform-detail">
+        <summary>Install command</summary>
+        <div class="platform-detail-body">
+          <div class="code-row">
+            <code>unzip cuxedtech-plugin.zip -d .claude/plugins/cuxedtech</code>
+          </div>
+        </div>
+      </details>
+
+      <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline btn-block">
+        ↓ Download plugin (.zip)
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── 12 DIMENSIONS ── -->
+<section class="section">
+  <p class="section-kicker">Evaluation framework</p>
+  <h2>Twelve dimensions.</h2>
+  <p class="section-sub">Focus on what matters most, or let CUXedTech identify the opportunities.</p>
+
+  <div class="dim-grid" id="dimGrid">
+    <div class="dim-item"><div class="dim-num">01</div><h4>User research</h4><p>Needs, goals, context, mental models</p></div>
+    <div class="dim-item"><div class="dim-num">02</div><h4>UX strategy</h4><p>Vision, value proposition, success criteria</p></div>
+    <div class="dim-item"><div class="dim-num">03</div><h4>Information architecture</h4><p>Navigation, labels, hierarchy, discoverability</p></div>
+    <div class="dim-item"><div class="dim-num">04</div><h4>Interaction design</h4><p>Component behaviour, feedback, flows</p></div>
+    <div class="dim-item" hidden><div class="dim-num">05</div><h4>UI & visual identity</h4><p>Typography, colour, spacing, brand consistency</p></div>
+    <div class="dim-item" hidden><div class="dim-num">06</div><h4>UX Writing</h4><p>Microcopy, CTAs, errors, plain language</p></div>
+    <div class="dim-item" hidden><div class="dim-num">07</div><h4>Accessibility</h4><p>WCAG POUR principles, screen reader, focus</p></div>
+    <div class="dim-item" hidden><div class="dim-num">08</div><h4>Responsive design</h4><p>Breakpoints, touch targets, layout</p></div>
+    <div class="dim-item" hidden><div class="dim-num">09</div><h4>Multilingual UX</h4><p>Language adaptation, market conventions</p></div>
+    <div class="dim-item" hidden><div class="dim-num">10</div><h4>Personalisation</h4><p>Adaptive content, user state, context</p></div>
+    <div class="dim-item" hidden><div class="dim-num">11</div><h4>Technical experience</h4><p>Performance, errors, edge cases</p></div>
+    <div class="dim-item" hidden><div class="dim-num">12</div><h4>Usability evaluation</h4><p>Task success, heuristics, friction points</p></div>
+  </div>
+  <button class="dim-toggle-btn" id="dimToggle">Show all 12 →</button>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="./index.html">Learning Architect portfolio</a>
+    <a href="./ocean-ink.html">Ocean Ink design system</a>
+    <a href="https://profeanaeslavaedtech.github.io/eLearningportfolio/" target="_blank" rel="noopener noreferrer">eLearning portfolio (opens in a new tab)</a>
+    <a href="https://www.linkedin.com/in/anaeslava" target="_blank" rel="noopener noreferrer">LinkedIn (opens in a new tab)</a>
+  </div>
+  <p class="footer-copy">CUXedTech plugin © 2026 Ana Eslava-Graterol. UX Writing skill developed after the masterclass by Antonio Estévez Funes (BBVA, UPV, 6 Nov 2026). AI-assisted; author-reviewed. EU AI Act Art. 50 disclosure applies.</p>
+</footer>
+
+<script>
+(function () {
+  /* theme toggle */
+  const btn = document.getElementById('themeBtn');
+  let saved;
+  try { saved = localStorage.getItem('theme'); } catch (e) {}
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  btn.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  /* copy plugin URI */
+  const copyBtn = document.getElementById('copyUriBtn');
+  const uri = 'plugin://cuxedtech@openai-curated-remote?remotePluginId=plugins_6aee1736a6cc81918d7de246a1c85b80';
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(uri).then(() => {
+      copyBtn.textContent = '✓ Copied';
+      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1800);
+    }).catch(() => {
+      const el = document.getElementById('pluginUri');
+      const r = document.createRange();
+      r.selectNode(el);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(r);
+    });
+  });
+
+  /* dimensions toggle */
+  const dimToggle = document.getElementById('dimToggle');
+  const dimItems = document.querySelectorAll('#dimGrid .dim-item[hidden]');
+  let expanded = false;
+  dimToggle.addEventListener('click', () => {
+    expanded = !expanded;
+    dimItems.forEach(item => { item.hidden = !expanded; });
+    dimToggle.textContent = expanded ? '← Show fewer' : 'Show all 12 →';
+  });
+})();
+</script>

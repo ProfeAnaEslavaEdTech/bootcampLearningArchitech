@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Facilitation &amp; Webinar Design — Ana Eslava Bootcamp</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
+    --primary: #3B5BD6; --primary-deep: #22307C;
+    --accent: #E8A33D; --muted: #5B5F77; --border: #DDE1EE;
+    --success: #0A7E5B; --success-soft: #E6FAF4;
+    --warn: #9C4B00; --warn-soft: #FFF3E0;
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
+      --muted: #9397B0; --border: #2A2D45;
+      --success: #34C98C; --success-soft: rgba(52,201,140,0.12);
+      --warn: #F5A623; --warn-soft: rgba(245,166,35,0.12);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
+    --muted: #9397B0; --border: #2A2D45;
+    --success: #34C98C; --success-soft: rgba(52,201,140,0.12);
+    --warn: #F5A623; --warn-soft: rgba(245,166,35,0.12);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--canvas); color: var(--ink);
+    font-family: 'Inter', sans-serif; min-height: 100vh;
+  }
+  .header {
+    background: var(--primary-deep); color: #fff;
+    padding: 36px max(16px, env(safe-area-inset-left,0px));
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
+  .header a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.85rem; }
+  .header a:hover { color: #fff; }
+  .tag {
+    display: inline-block; background: var(--accent); color: #1C1E2E;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px;
+  }
+  h1 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.6rem,4vw,2.4rem);
+       font-weight: 600; line-height: 1.2; margin-bottom: 8px; }
+  .subtitle { color: rgba(255,255,255,0.75); font-size: 1rem; max-width: 580px; }
+  .meta-row { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+  .meta-pill {
+    background: rgba(255,255,255,0.15); font-size: 0.82rem;
+    padding: 4px 12px; border-radius: 20px;
+  }
+  .main {
+    max-width: 900px; margin: 0 auto;
+    padding: 40px max(16px, env(safe-area-inset-left,0px));
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
+  .module-nav {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .module-btn {
+    padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 500;
+    border: 1.5px solid var(--border); background: var(--surface);
+    color: var(--muted); cursor: pointer; text-decoration: none;
+  }
+  .module-btn.active {
+    background: var(--primary); border-color: var(--primary); color: #fff;
+  }
+  .module-btn.pending {
+    opacity: 0.5; cursor: default; pointer-events: none;
+  }
+  .section { background: var(--surface); border: 1px solid var(--border);
+             border-radius: var(--radius); padding: 28px; margin-bottom: 24px; }
+  .section-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+  }
+  h2 { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 600;
+       margin-bottom: 12px; text-wrap: balance; }
+  h3 { font-weight: 600; font-size: 1rem; margin-bottom: 8px; margin-top: 16px; }
+  p { line-height: 1.65; color: var(--ink); margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+  .muted { color: var(--muted); }
+  ul, ol { padding-left: 20px; }
+  li { line-height: 1.65; margin-bottom: 4px; }
+  .callout {
+    border-left: 3px solid var(--primary); padding: 14px 16px;
+    background: rgba(59,91,214,0.07); border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .callout.warn {
+    border-color: var(--warn); background: var(--warn-soft);
+  }
+  .callout.success {
+    border-color: var(--success); background: var(--success-soft);
+  }
+  .callout strong { color: var(--primary); }
+  .callout.warn strong { color: var(--warn); }
+  .callout.success strong { color: var(--success); }
+  .tlo-box {
+    background: rgba(59,91,214,0.07); border: 1px solid rgba(59,91,214,0.25);
+    border-radius: 8px; padding: 16px; margin: 16px 0; font-style: italic;
+    color: var(--primary-deep);
+  }
+  :root[data-theme="dark"] .tlo-box { color: #A5B4FC; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .tlo-box { color: #A5B4FC; }
+  }
+  .time-block {
+    display: grid; gap: 0;
+  }
+  .time-row {
+    display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .time-row:last-child { border-bottom: none; }
+  .time-badge {
+    min-width: 60px; font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+    color: var(--muted); padding-top: 2px; white-space: nowrap;
+  }
+  .activity-label {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: .05em;
+    text-transform: uppercase; padding: 1px 6px; border-radius: 3px;
+    margin-right: 6px; white-space: nowrap;
+  }
+  .act-open   { background: rgba(59,91,214,0.12); color: var(--primary); }
+  .act-teach  { background: rgba(52,201,140,0.12); color: var(--success); }
+  .act-apply  { background: rgba(232,163,61,0.15); color: var(--warn); }
+  .act-close  { background: rgba(91,95,119,0.12); color: var(--muted); }
+  .activity-name { font-weight: 500; }
+  .activity-note { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
+  .exercise-card {
+    background: rgba(232,163,61,0.08); border: 1.5px solid rgba(232,163,61,0.3);
+    border-radius: 10px; padding: 20px; margin: 16px 0;
+  }
+  .exercise-title { font-weight: 600; margin-bottom: 8px; }
+  .step-list { list-style: none; padding: 0; counter-reset: steps; }
+  .step-list li {
+    counter-increment: steps; padding: 8px 0 8px 32px; position: relative;
+    border-bottom: 1px solid rgba(232,163,61,0.15);
+  }
+  .step-list li:last-child { border-bottom: none; }
+  .step-list li::before {
+    content: counter(steps); position: absolute; left: 0; top: 8px;
+    width: 22px; height: 22px; background: var(--accent); color: #1C1E2E;
+    border-radius: 50%; font-size: 0.75rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gap-row {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;
+  }
+  .gap-pill {
+    font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    background: rgba(59,91,214,0.1); color: var(--primary);
+  }
+  .deliverable-box {
+    border: 1.5px dashed var(--accent); border-radius: 10px;
+    padding: 20px; margin: 16px 0;
+  }
+  .deliverable-box h3 { color: var(--warn); margin-top: 0; }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid var(--border); }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: "☐"; position: absolute; left: 0; color: var(--muted);
+    font-size: 1rem; top: 5px;
+  }
+  code { font-family: 'IBM Plex Mono', monospace; font-size: 0.85em;
+         background: rgba(59,91,214,0.08); padding: 1px 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="../index.html">← Bootcamp Hub</a>
+  <div style="margin-top:16px;">
+    <span class="tag">Virtual delivery</span>
+    <h1>Live Facilitation &amp; Webinar Design</h1>
+    <p class="subtitle">Design and deliver a 30-minute virtual session that becomes a public portfolio artefact.</p>
+    <div class="meta-row">
+      <span class="meta-pill">3 modules</span>
+      <span class="meta-pill">~50 min study</span>
+      <span class="meta-pill">1 recorded deliverable</span>
+      <span class="meta-pill">Gap confirmed 4× in job market</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Module navigation -->
+  <nav class="module-nav" aria-label="Modules">
+    <span class="module-btn active">Module 1 · Principles</span>
+    <span class="module-btn pending">Module 2 · Session Design (coming)</span>
+    <span class="module-btn pending">Module 3 · Record &amp; Publish (coming)</span>
+  </nav>
+
+  <!-- TLO -->
+  <div class="section">
+    <div class="section-label">Module 1 · Terminal Learning Objective</div>
+    <h2>From Slide Deck to Learning Experience</h2>
+    <div class="tlo-box">
+      Given a topic from your existing portfolio (MLLDE, accessibility, or change management),
+      design a 30-minute virtual session using the RSVP facilitation scaffold, apply at least
+      two active-learning techniques, and produce a session guide that can be recorded and
+      published — with zero gaps in the core facilitation sequence.
+    </div>
+    <div class="gap-row">
+      <span class="gap-pill">Live facilitation — confirmed 4× (Nexthink, Intact, Bacardi, Air Canada)</span>
+      <span class="gap-pill">Webinar delivery evidence — hard blocker for European corporate L&D</span>
+      <span class="gap-pill">Public-facing presence — now a hard blocker</span>
+    </div>
+  </div>
+
+  <!-- Why this gap matters -->
+  <div class="section">
+    <div class="section-label">Context — why this gap blocks applications</div>
+    <h2>The Facilitation Gap in L&D Job Postings</h2>
+    <p>Four separate job postings in your records cite live delivery or webinar facilitation as either required or strongly preferred:</p>
+    <ul style="margin:12px 0 12px 20px;">
+      <li><strong>Nexthink</strong> — cited "technical content production" in rejection; live demos and webinars are part of the SaaS learning architect role.</li>
+      <li><strong>Intact Financial</strong> — explicitly requires "facilitating corporate workshops"; your gap analysis flags needing one concrete example.</li>
+      <li><strong>Bacardi, Air Canada, Blackbaud</strong> — all expect L&D professionals to deliver vILT (virtual instructor-led training), not just build courses.</li>
+    </ul>
+    <div class="callout">
+      <strong>Key insight:</strong> This is an <em>evidence gap</em>, not a skill gap. You have the instructional knowledge. You have MLLDE as a compelling topic. The gap is that no recorded public session exists. One 30-minute webinar closes it permanently.
+    </div>
+  </div>
+
+  <!-- Core concepts -->
+  <div class="section">
+    <div class="section-label">Core Concepts</div>
+    <h2>Facilitation vs. Presentation: the decisive difference</h2>
+    <p>A <strong>presentation</strong> moves information from the speaker to the audience. A <strong>facilitated session</strong> moves the audience through an experience that changes what they can <em>do</em>. The difference is not confidence or delivery style — it is design.</p>
+
+    <h3>The RSVP scaffold (four required segments)</h3>
+    <div class="time-block">
+      <div class="time-row">
+        <div class="time-badge">0:00–5:00</div>
+        <div>
+          <span class="activity-label act-open">R — Relate</span>
+          <span class="activity-name">Activate prior knowledge</span>
+          <div class="activity-note">Poll, question, or provocative statement. The learner connects this session to something they already know or care about. Never start with logistics.</div>
+        </div>
+      </div>
+      <div class="time-row">
+        <div class="time-badge">5:00–18:00</div>
+        <div>
+          <span class="activity-label act-teach">S — Show</span>
+          <span class="activity-name">The core concept (10–13 min max)</span>
+          <div class="activity-note">One idea, explained clearly. If you need more, break it into two segments with an Apply between them. Rule: no more than 10 consecutive minutes of exposition.</div>
+        </div>
+      </div>
+      <div class="time-row">
+        <div class="time-badge">18:00–25:00</div>
+        <div>
+          <span class="activity-label act-apply">V — Verify</span>
+          <span class="activity-name">Participants apply the concept</span>
+          <div class="activity-note">Chat storm, breakout room, quick case, annotate a slide. The facilitator falls silent. Learning happens here, not during the exposition.</div>
+        </div>
+      </div>
+      <div class="time-row">
+        <div class="time-badge">25:00–30:00</div>
+        <div>
+          <span class="activity-label act-close">P — Pull Forward</span>
+          <span class="activity-name">Transfer bridge + call to action</span>
+          <div class="activity-note">What will they do differently on Monday? Name it. Give one resource. The session ends with a decision, not a summary slide.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:20px;">
+      <strong>Bloom's level:</strong> RSVP targets B3 Apply (Verify segment) over B1 Remember and B2 Understand (Show segment). A session that only covers B1–B2 is a lecture, not facilitated learning — and it will show in a recording.
+    </div>
+
+    <h3>Engagement techniques for virtual delivery</h3>
+    <ul>
+      <li><strong>Chat storm:</strong> ask a question, give 60 seconds for everyone to type (not send yet), then say "send now." Creates simultaneous visible participation.</li>
+      <li><strong>Annotation:</strong> share a diagram and ask participants to circle the most surprising element. Works in Zoom Annotate and Teams Whiteboard.</li>
+      <li><strong>Breakout rooms (2-person, 4 min):</strong> the smallest possible group eliminates social loafing. Use for the Verify segment.</li>
+      <li><strong>Warm/cold call with choice:</strong> "Who wants to share?" then 3-second pause, then name someone specifically — but offer an exit ("or you can pass"). Maintains energy without humiliating.</li>
+      <li><strong>Running chat transcript as a whiteboard:</strong> paste key points into the chat as you teach; participants see, can scroll back, and reference it after.</li>
+    </ul>
+
+    <div class="callout warn">
+      <strong>Avoid:</strong> rhetorical questions ("doesn't that make sense?"), reading slides aloud, turning off camera to share screen, 15-minute Zoom polls with no debrief. Each of these signals you are presenting, not facilitating.
+    </div>
+  </div>
+
+  <!-- Topic selection for the deliverable -->
+  <div class="section">
+    <div class="section-label">Module 1 — Practical Exercise</div>
+    <h2>Choose your 30-minute webinar topic</h2>
+    <p>Three candidate topics from your portfolio — all have strong evidence, a clear B3+ outcome, and an audience that hiring managers will recognise:</p>
+
+    <div class="exercise-card">
+      <div class="exercise-title">🎯 Topic A (Recommended): MLLDE — What "Measure, Not Decide" means for L&D teams</div>
+      <p class="muted" style="margin-bottom:10px; font-size:0.9rem;">
+        Audience: instructional designers and L&D managers. Outcome: given a client brief, participants can identify where CEFR measurement replaces subjective teacher judgment with an xAPI-traceable signal.
+      </p>
+      <ul>
+        <li>Directly answers the "public-facing presence" hard blocker</li>
+        <li>Demonstrates agentic AI governance (AI Act alignment)</li>
+        <li>Differentiates Ana as the MLLDE author — no other applicant can run this session</li>
+        <li>MLLDE © Ana Eslava-Graterol. Copyright registration in progress.</li>
+      </ul>
+    </div>
+
+    <div class="exercise-card">
+      <div class="exercise-title">🎯 Topic B: Accessibility in eLearning — WCAG 2.1 AA in 30 Minutes</div>
+      <p class="muted" style="margin-bottom:10px; font-size:0.9rem;">
+        Audience: instructional designers. Outcome: given a Storyline slide, participants can identify the three most common WCAG 2.1 AA failures and correct them.
+      </p>
+      <ul>
+        <li>Covers European Accessibility Act (EAA) mandate — immediately relevant to European corporate L&D</li>
+        <li>Topic that every hiring panel understands without prior context</li>
+        <li>Pairs directly with AWJ evidence</li>
+      </ul>
+    </div>
+
+    <div class="exercise-card">
+      <div class="exercise-title">🎯 Topic C: xAPI Beyond Completion Rates — What You Can Measure and Why It Matters</div>
+      <p class="muted" style="margin-bottom:10px; font-size:0.9rem;">
+        Audience: L&D managers and LMS administrators. Outcome: participants can design one L3 on-the-job xAPI statement for a process they own.
+      </p>
+      <ul>
+        <li>Closes the "measurement beyond completion rates" gap (confirmed 4×)</li>
+        <li>Demonstrates LRS / xAPI Lab tool fluency</li>
+        <li>Short, concrete — appropriate for a 30-min slot</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Deliverable spec -->
+  <div class="section">
+    <div class="section-label">Module 1 Output</div>
+    <h2>Session Guide — the artefact for Module 2</h2>
+    <p>Before you open your screen-recording software, you need one document. This is what Module 2 will build from.</p>
+
+    <div class="deliverable-box">
+      <h3>📄 Session Guide — template</h3>
+      <ul class="checklist">
+        <li><strong>Title &amp; audience</strong> — one sentence: who is this for and what will they be able to do?</li>
+        <li><strong>TLO (Mager ABCD)</strong> — given [condition], [observable verb] [task] [criterion]</li>
+        <li><strong>Bloom level</strong> — B3 Apply minimum; explain why</li>
+        <li><strong>RSVP sequence</strong> — four segments with timecodes and what happens in each</li>
+        <li><strong>Engagement technique for Verify segment</strong> — name the technique and the exact prompt you will give participants</li>
+        <li><strong>Transfer bridge</strong> — the one sentence that ends the session</li>
+        <li><strong>Slide count estimate</strong> — target 8–12 slides maximum</li>
+        <li><strong>Tech setup</strong> — Zoom, Teams, or OBS; camera on; microphone check</li>
+      </ul>
+    </div>
+
+    <div class="callout success">
+      <strong>Next step — Module 2:</strong> You will take this Session Guide and build the slides using the Ocean Ink design system, then record using OBS or Zoom's built-in recorder. Module 2 covers the production checklist and the recording workflow.
+    </div>
+  </div>
+
+  <!-- Knowledge check -->
+  <div class="section">
+    <div class="section-label">Knowledge Check</div>
+    <h2>Three questions before moving to Module 2</h2>
+    <ol style="line-height:2;">
+      <li>Name the four segments of the RSVP scaffold in order.</li>
+      <li>What is the maximum number of consecutive minutes of exposition before you need an Apply activity?</li>
+      <li>What is the difference between a rhetorical question and an engagement technique? Give one example of each.</li>
+    </ol>
+    <div class="callout" style="margin-top:16px;">
+      If you can answer all three without scrolling up, your B2 comprehension is solid. Module 2 moves to B3: you will apply the scaffold to your chosen topic.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

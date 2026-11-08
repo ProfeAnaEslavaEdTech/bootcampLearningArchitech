@@ -1,0 +1,1404 @@
+<title>Ocean Ink Design System</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap">
+
+<style>
+/* Layout: sticky top nav + 2-col content on desktop */
+:root {
+  --ink:              #1C1E2E;
+  --canvas:           #F7F8FC;
+  --surface:          #FFFFFF;
+  --surface-alt:      #F0F2FA;
+  --surface-raised:   #FFFFFF;
+  --line:             #E6E8F2;
+  --muted:            #5B5F77;
+  --primary:          #3B5BD6;
+  --primary-deep:     #22307C;
+  --on-primary:       #FFFFFF;
+  --accent:           #E8A33D;
+  --accent-text:      #9A5B00;
+  --on-accent:        #1C1E2E;
+  --state-success:    #8B3A52;
+  --state-success-fg: #FFFFFF;
+  --state-info:       #D6E0FF;
+  --state-info-fg:    #22307C;
+  --state-warning:    #FFF3D6;
+  --state-warning-fg: #9A5B00;
+  --state-error:      #FFE4E8;
+  --state-error-fg:   #9B1130;
+  --focus-ring:       #3B5BD6;
+  --focus-ring-offset:#FFFFFF;
+  --shadow-1: 0 1px 3px rgba(28,30,46,.08), 0 1px 2px rgba(28,30,46,.06);
+  --shadow-2: 0 4px 8px rgba(28,30,46,.10), 0 2px 4px rgba(28,30,46,.06);
+  --shadow-3: 0 12px 24px rgba(28,30,46,.14), 0 4px 8px rgba(28,30,46,.08);
+  --radius-xs:    2px;
+  --radius-sm:    4px;
+  --radius-md:    8px;
+  --radius-lg:    16px;
+  --radius-xl:    24px;
+  --radius-pill:  100px;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body:    'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --duration-quick:  100ms;
+  --duration-normal: 200ms;
+  --duration-slow:   350ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-enter:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink:              #EEF0F8;
+    --canvas:           #0F1120;
+    --surface:          #171A2B;
+    --surface-alt:      #1E2235;
+    --surface-raised:   #222540;
+    --line:             #2A2D44;
+    --muted:            #A6ADC8;
+    --primary:          #9DB2FF;
+    --primary-deep:     #B9C8F6;
+    --on-primary:       #131A44;
+    --accent:           #EEC272;
+    --accent-text:      #EEC272;
+    --on-accent:        #1C1E2E;
+    --state-success:    #E0A6B8;
+    --state-success-fg: #1C1E2E;
+    --state-info:       #1E2A54;
+    --state-info-fg:    #B9C8F6;
+    --state-warning:    #3A2A00;
+    --state-warning-fg: #EEC272;
+    --state-error:      #3A0010;
+    --state-error-fg:   #FFB3C0;
+    --focus-ring:       #9DB2FF;
+    --focus-ring-offset:#171A2B;
+    --shadow-1: 0 1px 3px rgba(0,0,0,.28), 0 1px 2px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 8px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.20);
+    --shadow-3: 0 12px 24px rgba(0,0,0,.44), 0 4px 8px rgba(0,0,0,.28);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink:              #EEF0F8;
+  --canvas:           #0F1120;
+  --surface:          #171A2B;
+  --surface-alt:      #1E2235;
+  --surface-raised:   #222540;
+  --line:             #2A2D44;
+  --muted:            #A6ADC8;
+  --primary:          #9DB2FF;
+  --primary-deep:     #B9C8F6;
+  --on-primary:       #131A44;
+  --accent:           #EEC272;
+  --accent-text:      #EEC272;
+  --on-accent:        #1C1E2E;
+  --state-success:    #E0A6B8;
+  --state-success-fg: #1C1E2E;
+  --state-info:       #1E2A54;
+  --state-info-fg:    #B9C8F6;
+  --state-warning:    #3A2A00;
+  --state-warning-fg: #EEC272;
+  --state-error:      #3A0010;
+  --state-error-fg:   #FFB3C0;
+  --focus-ring:       #9DB2FF;
+  --focus-ring-offset:#171A2B;
+  --shadow-1: 0 1px 3px rgba(0,0,0,.28), 0 1px 2px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 8px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.20);
+  --shadow-3: 0 12px 24px rgba(0,0,0,.44), 0 4px 8px rgba(0,0,0,.28);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--canvas);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+
+/* ─── Top bar ─── */
+.topbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px max(24px, env(safe-area-inset-left, 0px));
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  box-shadow: var(--shadow-1);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.topbar-logo {
+  width: 28px;
+  height: 28px;
+  background: var(--primary-deep);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar-logo svg { display: block; }
+
+.topbar-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--primary-deep);
+  letter-spacing: -0.01em;
+}
+
+.topbar-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+.btn-theme {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 5px 12px;
+  transition: color var(--duration-quick) var(--ease-standard),
+              border-color var(--duration-quick) var(--ease-standard);
+  white-space: nowrap;
+}
+.btn-theme:hover { color: var(--ink); border-color: var(--muted); }
+.btn-theme:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+}
+
+.nav-links a {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-quick), background var(--duration-quick);
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--ink); background: var(--surface-alt); }
+.nav-links a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 1px; }
+
+@media (max-width: 700px) {
+  .nav-links { display: none; }
+  .topbar-sub { display: none; }
+}
+
+/* ─── Layout ─── */
+.wrapper {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* ─── Hero ─── */
+.hero {
+  padding-block: 64px 56px;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-bottom: 16px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  color: var(--primary-deep);
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+
+.hero-desc {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 56ch;
+  margin-bottom: 28px;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.badge-primary { color: var(--primary); border-color: rgba(59,91,214,.25); background: var(--state-info); color: var(--state-info-fg); }
+.badge-gold    { color: var(--accent-text); border-color: rgba(232,163,61,.3); background: var(--state-warning); }
+
+/* ─── Sections ─── */
+.section {
+  padding-block: 56px;
+  border-bottom: 1px solid var(--line);
+}
+.section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-bottom: 8px;
+}
+
+.section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--primary-deep);
+  text-wrap: balance;
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+
+.section-lead {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 60ch;
+  margin-bottom: 36px;
+  line-height: 1.65;
+}
+
+/* ─── Tiers ─── */
+.tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.tier-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+.tier-card:hover { box-shadow: var(--shadow-2); }
+
+.tier-stripe {
+  display: inline-block;
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  margin-bottom: 14px;
+}
+.tier-stripe.identity { background: var(--primary-deep); }
+.tier-stripe.instructional { background: var(--state-success); }
+.tier-stripe.editorial { background: var(--accent); }
+
+.tier-card h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.tier-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.tier-card p {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ─── Colour tokens ─── */
+.tokens-group { margin-bottom: 32px; }
+
+.tokens-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.swatch {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: transform var(--duration-quick) var(--ease-standard),
+              box-shadow var(--duration-quick) var(--ease-standard);
+  position: relative;
+}
+.swatch:hover { transform: translateY(-1px); box-shadow: var(--shadow-2); }
+
+.swatch-color {
+  height: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 6px 8px;
+}
+
+.swatch-copy-icon {
+  opacity: 0;
+  width: 16px;
+  height: 16px;
+  transition: opacity var(--duration-quick);
+}
+.swatch:hover .swatch-copy-icon { opacity: 0.7; }
+
+.swatch-info {
+  background: var(--surface);
+  padding: 8px 10px;
+  min-width: 0;
+}
+
+.swatch-token {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  color: var(--primary);
+  margin-bottom: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.swatch-hex {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: 'Courier New', monospace;
+}
+
+.swatch-role {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--ink);
+  color: var(--canvas);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-3);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-standard),
+              transform var(--duration-normal) var(--ease-standard);
+  pointer-events: none;
+  z-index: 999;
+}
+.copy-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ─── Spacing ─── */
+.spacing-table { display: grid; gap: 10px; }
+
+.space-row {
+  display: grid;
+  grid-template-columns: 100px 56px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.space-token {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  color: var(--primary);
+}
+
+.space-value {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: 'Courier New', monospace;
+}
+
+.space-bar-track {
+  background: var(--surface-alt);
+  border-radius: 2px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.space-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--primary);
+  opacity: 0.6;
+}
+
+/* ─── Typography ─── */
+.type-specimens { display: grid; gap: 24px; }
+
+.type-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.type-row:last-child { border-bottom: none; }
+
+.type-meta { padding-top: 2px; }
+
+.type-step {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.type-spec {
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.type-specimen-text {
+  min-width: 0;
+  color: var(--ink);
+}
+
+@media (max-width: 600px) {
+  .type-row { grid-template-columns: 1fr; }
+}
+
+/* ─── Component states ─── */
+.states-demo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.state-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.state-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.state-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.state-selector {
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  color: var(--primary);
+  background: var(--state-info);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* Button state demos */
+.demo-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: none;
+  transition: all var(--duration-quick) var(--ease-standard);
+  letter-spacing: 0.01em;
+}
+
+.demo-btn-default {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.demo-btn-hover {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: 0 2px 8px rgba(59,91,214,.35);
+  filter: brightness(1.08);
+}
+
+.demo-btn-focus {
+  background: var(--primary);
+  color: var(--on-primary);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.demo-btn-active {
+  background: var(--primary-deep);
+  color: var(--on-primary);
+  transform: scale(0.98);
+}
+
+.demo-btn-disabled {
+  background: var(--surface-alt);
+  color: var(--muted);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.demo-btn-error {
+  background: var(--state-error);
+  color: var(--state-error-fg);
+  border: 1px solid var(--state-error-fg);
+}
+
+/* ─── Motion ─── */
+.motion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.motion-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.motion-token {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  color: var(--primary);
+  margin-bottom: 2px;
+}
+
+.motion-value {
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.motion-role { font-size: 12px; color: var(--muted); }
+
+.motion-demo-bar {
+  margin-top: 12px;
+  height: 6px;
+  background: var(--surface-alt);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.motion-demo-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 0;
+  background: var(--primary);
+  border-radius: 3px;
+  opacity: 0.7;
+}
+
+.motion-card.playing .motion-demo-fill {
+  animation: motionPlay var(--d, 200ms) var(--e, cubic-bezier(0.4,0,0.2,1)) forwards;
+}
+
+@keyframes motionPlay {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* ─── Code block ─── */
+.code-block {
+  position: relative;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0;
+  white-space: pre;
+  min-width: 0;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  letter-spacing: 0.03em;
+  transition: color var(--duration-quick), border-color var(--duration-quick);
+}
+.code-copy-btn:hover { color: var(--ink); border-color: var(--muted); }
+.code-copy-btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* ─── Instructional states ─── */
+.inst-states {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.inst-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+}
+
+.inst-state.mastered  { background: var(--state-success); border-color: var(--state-success); color: var(--state-success-fg); }
+.inst-state.review    { background: var(--state-warning);  border-color: var(--state-warning-fg); color: var(--state-warning-fg); }
+.inst-state.progress  { background: var(--state-info);     border-color: var(--state-info-fg); color: var(--state-info-fg); }
+.inst-state.locked    { background: var(--surface-alt);    border-color: var(--line); color: var(--muted); }
+
+.inst-glyph {
+  font-size: 20px;
+  font-weight: 700;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.inst-label { font-size: 13px; font-weight: 600; }
+.inst-role  { font-size: 11px; opacity: 0.8; }
+
+/* ─── Footer ─── */
+.footer {
+  border-top: 1px solid var(--line);
+  padding-block: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-left p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.footer-left a { color: var(--primary); text-decoration: none; }
+.footer-left a:hover { text-decoration: underline; }
+
+.footer-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color var(--duration-quick);
+}
+.footer-link:hover { color: var(--primary); }
+.footer-link:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; border-radius: 2px; }
+
+.footer-byline {
+  width: 100%;
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0.65;
+  letter-spacing: 0.03em;
+}
+
+/* ─── Tables ─── */
+.table-wrap { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--line); margin-bottom: 24px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; min-width: 400px; }
+th { background: var(--surface-alt); color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+td { padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink); line-height: 1.5; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface-alt); }
+code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--primary); background: var(--state-info); padding: 1px 5px; border-radius: 3px; }
+</style>
+
+<!-- Toast for copy feedback -->
+<div class="copy-toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ─── Top bar ─── -->
+<nav class="topbar" aria-label="Site navigation">
+  <a class="topbar-brand" href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" aria-label="Ocean Ink — CUXedTech, back to portfolio">
+    <div class="topbar-logo" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="6" stroke="#9DB2FF" stroke-width="1.5"/>
+        <path d="M5 8.5 Q8 5 11 8.5" stroke="#E8A33D" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+    <div>
+      <div class="topbar-name">Ocean Ink</div>
+      <div class="topbar-sub">CUXedTech</div>
+    </div>
+  </a>
+  <ul class="nav-links" role="list">
+    <li><a href="#colours">Colours</a></li>
+    <li><a href="#spacing">Spacing</a></li>
+    <li><a href="#type">Typography</a></li>
+    <li><a href="#states">States</a></li>
+    <li><a href="#motion">Motion</a></li>
+    <li><a href="#implementation">CSS</a></li>
+  </ul>
+  <div class="topbar-actions">
+    <button class="btn-theme" id="themeToggle" aria-label="Toggle colour theme">Light / Dark</button>
+  </div>
+</nav>
+
+<!-- ─── Main content ─── -->
+<main>
+<div class="wrapper">
+
+  <!-- Hero -->
+  <header class="hero section" id="top">
+    <p class="hero-eyebrow">Design system specification · v2.0</p>
+    <h1>Ocean Ink</h1>
+    <p class="hero-desc">The design system behind CUXedTech and Ana Eslava's digital learning portfolio. Three visual tiers, a complete token set, and clear rules for how colour, type, spacing, states and motion work together across identity, instructional and editorial contexts.</p>
+    <div class="hero-badges">
+      <span class="badge badge-primary">WCAG 2.1 AA</span>
+      <span class="badge badge-gold">Bilingual EN/ES</span>
+      <span class="badge">Light &amp; dark themes</span>
+      <span class="badge">CUXedTech product</span>
+    </div>
+  </header>
+
+  <!-- Tiers -->
+  <section class="section" id="tiers">
+    <p class="section-label">Visual register</p>
+    <h2>Three identity tiers</h2>
+    <p class="section-lead">Ocean Ink operates across three tiers. Use the tier that matches the context. Never mix tier roles within the same interface component.</p>
+    <div class="tiers-grid">
+      <div class="tier-card">
+        <div class="tier-stripe identity" aria-hidden="true"></div>
+        <div class="tier-tag">Tier 1</div>
+        <h3>Identity</h3>
+        <p>Portfolio, CV, LinkedIn and brand-facing pages. Quiet, classic and minimal. Indigo Blue as the structural accent, Deep Blue for headings, Gold used sparingly. Fraunces for display headings; Inter for body and UI.</p>
+      </div>
+      <div class="tier-card">
+        <div class="tier-stripe instructional" aria-hidden="true"></div>
+        <div class="tier-tag">Tier 2</div>
+        <h3>Instructional</h3>
+        <p>Learning content and instructional interfaces. Fixed semantic colours for Mastered, Needs Review, In Progress and Locked states. State colours carry meaning — they are never decorative. Text labels and glyphs always accompany colour.</p>
+      </div>
+      <div class="tier-card">
+        <div class="tier-stripe editorial" aria-hidden="true"></div>
+        <div class="tier-tag">Tier 3</div>
+        <h3>Editorial</h3>
+        <p>Case studies, documentation hubs and product landing pages. More expressive than the identity tier — Gold accent may be used more prominently, typographic emphasis and bolder layout arrangements are permitted, while the Ocean Ink token system stays intact.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colour tokens -->
+  <section class="section" id="colours">
+    <p class="section-label">Foundation</p>
+    <h2>Colour tokens</h2>
+    <p class="section-lead">Click any swatch to copy its CSS custom property name. Use token names in code — never raw hex values. Verify contrast for all actual combinations; token presence alone is not proof of WCAG conformance.</p>
+
+    <div class="tokens-group">
+      <div class="tokens-group-title">Surface &amp; text</div>
+      <div class="swatches" id="surface-swatches"></div>
+    </div>
+    <div class="tokens-group">
+      <div class="tokens-group-title">Brand</div>
+      <div class="swatches" id="brand-swatches"></div>
+    </div>
+    <div class="tokens-group">
+      <div class="tokens-group-title">States &amp; feedback</div>
+      <div class="swatches" id="state-swatches"></div>
+    </div>
+  </section>
+
+  <!-- Spacing -->
+  <section class="section" id="spacing">
+    <p class="section-label">Foundation</p>
+    <h2>Spacing scale</h2>
+    <p class="section-lead">An 8 px base unit. Apply these tokens consistently to margins, padding, gaps and component internal spacing. Do not introduce arbitrary intermediate values.</p>
+
+    <div class="spacing-table" id="spacingTable"></div>
+  </section>
+
+  <!-- Typography -->
+  <section class="section" id="type">
+    <p class="section-label">Foundation</p>
+    <h2>Typography</h2>
+    <p class="section-lead">Fraunces (variable optical-size serif) for display and headings. Inter for body, UI labels and data. Both loaded from Google Fonts; always declare the full fallback stack in implementation.</p>
+
+    <div class="type-specimens" id="typeSpecimens"></div>
+  </section>
+
+  <!-- Component states -->
+  <section class="section" id="states">
+    <p class="section-label">Components</p>
+    <h2>Component states</h2>
+    <p class="section-lead">Every interactive component must implement all six states. A missing state means the component behaves unexpectedly in that context. Test focus rings in both light and dark themes.</p>
+
+    <div class="states-demo">
+      <div class="state-card">
+        <div class="state-label-row">
+          <span class="state-name">Default</span>
+          <span class="state-selector">base</span>
+        </div>
+        <button class="demo-btn demo-btn-default">Save changes</button>
+        <p style="font-size:12px;color:var(--muted)">Resting appearance. Full opacity. <code>--primary</code> fill.</p>
+      </div>
+      <div class="state-card">
+        <div class="state-label-row">
+          <span class="state-name">Hover</span>
+          <span class="state-selector">:hover</span>
+        </div>
+        <button class="demo-btn demo-btn-hover">Save changes</button>
+        <p style="font-size:12px;color:var(--muted)">Subtle lift and brightness shift. <code>cursor: pointer</code>.</p>
+      </div>
+      <div class="state-card">
+        <div class="state-label-row">
+          <span class="state-name">Focus</span>
+          <span class="state-selector">:focus-visible</span>
+        </div>
+        <button class="demo-btn demo-btn-focus">Save changes</button>
+        <p style="font-size:12px;color:var(--muted)">2 px <code>--focus-ring</code> outline, 2 px offset. Keyboard only.</p>
+      </div>
+      <div class="state-card">
+        <div class="state-label-row">
+          <span class="state-name">Active</span>
+          <span class="state-selector">:active</span>
+        </div>
+        <button class="demo-btn demo-btn-active">Save changes</button>
+        <p style="font-size:12px;color:var(--muted)">92 % opacity, <code>scale(0.98)</code> transform, deep fill.</p>
+      </div>
+      <div class="state-card">
+        <div class="state-label-row">
+          <span class="state-name">Disabled</span>
+          <span class="state-selector">[disabled]</span>
+        </div>
+        <button class="demo-btn demo-btn-disabled" disabled aria-disabled="true">Save changes</button>
+        <p style="font-size:12px;color:var(--muted)"><code>--muted</code> text, 50 % opacity. <code>cursor: not-allowed</code>.</p>
+      </div>
+      <div class="state-card">
+        <div class="state-label-row">
+          <span class="state-name">Error</span>
+          <span class="state-selector">aria-invalid</span>
+        </div>
+        <button class="demo-btn demo-btn-error">Save changes</button>
+        <p style="font-size:12px;color:var(--muted)"><code>--state-error</code> surface. Pair with icon and text message.</p>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-top:32px">Instructional tier states</p>
+    <div class="inst-states">
+      <div class="inst-state mastered">
+        <div class="inst-glyph" aria-hidden="true">✓</div>
+        <div><div class="inst-label">Mastered</div><div class="inst-role">Correct or complete</div></div>
+      </div>
+      <div class="inst-state review">
+        <div class="inst-glyph" aria-hidden="true">!</div>
+        <div><div class="inst-label">Needs review</div><div class="inst-role">Requires another attempt</div></div>
+      </div>
+      <div class="inst-state progress">
+        <div class="inst-glyph" aria-hidden="true">▸</div>
+        <div><div class="inst-label">In progress</div><div class="inst-role">Current active step</div></div>
+      </div>
+      <div class="inst-state locked">
+        <div class="inst-glyph" aria-hidden="true">○</div>
+        <div><div class="inst-label">Locked</div><div class="inst-role">Not yet available</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Motion -->
+  <section class="section" id="motion">
+    <p class="section-label">Foundation</p>
+    <h2>Motion &amp; animation</h2>
+    <p class="section-lead">Animate <code>opacity</code> and <code>transform</code> only. Always respect <code>prefers-reduced-motion</code>. Click a card to preview its timing.</p>
+
+    <div class="motion-grid" id="motionGrid"></div>
+
+    <div style="margin-top:20px;padding:14px 16px;background:var(--state-warning);border-radius:var(--radius-md);border:1px solid var(--state-warning-fg);color:var(--state-warning-fg);font-size:13px;line-height:1.5">
+      <strong>Always wrap motion in:</strong><br>
+      <code style="font-size:11px;background:transparent;padding:0;color:inherit">@media (prefers-reduced-motion: no-preference) { … }</code><br>
+      Provide an instant or opacity-only fallback for users who have requested reduced motion.
+    </div>
+  </section>
+
+  <!-- Implementation -->
+  <section class="section" id="implementation">
+    <p class="section-label">Implementation</p>
+    <h2>CSS token block</h2>
+    <p class="section-lead">Copy this <code>:root</code> block into every implementation. All tokens — colour, spacing, radius, shadow, typography, motion — in one place.</p>
+
+    <div class="code-block" id="cssBlock">
+      <button class="code-copy-btn" id="cssCopyBtn">Copy</button>
+      <pre id="cssCode"></pre>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-left">
+      <p>Ocean Ink is Ana Eslava-Graterol's personal design system.<br>
+        Used across <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" target="_blank" rel="noopener">CUXedTech</a> and the full <a href="https://profeanaeslavaedtech.github.io/portofolio/hub/" target="_blank" rel="noopener">learning portfolio</a>.</p>
+    </div>
+    <div class="footer-links">
+      <a class="footer-link" href="https://profeanaeslavaedtech.github.io/portofolio/hub/" target="_blank" rel="noopener">Portfolio hub ↗</a>
+      <a class="footer-link" href="https://profeanaeslavaedtech.github.io/eLearningportfolio/" target="_blank" rel="noopener">eLearning portfolio ↗</a>
+      <a class="footer-link" href="https://www.linkedin.com/in/anaeslava" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <p class="footer-byline">© 2026 Ana Eslava-Graterol · AI transparency: compiled with AI assistance from verified data; author-reviewed. EU AI Act Art. 50.</p>
+  </footer>
+
+</div><!-- /wrapper -->
+</main>
+
+<script>
+(function() {
+  /* ── Theme toggle ── */
+  var root = document.documentElement;
+  var toggleBtn = document.getElementById('themeToggle');
+  var stored;
+  try { stored = localStorage.getItem('oi-theme'); } catch(e) {}
+  if (stored) root.dataset.theme = stored;
+
+  toggleBtn.addEventListener('click', function() {
+    var cur = root.dataset.theme;
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('oi-theme', next); } catch(e) {}
+  });
+
+  /* ── Copy toast ── */
+  var toast = document.getElementById('toast');
+  var toastTimer;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 1800);
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('Copied: ' + text);
+    }).catch(function() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); showToast('Copied: ' + text); } catch(e) {}
+      document.body.removeChild(ta);
+    });
+  }
+
+  /* ── Colour swatches ── */
+  var surfaceTokens = [
+    { token: '--ink',           lightHex: '#1C1E2E', darkHex: '#EEF0F8', role: 'Primary text' },
+    { token: '--canvas',        lightHex: '#F7F8FC', darkHex: '#0F1120', role: 'Page background' },
+    { token: '--surface',       lightHex: '#FFFFFF', darkHex: '#171A2B', role: 'Card / panel background' },
+    { token: '--surface-alt',   lightHex: '#F0F2FA', darkHex: '#1E2235', role: 'Secondary surface' },
+    { token: '--surface-raised',lightHex: '#FFFFFF', darkHex: '#222540', role: 'Dropdown / overlay surface' },
+    { token: '--line',          lightHex: '#E6E8F2', darkHex: '#2A2D44', role: 'Dividers, input borders' },
+    { token: '--muted',         lightHex: '#5B5F77', darkHex: '#A6ADC8', role: 'Placeholder / secondary text' },
+  ];
+
+  var brandTokens = [
+    { token: '--primary',       lightHex: '#3B5BD6', darkHex: '#9DB2FF', role: 'Links, focused controls' },
+    { token: '--primary-deep',  lightHex: '#22307C', darkHex: '#B9C8F6', role: 'Headings, nav fills' },
+    { token: '--on-primary',    lightHex: '#FFFFFF', darkHex: '#131A44', role: 'Text on primary fill' },
+    { token: '--accent',        lightHex: '#E8A33D', darkHex: '#EEC272', role: 'Warm highlight, secondary CTA' },
+    { token: '--accent-text',   lightHex: '#9A5B00', darkHex: '#EEC272', role: 'Accent text on light surfaces' },
+    { token: '--on-accent',     lightHex: '#1C1E2E', darkHex: '#1C1E2E', role: 'Text on accent fill' },
+    { token: '--focus-ring',    lightHex: '#3B5BD6', darkHex: '#9DB2FF', role: 'Keyboard focus outline' },
+  ];
+
+  var stateTokens = [
+    { token: '--state-success',    lightHex: '#8B3A52', darkHex: '#E0A6B8', role: 'Mastered state background' },
+    { token: '--state-success-fg', lightHex: '#FFFFFF', darkHex: '#1C1E2E', role: 'Text on success bg' },
+    { token: '--state-info',       lightHex: '#D6E0FF', darkHex: '#1E2A54', role: 'Info callout fill' },
+    { token: '--state-info-fg',    lightHex: '#22307C', darkHex: '#B9C8F6', role: 'Text inside info callout' },
+    { token: '--state-warning',    lightHex: '#FFF3D6', darkHex: '#3A2A00', role: 'Needs-review / caution fill' },
+    { token: '--state-warning-fg', lightHex: '#9A5B00', darkHex: '#EEC272', role: 'Text inside warning callout' },
+    { token: '--state-error',      lightHex: '#FFE4E8', darkHex: '#3A0010', role: 'Error / critical fill' },
+    { token: '--state-error-fg',   lightHex: '#9B1130', darkHex: '#FFB3C0', role: 'Text inside error callout' },
+  ];
+
+  function isDark() {
+    if (root.dataset.theme === 'dark') return true;
+    if (root.dataset.theme === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function buildSwatch(t) {
+    var hex = isDark() ? t.darkHex : t.lightHex;
+    var el = document.createElement('div');
+    el.className = 'swatch';
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('aria-label', 'Copy ' + t.token);
+    el.innerHTML =
+      '<div class="swatch-color" style="background:' + hex + '">' +
+        '<svg class="swatch-copy-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="6" y="6" width="8" height="8" rx="1" stroke="white" stroke-width="1.5"/><path d="M4 10H3a1 1 0 01-1-1V3a1 1 0 011-1h6a1 1 0 011 1v1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+      '</div>' +
+      '<div class="swatch-info">' +
+        '<div class="swatch-token">' + t.token + '</div>' +
+        '<div class="swatch-hex">' + hex + '</div>' +
+        '<div class="swatch-role">' + t.role + '</div>' +
+      '</div>';
+    el.addEventListener('click', function() { copyText(t.token); });
+    el.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); copyText(t.token); } });
+    return el;
+  }
+
+  function renderSwatches() {
+    ['surface-swatches', 'brand-swatches', 'state-swatches'].forEach(function(id, i) {
+      var arr = [surfaceTokens, brandTokens, stateTokens][i];
+      var cont = document.getElementById(id);
+      cont.innerHTML = '';
+      arr.forEach(function(t) { cont.appendChild(buildSwatch(t)); });
+    });
+  }
+
+  renderSwatches();
+
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  mq.addEventListener('change', renderSwatches);
+
+  var observer = new MutationObserver(function() { renderSwatches(); });
+  observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+  /* ── Spacing table ── */
+  var spaceScale = [
+    { token: '--space-1', value: '4px',  use: 'Icon-to-label gap; fine internal padding' },
+    { token: '--space-2', value: '8px',  use: 'Base unit; compact component internal padding' },
+    { token: '--space-3', value: '12px', use: 'Form input internal padding; small gaps' },
+    { token: '--space-4', value: '16px', use: 'Standard component padding; card internal spacing' },
+    { token: '--space-5', value: '24px', use: 'Between related elements within a section' },
+    { token: '--space-6', value: '32px', use: 'Between sections and major groups' },
+    { token: '--space-7', value: '48px', use: 'Section vertical padding' },
+    { token: '--space-8', value: '64px', use: 'Page section separation; hero padding' },
+    { token: '--space-9', value: '96px', use: 'Major section landmarks' },
+  ];
+
+  var spaceCont = document.getElementById('spacingTable');
+  var maxPx = 96;
+  spaceScale.forEach(function(s) {
+    var px = parseInt(s.value);
+    var pct = Math.round(px / maxPx * 100);
+    var row = document.createElement('div');
+    row.className = 'space-row';
+    row.innerHTML =
+      '<span class="space-token">' + s.token + '</span>' +
+      '<span class="space-value">' + s.value + '</span>' +
+      '<div class="space-bar-track" title="' + s.use + '"><div class="space-bar" style="width:' + pct + '%"></div></div>';
+    spaceCont.appendChild(row);
+  });
+
+  /* ── Type specimens ── */
+  var typeScale = [
+    { step: 'Display (4xl)', size: '60px', weight: '700', family: 'Fraunces', lh: '1.05', ls: '-0.04em', text: 'Learning that works' },
+    { step: 'H1 (3xl)',      size: '44px', weight: '700', family: 'Fraunces', lh: '1.1',  ls: '-0.03em', text: 'Design with intent' },
+    { step: 'H2 (2xl)',      size: '32px', weight: '600', family: 'Fraunces', lh: '1.2',  ls: '-0.02em', text: 'Measure, Not Decide' },
+    { step: 'H3 (xl)',       size: '24px', weight: '600', family: 'Fraunces', lh: '1.3',  ls: '-0.02em', text: 'Evaluation dimensions' },
+    { step: 'Lead (md)',     size: '17px', weight: '400', family: 'Inter',    lh: '1.5',  ls: '-0.01em', text: 'Every design decision must be evaluated through its impact on the user\'s complete experience.' },
+    { step: 'Body (base)',   size: '15px', weight: '400', family: 'Inter',    lh: '1.6',  ls: '0',       text: 'CUXedTech brings together user research, interaction design, accessibility and UX Writing into one connected practice.' },
+    { step: 'Label (sm)',    size: '13px', weight: '500', family: 'Inter',    lh: '1.5',  ls: '0.01em',  text: 'Evaluation scope · 12 dimensions · EN/ES' },
+    { step: 'Eyebrow (xs)', size: '11px', weight: '700', family: 'Inter',    lh: '1.4',  ls: '0.1em',   text: 'DESIGN SYSTEM SPECIFICATION' },
+  ];
+
+  var typeCont = document.getElementById('typeSpecimens');
+  typeScale.forEach(function(t) {
+    var row = document.createElement('div');
+    row.className = 'type-row';
+    var spec = t.family + '\n' + t.size + ' / ' + t.lh + '\nWeight ' + t.weight + '\nLS ' + t.ls;
+    row.innerHTML =
+      '<div class="type-meta">' +
+        '<div class="type-step">' + t.step + '</div>' +
+        '<pre class="type-spec">' + spec + '</pre>' +
+      '</div>' +
+      '<div class="type-specimen-text" style="font-family:\'' + t.family + '\',Georgia,sans-serif;font-size:' + t.size + ';font-weight:' + t.weight + ';line-height:' + t.lh + ';letter-spacing:' + t.ls + ';text-wrap:balance">' + t.text + '</div>';
+    typeCont.appendChild(row);
+  });
+
+  /* ── Motion grid ── */
+  var motionData = [
+    { token: '--duration-quick',  value: '100ms', role: 'Micro-interactions: toggle switches, checkbox checks, icon swaps', d: 100, e: 'cubic-bezier(0.4,0,0.2,1)' },
+    { token: '--duration-normal', value: '200ms', role: 'Colour changes, state changes, panel reveals', d: 200, e: 'cubic-bezier(0.4,0,0.2,1)' },
+    { token: '--duration-slow',   value: '350ms', role: 'Modal opening, slide-in panels, route changes', d: 350, e: 'cubic-bezier(0,0,0.2,1)' },
+    { token: '--duration-pause',  value: '500ms', role: 'Deliberate pauses after key actions', d: 500, e: 'cubic-bezier(0.4,0,0.2,1)' },
+    { token: '--ease-standard',   value: 'cubic-bezier(0.4,0,0.2,1)', role: 'General-purpose transitions', d: 250, e: 'cubic-bezier(0.4,0,0.2,1)' },
+    { token: '--ease-enter',      value: 'cubic-bezier(0,0,0.2,1)',   role: 'Elements entering the screen', d: 300, e: 'cubic-bezier(0,0,0.2,1)' },
+    { token: '--ease-exit',       value: 'cubic-bezier(0.4,0,1,1)',   role: 'Elements leaving the screen', d: 200, e: 'cubic-bezier(0.4,0,1,1)' },
+    { token: '--ease-spring',     value: 'cubic-bezier(0.34,1.56,0.64,1)', role: 'Confirmations, success states', d: 400, e: 'cubic-bezier(0.34,1.56,0.64,1)' },
+  ];
+
+  var motionCont = document.getElementById('motionGrid');
+  motionData.forEach(function(m) {
+    var card = document.createElement('div');
+    card.className = 'motion-card';
+    card.style.setProperty('--d', m.d + 'ms');
+    card.style.setProperty('--e', m.e);
+    card.innerHTML =
+      '<div class="motion-token">' + m.token + '</div>' +
+      '<div class="motion-value">' + m.value + '</div>' +
+      '<div class="motion-role">' + m.role + '</div>' +
+      '<div class="motion-demo-bar"><div class="motion-demo-fill"></div></div>';
+    card.addEventListener('click', function() {
+      card.classList.remove('playing');
+      void card.offsetWidth;
+      card.classList.add('playing');
+    });
+    motionCont.appendChild(card);
+  });
+
+  /* ── CSS code block ── */
+  var cssText = `:root {
+  /* ── Surface & text ── */
+  --ink:               #1C1E2E;
+  --canvas:            #F7F8FC;
+  --surface:           #FFFFFF;
+  --surface-alt:       #F0F2FA;
+  --surface-raised:    #FFFFFF;
+  --line:              #E6E8F2;
+  --muted:             #5B5F77;
+
+  /* ── Brand ── */
+  --primary:           #3B5BD6;
+  --primary-deep:      #22307C;
+  --on-primary:        #FFFFFF;
+  --accent:            #E8A33D;
+  --accent-text:       #9A5B00;
+  --on-accent:         #1C1E2E;
+
+  /* ── States ── */
+  --state-success:     #8B3A52;
+  --state-success-fg:  #FFFFFF;
+  --state-info:        #D6E0FF;
+  --state-info-fg:     #22307C;
+  --state-warning:     #FFF3D6;
+  --state-warning-fg:  #9A5B00;
+  --state-error:       #FFE4E8;
+  --state-error-fg:    #9B1130;
+
+  /* ── Focus ── */
+  --focus-ring:        #3B5BD6;
+  --focus-ring-offset: #FFFFFF;
+
+  /* ── Spacing (8px base) ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+
+  /* ── Radius ── */
+  --radius-xs:    2px;
+  --radius-sm:    4px;
+  --radius-md:    8px;
+  --radius-lg:    16px;
+  --radius-xl:    24px;
+  --radius-pill:  100px;
+  --radius-circle:50%;
+
+  /* ── Elevation ── */
+  --shadow-0: none;
+  --shadow-1: 0 1px 3px rgba(28,30,46,.08), 0 1px 2px rgba(28,30,46,.06);
+  --shadow-2: 0 4px 8px rgba(28,30,46,.10), 0 2px 4px rgba(28,30,46,.06);
+  --shadow-3: 0 12px 24px rgba(28,30,46,.14), 0 4px 8px rgba(28,30,46,.08);
+  --border-width: 1px;
+  --border-width-thick: 2px;
+
+  /* ── Typography ── */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body:    'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --text-xs:   11px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-md:   17px;
+  --text-lg:   20px;
+  --text-xl:   24px;
+  --text-2xl:  32px;
+  --text-3xl:  44px;
+  --text-4xl:  60px;
+
+  /* ── Motion ── */
+  --duration-quick:  100ms;
+  --duration-normal: 200ms;
+  --duration-slow:   350ms;
+  --duration-pause:  500ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-enter:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink:               #EEF0F8;
+    --canvas:            #0F1120;
+    --surface:           #171A2B;
+    --surface-alt:       #1E2235;
+    --surface-raised:    #222540;
+    --line:              #2A2D44;
+    --muted:             #A6ADC8;
+    --primary:           #9DB2FF;
+    --primary-deep:      #B9C8F6;
+    --on-primary:        #131A44;
+    --accent:            #EEC272;
+    --accent-text:       #EEC272;
+    --on-accent:         #1C1E2E;
+    --state-success:     #E0A6B8;
+    --state-success-fg:  #1C1E2E;
+    --state-info:        #1E2A54;
+    --state-info-fg:     #B9C8F6;
+    --state-warning:     #3A2A00;
+    --state-warning-fg:  #EEC272;
+    --state-error:       #3A0010;
+    --state-error-fg:    #FFB3C0;
+    --focus-ring:        #9DB2FF;
+    --focus-ring-offset: #171A2B;
+    --shadow-1: 0 1px 3px rgba(0,0,0,.28), 0 1px 2px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 8px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.20);
+    --shadow-3: 0 12px 24px rgba(0,0,0,.44), 0 4px 8px rgba(0,0,0,.28);
+  }
+}
+
+:root[data-theme="dark"] {
+  /* same dark values as the media query above */
+}
+
+/* Always wrap motion */
+@media (prefers-reduced-motion: no-preference) {
+  /* your transitions and animations here */
+}`;
+
+  document.getElementById('cssCode').textContent = cssText;
+
+  document.getElementById('cssCopyBtn').addEventListener('click', function() {
+    copyText(cssText);
+    var btn = document.getElementById('cssCopyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 1600);
+  });
+})();
+</script>

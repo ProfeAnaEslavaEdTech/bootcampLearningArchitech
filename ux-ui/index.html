@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UX/UI Design for Learning — Ana Eslava Bootcamp</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
+    --primary: #3B5BD6; --primary-deep: #22307C;
+    --accent: #E8A33D; --muted: #5B5F77; --border: #DDE1EE;
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
+      --muted: #9397B0; --border: #2A2D45; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
+    --muted: #9397B0; --border: #2A2D45; color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--canvas); color: var(--ink);
+    font-family: 'Inter', sans-serif; min-height: 100vh;
+    padding: 0 max(16px, env(safe-area-inset-left,0px));
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
+  .header {
+    background: var(--primary-deep); color: #fff;
+    padding: 36px max(16px, env(safe-area-inset-left,0px));
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
+  .header a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.85rem; }
+  .header a:hover { color: #fff; }
+  .tag {
+    display: inline-block; background: var(--accent); color: #1C1E2E;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  h1 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.6rem,4vw,2.4rem);
+       font-weight: 600; line-height: 1.2; margin-bottom: 8px; }
+  .subtitle { color: rgba(255,255,255,0.75); font-size: 1rem; max-width: 580px; }
+  .main { max-width: 900px; margin: 40px auto; }
+  .coming-soon {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 40px; text-align: center;
+    margin-bottom: 32px;
+  }
+  .coming-soon .icon { font-size: 3rem; margin-bottom: 16px; }
+  .coming-soon h2 { font-family: 'Fraunces', serif; font-size: 1.5rem;
+                    font-weight: 600; margin-bottom: 8px; }
+  .coming-soon p { color: var(--muted); line-height: 1.6; max-width: 480px;
+                   margin: 0 auto; }
+  .evidence-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 600px) { .evidence-grid { grid-template-columns: 1fr; } }
+  .evidence-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+  }
+  .evidence-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .evidence-title { font-weight: 600; margin-bottom: 4px; }
+  .evidence-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+  .modules { display: grid; gap: 16px; margin-top: 32px; }
+  .module-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .module-num {
+    min-width: 36px; height: 36px; background: var(--border); color: var(--muted);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 0.85rem; font-weight: 600; flex-shrink: 0;
+  }
+  .module-title { font-weight: 600; margin-bottom: 4px; }
+  .module-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+  .gap-tag {
+    display: inline-block; background: rgba(59,91,214,0.1); color: var(--primary);
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .04em;
+    padding: 2px 8px; border-radius: 4px; margin-top: 6px;
+  }
+  h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600;
+       margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="../index.html">← Bootcamp Hub</a>
+  <div style="margin-top: 16px;">
+    <span class="tag">Design evidence</span>
+    <h1>UX/UI Design for Learning</h1>
+    <p class="subtitle">From wireframes to usability testing — making existing UX work visible as portfolio evidence.</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="coming-soon">
+    <div class="icon">🖼️</div>
+    <h2>Track in development</h2>
+    <p>Four modules converting existing UX/UI work (AWJ, TK CoachAI, Ocean Ink) into documented, public portfolio evidence. The core principle: many gaps are evidence gaps, not skill gaps.</p>
+  </div>
+
+  <h3>Evidence already built — needs publication</h3>
+  <div class="evidence-grid">
+    <div class="evidence-card">
+      <div class="evidence-label">AWJ — Academic Writing Journey</div>
+      <div class="evidence-title">Wireframes &amp; Usability Testing</div>
+      <div class="evidence-desc">Subject project (instructional design + WCAG web accessibility, 10/10). Usability testing results exist but are not public. Making them visible closes the UX/UI evidence gap.</div>
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-label">TK CoachAI — for Talketika</div>
+      <div class="evidence-title">Learner-Experience Interface</div>
+      <div class="evidence-desc">MLLDE Measurement Module applied to Talketika's AI tutor app (software by Orkelia). The LX layer — learner dashboard, session feedback, gamification metaphors — is documented.</div>
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-label">Ocean Ink Design System</div>
+      <div class="evidence-title">Personal Brand &amp; Design Tokens</div>
+      <div class="evidence-desc">Complete design system: Indigo Blue (#3B5BD6), Deep Blue (#22307C), Gold (#E8A33D) palette; Fraunces/Inter/IBM Plex Mono type scale; component library for all portfolio pieces.</div>
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-label">Portfolio Renovation</div>
+      <div class="evidence-title">Site Architecture &amp; IA</div>
+      <div class="evidence-desc">Information architecture decisions for the bootcamp hub: sector/track hierarchy, tab navigation, glossary cross-linking, accessibility (WCAG 2.1 AA). The hub itself is a UX artefact.</div>
+    </div>
+  </div>
+
+  <div class="modules">
+    <div class="module-card">
+      <div class="module-num">1</div>
+      <div>
+        <div class="module-title">From Evidence Gap to Portfolio Entry</div>
+        <div class="module-desc">Framework for documenting existing UX work: the annotated case-study format, what screenshots + metrics to include, how to write the design rationale without breaking client NDA.</div>
+        <span class="gap-tag">Gap: UX/UI evidence not public (AWJ, TK CoachAI)</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-num">2</div>
+      <div>
+        <div class="module-title">Wireframing for L&D — Lo-Fi to Hi-Fi</div>
+        <div class="module-desc">Lo-fi wireframes for three canonical eLearning interaction types (branching scenario, knowledge check, dashboard). Figma or paper → annotated handoff document.</div>
+        <span class="gap-tag">Gap: wireframe artefacts in portfolio (confirmed multiple postings)</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-num">3</div>
+      <div>
+        <div class="module-title">Usability Testing in Instructional Design</div>
+        <div class="module-desc">The five-user test, think-aloud protocol, and writing the usability report. Applying the AWJ test findings as a worked example.</div>
+        <span class="gap-tag">Gap: usability testing evidence (AWJ exists, not public)</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-num">4</div>
+      <div>
+        <div class="module-title">Design Systems for L&D — Ocean Ink</div>
+        <div class="module-desc">How to build and document a design system for a learning portfolio: tokens, components, accessibility rationale. Ocean Ink as the worked example.</div>
+        <span class="gap-tag">Gap: public-facing presence / portfolio cohesion (now a hard blocker)</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

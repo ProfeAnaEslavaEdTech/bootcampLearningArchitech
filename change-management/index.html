@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Management for L&D — Ana Eslava Bootcamp</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
+    --primary: #3B5BD6; --primary-deep: #22307C;
+    --accent: #E8A33D; --muted: #5B5F77; --border: #DDE1EE;
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
+      --muted: #9397B0; --border: #2A2D45; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
+    --muted: #9397B0; --border: #2A2D45; color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--canvas); color: var(--ink);
+    font-family: 'Inter', sans-serif; min-height: 100vh;
+    padding: 0 max(16px, env(safe-area-inset-left,0px));
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
+  .header {
+    background: var(--primary-deep); color: #fff;
+    padding: 36px max(16px, env(safe-area-inset-left,0px));
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
+  .header a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.85rem; }
+  .header a:hover { color: #fff; }
+  .tag {
+    display: inline-block; background: var(--accent); color: #1C1E2E;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  h1 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.6rem,4vw,2.4rem);
+       font-weight: 600; line-height: 1.2; margin-bottom: 8px; }
+  .subtitle { color: rgba(255,255,255,0.75); font-size: 1rem; max-width: 580px; }
+  .main { max-width: 900px; margin: 40px auto; }
+  .coming-soon {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 40px; text-align: center;
+    margin-bottom: 32px;
+  }
+  .coming-soon .icon { font-size: 3rem; margin-bottom: 16px; }
+  .coming-soon h2 { font-family: 'Fraunces', serif; font-size: 1.5rem;
+                    font-weight: 600; margin-bottom: 8px; }
+  .coming-soon p { color: var(--muted); line-height: 1.6; max-width: 460px;
+                   margin: 0 auto; }
+  .modules { display: grid; gap: 16px; }
+  .module-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px 24px;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .module-num {
+    min-width: 36px; height: 36px; background: var(--primary);
+    color: #fff; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 0.85rem; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .module-num.pending { background: var(--border); color: var(--muted); }
+  .module-title { font-weight: 600; margin-bottom: 4px; }
+  .module-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+  .gap-tag {
+    display: inline-block; background: rgba(59,91,214,0.1); color: var(--primary);
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .04em;
+    padding: 2px 8px; border-radius: 4px; margin-top: 6px;
+  }
+  .back { color: var(--primary); text-decoration: none; font-size: 0.9rem; }
+  .back:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="header">
+  <a href="../index.html">← Bootcamp Hub</a>
+  <div style="margin-top: 16px;">
+    <span class="tag">ADKAR · Change</span>
+    <h1>Change Management for L&amp;D</h1>
+    <p class="subtitle">Prosci ADKAR applied to learning initiatives — from stakeholder buy-in to adoption metrics.</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="coming-soon">
+    <div class="icon">🔄</div>
+    <h2>Track in development</h2>
+    <p>Four modules covering ADKAR awareness → desire → knowledge → ability → reinforcement, applied to real L&D project scenarios from Bacardi, Air Canada, and Blackbaud job postings.</p>
+  </div>
+
+  <div class="modules">
+    <div class="module-card">
+      <div class="module-num pending">1</div>
+      <div>
+        <div class="module-title">The ADKAR Model — L&D Lens</div>
+        <div class="module-desc">Prosci's five outcomes (Awareness, Desire, Knowledge, Ability, Reinforcement) mapped to instructional design decisions. When training is not the fix.</div>
+        <span class="gap-tag">Gap: change management evidence (Bacardi, Air Canada, Blackbaud)</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-num pending">2</div>
+      <div>
+        <div class="module-title">Stakeholder Mapping &amp; Resistance Diagnosis</div>
+        <div class="module-desc">Impact/Influence matrix, resistance taxonomy, and the targeted change plan — one artefact that pairs with any project brief.</div>
+        <span class="gap-tag">Gap: stakeholder facilitation evidence (Intact Financial)</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-num pending">3</div>
+      <div>
+        <div class="module-title">Adoption Metrics: Beyond Completion Rates</div>
+        <div class="module-desc">Kirkpatrick L3 and L4 through a change lens: adoption rate, time-to-proficiency, resistant-segment rate. xAPI-instrumented measurement plan.</div>
+        <span class="gap-tag">Gap: measurement beyond completion rates (confirmed 4×)</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-num pending">4</div>
+      <div>
+        <div class="module-title">Change-Impact Analysis Artefact</div>
+        <div class="module-desc">Portfolio deliverable: a one-page change-impact analysis for a real or simulated L&D rollout, ready to show at interview.</div>
+        <span class="gap-tag">Gap: needs-analysis artefact showing what you decided not to build</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
