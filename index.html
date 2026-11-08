@@ -397,9 +397,22 @@ footer a:hover { text-decoration: underline; }
 .sector-block { width: 100%; }
 .sector-header {
   padding: 56px 2px 20px; border-bottom: 1px solid var(--line); margin-bottom: 28px;
-  display: flex; flex-direction: column; gap: 8px;
+  display: flex; flex-direction: row; align-items: center; gap: 48px;
 }
 .sector-block:first-child .sector-header { padding-top: 32px; }
+.sector-header-left {
+  display: flex; flex-direction: column; gap: 8px;
+  flex: 0 0 auto; min-width: 200px; max-width: 320px;
+}
+.sector-desc {
+  flex: 1; min-width: 0;
+  font-size: 14px; line-height: 1.65;
+  color: var(--accent-text);
+}
+@media (max-width: 760px) {
+  .sector-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .sector-header-left { max-width: 100%; }
+}
 .sector-badge {
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
   font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
@@ -493,9 +506,12 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 1 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <span class="sector-badge">Sector 01</span>
-      <h2 class="sector-name" data-i18n="s1-name">Enterprise SaaS &amp; Technical Stack</h2>
-      <p class="sector-context" data-i18n="s1-ctx">Nexthink · SaaS Learning Architect · 2024–2025 interview prep</p>
+      <div class="sector-header-left">
+        <span class="sector-badge">Sector 01</span>
+        <h2 class="sector-name" data-i18n="s1-name">Enterprise SaaS &amp; Technical Stack</h2>
+        <p class="sector-context" data-i18n="s1-ctx">Nexthink · SaaS Learning Architect · 2024–2025 interview prep</p>
+      </div>
+      <p class="sector-desc" data-i18n="s1-desc">For L&amp;D professionals targeting enterprise software roles. Covers digital adoption platforms, SaaS onboarding design and Learning Architect competencies — with focused prep for Nexthink's hiring process.</p>
     </div>
     <div class="card-row card-row-5">
       <article class="nav-card" data-open="false">
@@ -584,9 +600,12 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 2 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <span class="sector-badge">Sector 02</span>
-      <h2 class="sector-name" data-i18n="s2-name">Healthcare &amp; Corporate L&amp;D</h2>
-      <p class="sector-context" data-i18n="s2-ctx">Johnson &amp; Johnson · R-085222 · Senior Learning Designer</p>
+      <div class="sector-header-left">
+        <span class="sector-badge">Sector 02</span>
+        <h2 class="sector-name" data-i18n="s2-name">Healthcare &amp; Corporate L&amp;D</h2>
+        <p class="sector-context" data-i18n="s2-ctx">Johnson &amp; Johnson · R-085222 · Senior Learning Designer</p>
+      </div>
+      <p class="sector-desc" data-i18n="s2-desc">Equips instructional designers for regulated industries: pharmaceutical compliance, GxP documentation standards and senior corporate L&amp;D roles in global healthcare organisations.</p>
     </div>
     <div class="card-row card-row-2">
       <article class="nav-card" data-open="false">
@@ -627,9 +646,12 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 3 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <span class="sector-badge">Sector 03</span>
-      <h2 class="sector-name" data-i18n="s3-name">AI &amp; Digital Literacy</h2>
-      <p class="sector-context" data-i18n="s3-ctx">AI-enabled instructional design · Sector fluency</p>
+      <div class="sector-header-left">
+        <span class="sector-badge">Sector 03</span>
+        <h2 class="sector-name" data-i18n="s3-name">AI &amp; Digital Literacy</h2>
+        <p class="sector-context" data-i18n="s3-ctx">AI-enabled instructional design · Sector fluency</p>
+      </div>
+      <p class="sector-desc" data-i18n="s3-desc">Builds AI fluency for learning designers — from prompt engineering and AI-enabled course production to sector-specific digital literacy curriculum design.</p>
     </div>
     <div class="card-row card-row-4">
       <article class="nav-card" data-open="false">
@@ -702,9 +724,12 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 4 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <span class="sector-badge">Sector 04</span>
-      <h2 class="sector-name" data-i18n="s4-name">Language Learning &amp; MLLDE</h2>
-      <p class="sector-context" data-i18n="s4-ctx">MLLDE © Ana Eslava-Graterol · Born from Codeway &amp; Paltech interviews</p>
+      <div class="sector-header-left">
+        <span class="sector-badge">Sector 04</span>
+        <h2 class="sector-name" data-i18n="s4-name">Language Learning &amp; MLLDE</h2>
+        <p class="sector-context" data-i18n="s4-ctx">MLLDE © Ana Eslava-Graterol · Born from Codeway &amp; Paltech interviews</p>
+      </div>
+      <p class="sector-desc" data-i18n="s4-desc">Centers on the MLLDE framework (© Ana Eslava-Graterol), a mastery-based, data-informed language learning model. Includes the TK CoachAI pilot for Talketika and B2B EdTech application design.</p>
     </div>
     <div class="card-row card-row-3">
       <article class="nav-card" data-open="false">
@@ -761,9 +786,12 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 5 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <span class="sector-badge">Sector 05</span>
-      <h2 class="sector-name" data-i18n="s5-name">International &amp; NGO</h2>
-      <p class="sector-context" data-i18n="s5-ctx">UNICEF Supply Division · TMC0004741 · K-12 ELL gap</p>
+      <div class="sector-header-left">
+        <span class="sector-badge">Sector 05</span>
+        <h2 class="sector-name" data-i18n="s5-name">International &amp; NGO</h2>
+        <p class="sector-context" data-i18n="s5-ctx">UNICEF Supply Division · TMC0004741 · K-12 ELL gap</p>
+      </div>
+      <p class="sector-desc" data-i18n="s5-desc">Equips designers for international humanitarian and development contexts: needs-analysis under field constraints, multilingual curriculum adaptation and K–12 ELL programming for global organisations.</p>
     </div>
     <div class="card-row card-row-3">
       <article class="nav-card" data-open="false">
@@ -820,9 +848,12 @@ footer a:hover { text-decoration: underline; }
   <!-- ── SECTOR 6 ── -->
   <div class="sector-block">
     <div class="sector-header">
-      <span class="sector-badge">Sector 06</span>
-      <h2 class="sector-name" data-i18n="s6-name">Career &amp; Transversal</h2>
-      <p class="sector-context" data-i18n="s6-ctx">L&amp;D job market strategy · Portfolio positioning · Transversal competencies</p>
+      <div class="sector-header-left">
+        <span class="sector-badge">Sector 06</span>
+        <h2 class="sector-name" data-i18n="s6-name">Career &amp; Transversal</h2>
+        <p class="sector-context" data-i18n="s6-ctx">L&amp;D job market strategy · Portfolio positioning · Transversal competencies</p>
+      </div>
+      <p class="sector-desc" data-i18n="s6-desc">Builds the professional strategy layer: portfolio positioning, L&amp;D job-market navigation and the cross-sector competencies — research literacy, accessibility, governance — that strengthen every other sector.</p>
     </div>
     <div class="card-row card-row-5">
       <article class="nav-card" data-open="false">
@@ -1654,16 +1685,22 @@ footer a:hover { text-decoration: underline; }
       /* Sectors */
       's1-name': 'Enterprise SaaS &amp; Technical Stack',
       's1-ctx':  'Nexthink · SaaS Learning Architect · 2024–2025 interview prep',
+      's1-desc': 'For L&amp;D professionals targeting enterprise software roles. Covers digital adoption platforms, SaaS onboarding design and Learning Architect competencies — with focused prep for Nexthink\'s hiring process.',
       's2-name': 'Healthcare &amp; Corporate L&amp;D',
       's2-ctx':  'Johnson &amp; Johnson · R-085222 · Senior Learning Designer',
+      's2-desc': 'Equips instructional designers for regulated industries: pharmaceutical compliance, GxP documentation standards and senior corporate L&amp;D roles in global healthcare organisations.',
       's3-name': 'AI &amp; Digital Literacy',
       's3-ctx':  'AI-enabled instructional design · Sector fluency',
+      's3-desc': 'Builds AI fluency for learning designers — from prompt engineering and AI-enabled course production to sector-specific digital literacy curriculum design.',
       's4-name': 'Language Learning &amp; MLLDE',
       's4-ctx':  'MLLDE © Ana Eslava-Graterol · Born from Codeway &amp; Paltech interviews',
+      's4-desc': 'Centers on the MLLDE framework (© Ana Eslava-Graterol), a mastery-based, data-informed language learning model. Includes the TK CoachAI pilot for Talketika and B2B EdTech application design.',
       's5-name': 'International &amp; NGO',
       's5-ctx':  'UNICEF Supply Division · TMC0004741 · K-12 ELL gap',
+      's5-desc': 'Equips designers for international humanitarian and development contexts: needs-analysis under field constraints, multilingual curriculum adaptation and K–12 ELL programming for global organisations.',
       's6-name': 'Career &amp; Transversal',
       's6-ctx':  'L&amp;D job market strategy · Portfolio positioning · Transversal competencies',
+      's6-desc': 'Builds the professional strategy layer: portfolio positioning, L&amp;D job-market navigation and the cross-sector competencies — research literacy, accessibility, governance — that strengthen every other sector.',
       /* CTAs */
       'cta-enter':   'Enter →',
       'cta-explore': 'Explore →',
@@ -1796,16 +1833,22 @@ footer a:hover { text-decoration: underline; }
       /* Sectors */
       's1-name': 'Enterprise SaaS y Stack Técnico',
       's1-ctx':  'Nexthink · SaaS Learning Architect · Prep. entrevista 2024–2025',
+      's1-desc': 'Para profesionales de L&amp;D con objetivos en roles de software empresarial. Cubre plataformas de adopción digital, diseño de onboarding SaaS y competencias de Learning Architect — con preparación orientada al proceso de selección de Nexthink.',
       's2-name': 'Sanidad y L&amp;D Corporativo',
       's2-ctx':  'Johnson &amp; Johnson · R-085222 · Senior Learning Designer',
+      's2-desc': 'Prepara a diseñadores instruccionales para industrias reguladas: cumplimiento farmacéutico, estándares de documentación GxP y roles senior de L&amp;D corporativo en organizaciones sanitarias globales.',
       's3-name': 'IA y Cultura Digital',
       's3-ctx':  'Diseño instruccional con IA · Fluidez sectorial',
+      's3-desc': 'Desarrolla fluidez con IA para diseñadores de aprendizaje — desde la ingeniería de prompts y la producción de cursos habilitada por IA hasta el diseño de currículos de alfabetización digital por sector.',
       's4-name': 'Aprendizaje de Lenguas y MLLDE',
       's4-ctx':  'MLLDE © Ana Eslava-Graterol · Surgido de entrevistas Codeway &amp; Paltech',
+      's4-desc': 'Se centra en el marco MLLDE (© Ana Eslava-Graterol), un modelo de aprendizaje de idiomas basado en dominio e informado por datos. Incluye el piloto TK CoachAI para Talketika y el diseño de aplicaciones EdTech B2B.',
       's5-name': 'Internacional y ONG',
       's5-ctx':  'UNICEF Supply Division · TMC0004741 · Brecha K-12 ELL',
+      's5-desc': 'Prepara a diseñadores para contextos humanitarios y de desarrollo internacional: análisis de necesidades con restricciones de campo, adaptación curricular multilingüe y programas ELL K–12 para organizaciones globales.',
       's6-name': 'Carrera y Transversales',
       's6-ctx':  'Estrategia en el mercado L&amp;D · Posicionamiento de portafolio · Competencias transversales',
+      's6-desc': 'Construye la capa de estrategia profesional: posicionamiento del portafolio, navegación del mercado laboral de L&amp;D y las competencias transversales — alfabetización en investigación, accesibilidad, gobernanza — que fortalecen cada uno de los demás sectores.',
       /* CTAs */
       'cta-enter':   'Entrar →',
       'cta-explore': 'Explorar →',
