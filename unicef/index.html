@@ -667,7 +667,7 @@ function renderMap() {
     card.innerHTML = `
       <div class="level-top-row">
         <span class="level-num">${String(level.id).padStart(2, "0")}</span>
-        <span class="level-status">${complete ? "<span class="status-ok">OK</span>" : (unlocked ? "" : "")}</span>
+        <span class="level-status">${complete ? "<span class='status-ok'>OK</span>" : (unlocked ? "" : "")}</span>
       </div>
       <div class="level-name">${level.name}</div>
       <div class="level-focus">${level.focus}</div>
@@ -720,7 +720,7 @@ function openLevel(id) {
   bodyHTML += `
     <div class="complete-row">
       <button class="complete-btn" id="completeBtn-${level.id}" onclick="completeLevel(${level.id})">
-        ${progress.completed[level.id] ? "<span class="status-ok">OK</span> Completed — replay anytime" : "Mark as practiced →"}
+        ${progress.completed[level.id] ? "<span class='status-ok'>OK</span> Completed — replay anytime" : "Mark as practiced →"}
       </button>
     </div>
   `;
@@ -734,9 +734,9 @@ function copyAnswer(levelId) {
   const level = LEVELS.find(l => l.id === levelId);
   navigator.clipboard.writeText(level.content.interviewAnswer).then(() => {
     const btn = document.getElementById(`copyBtn-${levelId}`);
-    btn.textContent = "Copied ";
+    btn.innerHTML = "Copied ";
     btn.classList.add("copied");
-    setTimeout(() => { btn.textContent = "Copy answer"; btn.classList.remove("copied"); }, 1800);
+    setTimeout(() => { btn.innerHTML = "Copy answer"; btn.classList.remove("copied"); }, 1800);
   });
 }
 
@@ -850,7 +850,7 @@ function completeLevel(id) {
   updateXPBar();
   if (!wasComplete) { const level = LEVELS.find(l => l.id === id); showToast(level); }
   const btn = document.getElementById(`completeBtn-${id}`);
-  if (btn) btn.textContent = "<span class="status-ok">OK</span> Completed — replay anytime";
+  if (btn) btn.innerHTML = "<span class='status-ok'>OK</span> Completed — replay anytime";
   const allDone = LEVELS.every(l => progress.completed[l.id]);
   if (allDone) { setTimeout(showFinalScreen, 1200); } else { setTimeout(goToMap, 900); }
 }
