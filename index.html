@@ -7,43 +7,51 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,600;9..144,0,700;9..144,1,600;9..144,1,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-/* ── Ocean Ink v0.1 ── */
+/* ── AE Evolution — Ocean Ink · November 2026 ── */
 :root {
   --ink:          #1C1E2E;
   --canvas:       #F7F8FC;
   --surface:      #FFFFFF;
   --line:         #E6E8F2;
   --muted:        #5B5F77;
-  --primary:      #3B5BD6;
-  --primary-deep: #22307C;
+  --primary:      #3B5BD6;   /* Cobalt */
+  --primary-deep: #293B83;   /* Deep Blue */
+  --lavender:     #A9B8F5;
+  --berry:        #8F3B59;
+  --rose:         #D9A0B5;
   --on-primary:   #FFFFFF;
-  --accent:       #E8A33D;
+  --accent:       #E8A33C;   /* Amber */
   --accent-text:  #9A5B00;
   --blue-50:      #EEF2FD;
   --blue-100:     #DCE4FB;
   --focus-ring:   #3B5BD6;
   --radius:       8px;
   --tag-bg:       #EEF2FD;
-  --tag-text:     #22307C;
+  --tag-text:     #293B83;
+  --band: linear-gradient(120deg, #3B5BD6 0%, #8F3B59 55%, #E8A33C 100%);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
-    --line: #2A2E50; --muted: #9A9DBF;
-    --primary: #7B9FFF; --primary-deep: #3B5BD6;
-    --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
-    --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
-    --tag-bg: #171A38; --tag-text: #7B9FFF;
+    --ink: #EEF0FC; --canvas: #0F1120; --surface: #20243A;
+    --line: #2F3556; --muted: #A3ABD0;
+    --primary: #A9B8F5; --primary-deep: #C6D2FB; --lavender: #A9B8F5;
+    --berry: #E0A6B8; --rose: #E0A6B8;
+    --on-primary: #131A44; --accent: #F3B861; --accent-text: #F3B861;
+    --blue-50: #1E2240; --blue-100: #252850; --focus-ring: #A9B8F5;
+    --tag-bg: #1E2240; --tag-text: #C6CFFA;
+    --band: linear-gradient(125deg, #2E42AE 0%, #5A2040 55%, #8A5A1E 100%);
   }
 }
-:root[data-theme="light"] { --tag-bg: #EEF2FD; --tag-text: #22307C; }
+:root[data-theme="light"] { --tag-bg: #EEF2FD; --tag-text: #293B83; }
 :root[data-theme="dark"] {
-  --ink: #E8EBF8; --canvas: #0F1120; --surface: #181B2E;
-  --line: #2A2E50; --muted: #9A9DBF;
-  --primary: #7B9FFF; --primary-deep: #3B5BD6;
-  --on-primary: #0F1120; --accent: #E8A33D; --accent-text: #FFCC80;
-  --blue-50: #171A38; --blue-100: #1F2348; --focus-ring: #7B9FFF;
-  --tag-bg: #171A38; --tag-text: #7B9FFF;
+  --ink: #EEF0FC; --canvas: #0F1120; --surface: #20243A;
+  --line: #2F3556; --muted: #A3ABD0;
+  --primary: #A9B8F5; --primary-deep: #C6D2FB; --lavender: #A9B8F5;
+  --berry: #E0A6B8; --rose: #E0A6B8;
+  --on-primary: #131A44; --accent: #F3B861; --accent-text: #F3B861;
+  --blue-50: #1E2240; --blue-100: #252850; --focus-ring: #A9B8F5;
+  --tag-bg: #1E2240; --tag-text: #C6CFFA;
+  --band: linear-gradient(125deg, #2E42AE 0%, #5A2040 55%, #8A5A1E 100%);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,37 +70,25 @@
 
 body {
   background: var(--canvas);
-  background-image: radial-gradient(circle at 1px 1px, rgba(28,30,46,0.05) 1px, transparent 0);
-  background-size: 22px 22px;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   color: var(--ink);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   display: flex; flex-direction: column;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) body {
-    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
-  }
-}
-:root[data-theme="dark"] body {
-  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
-}
 
 h1, h2, h3 { font-family: 'Fraunces', 'Palatino Linotype', Palatino, Georgia, serif; }
 
 /* ── HERO ── */
 .hero-band {
-  background: linear-gradient(135deg, #22307C 0%, #3B5BD6 52%, #E8A33D 100%);
+  background: var(--band);
   padding: 72px 24px 64px; text-align: center;
   print-color-adjust: exact; -webkit-print-color-adjust: exact;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .hero-band {
-    background: linear-gradient(135deg, #08091A 0%, #1A2464 100%);
-  }
+  :root:not([data-theme="light"]) .hero-band { background: var(--band); }
 }
-:root[data-theme="dark"] .hero-band { background: linear-gradient(135deg, #08091A 0%, #1A2464 100%); }
+:root[data-theme="dark"] .hero-band { background: var(--band); }
 .hero-eyebrow {
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
   font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
@@ -163,13 +159,13 @@ a.hero-chip:hover { background: rgba(255,255,255,0.18); color: #fff; }
   .card-row-4, .card-row-3, .card-row-2 { grid-template-columns: 1fr; max-width: 480px; }
 }
 .nav-card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-  padding: 28px 24px; text-decoration: none; color: inherit;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 28px 26px 24px; text-decoration: none; color: inherit;
   display: flex; flex-direction: column;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .nav-card:hover {
-  transform: translateY(-4px); box-shadow: 0 12px 28px rgba(59,91,214,0.12);
+  box-shadow: 0 4px 20px rgba(59,91,214,0.09);
   border-color: var(--primary);
 }
 .nav-card-tag {
@@ -179,7 +175,16 @@ a.hero-chip:hover { background: rgba(255,255,255,0.18); color: #fff; }
   margin-bottom: 14px; align-self: flex-start;
   background: var(--tag-bg); color: var(--tag-text);
 }
-.nav-card-icon { font-size: 32px; margin-bottom: 12px; line-height: 1; }
+.nav-card-icon { display: none; }
+.nav-card::before {
+  content: '';
+  display: block;
+  width: 28px; height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
 .nav-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--ink); }
 .nav-card p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; flex: 1; }
 .nav-card-meta {
@@ -217,9 +222,9 @@ a.hero-chip:hover { background: rgba(255,255,255,0.18); color: #fff; }
 .gl-section { scroll-margin-top: 72px; }
 .gl-letter {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 26px; font-weight: 700; color: var(--accent-text);
+  font-size: 26px; font-weight: 700; color: var(--primary-deep);
   padding-top: 36px; padding-bottom: 10px;
-  border-bottom: 2px solid var(--blue-100); margin-bottom: 16px;
+  border-bottom: 1px solid var(--line); margin-bottom: 16px;
 }
 dl.gl-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px; }
 .gl-entry {
@@ -254,9 +259,9 @@ dl.gl-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4p
 .refs-wrapper h2.panel-title { font-size: 28px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
 .refs-section-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 18px; font-weight: 700; color: var(--ink);
+  font-size: 18px; font-weight: 700; color: var(--primary-deep);
   margin: 40px 0 14px; padding-bottom: 8px;
-  border-bottom: 2px solid var(--blue-100);
+  border-bottom: 1px solid var(--line);
 }
 .refs-section-title:first-of-type { margin-top: 0; }
 .refs-list { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 0; }
@@ -321,12 +326,12 @@ footer a:hover { text-decoration: underline; }
 .tracks-panel { gap: 0; }
 .sector-block { width: 100%; }
 .sector-header {
-  padding: 44px 2px 16px; border-bottom: 2px solid var(--blue-100); margin-bottom: 22px;
+  padding: 48px 2px 18px; border-bottom: 1px solid var(--line); margin-bottom: 24px;
 }
 .sector-block:first-child .sector-header { padding-top: 0; }
 .sector-name {
-  font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.015em;
-  line-height: 1.1; margin-bottom: 5px; text-wrap: balance;
+  font-size: 22px; font-weight: 700; color: var(--primary-deep); letter-spacing: -0.015em;
+  line-height: 1.1; margin-bottom: 6px; text-wrap: balance;
 }
 .sector-context {
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
@@ -343,7 +348,7 @@ footer a:hover { text-decoration: underline; }
 <body>
 
 <a href="#panel-tracks" class="skip-link">Skip to content</a>
-<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">🌓</button>
+<button id="theme-btn" aria-label="Colour theme: system. Click to switch.">◑</button>
 
 <!-- HERO -->
 <div class="hero-band">
@@ -353,7 +358,7 @@ footer a:hover { text-decoration: underline; }
   <div class="hero-chips">
     <span class="hero-chip">Ana Eslava-Graterol</span>
     <span class="hero-chip">HDD · Transformación Educativa Digital</span>
-    <a class="hero-chip" href="https://profeanaeslavaedtech.github.io/portfolio/" target="_blank" rel="noopener">Portfolio →</a>
+    <a class="hero-chip" href="https://profeanaeslavaedtech.github.io/portofolio/" target="_blank" rel="noopener">Portfolio →</a>
     <a class="hero-chip" href="assets/Ana-Eslava-Graterol-CV.pdf" download="Ana-Eslava-Graterol-CV.pdf">Download CV ↓</a>
   </div>
 </div>
@@ -361,9 +366,9 @@ footer a:hover { text-decoration: underline; }
 <!-- TAB BAR -->
 <div class="tab-bar-wrapper">
   <div role="tablist" aria-label="Portfolio sections" class="tab-bar">
-    <button role="tab" id="tab-tracks"     aria-controls="panel-tracks"     aria-selected="true" >🧭 Tracks</button>
-    <button role="tab" id="tab-glossary"   aria-controls="panel-glossary"   aria-selected="false">📖 Glossary</button>
-    <button role="tab" id="tab-references" aria-controls="panel-references" aria-selected="false">📚 References</button>
+    <button role="tab" id="tab-tracks"     aria-controls="panel-tracks"     aria-selected="true" >Tracks</button>
+    <button role="tab" id="tab-glossary"   aria-controls="panel-glossary"   aria-selected="false">Glossary</button>
+    <button role="tab" id="tab-references" aria-controls="panel-references" aria-selected="false">References</button>
   </div>
 </div>
 
@@ -728,7 +733,7 @@ footer a:hover { text-decoration: underline; }
       </div>
       <div class="gl-entry">
         <dt>CSS &nbsp;<span class="full">· Cascading Style Sheets</span></dt>
-        <dd>Language for styling HTML documents. The Ocean Ink v0.1 design system used across all bootcamp modules is implemented as a CSS custom-property (CSS variable) system with three-state dark-mode support.</dd>
+        <dd>Language for styling HTML documents. The AE Evolution — Ocean Ink design system used across all bootcamp modules is implemented as a CSS custom-property (CSS variable) system with three-state dark-mode support.</dd>
         <span class="gl-track-tag">All tracks</span>
       </div>
       <div class="gl-entry">
@@ -1309,7 +1314,7 @@ footer a:hover { text-decoration: underline; }
 
 <footer>
   Built for learning. <a href="https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech">View source on GitHub</a>
-  &nbsp;·&nbsp; Ocean Ink v0.1 · August 2026
+  &nbsp;·&nbsp; AE Evolution — Ocean Ink · November 2026
   <br>¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a>
 </footer>
 
@@ -1319,7 +1324,7 @@ footer a:hover { text-decoration: underline; }
   var btn   = document.getElementById('theme-btn');
   var root  = document.documentElement;
   var cycle = ['system', 'light', 'dark'];
-  var icons = { system: '🌓', light: '☀️', dark: '🌙' };
+  var icons = { system: '◑', light: '○', dark: '●' };
   var labels = {
     system: 'Colour theme: system (follows your OS). Click to switch to light.',
     light:  'Colour theme: light. Click to switch to dark.',
