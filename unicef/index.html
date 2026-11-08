@@ -145,7 +145,7 @@
 
   .answer-card {
     background: var(--green-soft); border-left: 3px solid var(--green); border-radius: var(--radius);
-    padding: 13px 15px; font-size: 13px; line-height: 1.65; color: #0F3D24; white-space: pre-wrap; margin-top: 8px;
+    padding: 13px 15px; font-size: 13px; line-height: 1.65; color: var(--oi-ink); white-space: pre-wrap; margin-top: 8px;
   }
   .copy-row { display: flex; justify-content: flex-end; margin-top: 8px; }
   .copy-btn {
@@ -163,7 +163,7 @@
   }
 
   .storyboard-frame { border: 1.5px solid var(--ink); border-radius: var(--radius); padding: 0; margin-bottom: 12px; overflow: hidden; }
-  .storyboard-frame .sf-header { background: var(--ink); color: white; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 5px 12px; display: flex; justify-content: space-between; }
+  .storyboard-frame .sf-header { background: var(--oi-surface); color: var(--oi-ink); font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; padding: 5px 12px; display: flex; justify-content: space-between; }
   .storyboard-frame .sf-body { padding: 14px 16px; background: white; }
   .storyboard-frame .sf-row { display: flex; gap: 10px; font-size: 12.5px; padding: 4px 0; }
   .storyboard-frame .sf-row .sf-label { font-weight: 600; min-width: 90px; color: var(--ink-soft); }
@@ -191,8 +191,8 @@
   .quiz-option:disabled { cursor: default; }
   .quiz-feedback { font-size: 12.5px; line-height: 1.6; padding: 10px 13px; border-radius: var(--radius); display: none; }
   .quiz-feedback.show { display: block; }
-  .quiz-feedback.correct-fb { background: var(--green-soft); color: #0F3D24; }
-  .quiz-feedback.incorrect-fb { background: var(--red-soft); color: #6B0F1B; }
+  .quiz-feedback.correct-fb { background: var(--oi-surface2); color: var(--oi-ink); border: 1px solid var(--oi-berry); }
+  .quiz-feedback.incorrect-fb { background: var(--oi-surface2); color: var(--oi-ink); border: 1px solid var(--oi-muted); }
 
   .complete-row { display: flex; justify-content: center; margin-top: 26px; }
   .complete-btn {
@@ -203,14 +203,14 @@
   .complete-btn:hover { background: var(--sky-light); transform: translateY(-1px); }
 
   .toast {
-    position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--ink); color: white;
+    position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--oi-surface); color: var(--oi-ink);
     padding: 15px 22px; border-radius: var(--radius); display: flex; align-items: center; gap: 11px;
     box-shadow: 0 12px 32px rgba(0,0,0,0.3); transition: bottom 0.4s cubic-bezier(.4,0,.2,1); z-index: 300; max-width: 90vw;
     border: 1px solid var(--sky);
   }
   .toast.show { bottom: 30px; }
   .toast-text { font-size: 12.5px; line-height: 1.4; }
-  .toast-text strong { color: #7DD3F8; }
+  .toast-text strong { color: var(--oi-primary); }
 
   .final-screen { display: none; max-width: 680px; margin: 0 auto; padding: 56px 24px; text-align: center; }
   .final-screen.active { display: block; }
