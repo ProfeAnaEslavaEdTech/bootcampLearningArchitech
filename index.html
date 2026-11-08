@@ -194,7 +194,7 @@ h1, h2, h3 { font-family: 'Fraunces', 'Palatino Linotype', Palatino, Georgia, se
   font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--muted); width: 100%; max-width: 1240px; margin: 10px auto -4px; padding: 0 2px;
 }
-.card-row { display: grid; gap: 18px; width: 100%; }
+.card-row { display: grid; gap: 10px; width: 100%; }
 .card-row-4 { grid-template-columns: repeat(4, 1fr); max-width: 1240px; margin: 0 auto; }
 .card-row-3 { grid-template-columns: repeat(3, 1fr); max-width: 930px; margin: 0 auto; }
 .card-row-2 { grid-template-columns: repeat(2, 1fr); max-width: 760px; margin: 0 auto; }
@@ -205,42 +205,74 @@ h1, h2, h3 { font-family: 'Fraunces', 'Palatino Linotype', Palatino, Georgia, se
 @media (max-width: 560px) {
   .card-row-4, .card-row-3, .card-row-2 { grid-template-columns: 1fr; max-width: 480px; }
 }
+/* Compact collapsible track card */
 .nav-card {
   background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
-  padding: 28px 26px 24px; text-decoration: none; color: inherit;
+  padding: 0; text-decoration: none; color: inherit;
   display: flex; flex-direction: column;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  overflow: hidden;
 }
-.nav-card:hover {
-  box-shadow: 0 4px 20px rgba(59,91,214,0.09);
+.nav-card:hover { border-color: var(--primary); }
+.nav-card[data-open="true"] {
+  box-shadow: 0 4px 20px rgba(59,91,214,0.12);
   border-color: var(--primary);
 }
-.nav-card-tag {
-  font-family: 'IBM Plex Mono', 'Courier New', monospace;
-  font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
-  border-radius: 20px; padding: 4px 11px; display: inline-block;
-  margin-bottom: 14px; align-self: flex-start;
-  background: var(--tag-bg); color: var(--tag-text);
-}
-.nav-card-icon { display: none; }
+/* Accent bar at top */
 .nav-card::before {
   content: '';
-  display: block;
-  width: 28px; height: 2px;
+  display: block; height: 2px; width: 100%;
   background: var(--sector-accent, var(--primary));
-  border-radius: 2px;
-  margin-bottom: 20px;
   flex-shrink: 0;
 }
-.nav-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--ink); }
-.nav-card p { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; flex: 1; }
+/* Clickable header row */
+.nav-card-head {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 16px 12px; cursor: pointer;
+  gap: 10px;
+}
+.nav-card-head-text { flex: 1; min-width: 0; }
+.nav-card-tag {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--sector-accent, var(--primary));
+  display: block; margin-bottom: 4px;
+}
+.nav-card-icon { display: none; }
+.nav-card h3 {
+  font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink);
+  line-height: 1.25; margin: 0;
+}
+.nav-card-chevron {
+  font-size: 11px; color: var(--muted); flex-shrink: 0; margin-top: 2px;
+  transition: transform 0.2s; user-select: none;
+}
+.nav-card[data-open="true"] .nav-card-chevron { transform: rotate(180deg); }
+
+/* Collapsible body */
+.nav-card-body {
+  display: none; padding: 0 16px 12px;
+}
+.nav-card[data-open="true"] .nav-card-body { display: block; }
+.nav-card p {
+  font-size: 12.5px; color: var(--muted); line-height: 1.6; margin: 0;
+}
+
+/* Footer meta row */
 .nav-card-meta {
   font-family: 'IBM Plex Mono', 'Courier New', monospace;
-  font-size: 11px; color: var(--muted);
+  font-size: 10.5px; color: var(--muted);
   display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid var(--line); padding-top: 12px;
+  border-top: 1px solid var(--line); padding: 10px 16px;
+  margin-top: auto;
 }
-.nav-card-cta { font-weight: 700; color: var(--primary); }
+.nav-card-cta {
+  font-weight: 700; color: var(--primary);
+  text-decoration: none; padding: 4px 10px;
+  border: 1px solid var(--line); border-radius: 14px;
+  font-size: 10.5px; transition: border-color 0.15s, background 0.15s;
+}
+.nav-card-cta:hover { border-color: var(--primary); background: var(--blue-50); }
 
 /* ── GLOSSARY PANEL ── */
 .glossary-wrapper {
@@ -415,7 +447,6 @@ footer a:hover { text-decoration: underline; }
 @media (max-width: 1200px) { .card-row-5 { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px)  { .card-row-5 { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px)  { .card-row-5 { grid-template-columns: 1fr; max-width: 480px; } }
-.nav-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; color: var(--ink); }
 </style>
 </head>
 <body>
@@ -467,41 +498,86 @@ footer a:hover { text-decoration: underline; }
       <p class="sector-context" data-i18n="s1-ctx">Nexthink · SaaS Learning Architect · 2024–2025 interview prep</p>
     </div>
     <div class="card-row card-row-5">
-      <a class="nav-card" href="./bootcamp/index.html">
-        <span class="nav-card-tag" data-i18n="c1-tag">Knowledge &amp; rehearsal</span>
-        <div class="nav-card-icon" aria-hidden="true">🧭</div>
-        <h3 data-i18n="c1-title">SaaS Training Bootcamp</h3>
-        <p data-i18n="c1-desc">Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.</p>
-        <div class="nav-card-meta"><span data-i18n="c1-meta">10 levels · ~3h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./handson/index.html">
-        <span class="nav-card-tag" data-i18n="c2-tag">Real artifacts</span>
-        <div class="nav-card-icon" aria-hidden="true">🛠️</div>
-        <h3 data-i18n="c2-title">SaaS Hands-On Track</h3>
-        <p data-i18n="c2-desc">Fourteen scoped mini-projects covering the full Learning Architect role. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
-        <div class="nav-card-meta"><span data-i18n="c2-meta">14 projects · 20–60 min each</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./articulate360/index.html">
-        <span class="nav-card-tag" data-i18n="c3-tag">Tool mastery</span>
-        <div class="nav-card-icon" aria-hidden="true">🎨</div>
-        <h3 data-i18n="c3-title">Articulate 360</h3>
-        <p data-i18n="c3-desc">Fourteen projects across Rise 360 and Storyline 360 — from building your first block-based course to publishing SCORM packages, adding branching logic, and designing interactive assessments.</p>
-        <div class="nav-card-meta"><span data-i18n="c3-meta">14 projects · Rise + Storyline</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./lrs/index.html">
-        <span class="nav-card-tag" data-i18n="c4-tag">Architecture</span>
-        <div class="nav-card-icon" aria-hidden="true">🗄️</div>
-        <h3 data-i18n="c4-title">LRS Architecture</h3>
-        <p data-i18n="c4-desc">Hybrid B2C + B2B platform design — multi-tenancy, xAPI statement forwarding, permission scopes, cmi5 dynamic launch, and a full annotated code walkthrough of the two-scenario architecture.</p>
-        <div class="nav-card-meta"><span data-i18n="c4-meta">15 steps · ~45 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./scripting/index.html">
-        <span class="nav-card-tag" data-i18n="c5-tag">Developer track</span>
-        <div class="nav-card-icon" aria-hidden="true">⚙️</div>
-        <h3 data-i18n="c5-title">xAPI Scripting in Articulate 360</h3>
-        <p data-i18n="c5-desc">Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.</p>
-        <div class="nav-card-meta"><span data-i18n="c5-meta">13 steps · ~50 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c1-tag">Knowledge &amp; rehearsal</span>
+            <h3 data-i18n="c1-title">SaaS Training Bootcamp</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c1-desc">Ten gamified levels covering SCORM vs. xAPI, Rise vs. Storyline, LMS telemetry thinking, adult-learner gamification, and a full mock-panel rehearsal — timed, structured, no second takes.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c1-meta">10 levels · ~3h</span>
+          <a href="./bootcamp/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c2-tag">Real artifacts</span>
+            <h3 data-i18n="c2-title">SaaS Hands-On Track</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c2-desc">Fourteen scoped mini-projects covering the full Learning Architect role. Each one produces something real you can open and show: a storyboard, a published Rise lesson, a certification blueprint.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c2-meta">14 projects · 20–60 min each</span>
+          <a href="./handson/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c3-tag">Tool mastery</span>
+            <h3 data-i18n="c3-title">Articulate 360</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c3-desc">Fourteen projects across Rise 360 and Storyline 360 — from building your first block-based course to publishing SCORM packages, adding branching logic, and designing interactive assessments.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c3-meta">14 projects · Rise + Storyline</span>
+          <a href="./articulate360/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c4-tag">Architecture</span>
+            <h3 data-i18n="c4-title">LRS Architecture</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c4-desc">Hybrid B2C + B2B platform design — multi-tenancy, xAPI statement forwarding, permission scopes, cmi5 dynamic launch, and a full annotated code walkthrough of the two-scenario architecture.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c4-meta">15 steps · ~45 min</span>
+          <a href="./lrs/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c5-tag">Developer track</span>
+            <h3 data-i18n="c5-title">xAPI Scripting in Articulate 360</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c5-desc">Write JavaScript that connects your Storyline 360 and Rise 360 courses to an LRS. Custom statements, Execute JavaScript triggers, cmi5 launch params, GetVar() patterns, and a debugging workflow.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c5-meta">13 steps · ~50 min</span>
+          <a href="./scripting/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
     </div>
   </div>
 
@@ -513,20 +589,38 @@ footer a:hover { text-decoration: underline; }
       <p class="sector-context" data-i18n="s2-ctx">Johnson &amp; Johnson · R-085222 · Senior Learning Designer</p>
     </div>
     <div class="card-row card-row-2">
-      <a class="nav-card" href="./jnj-bootcamp/index.html">
-        <span class="nav-card-tag" data-i18n="c6-tag">Duty-by-duty drill</span>
-        <div class="nav-card-icon" aria-hidden="true">🏥</div>
-        <h3 data-i18n="c6-title">Learning Designer Practice Lab</h3>
-        <p data-i18n="c6-desc">Ten real cases mapped one-to-one to an actual qualifications list — storyboard a decision frame, audit an accessibility slide, diagnose misleading performance data, and build in Articulate Rise.</p>
-        <div class="nav-card-meta"><span data-i18n="c6-meta">10 modules · ~3h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./jnj-dual-track/index.html">
-        <span class="nav-card-tag" data-i18n="c7-tag">Bloom's progression</span>
-        <div class="nav-card-icon" aria-hidden="true">🧠</div>
-        <h3 data-i18n="c7-title">Dual-Track: Designer vs. LXA</h3>
-        <p data-i18n="c7-desc">Switch between the execution track (Learning Designer) and the strategy track (Learning Experience Architect). Every module is tagged Remember through Create — two full HLD-from-scratch exercises included.</p>
-        <div class="nav-card-meta"><span data-i18n="c7-meta">10 + 8 modules · ~4h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c6-tag">Duty-by-duty drill</span>
+            <h3 data-i18n="c6-title">Learning Designer Practice Lab</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c6-desc">Ten real cases mapped one-to-one to an actual qualifications list — storyboard a decision frame, audit an accessibility slide, diagnose misleading performance data, and build in Articulate Rise.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c6-meta">10 modules · ~3h</span>
+          <a href="./jnj-bootcamp/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c7-tag">Bloom's progression</span>
+            <h3 data-i18n="c7-title">Dual-Track: Designer vs. LXA</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c7-desc">Switch between the execution track (Learning Designer) and the strategy track (Learning Experience Architect). Every module is tagged Remember through Create — two full HLD-from-scratch exercises included.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c7-meta">10 + 8 modules · ~4h</span>
+          <a href="./jnj-dual-track/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
     </div>
   </div>
 
@@ -538,34 +632,70 @@ footer a:hover { text-decoration: underline; }
       <p class="sector-context" data-i18n="s3-ctx">AI-enabled instructional design · Sector fluency</p>
     </div>
     <div class="card-row card-row-4">
-      <a class="nav-card" href="./ai-literacy/index.html">
-        <span class="nav-card-tag" data-i18n="c8-tag">AI fluency</span>
-        <div class="nav-card-icon" aria-hidden="true">🤖</div>
-        <h3 data-i18n="c8-title">AI Literacy for IDs</h3>
-        <p data-i18n="c8-desc">How RLHF works, why models hallucinate, and how instruction following succeeds or breaks — then translating it into safer prompt patterns and smarter AI-assisted design in Articulate 360.</p>
-        <div class="nav-card-meta"><span data-i18n="c8-meta">12 steps · ~45 min · Curious → Strategist</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./ai-skills-architect/index.html">
-        <span class="nav-card-tag" data-i18n="c9-tag">AI system design</span>
-        <div class="nav-card-icon" aria-hidden="true">🧩</div>
-        <h3 data-i18n="c9-title">AI Skills System Architect</h3>
-        <p data-i18n="c9-desc">Five modules on designing, auditing and governing custom Claude skills for L&amp;D production — one-role-one-skill principle, trigger design, engine + pack, boundary declarations, and a live skills audit.</p>
-        <div class="nav-card-meta"><span data-i18n="c9-meta">5 modules · governance · Claude</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./tooling-sprint/index.html">
-        <span class="nav-card-tag" data-i18n="c10-tag">Skill build</span>
-        <div class="nav-card-icon" aria-hidden="true">🔧</div>
-        <h3 data-i18n="c10-title">Tooling Sprint</h3>
-        <p data-i18n="c10-desc">Five hands-on modules to build fluency with the tools Learning Architects actually use — from AI-powered prototyping workflows to production-ready artifact templates and version control habits.</p>
-        <div class="nav-card-meta"><span data-i18n="c10-meta">5 modules · hands-on</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./cuxedtech.html">
-        <span class="nav-card-tag" data-i18n="c11-tag">AI plugin · UX design</span>
-        <div class="nav-card-icon" aria-hidden="true">✍️</div>
-        <h3 data-i18n="c11-title">CUXedTech Plugin</h3>
-        <p data-i18n="c11-desc">Claude plugin built after attending Antonio Estévez Funes's (BBVA) masterclass on UX Writing at the UPV. Five skills: UX Writing, Ocean Ink design system, integrated UX quality framework, AI disclosure, and routing. Learning by doing.</p>
-        <div class="nav-card-meta"><span data-i18n="c11-meta">5 skills · v0.1.8 · downloadable</span><span class="nav-card-cta" data-i18n="cta-explore">Explore →</span></div>
-      </a>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c8-tag">AI fluency</span>
+            <h3 data-i18n="c8-title">AI Literacy for IDs</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c8-desc">How RLHF works, why models hallucinate, and how instruction following succeeds or breaks — then translating it into safer prompt patterns and smarter AI-assisted design in Articulate 360.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c8-meta">12 steps · ~45 min · Curious → Strategist</span>
+          <a href="./ai-literacy/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c9-tag">AI system design</span>
+            <h3 data-i18n="c9-title">AI Skills System Architect</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c9-desc">Five modules on designing, auditing and governing custom Claude skills for L&amp;D production — one-role-one-skill principle, trigger design, engine + pack, boundary declarations, and a live skills audit.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c9-meta">5 modules · governance · Claude</span>
+          <a href="./ai-skills-architect/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c10-tag">Skill build</span>
+            <h3 data-i18n="c10-title">Tooling Sprint</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c10-desc">Five hands-on modules to build fluency with the tools Learning Architects actually use — from AI-powered prototyping workflows to production-ready artifact templates and version control habits.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c10-meta">5 modules · hands-on</span>
+          <a href="./tooling-sprint/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c11-tag">AI plugin · UX design</span>
+            <h3 data-i18n="c11-title">CUXedTech Plugin</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c11-desc">Claude plugin built after attending Antonio Estévez Funes's (BBVA) masterclass on UX Writing at the UPV. Five skills: UX Writing, Ocean Ink design system, integrated UX quality framework, AI disclosure, and routing. Learning by doing.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c11-meta">5 skills · v0.1.8 · downloadable</span>
+          <a href="./cuxedtech.html" class="nav-card-cta" data-i18n="cta-explore">Explore →</a>
+        </div>
+      </article>
     </div>
   </div>
 
@@ -577,27 +707,54 @@ footer a:hover { text-decoration: underline; }
       <p class="sector-context" data-i18n="s4-ctx">MLLDE © Ana Eslava-Graterol · Born from Codeway &amp; Paltech interviews</p>
     </div>
     <div class="card-row card-row-3">
-      <a class="nav-card" href="./language-learning-experience-designer/index.html">
-        <span class="nav-card-tag" data-i18n="c12-tag">Language design</span>
-        <div class="nav-card-icon" aria-hidden="true">🌐</div>
-        <h3 data-i18n="c12-title">Language Learning Experience Designer</h3>
-        <p data-i18n="c12-desc">Six modules from the MLLDE engine to the investor pack — CEFR anchoring, Avatar-as-Input lesson flow, AI tutor architecture, evidence metrics, and a full Language Passport destination design challenge.</p>
-        <div class="nav-card-meta"><span data-i18n="c12-meta">6 modules · pedagogy to proof</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./cefr-metrics-architect/index.html">
-        <span class="nav-card-tag" data-i18n="c13-tag">Measurement arm</span>
-        <div class="nav-card-icon" aria-hidden="true">📊</div>
-        <h3 data-i18n="c13-title">CEFR Learning Metrics Architect</h3>
-        <p data-i18n="c13-desc">Five modules on designing defensible language learning metrics — the four evidence families, task gates, self-scaling rubrics, xAPI statement architecture, IRI registry discipline, and D1–D4 client deliverables.</p>
-        <div class="nav-card-meta"><span data-i18n="c13-meta">5 modules · evidence · xAPI</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./frameworks/index.html">
-        <span class="nav-card-tag" data-i18n="c14-tag">Framework fluency</span>
-        <div class="nav-card-icon" aria-hidden="true">🏛️</div>
-        <h3 data-i18n="c14-title">EU Frameworks</h3>
-        <p data-i18n="c14-desc">Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.</p>
-        <div class="nav-card-meta"><span data-i18n="c14-meta">~45 min · Newcomer → Pioneer</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c12-tag">Language design</span>
+            <h3 data-i18n="c12-title">Language Learning Experience Designer</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c12-desc">Six modules from the MLLDE engine to the investor pack — CEFR anchoring, Avatar-as-Input lesson flow, AI tutor architecture, evidence metrics, and a full Language Passport destination design challenge.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c12-meta">6 modules · pedagogy to proof</span>
+          <a href="./language-learning-experience-designer/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c13-tag">Measurement arm</span>
+            <h3 data-i18n="c13-title">CEFR Learning Metrics Architect</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c13-desc">Five modules on designing defensible language learning metrics — the four evidence families, task gates, self-scaling rubrics, xAPI statement architecture, IRI registry discipline, and D1–D4 client deliverables.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c13-meta">5 modules · evidence · xAPI</span>
+          <a href="./cefr-metrics-architect/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c14-tag">Framework fluency</span>
+            <h3 data-i18n="c14-title">EU Frameworks</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c14-desc">Micro-course on the five EU digital competency frameworks — DigComp 2.2, DigCompEdu, e-CF, SFIA and ENISA ECSF. Test-Teach-Test structure with XP, quizzes and consulting scenarios.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c14-meta">~45 min · Newcomer → Pioneer</span>
+          <a href="./frameworks/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
     </div>
   </div>
 
@@ -609,27 +766,54 @@ footer a:hover { text-decoration: underline; }
       <p class="sector-context" data-i18n="s5-ctx">UNICEF Supply Division · TMC0004741 · K-12 ELL gap</p>
     </div>
     <div class="card-row card-row-3">
-      <a class="nav-card" href="./unicef/index.html">
-        <span class="nav-card-tag" data-i18n="c15-tag">UN consultancy</span>
-        <div class="nav-card-icon" aria-hidden="true">🌍</div>
-        <h3 data-i18n="c15-title">UNICEF Digital Learning Consultant</h3>
-        <p data-i18n="c15-desc">Ten modules built from the real UNICEF Supply Division ToR — Agora LMS, multilingual Rise workflows, vendor governance, and a full panel simulation for the ToR TMC0004741 brief.</p>
-        <div class="nav-card-meta"><span data-i18n="c15-meta">10 modules · ~3h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./wida-k12/index.html">
-        <span class="nav-card-tag" data-i18n="c16-tag">Gap module</span>
-        <div class="nav-card-icon" aria-hidden="true">📚</div>
-        <h3 data-i18n="c16-title">WIDA &amp; US K-12 ELL</h3>
-        <p data-i18n="c16-desc">Five targeted modules closing the US K-12 knowledge gap — WIDA standards, ELL proficiency levels, BICS vs. CALP, IEP/504 intersections, and applying federal policy in instructional design.</p>
-        <div class="nav-card-meta"><span data-i18n="c16-meta">5 modules · ~1.5h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./unicef-apply/index.html">
-        <span class="nav-card-tag" data-i18n="c17-tag">Application craft</span>
-        <div class="nav-card-icon" aria-hidden="true">📝</div>
-        <h3 data-i18n="c17-title">UNICEF Application Strategy</h3>
-        <p data-i18n="c17-desc">Five modules on turning a UNICEF posting into a winning application — cover letter architecture, competency framing, ToR decoding, digital skills vocabulary, and a complete submission checklist.</p>
-        <div class="nav-card-meta"><span data-i18n="c17-meta">5 modules · ~1h</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c15-tag">UN consultancy</span>
+            <h3 data-i18n="c15-title">UNICEF Digital Learning Consultant</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c15-desc">Ten modules built from the real UNICEF Supply Division ToR — Agora LMS, multilingual Rise workflows, vendor governance, and a full panel simulation for the ToR TMC0004741 brief.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c15-meta">10 modules · ~3h</span>
+          <a href="./unicef/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c16-tag">Gap module</span>
+            <h3 data-i18n="c16-title">WIDA &amp; US K-12 ELL</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c16-desc">Five targeted modules closing the US K-12 knowledge gap — WIDA standards, ELL proficiency levels, BICS vs. CALP, IEP/504 intersections, and applying federal policy in instructional design.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c16-meta">5 modules · ~1.5h</span>
+          <a href="./wida-k12/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c17-tag">Application craft</span>
+            <h3 data-i18n="c17-title">UNICEF Application Strategy</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c17-desc">Five modules on turning a UNICEF posting into a winning application — cover letter architecture, competency framing, ToR decoding, digital skills vocabulary, and a complete submission checklist.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c17-meta">5 modules · ~1h</span>
+          <a href="./unicef-apply/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
     </div>
   </div>
 
@@ -641,41 +825,86 @@ footer a:hover { text-decoration: underline; }
       <p class="sector-context" data-i18n="s6-ctx">L&amp;D job market strategy · Portfolio positioning · Transversal competencies</p>
     </div>
     <div class="card-row card-row-5">
-      <a class="nav-card" href="./job-search/index.html">
-        <span class="nav-card-tag" data-i18n="c18-tag">Search intelligence</span>
-        <div class="nav-card-icon" aria-hidden="true">🔍</div>
-        <h3 data-i18n="c18-title">Job Search Intelligence</h3>
-        <p data-i18n="c18-desc">Five modules on reading the L&amp;D job market like a strategist — posting decoding, compensation research, networking through evidence, application timing, and a live job-search audit checklist.</p>
-        <div class="nav-card-meta"><span data-i18n="c18-meta">5 modules · ~45 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./change-management/index.html">
-        <span class="nav-card-tag" data-i18n="c19-tag">ADKAR · Change</span>
-        <div class="nav-card-icon" aria-hidden="true">🔄</div>
-        <h3 data-i18n="c19-title">Change Management for L&amp;D</h3>
-        <p data-i18n="c19-desc">Prosci ADKAR model applied to learning initiatives — stakeholder mapping, resistance diagnosis, adoption metrics, and a change-impact analysis artefact. Anchored to real enterprise postings (Bacardi, Air Canada, Blackbaud).</p>
-        <div class="nav-card-meta"><span data-i18n="c19-meta">4 modules · ~40 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./facilitation/index.html">
-        <span class="nav-card-tag" data-i18n="c20-tag">Virtual delivery</span>
-        <div class="nav-card-icon" aria-hidden="true">🎙️</div>
-        <h3 data-i18n="c20-title">Live Facilitation &amp; Webinar Design</h3>
-        <p data-i18n="c20-desc">Design and deliver a 30-minute virtual session from scratch — facilitation principles, slide-to-workshop conversion, Zoom/Teams engagement techniques. Deliverable: a recorded webinar on MLLDE or accessibility (portfolio-ready).</p>
-        <div class="nav-card-meta"><span data-i18n="c20-meta">3 modules · ~50 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./ux-ui/index.html">
-        <span class="nav-card-tag" data-i18n="c21-tag">Design evidence</span>
-        <div class="nav-card-icon" aria-hidden="true">🖼️</div>
-        <h3 data-i18n="c21-title">UX/UI Design for Learning</h3>
-        <p data-i18n="c21-desc">Evidence-led UX/UI: wireframes, usability testing (AWJ 10/10), interface design (Ocean Ink system), and the learner-experience layer of TK CoachAI for Talketika. Converts existing work into public portfolio evidence.</p>
-        <div class="nav-card-meta"><span data-i18n="c21-meta">4 modules · ~45 min</span><span class="nav-card-cta" data-i18n="cta-enter">Enter →</span></div>
-      </a>
-      <a class="nav-card" href="./cuxedtech.html">
-        <span class="nav-card-tag" data-i18n="c22-tag">Applied design</span>
-        <div class="nav-card-icon" aria-hidden="true">◈</div>
-        <h3 data-i18n="c22-title">CUXedTech in body</h3>
-        <p data-i18n="c22-desc">Learning looks good. Ocean Ink applied to real learning interfaces, UX Writing in live microcopy, and 12 quality dimensions made visible in a deployable Claude plugin.</p>
-        <div class="nav-card-meta"><span data-i18n="c22-meta">5 skills · v0.1.8 · interactive</span><span class="nav-card-cta" data-i18n="cta-explore">Explore →</span></div>
-      </a>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c18-tag">Search intelligence</span>
+            <h3 data-i18n="c18-title">Job Search Intelligence</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c18-desc">Five modules on reading the L&amp;D job market like a strategist — posting decoding, compensation research, networking through evidence, application timing, and a live job-search audit checklist.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c18-meta">5 modules · ~45 min</span>
+          <a href="./job-search/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c19-tag">ADKAR · Change</span>
+            <h3 data-i18n="c19-title">Change Management for L&amp;D</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c19-desc">Prosci ADKAR model applied to learning initiatives — stakeholder mapping, resistance diagnosis, adoption metrics, and a change-impact analysis artefact. Anchored to real enterprise postings (Bacardi, Air Canada, Blackbaud).</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c19-meta">4 modules · ~40 min</span>
+          <a href="./change-management/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c20-tag">Virtual delivery</span>
+            <h3 data-i18n="c20-title">Live Facilitation &amp; Webinar Design</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c20-desc">Design and deliver a 30-minute virtual session from scratch — facilitation principles, slide-to-workshop conversion, Zoom/Teams engagement techniques. Deliverable: a recorded webinar on MLLDE or accessibility (portfolio-ready).</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c20-meta">3 modules · ~50 min</span>
+          <a href="./facilitation/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c21-tag">Design evidence</span>
+            <h3 data-i18n="c21-title">UX/UI Design for Learning</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c21-desc">Evidence-led UX/UI: wireframes, usability testing (AWJ 10/10), interface design (Ocean Ink system), and the learner-experience layer of TK CoachAI for Talketika. Converts existing work into public portfolio evidence.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c21-meta">4 modules · ~45 min</span>
+          <a href="./ux-ui/index.html" class="nav-card-cta" data-i18n="cta-enter">Enter →</a>
+        </div>
+      </article>
+      <article class="nav-card" data-open="false">
+        <div class="nav-card-head">
+          <div class="nav-card-head-text">
+            <span class="nav-card-tag" data-i18n="c22-tag">Applied design</span>
+            <h3 data-i18n="c22-title">CUXedTech in body</h3>
+          </div>
+          <span class="nav-card-chevron" aria-hidden="true">▾</span>
+        </div>
+        <div class="nav-card-body">
+          <p data-i18n="c22-desc">Learning looks good. Ocean Ink applied to real learning interfaces, UX Writing in live microcopy, and 12 quality dimensions made visible in a deployable Claude plugin.</p>
+        </div>
+        <div class="nav-card-meta">
+          <span data-i18n="c22-meta">5 skills · v0.1.8 · interactive</span>
+          <a href="./cuxedtech.html" class="nav-card-cta" data-i18n="cta-explore">Explore →</a>
+        </div>
+      </article>
     </div>
   </div>
 
@@ -1768,6 +1997,28 @@ footer a:hover { text-decoration: underline; }
   applyTheme(current);
   btn.addEventListener('click', function () {
     applyTheme(cycle[(cycle.indexOf(current) + 1) % cycle.length]);
+  });
+})();
+
+/* ── Card accordion ── */
+(function () {
+  document.querySelectorAll('.nav-card-head').forEach(function (head) {
+    head.addEventListener('click', function () {
+      var card = head.closest('.nav-card');
+      var open = card.getAttribute('data-open') === 'true';
+      card.setAttribute('data-open', open ? 'false' : 'true');
+    });
+  });
+  /* Keyboard: Enter/Space on head also toggles */
+  document.querySelectorAll('.nav-card-head').forEach(function (head) {
+    head.setAttribute('tabindex', '0');
+    head.setAttribute('role', 'button');
+    head.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        head.click();
+      }
+    });
   });
 })();
 
