@@ -111,22 +111,23 @@
   --cyan-soft:var(--oi-surface2);
 }
 </style>
+<script src="../shared/i18n.js" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
 <header>
   <div class="head-row">
-    <h1 class="display">Framework Fluency · EU Digital Competency Frameworks</h1>
+    <h1 class="display" data-i18n="game-h1">Framework Fluency · EU Digital Competency Frameworks</h1>
     <div class="xp" aria-live="polite">XP <span id="xp">0</span></div>
   </div>
   <div class="rail" aria-hidden="true">
@@ -134,7 +135,7 @@
     <div class="seg" data-r="3"></div><div class="seg" data-r="4"></div><div class="seg" data-r="5"></div>
   </div>
   <div class="rail-labels" id="railLabels">
-    <span>Newcomer</span><span>Explorer</span><span>Integrator</span><span>Expert</span><span>Leader</span><span>Pioneer</span>
+    <span data-i18n="lvl-0">Newcomer</span><span data-i18n="lvl-1">Explorer</span><span data-i18n="lvl-2">Integrator</span><span data-i18n="lvl-3">Expert</span><span data-i18n="lvl-4">Leader</span><span data-i18n="lvl-5">Pioneer</span>
   </div>
 </header>
 
@@ -406,6 +407,24 @@
   </div>
 </nav>
 
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'game-h1': 'Framework Fluency · EU Digital Competency Frameworks',
+    'lvl-0': 'Newcomer', 'lvl-1': 'Explorer', 'lvl-2': 'Integrator',
+    'lvl-3': 'Expert', 'lvl-4': 'Leader', 'lvl-5': 'Pioneer'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'game-h1': 'Fluidez con Marcos de Referencia · Marcos Europeos de Competencia Digital',
+    'lvl-0': 'Principiante', 'lvl-1': 'Explorador/a', 'lvl-2': 'Integrador/a',
+    'lvl-3': 'Experto/a', 'lvl-4': 'Líder', 'lvl-5': 'Pionero/a'
+  }
+};
+</script>
 <script>
 (function(){
   var steps = document.querySelectorAll('.step');

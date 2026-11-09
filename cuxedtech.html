@@ -552,13 +552,15 @@ details.platform-detail[open] > summary::after { content: '−'; }
   .nav { padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
 }
 </style>
+<script src="./shared/i18n.js" defer></script>
 
 <!-- ── NAV ── -->
 <nav class="nav">
   <a href="./index.html" class="nav-brand">CUX<em>ed</em>Tech</a>
-  <div class="nav-right">
-    <a href="./index.html" class="nav-link">← Portfolio</a>
+  <div class="nav-right oi-ctrl-row">
+    <a href="./index.html" class="nav-link" data-i18n="nav-portfolio">← Portfolio</a>
     <a href="./ocean-ink.html" class="nav-link">Ocean Ink</a>
+    <button id="oi-theme-btn" class="theme-toggle" aria-label="Toggle light/dark theme" style="display:none"></button>
     <button class="theme-toggle" id="themeBtn" aria-label="Toggle light/dark theme">◑</button>
   </div>
 </nav>
@@ -816,4 +818,10 @@ details.platform-detail[open] > summary::after { content: '−'; }
     dimToggle.textContent = expanded ? '← Show fewer' : 'Show all 12 →';
   });
 })();
+</script>
+<script>
+window.PAGE_I18N = {
+  en: { 'nav-portfolio': '← Portfolio' },
+  es: { 'nav-portfolio': '← Portfolio' }
+};
 </script>

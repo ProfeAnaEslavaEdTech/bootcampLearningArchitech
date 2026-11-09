@@ -833,6 +833,7 @@ tr:last-child td { border-bottom: none; }
 tr:hover td { background: var(--surface-alt); }
 code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--primary); background: var(--state-info); padding: 1px 5px; border-radius: 3px; }
 </style>
+<script src="./shared/i18n.js" defer></script>
 
 <!-- Toast for copy feedback -->
 <div class="copy-toast" id="toast" role="status" aria-live="polite"></div>
@@ -859,7 +860,8 @@ code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--prim
     <li><a href="#motion">Motion</a></li>
     <li><a href="#implementation">CSS</a></li>
   </ul>
-  <div class="topbar-actions">
+  <div class="topbar-actions oi-ctrl-row">
+    <button id="oi-theme-btn" class="btn-theme" aria-label="Toggle colour theme" style="display:none"></button>
     <button class="btn-theme" id="themeToggle" aria-label="Toggle colour theme">Light / Dark</button>
   </div>
 </nav>
@@ -1401,4 +1403,7 @@ code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--prim
     setTimeout(function() { btn.textContent = 'Copy'; }, 1600);
   });
 })();
+</script>
+<script>
+window.PAGE_I18N = { en: {}, es: {} };
 </script>

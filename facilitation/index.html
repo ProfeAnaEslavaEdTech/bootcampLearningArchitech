@@ -6,6 +6,7 @@
 <title>Live Facilitation &amp; Webinar Design — Ana Eslava Bootcamp</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../shared/oi.css">
+<script src="../shared/i18n.js" defer></script>
 <style>
   :root {
     --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
@@ -189,24 +190,24 @@
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
 <div class="header">
-  <a href="../index.html">← Bootcamp Hub</a>
+  <a href="../index.html" data-i18n="breadcrumb">← Bootcamp Hub</a>
   <div style="margin-top:16px;">
-    <span class="tag">Virtual delivery</span>
-    <h1>Live Facilitation &amp; Webinar Design</h1>
-    <p class="subtitle">Design and deliver a 30-minute virtual session that becomes a public portfolio artefact.</p>
+    <span class="tag" data-i18n="tag">Virtual delivery</span>
+    <h1 data-i18n="page-h1">Live Facilitation &amp; Webinar Design</h1>
+    <p class="subtitle" data-i18n="page-sub">Design and deliver a 30-minute virtual session that becomes a public portfolio artefact.</p>
     <div class="meta-row">
-      <span class="meta-pill">3 modules</span>
-      <span class="meta-pill">~50 min study</span>
-      <span class="meta-pill">1 recorded deliverable</span>
-      <span class="meta-pill">Gap confirmed 4× in job market</span>
+      <span class="meta-pill" data-i18n="meta1">3 modules</span>
+      <span class="meta-pill" data-i18n="meta2">~50 min study</span>
+      <span class="meta-pill" data-i18n="meta3">1 recorded deliverable</span>
+      <span class="meta-pill" data-i18n="meta4">Gap confirmed 4× in job market</span>
     </div>
   </div>
 </div>
@@ -215,13 +216,13 @@
 
   <!-- Module navigation -->
   <nav class="module-nav" aria-label="Modules">
-    <span class="module-btn active">Module 1 · Principles</span>
-    <span class="module-btn pending">Module 2 · Session Design (coming)</span>
-    <span class="module-btn pending">Module 3 · Record &amp; Publish (coming)</span>
+    <span class="module-btn active" data-i18n="mod1">Module 1 · Principles</span>
+    <span class="module-btn pending" data-i18n="mod2">Module 2 · Session Design (coming)</span>
+    <span class="module-btn pending" data-i18n="mod3">Module 3 · Record &amp; Publish (coming)</span>
   </nav>
 
   <!-- TLO -->
-  <div class="section">
+  <div class="section" data-i18n-sec="sec-tlo">
     <div class="section-label">Module 1 · Terminal Learning Objective</div>
     <h2>From Slide Deck to Learning Experience</h2>
     <div class="tlo-box">
@@ -238,7 +239,7 @@
   </div>
 
   <!-- Why this gap matters -->
-  <div class="section">
+  <div class="section" data-i18n-sec="sec-context">
     <div class="section-label">Context — why this gap blocks applications</div>
     <h2>The Facilitation Gap in L&D Job Postings</h2>
     <p>Four separate job postings in your records cite live delivery or webinar facilitation as either required or strongly preferred:</p>
@@ -253,7 +254,7 @@
   </div>
 
   <!-- Core concepts -->
-  <div class="section">
+  <div class="section" data-i18n-sec="sec-concepts">
     <div class="section-label">Core Concepts</div>
     <h2>Facilitation vs. Presentation: the decisive difference</h2>
     <p>A <strong>presentation</strong> moves information from the speaker to the audience. A <strong>facilitated session</strong> moves the audience through an experience that changes what they can <em>do</em>. The difference is not confidence or delivery style — it is design.</p>
@@ -313,7 +314,7 @@
   </div>
 
   <!-- Topic selection for the deliverable -->
-  <div class="section">
+  <div class="section" data-i18n-sec="sec-topics">
     <div class="section-label">Module 1 — Practical Exercise</div>
     <h2>Choose your 30-minute webinar topic</h2>
     <p>Three candidate topics from your portfolio — all have strong evidence, a clear B3+ outcome, and an audience that hiring managers will recognise:</p>
@@ -357,7 +358,7 @@
   </div>
 
   <!-- Deliverable spec -->
-  <div class="section">
+  <div class="section" data-i18n-sec="sec-deliverable">
     <div class="section-label">Module 1 Output</div>
     <h2>Session Guide — the artefact for Module 2</h2>
     <p>Before you open your screen-recording software, you need one document. This is what Module 2 will build from.</p>
@@ -382,7 +383,7 @@
   </div>
 
   <!-- Knowledge check -->
-  <div class="section">
+  <div class="section" data-i18n-sec="sec-knowledge">
     <div class="section-label">Knowledge Check</div>
     <h2>Three questions before moving to Module 2</h2>
     <ol style="line-height:2;">
@@ -396,6 +397,191 @@
   </div>
 
 </div>
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'breadcrumb': '← Bootcamp Hub',
+    'tag': 'Virtual delivery',
+    'page-h1': 'Live Facilitation &amp; Webinar Design',
+    'page-sub': 'Design and deliver a 30-minute virtual session that becomes a public portfolio artefact.',
+    'meta1': '3 modules', 'meta2': '~50 min study',
+    'meta3': '1 recorded deliverable', 'meta4': 'Gap confirmed 4× in job market',
+    'mod1': 'Module 1 · Principles',
+    'mod2': 'Module 2 · Session Design (coming)',
+    'mod3': 'Module 3 · Record &amp; Publish (coming)'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'breadcrumb': '← Centro del Bootcamp',
+    'tag': 'Entrega virtual',
+    'page-h1': 'Facilitación en Vivo y Diseño de Webinars',
+    'page-sub': 'Diseña y facilita una sesión virtual de 30 minutos que se convierte en un artefacto de portafolio público.',
+    'meta1': '3 módulos', 'meta2': '~50 min de estudio',
+    'meta3': '1 entregable grabado', 'meta4': 'Brecha confirmada 4× en el mercado',
+    'mod1': 'Módulo 1 · Principios',
+    'mod2': 'Módulo 2 · Diseño de sesión (próximamente)',
+    'mod3': 'Módulo 3 · Grabar y publicar (próximamente)'
+  }
+};
+</script>
+<!-- Spanish section templates -->
+<template id="sec-tlo-es">
+  <div class="section-label">Módulo 1 · Objetivo Terminal de Aprendizaje</div>
+  <h2>De la Presentación a la Experiencia de Aprendizaje</h2>
+  <div class="tlo-box">
+    Dado un tema de tu portafolio existente (MLLDE, accesibilidad o gestión del cambio),
+    diseña una sesión virtual de 30 minutos usando el andamiaje de facilitación RSVP, aplica al menos
+    dos técnicas de aprendizaje activo y produce una guía de sesión que pueda grabarse y
+    publicarse — sin lagunas en la secuencia de facilitación.
+  </div>
+  <div class="gap-row">
+    <span class="gap-pill">Facilitación en vivo — confirmado 4× (Nexthink, Intact, Bacardi, Air Canada)</span>
+    <span class="gap-pill">Evidencia de entrega de webinars — bloqueante crítico en el D&F corporativo europeo</span>
+    <span class="gap-pill">Presencia pública — ahora un bloqueante crítico</span>
+  </div>
+</template>
+<template id="sec-context-es">
+  <div class="section-label">Contexto — por qué esta brecha bloquea solicitudes</div>
+  <h2>La Brecha de Facilitación en las Ofertas de D&F</h2>
+  <p>Cuatro ofertas de trabajo distintas en tus registros citan la entrega en vivo o la facilitación de webinars como requisito o preferencia:</p>
+  <ul style="margin:12px 0 12px 20px;">
+    <li><strong>Nexthink</strong> — citó "producción de contenido técnico" en el rechazo; las demos y webinars en vivo forman parte del rol de arquitecto de aprendizaje SaaS.</li>
+    <li><strong>Intact Financial</strong> — requiere explícitamente "facilitar talleres corporativos"; tu análisis de brechas señala la necesidad de un ejemplo concreto.</li>
+    <li><strong>Bacardi, Air Canada, Blackbaud</strong> — todos esperan que los profesionales de D&F impartan vILT (formación virtual con instructor), no solo construyan cursos.</li>
+  </ul>
+  <div class="callout">
+    <strong>Insight clave:</strong> Esta es una <em>brecha de evidencia</em>, no una brecha de habilidad. Tienes el conocimiento instruccional. Tienes MLLDE como tema convincente. La brecha está en que no existe ninguna sesión pública grabada. Un webinar de 30 minutos la cierra definitivamente.
+  </div>
+</template>
+<template id="sec-concepts-es">
+  <div class="section-label">Conceptos Clave</div>
+  <h2>Facilitación vs. Presentación: la diferencia decisiva</h2>
+  <p>Una <strong>presentación</strong> mueve información del ponente al público. Una <strong>sesión facilitada</strong> guía al público a través de una experiencia que cambia lo que pueden <em>hacer</em>. La diferencia no es confianza o estilo de entrega — es diseño.</p>
+  <h3>El andamiaje RSVP (cuatro segmentos obligatorios)</h3>
+  <div class="time-block">
+    <div class="time-row">
+      <div class="time-badge">0:00–5:00</div>
+      <div>
+        <span class="activity-label act-open">R — Relacionar</span>
+        <span class="activity-name">Activar conocimiento previo</span>
+        <div class="activity-note">Encuesta, pregunta o declaración provocadora. El aprendiz conecta esta sesión con algo que ya sabe o le importa. Nunca empieces con la logística.</div>
+      </div>
+    </div>
+    <div class="time-row">
+      <div class="time-badge">5:00–18:00</div>
+      <div>
+        <span class="activity-label act-teach">S — Mostrar</span>
+        <span class="activity-name">El concepto central (10–13 min máx.)</span>
+        <div class="activity-note">Una idea, explicada con claridad. Si necesitas más, divídela en dos segmentos con un Verificar entre ellos. Regla: no más de 10 minutos consecutivos de exposición.</div>
+      </div>
+    </div>
+    <div class="time-row">
+      <div class="time-badge">18:00–25:00</div>
+      <div>
+        <span class="activity-label act-apply">V — Verificar</span>
+        <span class="activity-name">Los participantes aplican el concepto</span>
+        <div class="activity-note">Tormenta de chat, sala de grupo, caso rápido, anotación de diapositiva. El facilitador guarda silencio. El aprendizaje ocurre aquí, no durante la exposición.</div>
+      </div>
+    </div>
+    <div class="time-row">
+      <div class="time-badge">25:00–30:00</div>
+      <div>
+        <span class="activity-label act-close">P — Proyectar</span>
+        <span class="activity-name">Puente de transferencia + llamada a la acción</span>
+        <div class="activity-note">¿Qué harán diferente el lunes? Nómbralo. Da un recurso. La sesión termina con una decisión, no con una diapositiva de resumen.</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:20px;">
+    <strong>Nivel Bloom:</strong> RSVP apunta a B3 Aplicar (segmento Verificar) sobre B1 Recordar y B2 Comprender (segmento Mostrar). Una sesión que solo cubre B1–B2 es una clase, no aprendizaje facilitado — y se notará en la grabación.
+  </div>
+  <h3>Técnicas de participación para la entrega virtual</h3>
+  <ul>
+    <li><strong>Tormenta de chat:</strong> haz una pregunta, da 60 segundos para que todos escriban (sin enviar aún), luego di "enviad ahora". Crea participación simultánea y visible.</li>
+    <li><strong>Anotación:</strong> comparte un diagrama y pide a los participantes que rodeen el elemento más sorprendente. Funciona con Zoom Annotate y Teams Whiteboard.</li>
+    <li><strong>Salas de grupo (2 personas, 4 min):</strong> el grupo más pequeño posible elimina la holgazanería social. Úsalo para el segmento Verificar.</li>
+    <li><strong>Llamada cálida/fría con elección:</strong> "¿Quién quiere compartir?" luego pausa de 3 segundos, luego nombra a alguien específicamente — pero ofrece una salida ("o puedes pasar"). Mantiene la energía sin humillar.</li>
+    <li><strong>Transcripción del chat como pizarra:</strong> pega puntos clave en el chat mientras enseñas; los participantes los ven, pueden desplazarse atrás y consultarlos después.</li>
+  </ul>
+  <div class="callout warn">
+    <strong>Evita:</strong> preguntas retóricas ("¿no tiene sentido?"), leer diapositivas en voz alta, apagar la cámara para compartir pantalla, encuestas de Zoom de 15 minutos sin debate. Cada uno de estos señala que estás presentando, no facilitando.
+  </div>
+</template>
+<template id="sec-topics-es">
+  <div class="section-label">Módulo 1 — Ejercicio Práctico</div>
+  <h2>Elige el tema de tu webinar de 30 minutos</h2>
+  <p>Tres temas candidatos de tu portafolio — todos tienen evidencia sólida, un resultado B3+ claro y un público que los empleadores reconocerán:</p>
+  <div class="exercise-card">
+    <div class="exercise-title">🏆 Tema A (Recomendado): MLLDE — Qué significa "Measure, Not Decide" para los equipos de D&F</div>
+    <p class="muted" style="margin-bottom:10px; font-size:0.9rem;">
+      Público: diseñadores instruccionales y responsables de D&F. Resultado: dado un brief de cliente, los participantes pueden identificar dónde la medición CEFR reemplaza el juicio subjetivo del docente con una señal rastreable por xAPI.
+    </p>
+    <ul>
+      <li>Responde directamente al bloqueante crítico de "presencia pública"</li>
+      <li>Demuestra gobernanza de IA agéntica (alineación con la Ley de IA)</li>
+      <li>Diferencia a Ana como autora de MLLDE — ningún otro candidato puede impartir esta sesión</li>
+      <li>MLLDE © Ana Eslava-Graterol. Copyright registration in progress.</li>
+    </ul>
+  </div>
+  <div class="exercise-card">
+    <div class="exercise-title">🎯 Tema B: Accesibilidad en el eLearning — WCAG 2.1 AA en 30 minutos</div>
+    <p class="muted" style="margin-bottom:10px; font-size:0.9rem;">
+      Público: diseñadores instruccionales. Resultado: dada una diapositiva de Storyline, los participantes pueden identificar los tres errores más comunes de WCAG 2.1 AA y corregirlos.
+    </p>
+    <ul>
+      <li>Cubre el mandato de la Ley Europea de Accesibilidad (LEA) — inmediatamente relevante para el D&F corporativo europeo</li>
+      <li>Tema que todo panel de selección comprende sin contexto previo</li>
+      <li>Se combina directamente con la evidencia de AWJ</li>
+    </ul>
+  </div>
+  <div class="exercise-card">
+    <div class="exercise-title">📊 Tema C: xAPI más allá de las tasas de finalización — qué puedes medir y por qué importa</div>
+    <p class="muted" style="margin-bottom:10px; font-size:0.9rem;">
+      Público: responsables de D&F y administradores de LMS. Resultado: los participantes pueden diseñar una sentencia xAPI L3 de trabajo real para un proceso que gestionan.
+    </p>
+    <ul>
+      <li>Cierra la brecha de "medición más allá de las tasas de finalización" (confirmado 4×)</li>
+      <li>Demuestra dominio de LRS / xAPI Lab</li>
+      <li>Breve y concreto — adecuado para un slot de 30 min</li>
+    </ul>
+  </div>
+</template>
+<template id="sec-deliverable-es">
+  <div class="section-label">Resultado del Módulo 1</div>
+  <h2>Guía de Sesión — el artefacto para el Módulo 2</h2>
+  <p>Antes de abrir el software de grabación de pantalla, necesitas un documento. Esto es desde lo que el Módulo 2 construirá.</p>
+  <div class="deliverable-box">
+    <h3>📋 Guía de Sesión — plantilla</h3>
+    <ul class="checklist">
+      <li><strong>Título y público</strong> — una frase: ¿para quién es esto y qué podrán hacer?</li>
+      <li><strong>OTA (Mager ABCD)</strong> — dado [condición], [verbo observable] [tarea] [criterio]</li>
+      <li><strong>Nivel Bloom</strong> — B3 Aplicar mínimo; explica por qué</li>
+      <li><strong>Secuencia RSVP</strong> — cuatro segmentos con marcas de tiempo y qué ocurre en cada uno</li>
+      <li><strong>Técnica de participación para el segmento Verificar</strong> — nombra la técnica y el prompt exacto que darás</li>
+      <li><strong>Puente de transferencia</strong> — la frase que cierra la sesión</li>
+      <li><strong>Número estimado de diapositivas</strong> — objetivo: 8–12 diapositivas máximo</li>
+      <li><strong>Configuración técnica</strong> — Zoom, Teams u OBS; cámara encendida; prueba de micrófono</li>
+    </ul>
+  </div>
+  <div class="callout success">
+    <strong>Siguiente paso — Módulo 2:</strong> Tomarás esta Guía de Sesión y construirás las diapositivas usando el Ocean Ink design system, luego grabarás con OBS o el grabador integrado de Zoom. El Módulo 2 cubre la lista de verificación de producción y el flujo de grabación.
+  </div>
+</template>
+<template id="sec-knowledge-es">
+  <div class="section-label">Verificación de Conocimiento</div>
+  <h2>Tres preguntas antes de pasar al Módulo 2</h2>
+  <ol style="line-height:2;">
+    <li>Nombra los cuatro segmentos del andamiaje RSVP en orden.</li>
+    <li>¿Cuál es el número máximo de minutos consecutivos de exposición antes de necesitar una actividad de Aplicar?</li>
+    <li>¿Cuál es la diferencia entre una pregunta retórica y una técnica de participación? Da un ejemplo de cada una.</li>
+  </ol>
+  <div class="callout" style="margin-top:16px;">
+    Si puedes responder las tres sin desplazarte hacia arriba, tu comprensión B2 es sólida. El Módulo 2 pasa a B3: aplicarás el andamiaje a tu tema elegido.
+  </div>
+</template>
 <script>
 (function(){
   var btn=document.getElementById('oi-theme-btn');
