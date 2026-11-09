@@ -379,6 +379,10 @@ dl.gl-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 4p
 }
 .refs-ai-note a { color: var(--primary); text-decoration: none; }
 .refs-ai-note a:hover { text-decoration: underline; }
+.ntn { font-size: 11px; font-weight: 400; color: var(--muted); }
+.refs-list a[target="_blank"]::after,
+.refs-copyright a[target="_blank"]::after,
+footer a[target="_blank"]:not([data-i18n])::after { content: " ↗"; font-size: 0.85em; color: var(--muted); }
 
 /* ── FOOTER ── */
 footer {
@@ -1656,15 +1660,15 @@ footer a:hover { text-decoration: underline; }
     <p>Language Learning Architect · Universitat Politècnica de València · HDD Transformación Educativa Digital</p>
     <p>© 2026 Ana Eslava-Graterol. All rights reserved.</p>
     <p class="refs-copyright-mllde">The MLLDE (Mobile Language Learning Design Environment) is an original proprietary pedagogical framework by Ana Eslava-Graterol. The "Language Passport"™ and "Grace" are registered concepts within this framework. All bootcamp modules are original instructional content produced by Ana Eslava-Graterol — non-commercial, educational use. CEFR (Council of Europe), PCIC (Instituto Cervantes), xAPI (ADL / IEEE 9274.1.1-2021), ESCO (European Commission), and IPA (International Phonetic Association) are cited external standards, not redistributed. References are provided for source verification and further reading.</p>
-    <p class="refs-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by Ana Eslava-Graterol · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a></p>
+    <p class="refs-ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by Ana Eslava-Graterol · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence" target="_blank" rel="noopener">EU AI Act, Art. 50</a></p>
   </div>
 </div>
 </div><!-- /panel-references -->
 
 <footer>
-  <span data-i18n="footer-built">Built for learning.</span> <a href="https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech" data-i18n="footer-gh">View source on GitHub</a>
+  <span data-i18n="footer-built">Built for learning.</span> <a href="https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech" target="_blank" rel="noopener" data-i18n="footer-gh">View source on GitHub</a>
   &nbsp;·&nbsp; AE Evolution — Ocean Ink · November 2026
-  <br><span data-i18n="footer-ai">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer</span> · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a>
+  <br><span data-i18n="footer-ai">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer</span> · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence" target="_blank" rel="noopener">EU AI Act, Art. 50</a>
 </footer>
 
 <script>
@@ -1677,7 +1681,7 @@ footer a:hover { text-decoration: underline; }
       'eyebrow':      'Profe Ana Eslava EdTech · Language Learning Architect',
       'hero-h1':      'Six sectors.<br><em>Twenty tracks.</em>',
       'hero-sub':     'Each sector maps to a real segment of the L&amp;D market — from enterprise SaaS to UN consultancy. Every track begins with an actual job posting or interview brief. The MLLDE sector is Ana\'s own design method, developed after industry conversations revealed the gap.',
-      'chip-portfolio':'Portfolio →',
+      'chip-portfolio':'Portfolio <span class="ntn">(opens in a new tab)</span> →',
       'chip-cv':      'Download CV ↓',
       'tab-tracks':   'Tracks',
       'tab-glossary': 'Glossary',
@@ -1815,7 +1819,7 @@ footer a:hover { text-decoration: underline; }
       'ref-s8': 'Legal &amp; Data Protection',
       /* Footer */
       'footer-built': 'Built for learning.',
-      'footer-gh':    'View source on GitHub',
+      'footer-gh':    'View source on GitHub <span class="ntn">(opens in a new tab)</span>',
       'footer-ai':    '¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer'
     },
 
@@ -1825,7 +1829,7 @@ footer a:hover { text-decoration: underline; }
       'eyebrow':      'Profe Ana Eslava EdTech · Arquitecta de Aprendizaje de Lenguas',
       'hero-h1':      'Seis sectores.<br><em>Veinte itinerarios.</em>',
       'hero-sub':     'Cada sector mapea un segmento real del mercado de L&amp;D — desde SaaS empresarial hasta consultoría en la ONU. Cada itinerario parte de una oferta de trabajo real o de un brief de entrevista. El sector MLLDE es el método de diseño propio de Ana, desarrollado tras conversaciones con la industria que revelaron el vacío.',
-      'chip-portfolio':'Portafolio →',
+      'chip-portfolio':'Portafolio <span class="ntn">(abre en pestaña nueva)</span> →',
       'chip-cv':      'Descargar CV ↓',
       'tab-tracks':   'Itinerarios',
       'tab-glossary': 'Glosario',
@@ -1963,7 +1967,7 @@ footer a:hover { text-decoration: underline; }
       'ref-s8': 'Marco Legal y Protección de Datos',
       /* Footer */
       'footer-built': 'Construido para aprender.',
-      'footer-gh':    'Ver código en GitHub',
+      'footer-gh':    'Ver código en GitHub <span class="ntn">(abre en pestaña nueva)</span>',
       'footer-ai':    '¹ Contenido instruccional asistido por IA · Revisado, adaptado y aprobado por la diseñadora instruccional'
     }
   };
@@ -2042,6 +2046,12 @@ footer a:hover { text-decoration: underline; }
     applyTheme(cycle[(cycle.indexOf(current) + 1) % cycle.length]);
   });
 })();
+
+/* ── WCAG 3.2.5 — open all external reference links in a new tab ── */
+document.querySelectorAll('.refs-list a[href^="http"]').forEach(function(a) {
+  a.setAttribute('target', '_blank');
+  a.setAttribute('rel', 'noopener');
+});
 
 /* ── Card accordion ── */
 (function () {
