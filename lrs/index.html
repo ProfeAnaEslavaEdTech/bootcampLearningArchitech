@@ -132,16 +132,17 @@
   --cyan-soft:var(--oi-surface2);
 }
 </style>
+<script src="../shared/i18n.js" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
@@ -837,6 +838,12 @@
 
   show(0);
 })();
+</script>
+<script>
+window.PAGE_I18N = {
+  en: { 'brand-role': 'LXD · LQA · AI Governance', 'nav-back': 'Bootcamp' },
+  es: { 'brand-role': 'LXD · LQA · Gobernanza de IA', 'nav-back': 'Bootcamp' }
+};
 </script>
 <script>
 (function(){

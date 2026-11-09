@@ -10,6 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Skills System Architect — Claude Skills Design Bootcamp</title>
 <link rel="stylesheet" href="../shared/oi.css">
+<script src="../shared/i18n.js" defer></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -177,17 +178,17 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
 <a href="#main" class="skip-link">Skip to content</a>
 <button id="theme-btn" aria-label="Colour theme: system. Click to switch."></button>
 
-<div class="top-bar">
+<div class="top-bar" data-i18n-sec="sec-topbar">
   <a href="../" class="back-link">← All tracks</a>
   <span class="top-sep">|</span>
   <strong>Track 17 · AI Skills System Architect</strong>
@@ -197,7 +198,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   <span>5 modules · AI governance</span>
 </div>
 
-<div class="hero">
+<div class="hero" data-i18n-sec="sec-hero">
   <div class="hero-label">AI Skills 2.0 · Custom Claude Skills · L&amp;D Production System</div>
   <h1>One skill.<br><em>One role.</em></h1>
   <p class="hero-sub">A skills system where every skill owns exactly one decision domain — and knows which neighbours to defer to. Five modules on designing, writing, auditing, and governing custom Claude skills for production use.</p>
@@ -221,7 +222,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   <div id="map"></div>
 </div>
 
-<div class="final-screen" id="finalScreen">
+<div class="final-screen" id="finalScreen" data-i18n-sec="sec-final">
   <div class="final-icon"></div>
   <h2>AI Skills System: audit complete.</h2>
   <p>You can now design, document, and audit a production Claude skills system — every skill with one role, every description with explicit boundary declarations, and an audit registry that makes future changes safe.</p>
@@ -583,6 +584,55 @@ try {
 renderMap();
 updateXP();
 </script>
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp'
+  }
+};
+</script>
+<template id="sec-topbar-es">
+  <a href="../" class="back-link">← Todos los módulos</a>
+  <span class="top-sep">|</span>
+  <strong>Módulo 17 · Arquitecto/a de Sistemas de Habilidades IA</strong>
+  <span class="top-sep">·</span>
+  <span>un-rol-una-skill · diseño de triggers · motor + pack · auditoría</span>
+  <span class="top-sep">·</span>
+  <span>5 módulos · gobernanza de IA</span>
+</template>
+<template id="sec-hero-es">
+  <div class="hero-label">AI Skills 2.0 · Skills Claude Personalizadas · Sistema de Producción L&amp;D</div>
+  <h1>Una skill.<br><em>Un rol.</em></h1>
+  <p class="hero-sub">Un sistema de skills donde cada skill posee exactamente un dominio de decisión — y sabe a qué vecinos derivar. Cinco módulos para diseñar, escribir, auditar y gobernar skills de Claude personalizadas en producción.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">Principio un-rol<span class="chip-label">sin "y también"</span></div>
+    <div class="skill-chip">Diseño de triggers<span class="chip-label">enrutar por entregable</span></div>
+    <div class="skill-chip">Motor + pack<span class="chip-label">constantes vs variables</span></div>
+    <div class="skill-chip">Declaraciones de límites<span class="chip-label">nombra tus vecinos</span></div>
+    <div class="skill-chip">Auditoría de skills<span class="chip-label">metodología F1–F5</span></div>
+  </div>
+</template>
+<template id="sec-final-es">
+  <div class="final-icon"></div>
+  <h2>Sistema de Skills IA: auditoría completada.</h2>
+  <p>Ahora puedes diseñar, documentar y auditar un sistema de skills de Claude para producción — cada skill con un rol, cada descripción con declaraciones explícitas de límites, y un registro de auditoría que hace seguros los cambios futuros.</p>
+  <div class="final-chips">
+    <span class="final-chip">Principio un-rol aplicado</span>
+    <span class="final-chip">Trigger diseñado</span>
+    <span class="final-chip">Motor + pack separados</span>
+    <span class="final-chip">Límites declarados</span>
+    <span class="final-chip">Auditoría F1–F5 ejecutada</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../cefr-metrics-architect/" class="btn btn-ghost">← Arquitecto/a de Métricas (Módulo 16)</a>
+    <a href="../" class="btn btn-ghost">Todos los módulos</a>
+  </div>
+</template>
 <script>
 (function(){
   var btn=document.getElementById('oi-theme-btn');

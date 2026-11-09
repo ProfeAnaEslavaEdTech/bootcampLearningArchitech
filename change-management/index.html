@@ -6,6 +6,7 @@
 <title>Change Management for L&D — Ana Eslava Bootcamp</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../shared/oi.css">
+<script src="../shared/i18n.js" defer></script>
 <style>
   :root {
     --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
@@ -86,64 +87,112 @@
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
 <div class="header">
-  <a href="../index.html">← Bootcamp Hub</a>
+  <a href="../index.html" data-i18n="breadcrumb">← Bootcamp Hub</a>
   <div style="margin-top: 16px;">
-    <span class="tag">ADKAR · Change</span>
-    <h1>Change Management for L&amp;D</h1>
-    <p class="subtitle">Prosci ADKAR applied to learning initiatives — from stakeholder buy-in to adoption metrics.</p>
+    <span class="tag" data-i18n="tag">ADKAR · Change</span>
+    <h1 data-i18n="page-h1">Change Management for L&amp;D</h1>
+    <p class="subtitle" data-i18n="page-sub">Prosci ADKAR applied to learning initiatives — from stakeholder buy-in to adoption metrics.</p>
   </div>
 </div>
 
 <div class="main">
   <div class="coming-soon">
     <div class="icon"></div>
-    <h2>Track in development</h2>
-    <p>Four modules covering ADKAR awareness → desire → knowledge → ability → reinforcement, applied to real L&D project scenarios from Bacardi, Air Canada, and Blackbaud job postings.</p>
+    <h2 data-i18n="cs-h2">Track in development</h2>
+    <p data-i18n="cs-p">Four modules covering ADKAR awareness → desire → knowledge → ability → reinforcement, applied to real L&D project scenarios from Bacardi, Air Canada, and Blackbaud job postings.</p>
   </div>
 
   <div class="modules">
     <div class="module-card">
       <div class="module-num pending">1</div>
       <div>
-        <div class="module-title">The ADKAR Model — L&D Lens</div>
-        <div class="module-desc">Prosci's five outcomes (Awareness, Desire, Knowledge, Ability, Reinforcement) mapped to instructional design decisions. When training is not the fix.</div>
-        <span class="gap-tag">Gap: change management evidence (Bacardi, Air Canada, Blackbaud)</span>
+        <div class="module-title" data-i18n="m1-title">The ADKAR Model — L&D Lens</div>
+        <div class="module-desc" data-i18n="m1-desc">Prosci's five outcomes (Awareness, Desire, Knowledge, Ability, Reinforcement) mapped to instructional design decisions. When training is not the fix.</div>
+        <span class="gap-tag" data-i18n="m1-gap">Gap: change management evidence (Bacardi, Air Canada, Blackbaud)</span>
       </div>
     </div>
     <div class="module-card">
       <div class="module-num pending">2</div>
       <div>
-        <div class="module-title">Stakeholder Mapping &amp; Resistance Diagnosis</div>
-        <div class="module-desc">Impact/Influence matrix, resistance taxonomy, and the targeted change plan — one artefact that pairs with any project brief.</div>
-        <span class="gap-tag">Gap: stakeholder facilitation evidence (Intact Financial)</span>
+        <div class="module-title" data-i18n="m2-title">Stakeholder Mapping &amp; Resistance Diagnosis</div>
+        <div class="module-desc" data-i18n="m2-desc">Impact/Influence matrix, resistance taxonomy, and the targeted change plan — one artefact that pairs with any project brief.</div>
+        <span class="gap-tag" data-i18n="m2-gap">Gap: stakeholder facilitation evidence (Intact Financial)</span>
       </div>
     </div>
     <div class="module-card">
       <div class="module-num pending">3</div>
       <div>
-        <div class="module-title">Adoption Metrics: Beyond Completion Rates</div>
-        <div class="module-desc">Kirkpatrick L3 and L4 through a change lens: adoption rate, time-to-proficiency, resistant-segment rate. xAPI-instrumented measurement plan.</div>
-        <span class="gap-tag">Gap: measurement beyond completion rates (confirmed 4×)</span>
+        <div class="module-title" data-i18n="m3-title">Adoption Metrics: Beyond Completion Rates</div>
+        <div class="module-desc" data-i18n="m3-desc">Kirkpatrick L3 and L4 through a change lens: adoption rate, time-to-proficiency, resistant-segment rate. xAPI-instrumented measurement plan.</div>
+        <span class="gap-tag" data-i18n="m3-gap">Gap: measurement beyond completion rates (confirmed 4×)</span>
       </div>
     </div>
     <div class="module-card">
       <div class="module-num pending">4</div>
       <div>
-        <div class="module-title">Change-Impact Analysis Artefact</div>
-        <div class="module-desc">Portfolio deliverable: a one-page change-impact analysis for a real or simulated L&D rollout, ready to show at interview.</div>
-        <span class="gap-tag">Gap: needs-analysis artefact showing what you decided not to build</span>
+        <div class="module-title" data-i18n="m4-title">Change-Impact Analysis Artefact</div>
+        <div class="module-desc" data-i18n="m4-desc">Portfolio deliverable: a one-page change-impact analysis for a real or simulated L&D rollout, ready to show at interview.</div>
+        <span class="gap-tag" data-i18n="m4-gap">Gap: needs-analysis artefact showing what you decided not to build</span>
       </div>
     </div>
   </div>
 </div>
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'breadcrumb': '← Bootcamp Hub',
+    'tag': 'ADKAR · Change',
+    'page-h1': 'Change Management for L&amp;D',
+    'page-sub': 'Prosci ADKAR applied to learning initiatives — from stakeholder buy-in to adoption metrics.',
+    'cs-h2': 'Track in development',
+    'cs-p': 'Four modules covering ADKAR awareness → desire → knowledge → ability → reinforcement, applied to real L&D project scenarios from Bacardi, Air Canada, and Blackbaud job postings.',
+    'm1-title': 'The ADKAR Model — L&D Lens',
+    'm1-desc': 'Prosci\'s five outcomes (Awareness, Desire, Knowledge, Ability, Reinforcement) mapped to instructional design decisions. When training is not the fix.',
+    'm1-gap': 'Gap: change management evidence (Bacardi, Air Canada, Blackbaud)',
+    'm2-title': 'Stakeholder Mapping &amp; Resistance Diagnosis',
+    'm2-desc': 'Impact/Influence matrix, resistance taxonomy, and the targeted change plan — one artefact that pairs with any project brief.',
+    'm2-gap': 'Gap: stakeholder facilitation evidence (Intact Financial)',
+    'm3-title': 'Adoption Metrics: Beyond Completion Rates',
+    'm3-desc': 'Kirkpatrick L3 and L4 through a change lens: adoption rate, time-to-proficiency, resistant-segment rate. xAPI-instrumented measurement plan.',
+    'm3-gap': 'Gap: measurement beyond completion rates (confirmed 4×)',
+    'm4-title': 'Change-Impact Analysis Artefact',
+    'm4-desc': 'Portfolio deliverable: a one-page change-impact analysis for a real or simulated L&D rollout, ready to show at interview.',
+    'm4-gap': 'Gap: needs-analysis artefact showing what you decided not to build'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'breadcrumb': '← Centro del Bootcamp',
+    'tag': 'ADKAR · Gestión del Cambio',
+    'page-h1': 'Gestión del Cambio para el Desarrollo y la Formación',
+    'page-sub': 'ADKAR de Prosci aplicado a iniciativas de aprendizaje — desde la adhesión de las partes interesadas hasta las métricas de adopción.',
+    'cs-h2': 'Módulo en desarrollo',
+    'cs-p': 'Cuatro módulos sobre ADKAR: conciencia → deseo → conocimiento → habilidad → refuerzo, aplicados a escenarios reales de proyectos de D&F de ofertas de Bacardi, Air Canada y Blackbaud.',
+    'm1-title': 'El Modelo ADKAR — Enfoque para el D&F',
+    'm1-desc': 'Los cinco resultados de Prosci (Conciencia, Deseo, Conocimiento, Habilidad, Refuerzo) aplicados a decisiones de diseño instruccional. Cuándo la formación no es la solución.',
+    'm1-gap': 'Brecha: evidencia de gestión del cambio (Bacardi, Air Canada, Blackbaud)',
+    'm2-title': 'Mapeo de Partes Interesadas y Diagnóstico de Resistencia',
+    'm2-desc': 'Matriz Impacto/Influencia, taxonomía de resistencia y el plan de cambio orientado — un artefacto para cualquier brief de proyecto.',
+    'm2-gap': 'Brecha: evidencia de facilitación con partes interesadas (Intact Financial)',
+    'm3-title': 'Métricas de Adopción: Más Allá de las Tasas de Finalización',
+    'm3-desc': 'Kirkpatrick N3 y N4 a través de un enfoque de cambio: tasa de adopción, tiempo hasta la competencia, tasa de segmento resistente. Plan de medición instrumentado con xAPI.',
+    'm3-gap': 'Brecha: medición más allá de tasas de finalización (confirmado 4×)',
+    'm4-title': 'Artefacto de Análisis de Impacto del Cambio',
+    'm4-desc': 'Entregable de portafolio: análisis de impacto del cambio de una página para un despliegue de D&F real o simulado, listo para mostrar en entrevista.',
+    'm4-gap': 'Brecha: artefacto de análisis de necesidades que muestre qué decidiste no construir'
+  }
+};
+</script>
 <script>
 (function(){
   var btn=document.getElementById('oi-theme-btn');

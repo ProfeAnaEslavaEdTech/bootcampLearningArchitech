@@ -11,6 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tooling Sprint — Build the Skills, Ship the Artifacts</title>
 <link rel="stylesheet" href="../shared/oi.css">
+<script src="../shared/i18n.js" defer></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -340,14 +341,14 @@
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
-<div class="top-bar">
+<div class="top-bar" data-i18n-sec="sec-topbar">
   <a href="../" class="back-link">← All tracks</a>
   <span class="top-sep">|</span>
   <strong>Tooling Sprint</strong>
@@ -357,7 +358,7 @@
   <span>5 modules · ~2 weeks hands-on</span>
 </div>
 
-<div class="hero">
+<div class="hero" data-i18n-sec="sec-hero">
   <div class="hero-label">Artifact-driven · Build then evidence</div>
   <h1>Build the skills. <em>Ship the artifacts.</em></h1>
   <p class="hero-sub">Four tools appear in most postings. This sprint closes them in priority order — each module ends with a concrete portfolio artifact, not just a checkbox. No artifact = module not complete.</p>
@@ -381,7 +382,7 @@
   <div id="map"></div>
 </div>
 
-<div class="final-screen" id="finalScreen">
+<div class="final-screen" id="finalScreen" data-i18n-sec="sec-final">
   <div class="final-icon"></div>
   <h2>Sprint complete. Four tools, four artifacts.</h2>
   <p>You can now demonstrate — not claim — Rise, Storyline, SCORM reporting, and video production. Each artifact is a screener blocker closed.</p>
@@ -732,6 +733,55 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 
 renderMap(); xp();
 </script>
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp'
+  }
+};
+</script>
+<template id="sec-topbar-es">
+  <a href="../" class="back-link">← Todos los módulos</a>
+  <span class="top-sep">|</span>
+  <strong>Sprint de Herramientas</strong>
+  <span class="top-sep">·</span>
+  <span>Rise → Storyline → SCORM → Camtasia → Portfolio</span>
+  <span class="top-sep">·</span>
+  <span>5 módulos · ~2 semanas prácticas</span>
+</template>
+<template id="sec-hero-es">
+  <div class="hero-label">Basado en artefactos · Construye y luego evidencia</div>
+  <h1>Construye las habilidades. <em>Entrega los artefactos.</em></h1>
+  <p class="hero-sub">Cuatro herramientas aparecen en la mayoría de las ofertas. Este sprint las cierra en orden de prioridad — cada módulo termina con un artefacto concreto para el portfolio, no solo un checkbox. Sin artefacto = módulo incompleto.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">Articulate Rise 360<span class="chip-label">cerrable · 2–3 días</span></div>
+    <div class="skill-chip">Storyline 360<span class="chip-label">cerrable · 1 semana</span></div>
+    <div class="skill-chip">SCORM + LRS<span class="chip-label">1 tarde</span></div>
+    <div class="skill-chip">Camtasia / Video<span class="chip-label">mayor brecha · 1 fin de semana</span></div>
+    <div class="skill-chip">Portfolio walk-through<span class="chip-label">ensaya cada artefacto</span></div>
+  </div>
+</template>
+<template id="sec-final-es">
+  <div class="final-icon"></div>
+  <h2>Sprint completado. Cuatro herramientas, cuatro artefactos.</h2>
+  <p>Ahora puedes demostrar — no solo afirmar — Rise, Storyline, reportes SCORM y producción de video. Cada artefacto es un bloqueador de criba cerrado.</p>
+  <div class="final-chips">
+    <span class="final-chip">Módulo Rise publicado</span>
+    <span class="final-chip">Escenario Storyline + SCORM</span>
+    <span class="final-chip">Dashboard SCORM Cloud</span>
+    <span class="final-chip">Microlearning en video</span>
+    <span class="final-chip">Portfolio walk-through ensayado</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../unicef-apply/" class="btn btn-ghost">← Laboratorio de solicitudes</a>
+    <a href="../" class="btn btn-ghost">Todos los módulos</a>
+  </div>
+</template>
 <script>
 (function(){
   var btn=document.getElementById('oi-theme-btn');

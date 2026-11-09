@@ -6,6 +6,7 @@
 <title>UX/UI Design for Learning — Ana Eslava Bootcamp</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../shared/oi.css">
+<script src="../shared/i18n.js" defer></script>
 <style>
   :root {
     --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
@@ -96,50 +97,50 @@
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
 <div class="header">
-  <a href="../index.html">← Bootcamp Hub</a>
+  <a href="../index.html" data-i18n="breadcrumb">← Bootcamp Hub</a>
   <div style="margin-top: 16px;">
-    <span class="tag">Design evidence</span>
-    <h1>UX/UI Design for Learning</h1>
-    <p class="subtitle">From wireframes to usability testing — making existing UX work visible as portfolio evidence.</p>
+    <span class="tag" data-i18n="tag">Design evidence</span>
+    <h1 data-i18n="page-h1">UX/UI Design for Learning</h1>
+    <p class="subtitle" data-i18n="page-sub">From wireframes to usability testing — making existing UX work visible as portfolio evidence.</p>
   </div>
 </div>
 
 <div class="main">
   <div class="coming-soon">
     <div class="icon">️</div>
-    <h2>Track in development</h2>
-    <p>Four modules converting existing UX/UI work (AWJ, TK CoachAI, Ocean Ink) into documented, public portfolio evidence. The core principle: many gaps are evidence gaps, not skill gaps.</p>
+    <h2 data-i18n="cs-h2">Track in development</h2>
+    <p data-i18n="cs-p">Four modules converting existing UX/UI work (AWJ, TK CoachAI, Ocean Ink) into documented, public portfolio evidence. The core principle: many gaps are evidence gaps, not skill gaps.</p>
   </div>
 
-  <h3>Evidence already built — needs publication</h3>
+  <h3 data-i18n="evidence-h3">Evidence already built — needs publication</h3>
   <div class="evidence-grid">
     <div class="evidence-card">
-      <div class="evidence-label">AWJ — Academic Writing Journey</div>
-      <div class="evidence-title">Wireframes &amp; Usability Testing</div>
-      <div class="evidence-desc">Subject project (instructional design + WCAG web accessibility, 10/10). Usability testing results exist but are not public. Making them visible closes the UX/UI evidence gap.</div>
+      <div class="evidence-label" data-i18n="ec1-label">AWJ — Academic Writing Journey</div>
+      <div class="evidence-title" data-i18n="ec1-title">Wireframes &amp; Usability Testing</div>
+      <div class="evidence-desc" data-i18n="ec1-desc">Subject project (instructional design + WCAG web accessibility, 10/10). Usability testing results exist but are not public. Making them visible closes the UX/UI evidence gap.</div>
     </div>
     <div class="evidence-card">
-      <div class="evidence-label">TK CoachAI — for Talketika</div>
-      <div class="evidence-title">Learner-Experience Interface</div>
-      <div class="evidence-desc">MLLDE Measurement Module applied to Talketika's AI tutor app (software by Orkelia). The LX layer — learner dashboard, session feedback, gamification metaphors — is documented.</div>
+      <div class="evidence-label" data-i18n="ec2-label">TK CoachAI — for Talketika</div>
+      <div class="evidence-title" data-i18n="ec2-title">Learner-Experience Interface</div>
+      <div class="evidence-desc" data-i18n="ec2-desc">MLLDE Measurement Module applied to Talketika's AI tutor app (software by Orkelia). The LX layer — learner dashboard, session feedback, gamification metaphors — is documented.</div>
     </div>
     <div class="evidence-card">
-      <div class="evidence-label">Ocean Ink Design System</div>
-      <div class="evidence-title">Personal Brand &amp; Design Tokens</div>
-      <div class="evidence-desc">Complete design system: Indigo Blue (#3B5BD6), Deep Blue (#22307C), Gold (#E8A33D) palette; Fraunces/Inter/IBM Plex Mono type scale; component library for all portfolio pieces.</div>
+      <div class="evidence-label" data-i18n="ec3-label">Ocean Ink Design System</div>
+      <div class="evidence-title" data-i18n="ec3-title">Personal Brand &amp; Design Tokens</div>
+      <div class="evidence-desc" data-i18n="ec3-desc">Complete design system: Indigo Blue (#3B5BD6), Deep Blue (#22307C), Gold (#E8A33D) palette; Fraunces/Inter/IBM Plex Mono type scale; component library for all portfolio pieces.</div>
     </div>
     <div class="evidence-card">
-      <div class="evidence-label">Portfolio Renovation</div>
-      <div class="evidence-title">Site Architecture &amp; IA</div>
-      <div class="evidence-desc">Information architecture decisions for the bootcamp hub: sector/track hierarchy, tab navigation, glossary cross-linking, accessibility (WCAG 2.1 AA). The hub itself is a UX artefact.</div>
+      <div class="evidence-label" data-i18n="ec4-label">Portfolio Renovation</div>
+      <div class="evidence-title" data-i18n="ec4-title">Site Architecture &amp; IA</div>
+      <div class="evidence-desc" data-i18n="ec4-desc">Information architecture decisions for the bootcamp hub: sector/track hierarchy, tab navigation, glossary cross-linking, accessibility (WCAG 2.1 AA). The hub itself is a UX artefact.</div>
     </div>
   </div>
 
@@ -147,37 +148,111 @@
     <div class="module-card">
       <div class="module-num">1</div>
       <div>
-        <div class="module-title">From Evidence Gap to Portfolio Entry</div>
-        <div class="module-desc">Framework for documenting existing UX work: the annotated case-study format, what screenshots + metrics to include, how to write the design rationale without breaking client NDA.</div>
-        <span class="gap-tag">Gap: UX/UI evidence not public (AWJ, TK CoachAI)</span>
+        <div class="module-title" data-i18n="m1-title">From Evidence Gap to Portfolio Entry</div>
+        <div class="module-desc" data-i18n="m1-desc">Framework for documenting existing UX work: the annotated case-study format, what screenshots + metrics to include, how to write the design rationale without breaking client NDA.</div>
+        <span class="gap-tag" data-i18n="m1-gap">Gap: UX/UI evidence not public (AWJ, TK CoachAI)</span>
       </div>
     </div>
     <div class="module-card">
       <div class="module-num">2</div>
       <div>
-        <div class="module-title">Wireframing for L&D — Lo-Fi to Hi-Fi</div>
-        <div class="module-desc">Lo-fi wireframes for three canonical eLearning interaction types (branching scenario, knowledge check, dashboard). Figma or paper → annotated handoff document.</div>
-        <span class="gap-tag">Gap: wireframe artefacts in portfolio (confirmed multiple postings)</span>
+        <div class="module-title" data-i18n="m2-title">Wireframing for L&D — Lo-Fi to Hi-Fi</div>
+        <div class="module-desc" data-i18n="m2-desc">Lo-fi wireframes for three canonical eLearning interaction types (branching scenario, knowledge check, dashboard). Figma or paper → annotated handoff document.</div>
+        <span class="gap-tag" data-i18n="m2-gap">Gap: wireframe artefacts in portfolio (confirmed multiple postings)</span>
       </div>
     </div>
     <div class="module-card">
       <div class="module-num">3</div>
       <div>
-        <div class="module-title">Usability Testing in Instructional Design</div>
-        <div class="module-desc">The five-user test, think-aloud protocol, and writing the usability report. Applying the AWJ test findings as a worked example.</div>
-        <span class="gap-tag">Gap: usability testing evidence (AWJ exists, not public)</span>
+        <div class="module-title" data-i18n="m3-title">Usability Testing in Instructional Design</div>
+        <div class="module-desc" data-i18n="m3-desc">The five-user test, think-aloud protocol, and writing the usability report. Applying the AWJ test findings as a worked example.</div>
+        <span class="gap-tag" data-i18n="m3-gap">Gap: usability testing evidence (AWJ exists, not public)</span>
       </div>
     </div>
     <div class="module-card">
       <div class="module-num">4</div>
       <div>
-        <div class="module-title">Design Systems for L&D — Ocean Ink</div>
-        <div class="module-desc">How to build and document a design system for a learning portfolio: tokens, components, accessibility rationale. Ocean Ink as the worked example.</div>
-        <span class="gap-tag">Gap: public-facing presence / portfolio cohesion (now a hard blocker)</span>
+        <div class="module-title" data-i18n="m4-title">Design Systems for L&D — Ocean Ink</div>
+        <div class="module-desc" data-i18n="m4-desc">How to build and document a design system for a learning portfolio: tokens, components, accessibility rationale. Ocean Ink as the worked example.</div>
+        <span class="gap-tag" data-i18n="m4-gap">Gap: public-facing presence / portfolio cohesion (now a hard blocker)</span>
       </div>
     </div>
   </div>
 </div>
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'breadcrumb': '← Bootcamp Hub',
+    'tag': 'Design evidence',
+    'page-h1': 'UX/UI Design for Learning',
+    'page-sub': 'From wireframes to usability testing — making existing UX work visible as portfolio evidence.',
+    'cs-h2': 'Track in development',
+    'cs-p': 'Four modules converting existing UX/UI work (AWJ, TK CoachAI, Ocean Ink) into documented, public portfolio evidence. The core principle: many gaps are evidence gaps, not skill gaps.',
+    'evidence-h3': 'Evidence already built — needs publication',
+    'ec1-label': 'AWJ — Academic Writing Journey',
+    'ec1-title': 'Wireframes &amp; Usability Testing',
+    'ec1-desc': 'Subject project (instructional design + WCAG web accessibility, 10/10). Usability testing results exist but are not public. Making them visible closes the UX/UI evidence gap.',
+    'ec2-label': 'TK CoachAI — for Talketika',
+    'ec2-title': 'Learner-Experience Interface',
+    'ec2-desc': 'MLLDE Measurement Module applied to Talketika\'s AI tutor app (software by Orkelia). The LX layer — learner dashboard, session feedback, gamification metaphors — is documented.',
+    'ec3-label': 'Ocean Ink Design System',
+    'ec3-title': 'Personal Brand &amp; Design Tokens',
+    'ec3-desc': 'Complete design system: Indigo Blue (#3B5BD6), Deep Blue (#22307C), Gold (#E8A33D) palette; Fraunces/Inter/IBM Plex Mono type scale; component library for all portfolio pieces.',
+    'ec4-label': 'Portfolio Renovation',
+    'ec4-title': 'Site Architecture &amp; IA',
+    'ec4-desc': 'Information architecture decisions for the bootcamp hub: sector/track hierarchy, tab navigation, glossary cross-linking, accessibility (WCAG 2.1 AA). The hub itself is a UX artefact.',
+    'm1-title': 'From Evidence Gap to Portfolio Entry',
+    'm1-desc': 'Framework for documenting existing UX work: the annotated case-study format, what screenshots + metrics to include, how to write the design rationale without breaking client NDA.',
+    'm1-gap': 'Gap: UX/UI evidence not public (AWJ, TK CoachAI)',
+    'm2-title': 'Wireframing for L&D — Lo-Fi to Hi-Fi',
+    'm2-desc': 'Lo-fi wireframes for three canonical eLearning interaction types (branching scenario, knowledge check, dashboard). Figma or paper → annotated handoff document.',
+    'm2-gap': 'Gap: wireframe artefacts in portfolio (confirmed multiple postings)',
+    'm3-title': 'Usability Testing in Instructional Design',
+    'm3-desc': 'The five-user test, think-aloud protocol, and writing the usability report. Applying the AWJ test findings as a worked example.',
+    'm3-gap': 'Gap: usability testing evidence (AWJ exists, not public)',
+    'm4-title': 'Design Systems for L&D — Ocean Ink',
+    'm4-desc': 'How to build and document a design system for a learning portfolio: tokens, components, accessibility rationale. Ocean Ink as the worked example.',
+    'm4-gap': 'Gap: public-facing presence / portfolio cohesion (now a hard blocker)'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'breadcrumb': '← Centro del Bootcamp',
+    'tag': 'Evidencia de diseño',
+    'page-h1': 'Diseño UX/UI para el Aprendizaje',
+    'page-sub': 'Desde wireframes hasta pruebas de usabilidad — visibilizando trabajo UX existente como evidencia de portafolio.',
+    'cs-h2': 'Módulo en desarrollo',
+    'cs-p': 'Cuatro módulos para convertir trabajo UX/UI existente (AWJ, TK CoachAI, Ocean Ink) en evidencia documentada y pública de portafolio. El principio central: muchas brechas son brechas de evidencia, no de habilidad.',
+    'evidence-h3': 'Evidencia ya construida — pendiente de publicación',
+    'ec1-label': 'AWJ — Academic Writing Journey',
+    'ec1-title': 'Wireframes y Pruebas de Usabilidad',
+    'ec1-desc': 'Proyecto de asignatura (diseño instruccional + accesibilidad web WCAG, 10/10). Los resultados de las pruebas de usabilidad existen pero no son públicos. Hacerlos visibles cierra la brecha de evidencia UX/UI.',
+    'ec2-label': 'TK CoachAI — para Talketika',
+    'ec2-title': 'Interfaz de Experiencia del Aprendiz',
+    'ec2-desc': 'Módulo de Medición MLLDE aplicado a la app de tutoría IA de Talketika (software de Orkelia). La capa LX — panel del aprendiz, retroalimentación de sesión, metáforas de gamificación — está documentada.',
+    'ec3-label': 'Ocean Ink Design System',
+    'ec3-title': 'Marca Personal y Tokens de Diseño',
+    'ec3-desc': 'Sistema de diseño completo: paleta Azul Índigo (#3B5BD6), Azul Profundo (#22307C), Dorado (#E8A33D); escala tipográfica Fraunces/Inter/IBM Plex Mono; biblioteca de componentes para todas las piezas del portafolio.',
+    'ec4-label': 'Renovación del Portafolio',
+    'ec4-title': 'Arquitectura del Sitio e IA',
+    'ec4-desc': 'Decisiones de arquitectura de información para el hub del bootcamp: jerarquía sector/módulo, navegación por pestañas, enlaces cruzados en glosario, accesibilidad (WCAG 2.1 AA). El hub en sí mismo es un artefacto UX.',
+    'm1-title': 'De la Brecha de Evidencia a la Entrada del Portafolio',
+    'm1-desc': 'Marco para documentar trabajo UX existente: el formato de estudio de caso anotado, qué capturas + métricas incluir, cómo redactar el razonamiento de diseño sin violar el NDA del cliente.',
+    'm1-gap': 'Brecha: evidencia UX/UI no pública (AWJ, TK CoachAI)',
+    'm2-title': 'Wireframing para el D&F — Lo-Fi a Hi-Fi',
+    'm2-desc': 'Wireframes lo-fi para tres tipos canónicos de interacción en eLearning (escenario de ramificación, verificación de conocimiento, panel de control). Figma o papel → documento de handoff anotado.',
+    'm2-gap': 'Brecha: artefactos de wireframe en portafolio (confirmado en múltiples ofertas)',
+    'm3-title': 'Pruebas de Usabilidad en Diseño Instruccional',
+    'm3-desc': 'La prueba de cinco usuarios, el protocolo de pensamiento en voz alta y la redacción del informe de usabilidad. Los resultados de la prueba AWJ como ejemplo trabajado.',
+    'm3-gap': 'Brecha: evidencia de pruebas de usabilidad (AWJ existe, no es pública)',
+    'm4-title': 'Sistemas de Diseño para el D&F — Ocean Ink',
+    'm4-desc': 'Cómo construir y documentar un sistema de diseño para un portafolio de aprendizaje: tokens, componentes, razonamiento de accesibilidad. Ocean Ink como ejemplo trabajado.',
+    'm4-gap': 'Brecha: presencia pública / cohesión del portafolio (bloqueante crítico)'
+  }
+};
+</script>
 <script>
 (function(){
   var btn=document.getElementById('oi-theme-btn');

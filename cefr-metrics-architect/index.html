@@ -171,23 +171,24 @@ footer a { color: var(--primary); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 </style>
+<script src="../shared/i18n.js" defer></script>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
-    <span class="oi-brand-role">LXD · LQA · AI Governance</span>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn">Bootcamp</a>
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
 <a href="#main" class="skip-link">Skip to content</a>
 <button id="theme-btn" aria-label="Colour theme: system. Click to switch."></button>
 
-<div class="top-bar">
+<div class="top-bar" data-i18n-sec="sec-topbar">
   <a href="../" class="back-link">← All tracks</a>
   <span class="top-sep">|</span>
   <strong>Track 16 · CEFR Learning Metrics Architect</strong>
@@ -197,7 +198,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   <span>5 modules · measurement arm</span>
 </div>
 
-<div class="hero">
+<div class="hero" data-i18n-sec="sec-hero">
   <div class="hero-label">MLLDE Measurement Module · Standards-anchored · Evidence-valid</div>
   <h1>No statement.<br><em>No pass.</em></h1>
   <p class="hero-sub">A metric without a statement source is not a metric — it is a claim. Five modules on designing defensible language learning evidence: task gates, xAPI architecture, IRI discipline, and client reports D1–D4.</p>
@@ -221,7 +222,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   <div id="map"></div>
 </div>
 
-<div class="final-screen" id="finalScreen">
+<div class="final-screen" id="finalScreen" data-i18n-sec="sec-final">
   <div class="final-icon"></div>
   <h2>Measurement arm complete.</h2>
   <p>You can now design, defend, and deliver a full CEFR-anchored metrics system — from statement source to client report. Every metric traceable. Every claim evidenced.</p>
@@ -252,6 +253,59 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   <a href="../">← Learning Architect Bootcamp</a> · CEFR Learning Metrics Architect · Track 16 · The Measurement Arm
   <div class="ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a> · © Ana Eslava-Graterol · Ocean Ink v0.1</div>
 </footer>
+
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp'
+  }
+};
+</script>
+
+<template id="sec-topbar-es">
+  <a href="../" class="back-link">← Todos los módulos</a>
+  <span class="top-sep">|</span>
+  <strong>Módulo 16 · Arquitecto/a de Métricas de Aprendizaje CEFR</strong>
+  <span class="top-sep">·</span>
+  <span>4 familias de métricas · xAPI · Entregables D1–D4</span>
+  <span class="top-sep">·</span>
+  <span>5 módulos · rama de medición</span>
+</template>
+
+<template id="sec-hero-es">
+  <div class="hero-label">Módulo de Medición MLLDE · Basado en Estándares · Evidencia Válida</div>
+  <h1>Sin enunciado.<br><em>Sin aprobación.</em></h1>
+  <p class="hero-sub">Una métrica sin fuente de enunciado no es una métrica — es una afirmación. Cinco módulos sobre diseño de evidencia de aprendizaje de idiomas defendible: compuertas de tareas, arquitectura xAPI, disciplina IRI e informes de cliente D1–D4.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">4 familias de métricas<span class="chip-label">siempre distintas</span></div>
+    <div class="skill-chip">Compuerta de tarea + rúbrica<span class="chip-label">nivel mínimo</span></div>
+    <div class="skill-chip">Diseño de enunciados xAPI<span class="chip-label">actor·verbo·objeto</span></div>
+    <div class="skill-chip">Registro IRI<span class="chip-label">proponer, nunca acuñar</span></div>
+    <div class="skill-chip">Entregables D1–D4<span class="chip-label">paquete para el cliente</span></div>
+  </div>
+</template>
+
+<template id="sec-final-es">
+  <div class="final-icon"></div>
+  <h2>Rama de medición completada.</h2>
+  <p>Ahora puedes diseñar, defender y entregar un sistema de métricas completo anclado en CEFR — desde la fuente del enunciado hasta el informe del cliente. Cada métrica rastreable. Cada afirmación evidenciada.</p>
+  <div class="final-chips">
+    <span class="final-chip">4 familias mapeadas</span>
+    <span class="final-chip">Compuerta de tarea definida</span>
+    <span class="final-chip">Enunciado xAPI diseñado</span>
+    <span class="final-chip">IRI propuesto (no acuñado)</span>
+    <span class="final-chip">Brief D1–D4 entregado</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="../language-learning-experience-designer/" class="btn btn-ghost">← Diseño de Experiencia de Aprendizaje (Módulo 15)</a>
+    <a href="../" class="btn btn-ghost">Todos los módulos</a>
+  </div>
+</template>
 
 <script>
 const LEVELS = [

@@ -20,6 +20,13 @@
       });
     }
 
+    /* Section-level swap: data-i18n-sec="key" swaps innerHTML from <template id="key-{lang}"> */
+    document.querySelectorAll('[data-i18n-sec]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n-sec');
+      var tmpl = document.getElementById(key + '-' + l);
+      if (tmpl) el.innerHTML = tmpl.innerHTML;
+    });
+
     var btn = document.getElementById('oi-lang-btn');
     if (btn) btn.textContent = l === 'en' ? 'ES' : 'EN';
   }
