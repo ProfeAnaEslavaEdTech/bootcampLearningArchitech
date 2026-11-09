@@ -40,13 +40,13 @@ SCORM_PAGES = [
     'frameworks', 'handson', 'jnj-bootcamp', 'jnj-dual-track', 'job-search',
     'language-learning-experience-designer', 'lrs', 'scripting',
     'tooling-sprint', 'unicef', 'unicef-apply', 'ux-ui', 'wida-k12',
-    'cuxedtech', 'ocean-ink',
+    'cuxedtech', 'ocean-ink', 'scorm-guide',
 ]
 
 # Pages that have no quiz interactions — complete on 90% scroll
 SCROLL_COMPLETE = {
     'articulate360', 'change-management', 'facilitation', 'ux-ui',
-    'cuxedtech', 'ocean-ink',
+    'cuxedtech', 'ocean-ink', 'scorm-guide',
 }
 
 # Pages with step-based navigation — set finalStep to last step index
@@ -86,6 +86,8 @@ def slugify(s: str) -> str:
 
 
 def build_manifest(identifier: str, title: str, mastery: int) -> str:
+    import html as _html
+    safe_title = _html.escape(title)
     return textwrap.dedent(f"""\
         <?xml version="1.0" encoding="UTF-8"?>
         <manifest identifier="{identifier}"
@@ -102,9 +104,9 @@ def build_manifest(identifier: str, title: str, mastery: int) -> str:
           </metadata>
           <organizations default="org_{identifier}">
             <organization identifier="org_{identifier}">
-              <title>{title}</title>
+              <title>{safe_title}</title>
               <item identifier="item_{identifier}" identifierref="res_{identifier}">
-                <title>{title}</title>
+                <title>{safe_title}</title>
                 <adlcp:masteryscore>{mastery}</adlcp:masteryscore>
               </item>
             </organization>
