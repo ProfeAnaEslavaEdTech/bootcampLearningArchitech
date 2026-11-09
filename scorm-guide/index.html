@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub → SCORM → LMS Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../shared/oi.css">
+<script src="../shared/i18n.js" defer></script>
+<style>
+  :root {
+    --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
+    --primary: #3B5BD6; --primary-deep: #22307C;
+    --accent: #E8A33D; --accent-text: #9A5B00;
+    --muted: #5B5F77; --border: #DDE1EE; --radius: 12px;
+    --term-bg: #0F1120; --term-text: #A6ADC8;
+    --term-cmd: #93C5FD; --term-ok: #4ADE80; --term-warn: #FCD34D;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEF0F8; --canvas: #0F1120; --surface: #171A2B;
+      --primary: #9DB2FF; --primary-deep: #B9C8F6;
+      --accent: #EEC272; --accent-text: #EEC272;
+      --muted: #A6ADC8; --border: #2A2D44; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EEF0F8; --canvas: #0F1120; --surface: #171A2B;
+    --primary: #9DB2FF; --primary-deep: #B9C8F6;
+    --accent: #EEC272; --accent-text: #EEC272;
+    --muted: #A6ADC8; --border: #2A2D44; color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--canvas); color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif; font-size: 16px;
+    line-height: 1.6; min-height: 100vh;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #22307C 0%, #3B5BD6 65%, #E8A33D 100%);
+    color: #fff;
+    padding: 3rem max(24px, env(safe-area-inset-left,0px));
+    padding-right: max(24px, env(safe-area-inset-right,0px));
+  }
+  .hero-kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: rgba(255,255,255,.75); margin-bottom: .5rem;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700;
+    line-height: 1.2; text-wrap: balance; margin-bottom: .75rem;
+  }
+  .hero .subtitle { color: rgba(255,255,255,.85); max-width: 56ch; font-size: 1rem; }
+  .badge-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.25rem; }
+  .badge {
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px; padding: .2rem .75rem;
+    font-size: .72rem; font-weight: 600; letter-spacing: .04em;
+  }
+
+  /* ── Layout ── */
+  .wrapper {
+    max-width: 760px; margin: 0 auto;
+    padding: 2.5rem max(16px, env(safe-area-inset-left,0px)) 4rem;
+    padding-right: max(16px, env(safe-area-inset-right,0px));
+  }
+
+  /* ── Phase label ── */
+  .phase-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent-text); margin-bottom: .3rem;
+  }
+  .phase-title {
+    font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 700;
+    color: var(--primary-deep); margin-bottom: 1.25rem;
+  }
+  .phase-sep { height: 1px; background: var(--border); margin: 2.5rem 0; }
+
+  /* ── Steps ── */
+  .steps { display: flex; flex-direction: column; gap: 1.75rem; }
+  .step {
+    display: grid; grid-template-columns: 44px 1fr;
+    gap: .9rem; align-items: start;
+  }
+  @media (max-width: 480px) { .step { grid-template-columns: 36px 1fr; gap: .6rem; } }
+  .step-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; box-shadow: 0 2px 10px rgba(59,91,214,.28);
+  }
+  @media (max-width: 480px) { .step-num { width: 36px; height: 36px; font-size: .88rem; } }
+  .step-title {
+    font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 700;
+    color: var(--primary-deep); margin-bottom: .3rem;
+  }
+  .step-desc { color: var(--muted); font-size: .9rem; margin-bottom: .65rem; }
+  .step-desc strong { color: var(--ink); font-weight: 600; }
+
+  /* ── Terminal ── */
+  .term {
+    background: var(--term-bg); border-radius: 10px; overflow: hidden;
+    margin-top: .5rem; font-size: .8rem;
+  }
+  .term-bar {
+    background: #1A1D30; padding: .45rem .75rem;
+    display: flex; align-items: center; gap: .4rem;
+  }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .term-dot.r { background: #FF5F57; }
+  .term-dot.y { background: #FEBC2E; }
+  .term-dot.g { background: #28C840; }
+  .term-label { font-size: .68rem; color: #64748B; margin-left: .2rem; font-family: 'Inter', sans-serif; }
+  .term-body {
+    padding: .85rem 1rem 1rem;
+    font-family: 'Courier New', Courier, monospace; line-height: 1.75;
+  }
+  .tp { color: #64748B; }
+  .tc { color: var(--term-cmd); font-weight: 600; }
+  .to { color: var(--term-text); }
+  .tok { color: var(--term-ok); font-weight: 600; }
+  .tw { color: var(--term-warn); }
+  .tcur {
+    display: inline-block; width: 8px; height: 13px;
+    background: #9DB2FF; vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── Info boxes ── */
+  .info {
+    border-left: 3px solid var(--primary);
+    background: color-mix(in srgb, var(--primary) 7%, var(--surface));
+    border-radius: 0 8px 8px 0; padding: .65rem 1rem;
+    margin-top: .6rem; font-size: .86rem;
+  }
+  .info.tip { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+  .info strong { color: var(--primary-deep); }
+  .info.tip strong { color: var(--accent-text); }
+
+  /* ── File path ── */
+  .filepath {
+    display: inline-block; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: .3rem .7rem;
+    font-family: 'Courier New', monospace; font-size: .78rem;
+    color: var(--primary); margin-top: .5rem; word-break: break-all;
+  }
+
+  /* ── Checklist ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: .35rem; margin-top: .5rem; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: .5rem;
+    font-size: .88rem; color: var(--muted);
+  }
+  .checklist li::before {
+    content: "✓"; color: #8B3A52; font-weight: 700; flex-shrink: 0; margin-top: .07rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .checklist li::before { color: #E0A6B8; }
+  }
+  :root[data-theme="dark"] .checklist li::before { color: #E0A6B8; }
+
+  /* ── File tree ── */
+  .file-tree {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: .9rem 1.1rem; margin-top: .5rem;
+    font-family: 'Courier New', monospace; font-size: .8rem;
+    color: var(--muted); line-height: 1.8;
+  }
+  .file-tree .folder { color: var(--primary); font-weight: 700; }
+  .file-tree .file-ok { color: var(--ink); }
+  .file-tree .file-zip { color: var(--accent-text); font-weight: 600; }
+
+  /* ── Quick reference card ── */
+  .ref-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin-top: .75rem;
+  }
+  .ref-card-head {
+    background: var(--primary-deep); color: #fff;
+    padding: .65rem 1.1rem; font-family: 'Fraunces', serif;
+    font-size: .95rem; font-weight: 700;
+  }
+  .ref-row {
+    display: grid; grid-template-columns: 24px 1fr;
+    gap: .75rem; padding: .65rem 1.1rem; border-bottom: 1px solid var(--border);
+    font-size: .84rem; align-items: start;
+  }
+  .ref-row:last-child { border-bottom: none; }
+  .ref-n {
+    width: 22px; height: 22px; background: var(--primary); color: #fff;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: .68rem; font-weight: 700; flex-shrink: 0;
+  }
+  .ref-code {
+    font-family: 'Courier New', monospace; font-size: .78rem;
+    color: var(--primary); background: color-mix(in srgb, var(--primary) 8%, var(--surface));
+    padding: .1rem .4rem; border-radius: 4px; display: inline; word-break: break-all;
+  }
+  .ref-note { color: var(--muted); font-size: .8rem; margin-top: .15rem; }
+
+  /* ── Mockup ── */
+  .mockup {
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    margin-top: .6rem; background: var(--surface);
+  }
+  .mockup-bar {
+    background: var(--primary-deep); padding: .45rem .9rem;
+    display: flex; align-items: center; gap: .5rem;
+    color: rgba(255,255,255,.8); font-size: .75rem; font-weight: 500;
+  }
+  .mockup-body { padding: .9rem 1rem; font-size: .82rem; }
+  .mockup-body p { color: var(--muted); margin-bottom: .5rem; }
+  .mockup-btn {
+    display: inline-block; background: var(--primary); color: #fff;
+    border-radius: 6px; padding: .3rem .85rem; font-size: .76rem; font-weight: 600;
+    margin-right: .3rem; margin-bottom: .3rem;
+  }
+  .upload-zone {
+    border: 2px dashed var(--primary); border-radius: 8px;
+    padding: 1.1rem; text-align: center; color: var(--muted); font-size: .82rem;
+    margin-top: .5rem;
+  }
+  .score-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-bottom: .5rem;
+  }
+  .score-box {
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: .55rem; text-align: center; background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+  }
+  .score-val { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
+  .score-lbl { font-size: .68rem; color: var(--muted); }
+  .score-box.passed .score-val { color: #8B3A52; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .score-box.passed .score-val { color: #E0A6B8; }
+  }
+  :root[data-theme="dark"] .score-box.passed .score-val { color: #E0A6B8; }
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
+
+<header class="oi-site-header">
+  <div class="oi-brand">
+    <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
+  </div>
+  <div class="oi-ctrl-row">
+    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
+    <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-kicker" data-i18n="hero-kicker">From zero to LMS</div>
+  <h1 data-i18n="hero-title">GitHub → SCORM → LMS<br>Step-by-step guide</h1>
+  <p class="subtitle" data-i18n="hero-sub">How to turn any bootcamp page into a downloadable, trackable SCORM 1.2 package — from cloning the repo on Windows to uploading to Chamilo or Cornerstone.</p>
+  <div class="badge-row">
+    <span class="badge">SCORM 1.2</span>
+    <span class="badge">Windows</span>
+    <span class="badge">Git + Python</span>
+    <span class="badge">Cornerstone / Chamilo</span>
+  </div>
+</div>
+
+<main id="main-content" class="wrapper">
+
+  <!-- ── PHASE 1 ── -->
+  <div class="phase-label" data-i18n="p1-label">Phase 1 — One-time setup</div>
+  <div class="phase-title" data-i18n="p1-title">Install the tools</div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title" data-i18n="s1-title">Install Git for Windows</div>
+        <p class="step-desc" data-i18n="s1-desc">Git lets you download (clone) the repository to your computer. Download from <strong>git-scm.com/download/win</strong> → run the installer → keep all defaults → Finish.</p>
+        <div class="term">
+          <div class="term-bar">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <span class="term-label" data-i18n="term-verify">Command Prompt — verify</span>
+          </div>
+          <div class="term-body">
+            <span class="tp">C:\Users\Usuario&gt; </span><span class="tc">git --version</span><br>
+            <span class="tok">git version 2.54.0.windows.1</span>
+          </div>
+        </div>
+        <div class="info tip">
+          <strong data-i18n="tip-label">Tip:</strong> <span data-i18n="s1-tip">If you see "git is not recognized", close and reopen Command Prompt after installing.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title" data-i18n="s2-title">Install Python</div>
+        <p class="step-desc" data-i18n="s2-desc">Python runs the packaging script. Download from <strong>python.org/downloads</strong> → run installer → <strong>check "Add Python to PATH"</strong> → Install.</p>
+        <div class="term">
+          <div class="term-bar">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <span class="term-label" data-i18n="term-verify">Command Prompt — verify</span>
+          </div>
+          <div class="term-body">
+            <span class="tp">C:\Users\Usuario&gt; </span><span class="tc">python --version</span><br>
+            <span class="tok">Python 3.14.5</span>
+          </div>
+        </div>
+        <div class="info tip">
+          <strong data-i18n="tip-label">Tip:</strong> <span data-i18n="s2-tip">During Python install, tick <em>"Add Python to PATH"</em> before clicking Install. Without it, the command won't be found.</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+  <div class="phase-sep"></div>
+
+  <!-- ── PHASE 2 ── -->
+  <div class="phase-label" data-i18n="p2-label">Phase 2 — Get the files</div>
+  <div class="phase-title" data-i18n="p2-title">Clone the repository</div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title" data-i18n="s3-title">Open Command Prompt</div>
+        <p class="step-desc" data-i18n="s3-desc">Press <strong>Windows key + R</strong> → type <strong>cmd</strong> → press Enter. Or search "Command Prompt" in the Start menu.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title" data-i18n="s4-title">Clone the repository</div>
+        <p class="step-desc" data-i18n="s4-desc">This downloads all the bootcamp files to your computer. Only needed once — when you need updates later, use <code style="font-size:.8rem;color:var(--primary)">git pull</code>.</p>
+        <div class="term">
+          <div class="term-bar">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <span class="term-label">Command Prompt</span>
+          </div>
+          <div class="term-body">
+            <span class="tp">C:\Users\Usuario&gt; </span><span class="tc">git clone https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech.git</span><br>
+            <span class="to">Cloning into 'bootcampLearningArchitech'...</span><br>
+            <span class="to">remote: Total 555 (delta 185), done.</span><br>
+            <span class="tok">✓ Done — files downloaded</span>
+          </div>
+        </div>
+        <div class="info">
+          <strong data-i18n="note-label">Note:</strong> <span data-i18n="s4-note">A new folder called <code style="font-size:.82rem;color:var(--primary)">bootcampLearningArchitech</code> was created in your user folder with all the course files inside.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title" data-i18n="s5-title">Enter the repository folder</div>
+        <div class="term">
+          <div class="term-bar">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <span class="term-label">Command Prompt</span>
+          </div>
+          <div class="term-body">
+            <span class="tp">C:\Users\Usuario&gt; </span><span class="tc">cd bootcampLearningArchitech</span><br>
+            <span class="tp">C:\Users\Usuario\bootcampLearningArchitech&gt; </span><span class="tcur"></span>
+          </div>
+        </div>
+        <div class="info tip">
+          <strong data-i18n="tip-label">Tip:</strong> <span data-i18n="s5-tip">In File Explorer, navigate to <code style="font-size:.8rem">C:\Users\Usuario\bootcampLearningArchitech</code>, click the address bar, type <strong>cmd</strong> and press Enter — it opens Command Prompt directly in that folder.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="phase-sep"></div>
+
+  <!-- ── PHASE 3 ── -->
+  <div class="phase-label" data-i18n="p3-label">Phase 3 — Build the package</div>
+  <div class="phase-title" data-i18n="p3-title">Run the packaging script</div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-title" data-i18n="s6-title">Build one course</div>
+        <p class="step-desc" data-i18n="s6-desc">Replace <strong>ai-literacy</strong> with the folder name of any course you want to package.</p>
+        <div class="term">
+          <div class="term-bar">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <span class="term-label" data-i18n="term-inside">inside bootcampLearningArchitech</span>
+          </div>
+          <div class="term-body">
+            <span class="tp">C:\...\bootcampLearningArchitech&gt; </span><span class="tc">python scripts/pack-scorm.py ai-literacy</span><br>
+            <span class="to">Building SCORM 1.2 packages → ...dist/</span><br>
+            <span class="tok">  OK  ai-literacy.zip  (26 KB)  "AI Literacy for Instructional Designers"</span><br><br>
+            <span class="tok">Done — 1/1 packages built</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div>
+        <div class="step-title" data-i18n="s7-title">Build all 22 courses at once</div>
+        <p class="step-desc" data-i18n="s7-desc">Use <code style="font-size:.82rem;color:var(--primary)">all</code> to package every course in one command. Takes about 10 seconds.</p>
+        <div class="term">
+          <div class="term-bar">
+            <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+            <span class="term-label" data-i18n="term-inside">inside bootcampLearningArchitech</span>
+          </div>
+          <div class="term-body">
+            <span class="tp">C:\...\bootcampLearningArchitech&gt; </span><span class="tc">python scripts/pack-scorm.py all</span><br>
+            <span class="to">Building SCORM 1.2 packages → ...dist/</span><br>
+            <span class="tok">  OK  ai-literacy.zip        (26 KB)</span><br>
+            <span class="tok">  OK  ai-skills-architect.zip (22 KB)</span><br>
+            <span class="tok">  OK  articulate360.zip       (19 KB)</span><br>
+            <span class="to">  ... 19 more ...</span><br>
+            <span class="tok">Done — 22/22 packages built</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">8</div>
+      <div>
+        <div class="step-title" data-i18n="s8-title">Find your zip files</div>
+        <p class="step-desc" data-i18n="s8-desc">All packages are saved in the <strong>dist</strong> folder inside the repository. Each zip is a complete, self-contained SCORM course.</p>
+        <div class="file-tree">
+          <span class="folder">bootcampLearningArchitech\</span><br>
+          &nbsp;&nbsp;<span class="folder">dist\</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="file-zip">ai-literacy.zip</span>  ← ready to upload<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="file-zip">articulate360.zip</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="file-zip">bootcamp.zip</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="to">... 19 more .zip files</span><br>
+          &nbsp;&nbsp;<span class="folder">shared\</span><br>
+          &nbsp;&nbsp;<span class="folder">scripts\</span>
+        </div>
+        <div class="filepath">C:\Users\Usuario\bootcampLearningArchitech\dist\ai-literacy.zip</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="phase-sep"></div>
+
+  <!-- ── PHASE 4 ── -->
+  <div class="phase-label" data-i18n="p4-label">Phase 4 — Test before uploading</div>
+  <div class="phase-title" data-i18n="p4-title">Validate in SCORM Cloud (free)</div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">9</div>
+      <div>
+        <div class="step-title" data-i18n="s9-title">Create a free SCORM Cloud account</div>
+        <p class="step-desc" data-i18n="s9-desc">Go to <strong>app.scorm.com</strong> → Sign Up → the free plan gives 10 test registrations. No credit card needed.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">10</div>
+      <div>
+        <div class="step-title" data-i18n="s10-title">Import the zip</div>
+        <p class="step-desc" data-i18n="s10-desc">In SCORM Cloud: click <strong>Add Content</strong> → <strong>Import a SCORM package</strong> → drag the zip file from your dist folder.</p>
+        <div class="mockup">
+          <div class="mockup-bar">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+            <span data-i18n="import-label">Import Content — SCORM Cloud</span>
+          </div>
+          <div class="mockup-body">
+            <div class="upload-zone">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" style="display:block;margin:0 auto .4rem"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              <span data-i18n="drop-label">Drag <strong style="color:var(--primary)">ai-literacy.zip</strong> here, or click to browse</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">11</div>
+      <div>
+        <div class="step-title" data-i18n="s11-title">Launch and read the reports</div>
+        <p class="step-desc" data-i18n="s11-desc">Click <strong>Launch</strong> → go through the course as a learner → finish → go back to the Registration tab.</p>
+        <div class="mockup">
+          <div class="mockup-bar">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            <span data-i18n="report-label">Registration Report</span>
+          </div>
+          <div class="mockup-body">
+            <div class="score-row">
+              <div class="score-box passed">
+                <div class="score-val" data-i18n="status-passed">passed</div>
+                <div class="score-lbl" data-i18n="status-label">Status</div>
+              </div>
+              <div class="score-box">
+                <div class="score-val">85%</div>
+                <div class="score-lbl" data-i18n="score-label">Score</div>
+              </div>
+            </div>
+            <p style="font-size:.75rem;" data-i18n="report-detail">✓ Each quiz question · response · correct/wrong · timestamp — the drop-out and mistake data.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="phase-sep"></div>
+
+  <!-- ── PHASE 5 ── -->
+  <div class="phase-label" data-i18n="p5-label">Phase 5 — Go live</div>
+  <div class="phase-title" data-i18n="p5-title">Upload to your LMS</div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">12</div>
+      <div>
+        <div class="step-title" data-i18n="s12-title">Chamilo (you already have this)</div>
+        <p class="step-desc" data-i18n="s12-desc">Chamilo supports SCORM 1.2 natively — no extra setup needed.</p>
+        <ul class="checklist">
+          <li data-i18n="ch1">Log into Chamilo as admin</li>
+          <li data-i18n="ch2">Go to a course → <strong>Content</strong> → <strong>Learning paths</strong></li>
+          <li data-i18n="ch3">Click <strong>Import a SCORM package</strong></li>
+          <li data-i18n="ch4">Upload the zip → it appears as a trackable lesson</li>
+          <li data-i18n="ch5">Reports: Course → <strong>Tracking</strong> → see each learner's score, status and interactions</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">13</div>
+      <div>
+        <div class="step-title" data-i18n="s13-title">Cornerstone OnDemand</div>
+        <p class="step-desc" data-i18n="s13-desc">Enterprise LMS — requires an org account. Upload procedure once you have access:</p>
+        <ul class="checklist">
+          <li data-i18n="cs1">Admin → <strong>Edge Import</strong> or <strong>Course Catalog</strong> → <strong>Add Course</strong></li>
+          <li data-i18n="cs2">Select <strong>Online Course</strong> → <strong>Upload SCORM</strong></li>
+          <li data-i18n="cs3">Upload the zip → set availability → publish</li>
+          <li data-i18n="cs4">Learner reports: <strong>Reporting</strong> → <strong>Transcript</strong> or <strong>Custom Reports</strong></li>
+        </ul>
+        <div class="info">
+          <strong data-i18n="note-label">Note:</strong> <span data-i18n="s13-note">Test everything in Chamilo first — the SCORM tracking is identical. When you're ready for Cornerstone, the same zip files work without any changes.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="phase-sep"></div>
+
+  <!-- ── Quick reference ── -->
+  <div class="phase-label" data-i18n="ref-label">Quick reference</div>
+  <div class="phase-title" data-i18n="ref-title">All commands at a glance</div>
+
+  <div class="ref-card">
+    <div class="ref-card-head" data-i18n="ref-head">Windows Command Prompt — full sequence</div>
+    <div class="ref-row">
+      <div class="ref-n">1</div>
+      <div>
+        <code class="ref-code">git clone https://github.com/ProfeAnaEslavaEdTech/bootcampLearningArchitech.git</code>
+        <div class="ref-note" data-i18n="ref1-note">Download the repo — run once only</div>
+      </div>
+    </div>
+    <div class="ref-row">
+      <div class="ref-n">2</div>
+      <div>
+        <code class="ref-code">cd bootcampLearningArchitech</code>
+        <div class="ref-note" data-i18n="ref2-note">Enter the folder</div>
+      </div>
+    </div>
+    <div class="ref-row">
+      <div class="ref-n">3a</div>
+      <div>
+        <code class="ref-code">python scripts/pack-scorm.py ai-literacy</code>
+        <div class="ref-note" data-i18n="ref3a-note">Build one course — replace ai-literacy with any folder name</div>
+      </div>
+    </div>
+    <div class="ref-row">
+      <div class="ref-n">3b</div>
+      <div>
+        <code class="ref-code">python scripts/pack-scorm.py all</code>
+        <div class="ref-note" data-i18n="ref3b-note">Build all 22 courses at once</div>
+      </div>
+    </div>
+    <div class="ref-row">
+      <div class="ref-n">4</div>
+      <div>
+        <code class="ref-code">git pull</code>
+        <div class="ref-note" data-i18n="ref4-note">Get latest changes next time you run the script</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info tip" style="margin-top:1.5rem;">
+    <strong data-i18n="tip-label">Tip:</strong> <span data-i18n="final-tip">Every time content is updated in GitHub, run <code style="font-size:.82rem">git pull</code> then the pack script again — it overwrites the old zips automatically.</span>
+  </div>
+
+</main>
+
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'hero-kicker': 'From zero to LMS',
+    'hero-title': 'GitHub → SCORM → LMS<br>Step-by-step guide',
+    'hero-sub': 'How to turn any bootcamp page into a downloadable, trackable SCORM 1.2 package — from cloning the repo on Windows to uploading to Chamilo or Cornerstone.',
+    'p1-label': 'Phase 1 — One-time setup',
+    'p1-title': 'Install the tools',
+    'p2-label': 'Phase 2 — Get the files',
+    'p2-title': 'Clone the repository',
+    'p3-label': 'Phase 3 — Build the package',
+    'p3-title': 'Run the packaging script',
+    'p4-label': 'Phase 4 — Test before uploading',
+    'p4-title': 'Validate in SCORM Cloud (free)',
+    'p5-label': 'Phase 5 — Go live',
+    'p5-title': 'Upload to your LMS',
+    'ref-label': 'Quick reference',
+    'ref-title': 'All commands at a glance',
+    'ref-head': 'Windows Command Prompt — full sequence',
+    'tip-label': 'Tip:',
+    'note-label': 'Note:',
+    'term-verify': 'Command Prompt — verify',
+    'term-inside': 'inside bootcampLearningArchitech',
+    's1-title': 'Install Git for Windows',
+    's1-desc': 'Git lets you download (clone) the repository to your computer. Download from <strong>git-scm.com/download/win</strong> → run the installer → keep all defaults → Finish.',
+    's1-tip': 'If you see "git is not recognized", close and reopen Command Prompt after installing.',
+    's2-title': 'Install Python',
+    's2-desc': 'Python runs the packaging script. Download from <strong>python.org/downloads</strong> → run installer → <strong>check "Add Python to PATH"</strong> → Install.',
+    's2-tip': 'During Python install, tick <em>"Add Python to PATH"</em> before clicking Install. Without it, the command won\'t be found.',
+    's3-title': 'Open Command Prompt',
+    's3-desc': 'Press <strong>Windows key + R</strong> → type <strong>cmd</strong> → press Enter. Or search "Command Prompt" in the Start menu.',
+    's4-title': 'Clone the repository',
+    's4-desc': 'This downloads all the bootcamp files to your computer. Only needed once — when you need updates later, use <code style="font-size:.8rem;color:var(--primary)">git pull</code>.',
+    's4-note': 'A new folder called <code style="font-size:.82rem;color:var(--primary)">bootcampLearningArchitech</code> was created in your user folder with all the course files inside.',
+    's5-title': 'Enter the repository folder',
+    's5-tip': 'In File Explorer, navigate to <code style="font-size:.8rem">C:\\Users\\Usuario\\bootcampLearningArchitech</code>, click the address bar, type <strong>cmd</strong> and press Enter — it opens Command Prompt directly in that folder.',
+    's6-title': 'Build one course',
+    's6-desc': 'Replace <strong>ai-literacy</strong> with the folder name of any course you want to package.',
+    's7-title': 'Build all 22 courses at once',
+    's7-desc': 'Use <code style="font-size:.82rem;color:var(--primary)">all</code> to package every course in one command. Takes about 10 seconds.',
+    's8-title': 'Find your zip files',
+    's8-desc': 'All packages are saved in the <strong>dist</strong> folder inside the repository. Each zip is a complete, self-contained SCORM course.',
+    's9-title': 'Create a free SCORM Cloud account',
+    's9-desc': 'Go to <strong>app.scorm.com</strong> → Sign Up → the free plan gives 10 test registrations. No credit card needed.',
+    's10-title': 'Import the zip',
+    's10-desc': 'In SCORM Cloud: click <strong>Add Content</strong> → <strong>Import a SCORM package</strong> → drag the zip file from your dist folder.',
+    's11-title': 'Launch and read the reports',
+    's11-desc': 'Click <strong>Launch</strong> → go through the course as a learner → finish → go back to the Registration tab.',
+    's12-title': 'Chamilo (you already have this)',
+    's12-desc': 'Chamilo supports SCORM 1.2 natively — no extra setup needed.',
+    's13-title': 'Cornerstone OnDemand',
+    's13-desc': 'Enterprise LMS — requires an org account. Upload procedure once you have access:',
+    's13-note': 'Test everything in Chamilo first — the SCORM tracking is identical. When you\'re ready for Cornerstone, the same zip files work without any changes.',
+    'ch1': 'Log into Chamilo as admin',
+    'ch2': 'Go to a course → <strong>Content</strong> → <strong>Learning paths</strong>',
+    'ch3': 'Click <strong>Import a SCORM package</strong>',
+    'ch4': 'Upload the zip → it appears as a trackable lesson',
+    'ch5': 'Reports: Course → <strong>Tracking</strong> → see each learner\'s score, status and interactions',
+    'cs1': 'Admin → <strong>Edge Import</strong> or <strong>Course Catalog</strong> → <strong>Add Course</strong>',
+    'cs2': 'Select <strong>Online Course</strong> → <strong>Upload SCORM</strong>',
+    'cs3': 'Upload the zip → set availability → publish',
+    'cs4': 'Learner reports: <strong>Reporting</strong> → <strong>Transcript</strong> or <strong>Custom Reports</strong>',
+    'import-label': 'Import Content — SCORM Cloud',
+    'drop-label': 'Drag <strong style="color:var(--primary)">ai-literacy.zip</strong> here, or click to browse',
+    'report-label': 'Registration Report',
+    'status-passed': 'passed',
+    'status-label': 'Status',
+    'score-label': 'Score',
+    'report-detail': '✓ Each quiz question · response · correct/wrong · timestamp — the drop-out and mistake data.',
+    'ref1-note': 'Download the repo — run once only',
+    'ref2-note': 'Enter the folder',
+    'ref3a-note': 'Build one course — replace ai-literacy with any folder name',
+    'ref3b-note': 'Build all 22 courses at once',
+    'ref4-note': 'Get latest changes next time you run the script',
+    'final-tip': 'Every time content is updated in GitHub, run <code style="font-size:.82rem">git pull</code> then the pack script again — it overwrites the old zips automatically.'
+  },
+  es: {
+    'brand-role': 'DXA · CAL · Gobernanza IA',
+    'nav-back': 'Bootcamp',
+    'hero-kicker': 'De cero al LMS',
+    'hero-title': 'GitHub → SCORM → LMS<br>Guía paso a paso',
+    'hero-sub': 'Cómo convertir cualquier página del bootcamp en un paquete SCORM 1.2 descargable y trazable — desde la clonación del repositorio en Windows hasta la carga en Chamilo o Cornerstone.',
+    'p1-label': 'Fase 1 — Configuración inicial',
+    'p1-title': 'Instalar las herramientas',
+    'p2-label': 'Fase 2 — Obtener los archivos',
+    'p2-title': 'Clonar el repositorio',
+    'p3-label': 'Fase 3 — Construir el paquete',
+    'p3-title': 'Ejecutar el script de empaquetado',
+    'p4-label': 'Fase 4 — Probar antes de cargar',
+    'p4-title': 'Validar en SCORM Cloud (gratis)',
+    'p5-label': 'Fase 5 — Publicar',
+    'p5-title': 'Cargar en tu LMS',
+    'ref-label': 'Referencia rápida',
+    'ref-title': 'Todos los comandos de un vistazo',
+    'ref-head': 'Símbolo del sistema de Windows — secuencia completa',
+    'tip-label': 'Consejo:',
+    'note-label': 'Nota:',
+    'term-verify': 'Símbolo del sistema — verificar',
+    'term-inside': 'dentro de bootcampLearningArchitech',
+    's1-title': 'Instalar Git para Windows',
+    's1-desc': 'Git te permite descargar (clonar) el repositorio en tu ordenador. Descárgalo de <strong>git-scm.com/download/win</strong> → ejecuta el instalador → deja todas las opciones por defecto → Finalizar.',
+    's1-tip': 'Si ves "git no se reconoce como un comando", cierra y vuelve a abrir el Símbolo del sistema tras instalar.',
+    's2-title': 'Instalar Python',
+    's2-desc': 'Python ejecuta el script de empaquetado. Descárgalo de <strong>python.org/downloads</strong> → ejecuta el instalador → <strong>marca "Add Python to PATH"</strong> → Instalar.',
+    's2-tip': 'Durante la instalación de Python, marca <em>"Add Python to PATH"</em> antes de hacer clic en Instalar. Sin esa opción, el comando no se encontrará.',
+    's3-title': 'Abrir el Símbolo del sistema',
+    's3-desc': 'Pulsa <strong>Tecla Windows + R</strong> → escribe <strong>cmd</strong> → pulsa Intro. O busca "Símbolo del sistema" en el menú Inicio.',
+    's4-title': 'Clonar el repositorio',
+    's4-desc': 'Esto descarga todos los archivos del bootcamp en tu ordenador. Solo es necesario una vez — cuando necesites actualizaciones más adelante, usa <code style="font-size:.8rem;color:var(--primary)">git pull</code>.',
+    's4-note': 'Se habrá creado una nueva carpeta llamada <code style="font-size:.82rem;color:var(--primary)">bootcampLearningArchitech</code> en tu carpeta de usuario con todos los archivos del curso.',
+    's5-title': 'Entrar en la carpeta del repositorio',
+    's5-tip': 'En el Explorador de archivos, navega a <code style="font-size:.8rem">C:\\Users\\Usuario\\bootcampLearningArchitech</code>, haz clic en la barra de direcciones, escribe <strong>cmd</strong> y pulsa Intro — abre el Símbolo del sistema directamente en esa carpeta.',
+    's6-title': 'Construir un curso',
+    's6-desc': 'Sustituye <strong>ai-literacy</strong> por el nombre de la carpeta del curso que quieras empaquetar.',
+    's7-title': 'Construir los 22 cursos a la vez',
+    's7-desc': 'Usa <code style="font-size:.82rem;color:var(--primary)">all</code> para empaquetar todos los cursos con un solo comando. Tarda unos 10 segundos.',
+    's8-title': 'Encontrar los archivos zip',
+    's8-desc': 'Todos los paquetes se guardan en la carpeta <strong>dist</strong> dentro del repositorio. Cada zip es un curso SCORM completo y autónomo.',
+    's9-title': 'Crear una cuenta gratuita en SCORM Cloud',
+    's9-desc': 'Ve a <strong>app.scorm.com</strong> → Registrarse → el plan gratuito da 10 registros de prueba. No se necesita tarjeta.',
+    's10-title': 'Importar el zip',
+    's10-desc': 'En SCORM Cloud: haz clic en <strong>Add Content</strong> → <strong>Import a SCORM package</strong> → arrastra el archivo zip desde tu carpeta dist.',
+    's11-title': 'Lanzar y leer los informes',
+    's11-desc': 'Haz clic en <strong>Launch</strong> → recorre el curso como estudiante → al terminar, ve a la pestaña Registration.',
+    's12-title': 'Chamilo (ya lo tienes)',
+    's12-desc': 'Chamilo es compatible con SCORM 1.2 de forma nativa — no necesita configuración adicional.',
+    's13-title': 'Cornerstone OnDemand',
+    's13-desc': 'LMS empresarial — requiere cuenta de organización. Proceso de carga una vez que tengas acceso:',
+    's13-note': 'Prueba todo en Chamilo primero — el seguimiento SCORM es idéntico. Cuando estés lista para Cornerstone, los mismos archivos zip funcionan sin cambios.',
+    'ch1': 'Inicia sesión en Chamilo como administradora',
+    'ch2': 'Ve a un curso → <strong>Contenido</strong> → <strong>Itinerarios de aprendizaje</strong>',
+    'ch3': 'Haz clic en <strong>Importar un paquete SCORM</strong>',
+    'ch4': 'Sube el zip → aparece como una lección trazable',
+    'ch5': 'Informes: Curso → <strong>Seguimiento</strong> → ver puntuación, estado e interacciones de cada estudiante',
+    'cs1': 'Admin → <strong>Edge Import</strong> o <strong>Course Catalog</strong> → <strong>Add Course</strong>',
+    'cs2': 'Selecciona <strong>Online Course</strong> → <strong>Upload SCORM</strong>',
+    'cs3': 'Sube el zip → configura la disponibilidad → publicar',
+    'cs4': 'Informes de estudiantes: <strong>Reporting</strong> → <strong>Transcript</strong> o <strong>Custom Reports</strong>',
+    'import-label': 'Importar contenido — SCORM Cloud',
+    'drop-label': 'Arrastra <strong style="color:var(--primary)">ai-literacy.zip</strong> aquí, o haz clic para buscar',
+    'report-label': 'Informe de registro',
+    'status-passed': 'superado',
+    'status-label': 'Estado',
+    'score-label': 'Puntuación',
+    'report-detail': '✓ Cada pregunta del cuestionario · respuesta · correcta/incorrecta · marca de tiempo — los datos de abandono y errores.',
+    'ref1-note': 'Descargar el repositorio — solo una vez',
+    'ref2-note': 'Entrar en la carpeta',
+    'ref3a-note': 'Construir un curso — reemplaza ai-literacy con cualquier nombre de carpeta',
+    'ref3b-note': 'Construir los 22 cursos a la vez',
+    'ref4-note': 'Obtener los últimos cambios la próxima vez que ejecutes el script',
+    'final-tip': 'Cada vez que el contenido se actualice en GitHub, ejecuta <code style="font-size:.82rem">git pull</code> y luego el script de empaquetado — sobreescribe los zips antiguos automáticamente.'
+  }
+};
+</script>
+
+<script>
+(function() {
+  var btn = document.getElementById('oi-theme-btn');
+  if (!btn) return;
+  var root = document.documentElement;
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    try { localStorage.setItem('oi-theme', t); } catch(e) {}
+    btn.textContent = t === 'dark' ? 'Light' : 'Dark';
+  }
+  var saved; try { saved = localStorage.getItem('oi-theme'); } catch(e) {}
+  applyTheme(saved || 'light');
+  btn.addEventListener('click', function() {
+    applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+})();
+</script>
+</body>
+</html>

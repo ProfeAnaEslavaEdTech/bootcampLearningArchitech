@@ -40,13 +40,13 @@ SCORM_PAGES = [
     'frameworks', 'handson', 'jnj-bootcamp', 'jnj-dual-track', 'job-search',
     'language-learning-experience-designer', 'lrs', 'scripting',
     'tooling-sprint', 'unicef', 'unicef-apply', 'ux-ui', 'wida-k12',
-    'cuxedtech', 'ocean-ink',
+    'cuxedtech', 'ocean-ink', 'scorm-guide',
 ]
 
 # Pages that have no quiz interactions — complete on 90% scroll
 SCROLL_COMPLETE = {
     'articulate360', 'change-management', 'facilitation', 'ux-ui',
-    'cuxedtech', 'ocean-ink',
+    'cuxedtech', 'ocean-ink', 'scorm-guide',
 }
 
 # Pages with step-based navigation — set finalStep to last step index
