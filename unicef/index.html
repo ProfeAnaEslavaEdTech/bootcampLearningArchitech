@@ -309,9 +309,9 @@
 <main id="main">
 
   <section class="hero">
-    <div class="hero-eyebrow">Copenhagen / Remote · Individual Consultancy · 5+ years required</div>
-    <h1>Ten duties. <em>One contract.</em><br>Eight deliverables with real deadlines.</h1>
-    <p>Each module maps to a specific ToR requirement — Agora, Moodle migration, multilingual Rise, supply chain domain, stakeholder advisory. Practiced the way you'd actually do the work, not multiple choice about theory.</p>
+    <div class="hero-eyebrow" data-i18n="hero-eyebrow">Copenhagen / Remote · Individual Consultancy · 5+ years required</div>
+    <h1 data-i18n="hero-h1">Ten duties. <em>One contract.</em><br>Eight deliverables with real deadlines.</h1>
+    <p data-i18n="hero-p">Each module maps to a specific ToR requirement — Agora, Moodle migration, multilingual Rise, supply chain domain, stakeholder advisory. Practiced the way you'd actually do the work, not multiple choice about theory.</p>
   </section>
 
   <section class="map-section" id="mapSection">
@@ -330,7 +330,7 @@
 
 </main>
 
-<footer>Practice scenarios are illustrative. UNICEF supply chain content is based on publicly available information only.</footer>
+<footer data-i18n="footer-txt">Practice scenarios are illustrative. UNICEF supply chain content is based on publicly available information only.</footer>
 
 <div class="toast" id="toast">
   <span class="toast-text" id="toastText"></span>
@@ -878,8 +878,22 @@ if (LEVELS.every(l => progress.completed[l.id])) showFinalScreen();
 </script>
 <script>
 window.PAGE_I18N = {
-  en: { 'brand-role': 'LXD · LQA · AI Governance', 'nav-back': 'Bootcamp' },
-  es: { 'brand-role': 'LXD · LQA · Gobernanza de IA', 'nav-back': 'Bootcamp' }
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'hero-eyebrow': 'Copenhagen / Remote · Individual Consultancy · 5+ years required',
+    'hero-h1': 'Ten duties. <em>One contract.</em><br>Eight deliverables with real deadlines.',
+    'hero-p': 'Each module maps to a specific ToR requirement — Agora, Moodle migration, multilingual Rise, supply chain domain, stakeholder advisory. Practiced the way you\'d actually do the work, not multiple choice about theory.',
+    'footer-txt': 'Practice scenarios are illustrative. UNICEF supply chain content is based on publicly available information only.'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'hero-eyebrow': 'Copenhague / Remoto · Consultoría individual · 5+ años requeridos',
+    'hero-h1': 'Diez responsabilidades. <em>Un contrato.</em><br>Ocho entregables con plazos reales.',
+    'hero-p': 'Cada módulo corresponde a un requisito específico del ToR — Agora, migración a Moodle, Rise multilingüe, cadena de suministro, asesoría a partes interesadas. Practicado como lo harías realmente, no preguntas de opción múltiple sobre teoría.',
+    'footer-txt': 'Los escenarios de práctica son ilustrativos. El contenido de cadena de suministro de UNICEF se basa únicamente en información públicamente disponible.'
+  }
 };
 </script>
 <script>

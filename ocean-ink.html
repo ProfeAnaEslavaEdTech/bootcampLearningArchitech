@@ -872,9 +872,9 @@ code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--prim
 
   <!-- Hero -->
   <header class="hero section" id="top">
-    <p class="hero-eyebrow">Design system specification · v2.0</p>
-    <h1>Ocean Ink</h1>
-    <p class="hero-desc">The design system behind CUXedTech and Ana Eslava's digital learning portfolio. Three visual tiers, a complete token set, and clear rules for how colour, type, spacing, states and motion work together across identity, instructional and editorial contexts.</p>
+    <p class="hero-eyebrow" data-i18n="hero-eyebrow">Design system specification · v2.0</p>
+    <h1 data-i18n="hero-h1">Ocean Ink</h1>
+    <p class="hero-desc" data-i18n="hero-desc">The design system behind CUXedTech and Ana Eslava's digital learning portfolio. Three visual tiers, a complete token set, and clear rules for how colour, type, spacing, states and motion work together across identity, instructional and editorial contexts.</p>
     <div class="hero-badges">
       <span class="badge badge-primary">WCAG 2.1 AA</span>
       <span class="badge badge-gold">Bilingual EN/ES</span>
@@ -1405,5 +1405,16 @@ code { font-family: 'Courier New', monospace; font-size: 11px; color: var(--prim
 })();
 </script>
 <script>
-window.PAGE_I18N = { en: {}, es: {} };
+window.PAGE_I18N = {
+  en: {
+    'hero-eyebrow': 'Design system specification · v2.0',
+    'hero-h1': 'Ocean Ink',
+    'hero-desc': 'The design system behind CUXedTech and Ana Eslava\'s digital learning portfolio. Three visual tiers, a complete token set, and clear rules for how colour, type, spacing, states and motion work together across identity, instructional and editorial contexts.'
+  },
+  es: {
+    'hero-eyebrow': 'Especificación del sistema de diseño · v2.0',
+    'hero-h1': 'Ocean Ink',
+    'hero-desc': 'El sistema de diseño detrás de CUXedTech y el portafolio digital de aprendizaje de Ana Eslava. Tres registros visuales, un conjunto completo de tokens, y reglas claras sobre cómo el color, la tipografía, el espaciado, los estados y el movimiento funcionan juntos en contextos de identidad, instruccional y editorial.'
+  }
+};
 </script>
