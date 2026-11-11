@@ -1,130 +1,187 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en" data-lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>WCAG 2.2 AA — Guía de Auditoría</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>WCAG 2.2 AA — Accessibility Audit Guide · Ana Eslava-Graterol</title>
+<meta name="description" content="Step-by-step guide to auditing web accessibility: tools, code fixes, legal framework (WCAG 2.2 AA, EN 301 549, Ley 11/2023).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --fd:'Fraunces',Georgia,serif;--fb:'Inter',-apple-system,sans-serif;
-  --primary:#3B5BD6;--deep:#22307C;--accent:#E8A33D;--accent-t:#9A5B00;
-  --ink:#1C1E2E;--muted:#5B5F77;--canvas:#F7F8FC;--surface:#fff;--line:#E6E8F2;
-  --pass:#22307C;--fail:#8F3B59;--warn:#9A5B00;
+/* ── AE Evolution — Ocean Ink · November 2026 — Dark-first ── */
+:root {
+  --fd:'Fraunces',Georgia,serif; --fb:'Inter',-apple-system,Segoe UI,Roboto,Arial,sans-serif; --fm:'IBM Plex Mono','Courier New',monospace;
+  --ink:#EEF0FC; --canvas:#0C0E1C; --surface:#161929; --surface-2:#1E2240;
+  --line:#262A44; --muted:#9199C0;
+  --primary:#A9B8F5; --primary-btn:#3B5BD6; --primary-deep:#C6D2FB;
+  --accent:#F3B861; --accent-t:#F3B861;
+  --pass:#A9B8F5; --fail:#E0A6B8; --warn:#F3B861;
+  --focus-ring:#A9B8F5;
+  --shadow:0 4px 20px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --ink:#1C1E2E; --canvas:#F7F8FC; --surface:#FFFFFF; --surface-2:#EEF2FD;
+  --line:#E6E8F2; --muted:#5B5F77;
+  --primary:#3B5BD6; --primary-btn:#3B5BD6; --primary-deep:#22307C;
+  --accent:#E8A33D; --accent-t:#9A5B00;
+  --pass:#22307C; --fail:#8F3B59; --warn:#9A5B00;
+  --focus-ring:#3B5BD6;
+  --shadow:0 4px 20px rgba(28,30,46,.07);
+  color-scheme:light;
+}}
+:root[data-theme="light"]{
+  --ink:#1C1E2E; --canvas:#F7F8FC; --surface:#FFFFFF; --surface-2:#EEF2FD;
+  --line:#E6E8F2; --muted:#5B5F77;
+  --primary:#3B5BD6; --primary-btn:#3B5BD6; --primary-deep:#22307C;
+  --accent:#E8A33D; --accent-t:#9A5B00;
+  --pass:#22307C; --fail:#8F3B59; --warn:#9A5B00;
+  --focus-ring:#3B5BD6;
   --shadow:0 4px 20px rgba(28,30,46,.07);
   color-scheme:light;
 }
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --ink:#EEF0F8;--muted:#A6ADC8;--canvas:#0F1120;--surface:#171A2B;--line:#2A2D44;
-  --primary:#9DB2FF;--deep:#B9C8F6;--accent:#EEC272;--accent-t:#EEC272;
-  --pass:#9DB2FF;--fail:#E0A6B8;--warn:#EEC272;
-  color-scheme:dark;
-}}
-:root[data-theme="dark"]{
-  --ink:#EEF0F8;--muted:#A6ADC8;--canvas:#0F1120;--surface:#171A2B;--line:#2A2D44;
-  --primary:#9DB2FF;--deep:#B9C8F6;--accent:#EEC272;--accent-t:#EEC272;
-  --pass:#9DB2FF;--fail:#E0A6B8;--warn:#EEC272;
-  color-scheme:dark;
-}
+:root[data-theme="dark"]{ color-scheme:dark; }
+
+[data-lang="en"] .lang-es{display:none!important}
+[data-lang="es"] .lang-en{display:none!important}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--fb);background:var(--canvas);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
-a.skip-link{position:absolute;top:-100%;left:16px;z-index:200;background:var(--primary);color:#fff;padding:10px 18px;border-radius:0 0 10px 10px;font:700 14px var(--fb);text-decoration:none;transition:top .1s}
-a.skip-link:focus{top:env(safe-area-inset-top,0px);outline:3px solid var(--accent);outline-offset:2px}
-.wrap{max-width:860px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px))}
+*:focus-visible{outline:3px solid var(--focus-ring);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
-/* NAV */
-.site-nav{background:var(--deep);padding:12px 0;position:sticky;top:0;z-index:50}
-.site-nav .inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.nav-home{color:#fff;text-decoration:none;font:700 14px var(--fb);opacity:.85}
-.nav-home:hover{opacity:1}
-.nav-sep{color:#fff;opacity:.4;font-size:14px}
-.nav-current{color:#fff;font:400 14px var(--fb);opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body{font-family:var(--fb);background:var(--canvas);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;min-height:100dvh;overflow-x:hidden}
 
-/* HERO */
-.hero{background:var(--deep);color:#fff;padding:36px 0 28px}
-.hero h1{font-family:var(--fd);font-size:clamp(22px,4vw,32px);font-weight:700;line-height:1.15;margin-bottom:8px}
-.hero .sub{font-size:14px;opacity:.8;line-height:1.5;max-width:600px}
-.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.tag{font:700 11px var(--fb);letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);color:rgba(255,255,255,.85)}
+a.skip-link{position:absolute;left:-9999px;z-index:200;background:var(--primary-btn);color:#fff;padding:10px 18px;border-radius:0 0 10px 10px;font:700 14px var(--fb);text-decoration:none}
+a.skip-link:focus{left:max(16px,env(safe-area-inset-left,0px));top:env(safe-area-inset-top,0px);outline:3px solid var(--accent);outline-offset:2px}
 
-/* LEGAL BAND */
-.legal-band{background:color-mix(in srgb,var(--accent-t) 8%,var(--canvas));border-left:4px solid var(--accent);padding:14px 20px;margin:24px 0;border-radius:0 10px 10px 0;font-size:12.5px;line-height:1.65}
+/* ── NAV ── */
+.site-nav{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.nav-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:10px;min-height:56px;flex-wrap:wrap}
+.nav-home{color:var(--primary);text-decoration:none;font:600 13px var(--fm);letter-spacing:.04em;white-space:nowrap;min-height:44px;display:flex;align-items:center}
+.nav-home:hover{color:var(--primary-deep);text-decoration:underline}
+.nav-sep{color:var(--muted);font-size:13px}
+.nav-current{font:400 13px var(--fb);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.nav-controls{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0}
+.ctrl-btn{height:34px;border-radius:17px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:0 14px;cursor:pointer;font:700 11px var(--fm);letter-spacing:.08em;display:flex;align-items:center;gap:5px;transition:border-color .15s,background .15s;white-space:nowrap}
+.ctrl-btn:hover{border-color:var(--primary);background:var(--surface-2)}
+
+/* ── HERO ── */
+.hero{background:var(--surface);border-bottom:1px solid var(--line);padding:32px max(16px,env(safe-area-inset-left,0px)) 24px}
+.hero-inner{max-width:900px;margin:0 auto}
+.eyebrow{font:700 10px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+.hero h1{font-family:var(--fd);font-size:clamp(22px,4vw,32px);font-weight:700;line-height:1.15;color:var(--primary-deep);margin-bottom:8px;text-wrap:balance}
+.hero .sub{font-size:14px;color:var(--muted);max-width:620px;line-height:1.55}
+.tag-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.tag{font:700 10px var(--fm);letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--surface-2)}
+
+/* ── WRAP ── */
+.wrap{max-width:900px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px)) 0 max(16px,env(safe-area-inset-right,0px))}
+
+/* ── LEGAL BAND ── */
+.legal-band{background:color-mix(in srgb,var(--accent) 8%,var(--surface));border-left:4px solid var(--accent);padding:14px 20px;margin:24px 0;border-radius:0 10px 10px 0;font-size:12.5px;line-height:1.65;color:var(--ink)}
 .legal-band strong{color:var(--accent-t)}
 
-/* SECTION HEADINGS */
+/* ── SECTIONS ── */
 .sec{margin:36px 0 0}
-.sec-head{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--deep);border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.sec-num{font:700 11px var(--fb);letter-spacing:.06em;background:var(--primary);color:#fff;padding:3px 9px;border-radius:999px;font-size:10px}
+.sec-head{font-family:var(--fd);font-size:19px;font-weight:700;color:var(--primary-deep);border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sec-num{font:700 10px var(--fm);letter-spacing:.06em;background:var(--primary-btn);color:#fff;padding:3px 9px;border-radius:999px}
 p{margin-bottom:12px;font-size:15px}
 ul,ol{padding-left:20px;margin-bottom:14px;font-size:15px}
 li{margin-bottom:5px;line-height:1.55}
 
-/* STEP CARDS */
+/* ── STEP CARDS ── */
 .steps{display:flex;flex-direction:column;gap:14px;margin-bottom:16px}
-.step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;position:relative;padding-left:52px;box-shadow:var(--shadow)}
-.step-n{position:absolute;left:16px;top:16px;font:700 13px var(--fb);background:var(--primary);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.step h3{font:700 15px var(--fb);color:var(--deep);margin-bottom:4px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px 16px 52px;position:relative;box-shadow:var(--shadow)}
+.step-n{position:absolute;left:16px;top:16px;font:700 13px var(--fb);background:var(--primary-btn);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.step h3{font:700 15px var(--fb);color:var(--primary-deep);margin-bottom:4px}
 .step p{margin:0;font-size:13.5px;color:var(--muted)}
 
-/* CODE BLOCKS */
-pre{background:color-mix(in srgb,var(--ink) 5%,var(--surface));border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font:13px/1.6 'Courier New',monospace;margin-bottom:14px;white-space:pre}
-code{font:13px/1.5 'Courier New',monospace;background:color-mix(in srgb,var(--primary) 8%,var(--canvas));padding:1px 5px;border-radius:4px;color:var(--deep)}
+/* ── CODE ── */
+pre{background:color-mix(in srgb,var(--ink) 5%,var(--surface));border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font:13px/1.6 var(--fm);margin-bottom:14px;white-space:pre}
+code{font:13px/1.5 var(--fm);background:color-mix(in srgb,var(--primary-btn) 10%,var(--canvas));padding:1px 5px;border-radius:4px;color:var(--primary-deep)}
 pre code{background:none;padding:0;border-radius:0;color:inherit}
 
-/* TABLES */
+/* ── TABLES ── */
 .tbl-wrap{overflow-x:auto;margin-bottom:16px}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-th{background:var(--deep);color:#fff;font:600 11px var(--fb);letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;text-align:left}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:400px}
+th{background:var(--primary-btn);color:#fff;font:600 11px var(--fm);letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;text-align:left}
 td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:color-mix(in srgb,var(--primary) 4%,var(--surface))}
+tr:hover td{background:color-mix(in srgb,var(--primary-btn) 4%,var(--surface))}
 
-/* DIFF */
+/* ── DIFF ── */
 .diff-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 @media(max-width:600px){.diff-row{grid-template-columns:1fr}}
-.diff-label{font:700 11px var(--fb);letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:6px 6px 0 0}
-.diff-label.before{background:color-mix(in srgb,var(--fail) 15%,var(--surface));color:var(--fail)}
-.diff-label.after{background:color-mix(in srgb,var(--pass) 15%,var(--surface));color:var(--pass)}
+.diff-label{font:700 11px var(--fm);letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:6px 6px 0 0}
+.diff-label.before{background:color-mix(in srgb,var(--fail) 18%,var(--surface));color:var(--fail)}
+.diff-label.after{background:color-mix(in srgb,var(--pass) 18%,var(--surface));color:var(--pass)}
 .diff-col pre{border-radius:0 0 8px 8px;margin:0}
 
-/* CALLOUT */
-.callout{background:color-mix(in srgb,var(--primary) 7%,var(--surface));border-left:4px solid var(--primary);padding:14px 18px;border-radius:0 10px 10px 0;margin-bottom:14px;font-size:13.5px}
-.callout strong{color:var(--deep)}
+/* ── CALLOUT ── */
+.callout{background:color-mix(in srgb,var(--primary-btn) 8%,var(--surface));border-left:4px solid var(--primary-btn);padding:14px 18px;border-radius:0 10px 10px 0;margin-bottom:14px;font-size:13.5px;color:var(--ink)}
+.callout strong{color:var(--primary-deep)}
 
-/* NAV CHIPS AT BOTTOM */
+/* ── BOTTOM NAV ── */
 .bottom-nav{display:flex;gap:12px;flex-wrap:wrap;margin:40px 0 16px}
-.chip{font:600 13px var(--fb);padding:10px 20px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--primary);text-decoration:none;min-height:44px;display:flex;align-items:center}
-.chip:hover{background:color-mix(in srgb,var(--primary) 8%,var(--surface));border-color:var(--primary)}
-.chip:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
-.chip-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.chip{font:600 13px var(--fb);padding:10px 20px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--primary);text-decoration:none;min-height:44px;display:flex;align-items:center;transition:background .15s,border-color .15s}
+.chip:hover{background:color-mix(in srgb,var(--primary-btn) 8%,var(--surface));border-color:var(--primary)}
+.chip-primary{background:var(--primary-btn);color:#fff;border-color:var(--primary-btn)}
 .chip-primary:hover{filter:brightness(.92)}
 
-footer{padding:24px 0 32px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px}
+/* ── FOOTER ── */
+footer{padding:24px 0 calc(32px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px}
+
+/* ── SUBHEADINGS ── */
+.sub-h{font-size:15px;font-weight:700;color:var(--primary-deep);margin:20px 0 10px}
+.sub-h:first-of-type{margin-top:0}
 </style>
 </head>
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<a href="#main-content" class="skip-link">
+  <span class="lang-en">Skip to main content</span>
+  <span class="lang-es">Ir al contenido principal</span>
+</a>
 
 <nav class="site-nav" aria-label="Breadcrumb">
-<div class="wrap inner">
-  <a href="../index.html" class="nav-home">← Bootcamp Learning ArchiTech</a>
+<div class="nav-inner">
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="nav-home">
+    <span class="lang-en">← Bootcamp Learning ArchiTech</span>
+    <span class="lang-es">← Volver al Bootcamp</span>
+  </a>
   <span class="nav-sep" aria-hidden="true">›</span>
-  <span class="nav-current" aria-current="page">WCAG 2.2 AA — Accessibility Audit Guide</span>
+  <span class="nav-current" aria-current="page">
+    <span class="lang-en">WCAG 2.2 AA — Accessibility Audit Guide</span>
+    <span class="lang-es">WCAG 2.2 AA — Guía de Auditoría</span>
+  </span>
+  <div class="nav-controls">
+    <button id="lang-btn" class="ctrl-btn" type="button" aria-label="Cambiar a español">ES</button>
+    <button id="theme-btn" class="ctrl-btn" type="button" aria-label="Currently dark. Click to switch to light.">Light</button>
+  </div>
 </div>
 </nav>
 
 <div class="hero">
-<div class="wrap">
-  <h1>WCAG 2.2 AA — Accessibility Audit Guide</h1>
-  <p class="sub">Cómo auditar y verificar accesibilidad web · Proceso paso a paso · Código, herramientas y marco legal</p>
+<div class="hero-inner">
+  <div class="eyebrow">
+    <span class="lang-en">Web Accessibility · Instructional Design</span>
+    <span class="lang-es">Accesibilidad Web · Diseño Instruccional</span>
+  </div>
+  <h1>
+    <span class="lang-en">WCAG 2.2 AA — Accessibility Audit Guide</span>
+    <span class="lang-es">WCAG 2.2 AA — Guía de Auditoría de Accesibilidad</span>
+  </h1>
+  <p class="sub">
+    <span class="lang-en">How to audit and verify web accessibility · Step-by-step process · Code, tools and legal framework</span>
+    <span class="lang-es">Cómo auditar y verificar accesibilidad web · Proceso paso a paso · Código, herramientas y marco legal</span>
+  </p>
   <div class="tag-row">
     <span class="tag">WCAG 2.2</span>
-    <span class="tag">Accesibilidad</span>
-    <span class="tag">9 criterios nuevos</span>
-    <span class="tag">Nivel AA</span>
+    <span class="tag"><span class="lang-en">Accessibility</span><span class="lang-es">Accesibilidad</span></span>
+    <span class="tag"><span class="lang-en">9 new criteria</span><span class="lang-es">9 criterios nuevos</span></span>
+    <span class="tag">Level AA</span>
     <span class="tag">EN 301 549</span>
-    <span class="tag">Ley 11/2023 ES</span>
+    <span class="tag"><span class="lang-en">Law 11/2023 (ES)</span><span class="lang-es">Ley 11/2023 ES</span></span>
   </div>
 </div>
 </div>
@@ -133,75 +190,142 @@ footer{padding:24px 0 32px;border-top:1px solid var(--line);font-size:12px;color
 <main id="main-content">
 
 <div class="legal-band">
-  <strong>Marco legal:</strong>
-  <strong>España</strong> — Ley 11/2023 (transpone Directiva UE 2016/2102; exige WCAG 2.1 AA como mínimo, buena práctica: WCAG 2.2 AA) ·
-  <strong>UE</strong> — Directiva 2016/2102/UE · EN 301 549 v3.2.1 (2021) ·
-  <strong>EE.UU.</strong> — Section 508 (Rehabilitation Act, revisada 2018) ·
-  <strong>Estándar técnico</strong> — WCAG 2.2 (W3C Recommendation, 5 oct 2023)
+  <strong><span class="lang-en">Legal framework:</span><span class="lang-es">Marco legal:</span></strong>
+  <strong><span class="lang-en">Spain</span><span class="lang-es">España</span></strong> — <span class="lang-en">Law 11/2023 (transposes EU Directive 2016/2102; requires WCAG 2.1 AA as minimum; best practice: WCAG 2.2 AA)</span><span class="lang-es">Ley 11/2023 (transpone Directiva UE 2016/2102; exige WCAG 2.1 AA como mínimo, buena práctica: WCAG 2.2 AA)</span> ·
+  <strong>EU</strong> — Directive 2016/2102/UE · EN 301 549 v3.2.1 (2021) ·
+  <strong><span class="lang-en">USA</span><span class="lang-es">EE.UU.</span></strong> — Section 508 (Rehabilitation Act, <span class="lang-en">revised</span><span class="lang-es">revisada</span> 2018) ·
+  <strong><span class="lang-en">Technical standard</span><span class="lang-es">Estándar técnico</span></strong> — WCAG 2.2 (W3C Recommendation, 5 Oct 2023)
 </div>
 
 <!-- SECTION 1 -->
 <div class="sec">
-<div class="sec-head"><span class="sec-num">01</span>¿Por qué WCAG 2.2 y no WCAG 2.1?</div>
-<p>WCAG 2.2 (W3C, octubre 2023) añade <strong>9 criterios nuevos</strong> sobre WCAG 2.1. Los más relevantes para diseño instruccional digital:</p>
+<div class="sec-head"><span class="sec-num">01</span>
+  <span class="lang-en">Why WCAG 2.2 and not WCAG 2.1?</span>
+  <span class="lang-es">¿Por qué WCAG 2.2 y no WCAG 2.1?</span>
+</div>
+<p>
+  <span class="lang-en">WCAG 2.2 (W3C, October 2023) adds <strong>9 new criteria</strong> on top of WCAG 2.1. The most relevant for digital instructional design:</span>
+  <span class="lang-es">WCAG 2.2 (W3C, octubre 2023) añade <strong>9 criterios nuevos</strong> sobre WCAG 2.1. Los más relevantes para diseño instruccional digital:</span>
+</p>
 <div class="tbl-wrap">
 <table>
-<thead><tr><th>Criterio</th><th>Nivel</th><th>Qué exige</th></tr></thead>
+<thead><tr>
+  <th><span class="lang-en">Criterion</span><span class="lang-es">Criterio</span></th>
+  <th><span class="lang-en">Level</span><span class="lang-es">Nivel</span></th>
+  <th><span class="lang-en">What it requires</span><span class="lang-es">Qué exige</span></th>
+</tr></thead>
 <tbody>
-<tr><td><strong>2.4.11</strong> Focus Not Obscured</td><td>AA ✦</td><td>El elemento con foco no queda <em>completamente</em> oculto por otro (p.ej. header sticky)</td></tr>
-<tr><td><strong>2.5.7</strong> Dragging Movements</td><td>AA ✦</td><td>Toda funcionalidad de arrastre tiene alternativa sin arrastre</td></tr>
-<tr><td><strong>2.5.8</strong> Target Size Minimum</td><td>AA ✦</td><td>Área de toque ≥ 24×24 CSS px</td></tr>
-<tr><td><strong>3.2.6</strong> Consistent Help</td><td>AA ✦</td><td>El mecanismo de ayuda aparece en la misma posición en todas las páginas</td></tr>
-<tr><td><strong>3.3.7</strong> Redundant Entry</td><td>A ✦</td><td>No solicitar información ya proporcionada en el mismo proceso</td></tr>
-<tr><td><strong>3.3.8</strong> Accessible Authentication</td><td>AA ✦</td><td>No requerir test cognitivo para autenticarse sin alternativa</td></tr>
+<tr>
+  <td><strong>2.4.11</strong> Focus Not Obscured</td>
+  <td>AA ✦</td>
+  <td><span class="lang-en">The focused element is not <em>completely</em> hidden by another (e.g. sticky header)</span><span class="lang-es">El elemento con foco no queda <em>completamente</em> oculto por otro (p.ej. header sticky)</span></td>
+</tr>
+<tr>
+  <td><strong>2.5.7</strong> Dragging Movements</td>
+  <td>AA ✦</td>
+  <td><span class="lang-en">Every drag function has a non-drag alternative</span><span class="lang-es">Toda funcionalidad de arrastre tiene alternativa sin arrastre</span></td>
+</tr>
+<tr>
+  <td><strong>2.5.8</strong> Target Size Minimum</td>
+  <td>AA ✦</td>
+  <td><span class="lang-en">Touch target area ≥ 24×24 CSS px</span><span class="lang-es">Área de toque ≥ 24×24 CSS px</span></td>
+</tr>
+<tr>
+  <td><strong>3.2.6</strong> Consistent Help</td>
+  <td>AA ✦</td>
+  <td><span class="lang-en">Help mechanism appears in the same position on every page</span><span class="lang-es">El mecanismo de ayuda aparece en la misma posición en todas las páginas</span></td>
+</tr>
+<tr>
+  <td><strong>3.3.7</strong> Redundant Entry</td>
+  <td>A ✦</td>
+  <td><span class="lang-en">Don't ask for information already provided in the same process</span><span class="lang-es">No solicitar información ya proporcionada en el mismo proceso</span></td>
+</tr>
+<tr>
+  <td><strong>3.3.8</strong> Accessible Authentication</td>
+  <td>AA ✦</td>
+  <td><span class="lang-en">Don't require a cognitive test to authenticate without an alternative</span><span class="lang-es">No requerir test cognitivo para autenticarse sin alternativa</span></td>
+</tr>
 </tbody>
 </table>
 </div>
-<p>✦ = Criterio nuevo en WCAG 2.2 (no presente en WCAG 2.1)</p>
+<p>✦ = <span class="lang-en">New criterion in WCAG 2.2 (not in WCAG 2.1)</span><span class="lang-es">Criterio nuevo en WCAG 2.2 (no presente en WCAG 2.1)</span></p>
 </div>
 
 <!-- SECTION 2 -->
 <div class="sec">
-<div class="sec-head"><span class="sec-num">02</span>Principios POUR</div>
+<div class="sec-head"><span class="sec-num">02</span>
+  <span class="lang-en">POUR Principles</span>
+  <span class="lang-es">Principios POUR</span>
+</div>
 <ul>
-  <li><strong>Perceptible</strong> — La información puede percibirse por todos los sentidos.</li>
-  <li><strong>Operable</strong> — Los controles y la navegación son accionables con teclado y puntero.</li>
-  <li><strong>Comprensible</strong> — El lenguaje y el comportamiento son predecibles.</li>
-  <li><strong>Robusto</strong> — El contenido funciona con tecnologías de asistencia actuales y futuras.</li>
+  <li><strong><span class="lang-en">Perceivable</span><span class="lang-es">Perceptible</span></strong> — <span class="lang-en">Information can be perceived through any sense.</span><span class="lang-es">La información puede percibirse por todos los sentidos.</span></li>
+  <li><strong><span class="lang-en">Operable</span><span class="lang-es">Operable</span></strong> — <span class="lang-en">Controls and navigation work with keyboard and pointer.</span><span class="lang-es">Los controles y la navegación son accionables con teclado y puntero.</span></li>
+  <li><strong><span class="lang-en">Understandable</span><span class="lang-es">Comprensible</span></strong> — <span class="lang-en">Language and behaviour are predictable.</span><span class="lang-es">El lenguaje y el comportamiento son predecibles.</span></li>
+  <li><strong><span class="lang-en">Robust</span><span class="lang-es">Robusto</span></strong> — <span class="lang-en">Content works with current and future assistive technologies.</span><span class="lang-es">El contenido funciona con tecnologías de asistencia actuales y futuras.</span></li>
 </ul>
 </div>
 
 <!-- SECTION 3 -->
 <div class="sec">
-<div class="sec-head"><span class="sec-num">03</span>Proceso de auditoría — 6 pasos</div>
-
+<div class="sec-head"><span class="sec-num">03</span>
+  <span class="lang-en">Audit process — 6 steps</span>
+  <span class="lang-es">Proceso de auditoría — 6 pasos</span>
+</div>
 <div class="steps">
-  <div class="step"><div class="step-n">1</div><h3>Preparación</h3><p>Define el alcance (páginas únicas), anota la URL canónica, elige agente de usuario (Chrome + NVDA o Safari + VoiceOver), descarga WCAG Quick Reference.</p></div>
-  <div class="step"><div class="step-n">2</div><h3>Inspección automatizada (~30-40 % de problemas)</h3><p>axe DevTools (extensión Chrome/Edge) · WAVE (webaim.org/wave) · Lighthouse (DevTools → Lighthouse tab). Exporta el informe.</p></div>
-  <div class="step"><div class="step-n">3</div><h3>Verificación manual con teclado</h3><p>Tab / Shift+Tab · Enter / Espacio · teclas de flecha · verificar skip link, foco visible, sin trampa de foco.</p></div>
-  <div class="step"><div class="step-n">4</div><h3>Lector de pantalla</h3><p>NVDA + Firefox (Windows, gratis) o VoiceOver + Safari (macOS/iOS). Navega por encabezados, links, formularios. Verifica alt text, aria-live, nombres accesibles.</p></div>
-  <div class="step"><div class="step-n">5</div><h3>Contraste de color</h3><p>Colour Contrast Analyser (TPGi, gratis). Texto normal ≥ 4.5:1 · Texto grande ≥ 3:1 · Componentes UI ≥ 3:1.</p></div>
-  <div class="step"><div class="step-n">6</div><h3>Documentar hallazgos</h3><p>Tabla: Criterio · Descripción · Impacto · Pasos para reproducir · Elemento HTML · Severidad · Recomendación · Estado.</p></div>
+  <div class="step">
+    <div class="step-n">1</div>
+    <h3><span class="lang-en">Preparation</span><span class="lang-es">Preparación</span></h3>
+    <p><span class="lang-en">Define the scope (unique pages), note the canonical URL, choose your user agent (Chrome + NVDA or Safari + VoiceOver), download the WCAG Quick Reference.</span><span class="lang-es">Define el alcance (páginas únicas), anota la URL canónica, elige agente de usuario (Chrome + NVDA o Safari + VoiceOver), descarga WCAG Quick Reference.</span></p>
+  </div>
+  <div class="step">
+    <div class="step-n">2</div>
+    <h3><span class="lang-en">Automated inspection (~30–40 % of issues)</span><span class="lang-es">Inspección automatizada (~30–40 % de problemas)</span></h3>
+    <p><span class="lang-en">axe DevTools (Chrome/Edge extension) · WAVE (webaim.org/wave) · Lighthouse (DevTools → Lighthouse tab). Export the report.</span><span class="lang-es">axe DevTools (extensión Chrome/Edge) · WAVE (webaim.org/wave) · Lighthouse (DevTools → Lighthouse tab). Exporta el informe.</span></p>
+  </div>
+  <div class="step">
+    <div class="step-n">3</div>
+    <h3><span class="lang-en">Manual keyboard check</span><span class="lang-es">Verificación manual con teclado</span></h3>
+    <p><span class="lang-en">Tab / Shift+Tab · Enter / Space · Arrow keys · verify skip link, visible focus, no focus trap.</span><span class="lang-es">Tab / Shift+Tab · Enter / Espacio · teclas de flecha · verificar skip link, foco visible, sin trampa de foco.</span></p>
+  </div>
+  <div class="step">
+    <div class="step-n">4</div>
+    <h3><span class="lang-en">Screen reader</span><span class="lang-es">Lector de pantalla</span></h3>
+    <p><span class="lang-en">NVDA + Firefox (Windows, free) or VoiceOver + Safari (macOS/iOS). Navigate by headings, links, forms. Verify alt text, aria-live, accessible names.</span><span class="lang-es">NVDA + Firefox (Windows, gratis) o VoiceOver + Safari (macOS/iOS). Navega por encabezados, links, formularios. Verifica alt text, aria-live, nombres accesibles.</span></p>
+  </div>
+  <div class="step">
+    <div class="step-n">5</div>
+    <h3><span class="lang-en">Colour contrast</span><span class="lang-es">Contraste de color</span></h3>
+    <p><span class="lang-en">Colour Contrast Analyser (TPGi, free). Normal text ≥ 4.5:1 · Large text ≥ 3:1 · UI components ≥ 3:1.</span><span class="lang-es">Colour Contrast Analyser (TPGi, gratis). Texto normal ≥ 4.5:1 · Texto grande ≥ 3:1 · Componentes UI ≥ 3:1.</span></p>
+  </div>
+  <div class="step">
+    <div class="step-n">6</div>
+    <h3><span class="lang-en">Document findings</span><span class="lang-es">Documentar hallazgos</span></h3>
+    <p><span class="lang-en">Table: Criterion · Description · Impact · Reproduction steps · HTML element · Severity · Recommendation · Status.</span><span class="lang-es">Tabla: Criterio · Descripción · Impacto · Pasos para reproducir · Elemento HTML · Severidad · Recomendación · Estado.</span></p>
+  </div>
 </div>
 </div>
 
 <!-- SECTION 4 -->
 <div class="sec">
-<div class="sec-head"><span class="sec-num">04</span>Correcciones más frecuentes</div>
+<div class="sec-head"><span class="sec-num">04</span>
+  <span class="lang-en">Most common fixes</span>
+  <span class="lang-es">Correcciones más frecuentes</span>
+</div>
 
-<h3 style="font-size:15px;font-weight:700;color:var(--deep);margin-bottom:10px">Skip Link — 2.4.1 Bypass Blocks (Nivel A)</h3>
+<p class="sub-h">Skip Link — 2.4.1 Bypass Blocks (Level A)</p>
 <div class="diff-row">
   <div class="diff-col">
-    <div class="diff-label before">ANTES — Fallo 2.4.1</div>
+    <div class="diff-label before"><span class="lang-en">BEFORE — Fail 2.4.1</span><span class="lang-es">ANTES — Fallo 2.4.1</span></div>
 <pre><code>&lt;body&gt;
   &lt;nav&gt;…nav completa…&lt;/nav&gt;
   &lt;main&gt;…contenido…&lt;/main&gt;
 &lt;/body&gt;</code></pre>
   </div>
   <div class="diff-col">
-    <div class="diff-label after">DESPUÉS — Conforme</div>
+    <div class="diff-label after"><span class="lang-en">AFTER — Conformant</span><span class="lang-es">DESPUÉS — Conforme</span></div>
 <pre><code>&lt;body&gt;
-  &lt;a href="#main-content" class="skip-link"&gt;
+  &lt;a href="#main-content"
+     class="skip-link"&gt;
     Skip to main content
   &lt;/a&gt;
   &lt;nav&gt;…nav completa…&lt;/nav&gt;
@@ -210,81 +334,159 @@ footer{padding:24px 0 32px;border-top:1px solid var(--line);font-size:12px;color
   </div>
 </div>
 
-<h3 style="font-size:15px;font-weight:700;color:var(--deep);margin:20px 0 10px">aria-live — 4.1.3 Status Messages (Nivel AA)</h3>
+<p class="sub-h">aria-live — 4.1.3 Status Messages (Level AA)</p>
 <div class="diff-row">
   <div class="diff-col">
-    <div class="diff-label before">ANTES — Sin anuncio</div>
+    <div class="diff-label before"><span class="lang-en">BEFORE — No announcement</span><span class="lang-es">ANTES — Sin anuncio</span></div>
 <pre><code>&lt;div id="panelHead"&gt;&lt;/div&gt;
-&lt;!-- textContent cambia silenciosamente --&gt;</code></pre>
+&lt;!-- textContent changes silently --&gt;</code></pre>
   </div>
   <div class="diff-col">
-    <div class="diff-label after">DESPUÉS — Anunciado</div>
+    <div class="diff-label after"><span class="lang-en">AFTER — Announced</span><span class="lang-es">DESPUÉS — Anunciado</span></div>
 <pre><code>&lt;div id="panelHead"
      aria-live="polite"
      aria-atomic="true"&gt;&lt;/div&gt;
-&lt;!-- VoiceOver/NVDA anuncia el cambio --&gt;</code></pre>
+&lt;!-- VoiceOver/NVDA announces change --&gt;</code></pre>
   </div>
 </div>
 
-<h3 style="font-size:15px;font-weight:700;color:var(--deep);margin:20px 0 10px">Alt text — 1.1.1 Non-text Content (Nivel A)</h3>
-<pre><code>&lt;!-- Imagen informativa --&gt;
-&lt;img src="grafico.png" alt="Gráfico: tasa de finalización 87% módulo 1"&gt;
+<p class="sub-h">Alt text — 1.1.1 Non-text Content (Level A)</p>
+<pre><code>&lt;!-- <span class="lang-en">Informative image</span><span class="lang-es">Imagen informativa</span> --&gt;
+&lt;img src="chart.png"
+     alt="<span class="lang-en">Chart: completion rate 87% module 1</span><span class="lang-es">Gráfico: tasa de finalización 87% módulo 1</span>"&gt;
 
-&lt;!-- Imagen decorativa (el lector la ignora) --&gt;
+&lt;!-- <span class="lang-en">Decorative image (screen reader ignores it)</span><span class="lang-es">Imagen decorativa (el lector la ignora)</span> --&gt;
 &lt;img src="deco.png" alt=""&gt;</code></pre>
 </div>
 
 <!-- SECTION 5 -->
 <div class="sec">
-<div class="sec-head"><span class="sec-num">05</span>Herramientas — resumen</div>
+<div class="sec-head"><span class="sec-num">05</span>
+  <span class="lang-en">Tools — summary</span>
+  <span class="lang-es">Herramientas — resumen</span>
+</div>
 <div class="tbl-wrap">
 <table>
-<thead><tr><th>Herramienta</th><th>Tipo</th><th>Qué detecta</th><th>Coste</th></tr></thead>
+<thead><tr>
+  <th><span class="lang-en">Tool</span><span class="lang-es">Herramienta</span></th>
+  <th><span class="lang-en">Type</span><span class="lang-es">Tipo</span></th>
+  <th><span class="lang-en">What it detects</span><span class="lang-es">Qué detecta</span></th>
+  <th><span class="lang-en">Cost</span><span class="lang-es">Coste</span></th>
+</tr></thead>
 <tbody>
-<tr><td><strong>axe DevTools</strong></td><td>Extensión browser</td><td>~30-40 % errores automáticos</td><td>Gratis</td></tr>
-<tr><td><strong>WAVE</strong></td><td>Web / extensión</td><td>Errores + estructura ARIA</td><td>Gratis</td></tr>
-<tr><td><strong>Lighthouse</strong></td><td>DevTools / CLI</td><td>Puntuación + auditoría básica</td><td>Gratis</td></tr>
-<tr><td><strong>Colour Contrast Analyser</strong></td><td>App escritorio</td><td>Contraste exacto</td><td>Gratis</td></tr>
-<tr><td><strong>NVDA</strong></td><td>Lector de pantalla</td><td>Windows + Firefox</td><td>Gratis</td></tr>
-<tr><td><strong>VoiceOver</strong></td><td>Lector de pantalla</td><td>macOS / iOS (integrado)</td><td>Incluido en OS</td></tr>
+<tr><td><strong>axe DevTools</strong></td><td><span class="lang-en">Browser extension</span><span class="lang-es">Extensión browser</span></td><td><span class="lang-en">~30–40 % automatic errors</span><span class="lang-es">~30–40 % errores automáticos</span></td><td><span class="lang-en">Free</span><span class="lang-es">Gratis</span></td></tr>
+<tr><td><strong>WAVE</strong></td><td><span class="lang-en">Web / extension</span><span class="lang-es">Web / extensión</span></td><td><span class="lang-en">Errors + ARIA structure</span><span class="lang-es">Errores + estructura ARIA</span></td><td><span class="lang-en">Free</span><span class="lang-es">Gratis</span></td></tr>
+<tr><td><strong>Lighthouse</strong></td><td><span class="lang-en">DevTools / CLI</span><span class="lang-es">DevTools / CLI</span></td><td><span class="lang-en">Score + basic audit</span><span class="lang-es">Puntuación + auditoría básica</span></td><td><span class="lang-en">Free</span><span class="lang-es">Gratis</span></td></tr>
+<tr><td><strong>Colour Contrast Analyser</strong></td><td><span class="lang-en">Desktop app</span><span class="lang-es">App escritorio</span></td><td><span class="lang-en">Exact contrast ratio</span><span class="lang-es">Contraste exacto</span></td><td><span class="lang-en">Free</span><span class="lang-es">Gratis</span></td></tr>
+<tr><td><strong>NVDA</strong></td><td><span class="lang-en">Screen reader</span><span class="lang-es">Lector de pantalla</span></td><td>Windows + Firefox</td><td><span class="lang-en">Free</span><span class="lang-es">Gratis</span></td></tr>
+<tr><td><strong>VoiceOver</strong></td><td><span class="lang-en">Screen reader</span><span class="lang-es">Lector de pantalla</span></td><td>macOS / iOS</td><td><span class="lang-en">Built into OS</span><span class="lang-es">Incluido en OS</span></td></tr>
 </tbody>
 </table>
 </div>
-
 <div class="callout">
-  <strong>⚠ Los automatizados solo cubren ~30-40 % de los criterios WCAG.</strong>
-  Siempre verificar manualmente: teclado, lector de pantalla, contraste visual, foco oscurecido (2.4.11), semántica HTML (1.3.1), propósito de enlace (2.4.4).
+  <strong>⚠ <span class="lang-en">Automated tools only cover ~30–40 % of WCAG criteria.</span><span class="lang-es">Los automatizados solo cubren ~30–40 % de los criterios WCAG.</span></strong>
+  <span class="lang-en">Always verify manually: keyboard, screen reader, visual contrast, focus not obscured (2.4.11), HTML semantics (1.3.1), link purpose (2.4.4).</span>
+  <span class="lang-es">Siempre verificar manualmente: teclado, lector de pantalla, contraste visual, foco oscurecido (2.4.11), semántica HTML (1.3.1), propósito de enlace (2.4.4).</span>
 </div>
 </div>
 
 <!-- SECTION 6 -->
 <div class="sec">
-<div class="sec-head"><span class="sec-num">06</span>Ejercicio práctico</div>
+<div class="sec-head"><span class="sec-num">06</span>
+  <span class="lang-en">Practical exercise</span>
+  <span class="lang-es">Ejercicio práctico</span>
+</div>
 <ol>
-  <li>Elige una URL de un proyecto e-learning o portfolio</li>
-  <li>Ejecuta axe DevTools y exporta el informe</li>
-  <li>Navega la página entera <strong>solo con teclado</strong> (sin ratón) durante 5 minutos</li>
-  <li>Verifica el contraste de los 3 colores de texto principales</li>
-  <li>Activa NVDA o VoiceOver y navega por encabezados</li>
-  <li>Documenta cada hallazgo en la tabla del Paso 6</li>
-  <li>Propón la corrección de código para los 2 problemas más graves</li>
+  <li><span class="lang-en">Choose a URL from an e-learning project or portfolio</span><span class="lang-es">Elige una URL de un proyecto e-learning o portfolio</span></li>
+  <li><span class="lang-en">Run axe DevTools and export the report</span><span class="lang-es">Ejecuta axe DevTools y exporta el informe</span></li>
+  <li><span class="lang-en">Navigate the whole page <strong>keyboard-only</strong> (no mouse) for 5 minutes</span><span class="lang-es">Navega la página entera <strong>solo con teclado</strong> (sin ratón) durante 5 minutos</span></li>
+  <li><span class="lang-en">Check the contrast of the 3 main text colours</span><span class="lang-es">Verifica el contraste de los 3 colores de texto principales</span></li>
+  <li><span class="lang-en">Activate NVDA or VoiceOver and navigate by headings</span><span class="lang-es">Activa NVDA o VoiceOver y navega por encabezados</span></li>
+  <li><span class="lang-en">Document each finding in the Step 6 table</span><span class="lang-es">Documenta cada hallazgo en la tabla del Paso 6</span></li>
+  <li><span class="lang-en">Propose a code fix for the 2 most serious problems</span><span class="lang-es">Propón la corrección de código para los 2 problemas más graves</span></li>
 </ol>
-<p><strong>Criterio de éxito:</strong> Has identificado al menos 1 fallo Nivel A y propuesto su corrección con código antes/después.</p>
+<p><strong><span class="lang-en">Success criterion:</span><span class="lang-es">Criterio de éxito:</span></strong>
+  <span class="lang-en">You have identified at least 1 Level A failure and proposed its fix with before/after code.</span>
+  <span class="lang-es">Has identificado al menos 1 fallo Nivel A y propuesto su corrección con código antes/después.</span>
+</p>
 </div>
 
 <div class="bottom-nav">
-  <a href="../index.html" class="chip">← Volver al Bootcamp</a>
-  <a href="../scorm-guide/index.html" class="chip">SCORM · LMS Guide →</a>
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="chip">
+    <span class="lang-en">← Back to Bootcamp</span>
+    <span class="lang-es">← Volver al Bootcamp</span>
+  </a>
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/scorm-guide/" class="chip chip-primary">
+    <span class="lang-en">SCORM · LMS Guide →</span>
+    <span class="lang-es">SCORM · Guía LMS →</span>
+  </a>
 </div>
 
 </main>
-</div><!-- /wrap -->
+</div>
 
 <footer>
 <div class="wrap">
   © 2026 Ana Eslava-Graterol · Bootcamp Learning ArchiTech ·
-  WCAG 2.2 (W3C, oct 2023) · Ley 11/2023 (ES) · EN 301 549 v3.2.1
+  WCAG 2.2 (W3C, Oct 2023) · Ley 11/2023 (ES) · EN 301 549 v3.2.1
 </div>
 </footer>
+
+<script>
+/* ── Language toggle ── */
+(function(){
+  var root = document.documentElement;
+  var current = 'en';
+  try { current = localStorage.getItem('oi-lang') || 'en'; } catch(e){}
+
+  function setLang(lang){
+    current = lang;
+    root.setAttribute('data-lang', lang);
+    root.setAttribute('lang', lang);
+    var btn = document.getElementById('lang-btn');
+    if(btn){
+      btn.textContent = lang === 'en' ? 'ES' : 'EN';
+      btn.setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
+    }
+    try { localStorage.setItem('oi-lang', lang); } catch(e){}
+  }
+
+  setLang(current);
+
+  document.getElementById('lang-btn').addEventListener('click', function(){
+    setLang(current === 'en' ? 'es' : 'en');
+  });
+})();
+
+/* ── Theme toggle — dark → light → system ── */
+(function(){
+  var btn   = document.getElementById('theme-btn');
+  var root  = document.documentElement;
+  var cycle = ['dark','light','system'];
+  var labels = { dark:'Light', light:'Dark', system:'Auto' };
+  var ariaLabels = {
+    dark:   'Currently dark. Click to switch to light.',
+    light:  'Currently light. Click to switch to dark.',
+    system: 'Following system theme. Click to switch to dark.'
+  };
+  var current = 'dark';
+  try { current = localStorage.getItem('oi-theme') || 'dark'; } catch(e){}
+
+  function applyTheme(t){
+    if(t === 'system'){ root.removeAttribute('data-theme'); }
+    else { root.setAttribute('data-theme', t); }
+    var nextIdx = (cycle.indexOf(t) + 1) % cycle.length;
+    btn.textContent = labels[cycle[nextIdx]];
+    btn.setAttribute('aria-label', ariaLabels[t]);
+    try { localStorage.setItem('oi-theme', t); } catch(e){}
+    current = t;
+  }
+
+  applyTheme(current);
+  btn.addEventListener('click', function(){
+    applyTheme(cycle[(cycle.indexOf(current) + 1) % cycle.length]);
+  });
+})();
+</script>
 </body>
 </html>
