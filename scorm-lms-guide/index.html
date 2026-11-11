@@ -1,0 +1,1027 @@
+<title>SCORM → LMS Deploy Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../shared/oi.css">
+
+<style>
+/* ── Ocean Ink tokens ── */
+:root {
+  --canvas: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface2: #EEF0F8;
+  --ink: #1C1E2E;
+  --muted: #5B5F77;
+  --line: #E6E8F2;
+  --primary: #3B5BD6;
+  --primary-deep: #22307C;
+  --on-primary: #FFFFFF;
+  --accent: #E8A33D;
+  --accent-text: #9A5B00;
+  --success: #1A7A4A;
+  --success-bg: #E8F5EE;
+  --warn: #9A5B00;
+  --warn-bg: #FFF3DC;
+  --step-num: #3B5BD6;
+  --mock-bg: #1C2340;
+  --mock-bar: #141829;
+  --mock-btn: #3B5BD6;
+  --mock-btn2: #2A3D9A;
+  --mock-green: #22C55E;
+  --mock-text: #EEF0F8;
+  --mock-muted: #8892B0;
+  --tag-bg: #EEF0F8;
+  --tag-fg: #3B5BD6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas: #0F1120; --surface: #171A2B; --surface2: #1E2235;
+    --ink: #EEF0F8; --muted: #A6ADC8; --line: #2A2D44;
+    --primary: #9DB2FF; --primary-deep: #B9C8F6;
+    --accent-text: #EEC272;
+    --success: #4ADE80; --success-bg: #0D2818;
+    --warn: #EEC272; --warn-bg: #2A1D00;
+    --tag-bg: #1E2235; --tag-fg: #9DB2FF;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --canvas: #0F1120; --surface: #171A2B; --surface2: #1E2235;
+  --ink: #EEF0F8; --muted: #A6ADC8; --line: #2A2D44;
+  --primary: #9DB2FF; --primary-deep: #B9C8F6;
+  --accent-text: #EEC272;
+  --success: #4ADE80; --success-bg: #0D2818;
+  --warn: #EEC272; --warn-bg: #2A1D00;
+  --tag-bg: #1E2235; --tag-fg: #9DB2FF;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.page-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 4rem;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #22307C, #3B5BD6, #E8A33D);
+  color: #fff;
+  padding-block: 3rem;
+  margin-bottom: 2.5rem;
+}
+.hero-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.hero-eyebrow {
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .85;
+  margin-bottom: .5rem;
+}
+.hero h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  text-wrap: balance;
+  margin: 0 0 .75rem;
+}
+.hero-sub {
+  opacity: .9;
+  font-size: 1rem;
+  max-width: 55ch;
+  margin: 0;
+}
+
+/* Phase header */
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 2.5rem 0 1rem;
+}
+.phase-num {
+  width: 2rem; height: 2rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 700;
+  font-size: .875rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+:root[data-theme="dark"] .phase-num,
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .phase-num { background: #3B5BD6; } }
+.phase-header h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary-deep);
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* Step card */
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+}
+.step-head {
+  display: flex;
+  align-items: flex-start;
+  gap: .875rem;
+  padding: 1rem 1.25rem .75rem;
+}
+.step-n {
+  width: 1.75rem; height: 1.75rem;
+  border-radius: 50%;
+  background: var(--surface2);
+  color: var(--step-num);
+  font-weight: 700;
+  font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: .15rem;
+}
+.step-title {
+  font-weight: 600;
+  font-size: .95rem;
+  color: var(--ink);
+  margin: 0 0 .2rem;
+}
+.step-desc {
+  font-size: .875rem;
+  color: var(--muted);
+  margin: 0;
+  min-width: 0;
+}
+
+/* UI mockup */
+.mock {
+  margin: 0 1.25rem 1.25rem;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'Inter', monospace;
+  font-size: .78rem;
+  background: var(--mock-bg);
+  color: var(--mock-text);
+}
+.mock-bar {
+  background: var(--mock-bar);
+  padding: .4rem .75rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.mock-dots { display: flex; gap: .3rem; }
+.mock-dots span {
+  width: .55rem; height: .55rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+}
+.mock-url {
+  flex: 1;
+  background: rgba(255,255,255,.08);
+  border-radius: 4px;
+  padding: .2rem .5rem;
+  font-size: .7rem;
+  color: var(--mock-muted);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mock-body { padding: .75rem; }
+.mock-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .4rem; }
+.mock-label { color: var(--mock-muted); font-size: .72rem; min-width: 100px; }
+.mock-val { color: var(--mock-text); font-size: .78rem; }
+.mock-badge {
+  display: inline-block;
+  padding: .15rem .5rem;
+  border-radius: 20px;
+  font-size: .68rem;
+  font-weight: 600;
+}
+.badge-green { background: rgba(34,197,94,.2); color: #4ADE80; }
+.badge-blue { background: rgba(59,91,214,.3); color: #9DB2FF; }
+.mock-btn {
+  display: inline-block;
+  padding: .3rem .8rem;
+  border-radius: 6px;
+  background: var(--mock-btn);
+  color: #fff;
+  font-weight: 600;
+  font-size: .75rem;
+  cursor: default;
+}
+.mock-btn.secondary {
+  background: rgba(255,255,255,.1);
+  color: var(--mock-text);
+}
+.mock-title {
+  font-family: 'Fraunces', serif;
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--mock-text);
+  margin-bottom: .5rem;
+}
+.mock-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.07);
+  margin: .6rem 0;
+}
+.mock-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  margin-bottom: .6rem;
+}
+.mock-nav-item {
+  padding: .3rem .6rem;
+  font-size: .72rem;
+  color: var(--mock-muted);
+  border-bottom: 2px solid transparent;
+}
+.mock-nav-item.active {
+  color: #9DB2FF;
+  border-bottom-color: #3B5BD6;
+}
+.mock-field {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 5px;
+  padding: .3rem .5rem;
+  color: var(--mock-text);
+  font-size: .75rem;
+  margin-bottom: .3rem;
+  width: 100%;
+}
+.mock-section-title {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--mock-muted);
+  margin-bottom: .3rem;
+}
+.mock-stat {
+  background: rgba(255,255,255,.05);
+  border-radius: 6px;
+  padding: .4rem .6rem;
+  text-align: center;
+}
+.mock-stat-val {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--mock-text);
+  line-height: 1;
+}
+.mock-stat-label {
+  font-size: .65rem;
+  color: var(--mock-muted);
+  margin-top: .15rem;
+}
+.mock-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .4rem;
+  margin-bottom: .5rem;
+}
+
+/* Alert boxes */
+.tip, .warn-box {
+  display: flex;
+  gap: .625rem;
+  padding: .75rem 1rem;
+  border-radius: 8px;
+  font-size: .875rem;
+  margin: .75rem 0;
+}
+.tip { background: var(--success-bg); color: var(--success); }
+.warn-box { background: var(--warn-bg); color: var(--warn); }
+.tip-icon, .warn-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+
+/* Quick ref */
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.qr-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.qr-card h4 {
+  font-family: 'Fraunces', serif;
+  font-size: .95rem;
+  color: var(--primary-deep);
+  margin: 0 0 .5rem;
+}
+.qr-card ul {
+  margin: 0; padding-left: 1.1rem;
+  font-size: .82rem;
+  color: var(--muted);
+  display: flex; flex-direction: column; gap: .2rem;
+}
+.qr-card li { margin: 0; }
+
+/* LRS table */
+.lrs-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.lrs-table th {
+  text-align: left;
+  padding: .4rem .6rem;
+  background: var(--surface2);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: .72rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+.lrs-table td {
+  padding: .5rem .6rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+.lrs-table tr:last-child td { border-bottom: none; }
+.check { color: var(--success); font-weight: 700; }
+.cross { color: var(--muted); }
+
+/* flow diagram */
+.flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: 1rem 0;
+  font-size: .8rem;
+}
+.flow-box {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: .35rem .7rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+.flow-box.primary-box {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+.flow-arr { color: var(--muted); font-size: 1rem; }
+
+section.phase { margin-bottom: 1rem; }
+</style>
+
+<!-- Site header -->
+<header class="oi-site-header">
+  <a href="../index.html" class="oi-back-btn" aria-label="Back to index">←</a>
+  <span class="oi-site-title" data-i18n="site-title">Bootcamp · ProfeAnaEslavaEdTech</span>
+  <div class="oi-ctrl-row">
+    <button id="oi-theme-btn" class="oi-ctrl-btn" onclick="(function(){var d=document.documentElement,t=d.getAttribute('data-theme');d.setAttribute('data-theme',t==='dark'?'light':t==='light'?'':t===''?'dark':'dark');localStorage.setItem('oi-theme',d.getAttribute('data-theme')||'');})()" aria-label="Toggle theme">◑</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow" data-i18n="hero-eyebrow">SCORM · LMS · xAPI</p>
+    <h1 data-i18n="hero-title">SCORM → LMS: Deploy Guide</h1>
+    <p class="hero-sub" data-i18n="hero-sub">Step-by-step guide to publish your SCORM course to any LMS and track learners with xAPI. For dummies.</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- Flow overview -->
+  <div class="flow">
+    <div class="flow-box">📦 dist/course.zip</div>
+    <span class="flow-arr">→</span>
+    <div class="flow-box primary-box">SCORM Cloud</div>
+    <span class="flow-arr">→</span>
+    <div class="flow-box">Dispatch zip</div>
+    <span class="flow-arr">→</span>
+    <div class="flow-box">Moodle / Chamilo</div>
+    <span class="flow-arr">→</span>
+    <div class="flow-box">👩‍💻 Students</div>
+  </div>
+
+  <!-- PHASE 1: Upload to SCORM Cloud -->
+  <section class="phase">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <h2 data-i18n="p1-title">Upload to SCORM Cloud for testing</h2>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">1</div>
+        <div>
+          <p class="step-title" data-i18n="s1-title">Go to app.scorm.com and log in</p>
+          <p class="step-desc" data-i18n="s1-desc">Free account: 10 free course registrations. Use it to test before uploading to your real LMS.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">https://app.scorm.com</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-title">⚡ SCORM Cloud</div>
+          <div class="mock-row">
+            <span class="mock-label">Email</span>
+            <div class="mock-field" style="display:inline-block;width:auto;min-width:160px;">you@email.com</div>
+          </div>
+          <div class="mock-row">
+            <span class="mock-label">Password</span>
+            <div class="mock-field" style="display:inline-block;width:auto;min-width:160px;">••••••••</div>
+          </div>
+          <div class="mock-btn">Log In</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">2</div>
+        <div>
+          <p class="step-title" data-i18n="s2-title">Click "+ Add Content" → Import a SCORM package</p>
+          <p class="step-desc" data-i18n="s2-desc">Upload the .zip file from your <code>dist/</code> folder.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">app.scorm.com/sc/user/Library</div>
+        </div>
+        <div class="mock-body">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
+            <div class="mock-title">Library</div>
+            <div class="mock-btn">+ Add Content ▾</div>
+          </div>
+          <div style="background:rgba(59,91,214,.15);border:1px dashed rgba(59,91,214,.4);border-radius:8px;padding:1.2rem;text-align:center;color:#9DB2FF;font-size:.8rem;">
+            Drop your .zip here<br>
+            <span style="color:var(--mock-muted);font-size:.7rem;">or click to browse — select dist/ai-literacy.zip</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">3</div>
+        <div>
+          <p class="step-title" data-i18n="s3-title">Click "Launch" to test the course as a student</p>
+          <p class="step-desc" data-i18n="s3-desc">Complete the course — you'll see Completion, Score and Time update in real time.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">app.scorm.com › AI Literacy…</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-title">AI Literacy for Instructional Designers</div>
+          <div class="mock-row">
+            <span class="mock-badge badge-green">Enabled</span>
+            <span class="mock-badge badge-blue">SCORM 1.2</span>
+          </div>
+          <hr class="mock-divider">
+          <div class="mock-stats-row">
+            <div class="mock-stat"><div class="mock-stat-val">—</div><div class="mock-stat-label">Completion</div></div>
+            <div class="mock-stat"><div class="mock-stat-val">—</div><div class="mock-stat-label">Score</div></div>
+            <div class="mock-stat"><div class="mock-stat-val">0s</div><div class="mock-stat-label">Time</div></div>
+          </div>
+          <div class="mock-btn">▶ Launch</div>
+        </div>
+      </div>
+      <div class="tip" style="margin:0 1.25rem 1.25rem;">
+        <span class="tip-icon">✓</span>
+        <span data-i18n="tip1">If it imports without errors and Launch works, the .zip is ready for any LMS.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 2: Dispatch (share without LMS) -->
+  <section class="phase">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <h2 data-i18n="p2-title">Create a Dispatch (share with an LMS or external partner)</h2>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">4</div>
+        <div>
+          <p class="step-title" data-i18n="s4-title">Go to Dispatch → Create New Destination</p>
+          <p class="step-desc" data-i18n="s4-desc">A Destination is the LMS where the course will be hosted (e.g. "Moodle", "Chamilo").</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">app.scorm.com › Dispatch › Create Destination</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-title">Create Destination</div>
+          <div class="mock-section-title">Name</div>
+          <div class="mock-field">Moodle - My School</div>
+          <div class="mock-section-title">Notes</div>
+          <div class="mock-field" style="height:3em;">University Moodle instance</div>
+          <div style="display:flex;gap:.5rem;margin-top:.5rem;">
+            <div class="mock-btn">Save Destination</div>
+            <div class="mock-btn secondary">Cancel</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">5</div>
+        <div>
+          <p class="step-title" data-i18n="s5-title">Create the Dispatch — select course + destination</p>
+          <p class="step-desc" data-i18n="s5-desc">Select the course, pick your destination, check "Hash all PII data", then click Create.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">app.scorm.com › Create Dispatches</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-title">Create Dispatches</div>
+          <div class="mock-section-title">Course</div>
+          <div class="mock-field">AI Literacy for Instructional Designers</div>
+          <div class="mock-section-title">Destination</div>
+          <div class="mock-row"><span class="mock-badge badge-blue">Moodle - My School ✓</span></div>
+          <div class="mock-row" style="margin-top:.4rem;">
+            <input type="checkbox" checked disabled style="margin-right:.35rem;accent-color:#3B5BD6;">
+            <span style="font-size:.75rem;color:var(--mock-muted);">Hash all PII data in this dispatch</span>
+          </div>
+          <div class="mock-btn" style="margin-top:.5rem;">Create</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">6</div>
+        <div>
+          <p class="step-title" data-i18n="s6-title">Download the Dispatch SCORM 1.2 package</p>
+          <p class="step-desc" data-i18n="s6-desc">Click Share → "Download SCORM 1.2 package". This special zip reports back to SCORM Cloud's xAPI LRS.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">app.scorm.com › Dispatch Overview</div>
+        </div>
+        <div class="mock-body">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <div class="mock-title">AI Literacy… / Moodle - My School</div>
+              <div class="mock-row">
+                <span class="mock-badge badge-green">Enabled</span>
+                <span class="mock-badge badge-blue">Open</span>
+              </div>
+            </div>
+            <div style="position:relative;">
+              <div class="mock-btn">Share ▾</div>
+              <div style="margin-top:.3rem;background:#0F1120;border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:.3rem 0;min-width:180px;">
+                <div style="padding:.3rem .75rem;font-size:.72rem;color:var(--mock-muted);">Download LTI 1.1 CSV</div>
+                <div style="padding:.3rem .75rem;font-size:.72rem;color:#9DB2FF;font-weight:600;">▶ Download SCORM 1.2 package</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="warn-box" style="margin:0 1.25rem 1.25rem;">
+        <span class="warn-icon">⚠</span>
+        <span data-i18n="warn1">Use this Dispatch zip for Moodle/Chamilo — NOT the original from your dist/ folder. This one sends xAPI data back to SCORM Cloud.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 3: Moodle -->
+  <section class="phase">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <h2 data-i18n="p3-title">Upload to Moodle</h2>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">7</div>
+        <div>
+          <p class="step-title" data-i18n="s7-title">Enable editing and add a SCORM activity</p>
+          <p class="step-desc" data-i18n="s7-desc">In your course: Turn editing on → Add activity or resource → SCORM package.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">moodle.yourschool.edu › Course → Add activity</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-nav">
+            <div class="mock-nav-item">Activities</div>
+            <div class="mock-nav-item active">All</div>
+            <div class="mock-nav-item">Resources</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
+            <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:.4rem;text-align:center;font-size:.7rem;color:var(--mock-muted);">Assignment</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:.4rem;text-align:center;font-size:.7rem;color:var(--mock-muted);">Forum</div>
+            <div style="background:rgba(59,91,214,.25);border-radius:6px;padding:.4rem;text-align:center;font-size:.7rem;color:#9DB2FF;font-weight:600;border:1px solid rgba(59,91,214,.4);">SCORM ✓</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:.4rem;text-align:center;font-size:.7rem;color:var(--mock-muted);">Quiz</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:.4rem;text-align:center;font-size:.7rem;color:var(--mock-muted);">Wiki</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:6px;padding:.4rem;text-align:center;font-size:.7rem;color:var(--mock-muted);">Video</div>
+          </div>
+          <div class="mock-btn" style="margin-top:.6rem;">Add →</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">8</div>
+        <div>
+          <p class="step-title" data-i18n="s8-title">Upload the Dispatch zip and save</p>
+          <p class="step-desc" data-i18n="s8-desc">In the SCORM settings, give it a name and upload the zip. Leave all other settings at default.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">moodle.yourschool.edu › Adding SCORM package</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-section-title">Name</div>
+          <div class="mock-field">AI Literacy for Instructional Designers</div>
+          <div class="mock-section-title">Package file</div>
+          <div style="border:1px dashed rgba(255,255,255,.2);border-radius:6px;padding:.6rem;text-align:center;font-size:.75rem;color:#9DB2FF;margin-bottom:.4rem;">
+            📂 AI_Literacy…_version_0.zip <span style="color:#4ADE80;">✓ uploaded</span>
+          </div>
+          <div style="display:flex;gap:.5rem;">
+            <div class="mock-btn">Save and display</div>
+            <div class="mock-btn secondary">Cancel</div>
+          </div>
+        </div>
+      </div>
+      <div class="tip" style="margin:0 1.25rem 1.25rem;">
+        <span class="tip-icon">✓</span>
+        <span data-i18n="tip2">Students now see the course in their Moodle dashboard. When they complete it, the data appears in SCORM Cloud → xAPI LRS.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 4: Chamilo -->
+  <section class="phase">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <h2 data-i18n="p4-title">Upload to Chamilo</h2>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">9</div>
+        <div>
+          <p class="step-title" data-i18n="s9-title">Go to your course → Learning Paths → Import SCORM</p>
+          <p class="step-desc" data-i18n="s9-desc">In Chamilo, SCORM courses live under Learning Paths (Rutas de aprendizaje).</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">chamilo.yourschool.edu › course/COURSE/lp</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-title">Learning Paths</div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem;">
+            <div class="mock-btn">+ New learning path</div>
+            <div class="mock-btn" style="background:rgba(59,91,214,.4);">📥 Import SCORM</div>
+          </div>
+          <div style="font-size:.72rem;color:var(--mock-muted);">Supported: SCORM 1.2, SCORM 2004, AICC</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">10</div>
+        <div>
+          <p class="step-title" data-i18n="s10-title">Select the zip and import</p>
+          <p class="step-desc" data-i18n="s10-desc">Browse for the Dispatch zip file → click Import. Chamilo unpacks it automatically.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">chamilo.yourschool.edu › Import SCORM</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-section-title">Upload .zip file</div>
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;">
+            <div class="mock-field" style="width:auto;flex:1;">AI_Literacy…_version_0.zip</div>
+            <div class="mock-btn secondary">Browse</div>
+          </div>
+          <div class="mock-btn">Import →</div>
+          <hr class="mock-divider">
+          <div style="color:#4ADE80;font-size:.78rem;">✓ Import successful — course added to Learning Paths</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASE 5: Track with xAPI LRS -->
+  <section class="phase">
+    <div class="phase-header">
+      <div class="phase-num">5</div>
+      <h2 data-i18n="p5-title">Track learners with xAPI LRS</h2>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">11</div>
+        <div>
+          <p class="step-title" data-i18n="s11-title">View xAPI data in SCORM Cloud</p>
+          <p class="step-desc" data-i18n="s11-desc">Go to xAPI LRS in SCORM Cloud's left menu. Every time a student completes the Dispatch course, an xAPI statement arrives here.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">app.scorm.com › xAPI LRS › Statements</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-title">xAPI Statements</div>
+          <div style="font-size:.72rem;margin-bottom:.5rem;">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.3rem;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.07);color:var(--mock-muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:.65rem;">
+              <span>Actor</span><span>Verb</span><span>Score</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.3rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.05);">
+              <span>student@edu.com</span><span style="color:#4ADE80;">completed</span><span>92/100</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.3rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.05);">
+              <span>learner2@edu…</span><span style="color:#EEC272;">attempted</span><span>—</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.3rem;padding:.35rem 0;">
+              <span>student3@edu…</span><span style="color:#4ADE80;">passed</span><span>88/100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-n">12</div>
+        <div>
+          <p class="step-title" data-i18n="s12-title">Optional: forward data to Veracity LRS</p>
+          <p class="step-desc" data-i18n="s12-desc">Veracity LRS (lrs.io) is a free hosted xAPI store. You can pipe SCORM Cloud's data there for richer analytics.</p>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-url">app.scorm.com › Applications → xAPI Pipes</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-title">xAPI Pipe to external LRS</div>
+          <div class="mock-section-title">LRS Endpoint</div>
+          <div class="mock-field">https://lrs.io/xAPI/</div>
+          <div class="mock-section-title">Username</div>
+          <div class="mock-field">your-veracity-key</div>
+          <div class="mock-section-title">Password</div>
+          <div class="mock-field">••••••••••</div>
+          <div class="mock-btn" style="margin-top:.4rem;">Save Pipe</div>
+        </div>
+      </div>
+      <div class="tip" style="margin:0 1.25rem 1.25rem;">
+        <span class="tip-icon">✓</span>
+        <span data-i18n="tip3">Veracity LRS is free at lrs.io — create an account, copy the endpoint URL and credentials, paste them in SCORM Cloud's xAPI Pipe settings.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LRS Comparison -->
+  <div style="background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.25rem;margin-bottom:2rem;">
+    <h3 style="font-family:'Fraunces',serif;font-size:1rem;color:var(--primary-deep);margin:0 0 .75rem;" data-i18n="lrs-title">LRS options at a glance</h3>
+    <div style="overflow-x:auto;">
+      <table class="lrs-table">
+        <thead>
+          <tr>
+            <th data-i18n="lrs-col1">LRS</th>
+            <th data-i18n="lrs-col2">Free tier</th>
+            <th data-i18n="lrs-col3">xAPI</th>
+            <th data-i18n="lrs-col4">Dashboard</th>
+            <th data-i18n="lrs-col5">Best for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SCORM Cloud</strong></td>
+            <td class="check">✓ 10 regs</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td data-i18n="lrs-scorm">Testing + dispatch</td>
+          </tr>
+          <tr>
+            <td><strong>Veracity / lrs.io</strong></td>
+            <td class="check">✓ free plan</td>
+            <td class="check">✓</td>
+            <td class="check">✓</td>
+            <td data-i18n="lrs-veracity">Analytics + reporting</td>
+          </tr>
+          <tr>
+            <td><strong>LTIJS / self-hosted</strong></td>
+            <td class="check">✓ free</td>
+            <td class="check">✓</td>
+            <td class="cross">—</td>
+            <td data-i18n="lrs-ltijs">Developers</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Quick reference -->
+  <div style="border-top:2px solid var(--line);padding-top:1.5rem;margin-bottom:2rem;">
+    <h3 style="font-family:'Fraunces',serif;font-size:1.1rem;color:var(--primary-deep);margin:0 0 .75rem;" data-i18n="qr-title">Quick reference</h3>
+    <div class="qr-grid">
+      <div class="qr-card">
+        <h4 data-i18n="qr1-title">Build the zip</h4>
+        <ul>
+          <li data-i18n="qr1-1">PowerShell: <code>cd bootcampLearningArchitech</code></li>
+          <li data-i18n="qr1-2"><code>python scripts/pack-scorm.py ai-literacy</code></li>
+          <li data-i18n="qr1-3">Output: <code>dist/ai-literacy.zip</code></li>
+        </ul>
+      </div>
+      <div class="qr-card">
+        <h4 data-i18n="qr2-title">Test in SCORM Cloud</h4>
+        <ul>
+          <li>app.scorm.com → Library</li>
+          <li data-i18n="qr2-1">+ Add Content → upload zip</li>
+          <li data-i18n="qr2-2">Launch → verify completion</li>
+        </ul>
+      </div>
+      <div class="qr-card">
+        <h4 data-i18n="qr3-title">Deploy to LMS</h4>
+        <ul>
+          <li data-i18n="qr3-1">Dispatch → download zip</li>
+          <li data-i18n="qr3-2">Moodle: Add activity → SCORM</li>
+          <li data-i18n="qr3-3">Chamilo: Learning Paths → Import SCORM</li>
+        </ul>
+      </div>
+      <div class="qr-card">
+        <h4 data-i18n="qr4-title">Track learners</h4>
+        <ul>
+          <li data-i18n="qr4-1">SCORM Cloud → xAPI LRS</li>
+          <li data-i18n="qr4-2">Veracity: lrs.io (free)</li>
+          <li data-i18n="qr4-3">Pipe: SCORM Cloud → Veracity</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:1rem 0;font-size:.8rem;color:var(--muted);">
+    <a href="../index.html" style="color:var(--primary);text-decoration:none;" data-i18n="back-link">← Back to Bootcamp</a>
+    &nbsp;·&nbsp;
+    <a href="https://profeanaeslavaedtech.github.io/portofolio/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;" data-i18n="portfolio-link">Portfolio (opens in new tab) →</a>
+  </div>
+
+</div>
+
+<script>
+// Restore saved theme
+(function(){
+  var t = '';
+  try { t = localStorage.getItem('oi-theme') || ''; } catch(e){}
+  if (t) document.documentElement.setAttribute('data-theme', t);
+})();
+</script>
+
+<script src="../shared/i18n.js"></script>
+
+<script>
+window.PAGE_I18N = {
+  en: {
+    'site-title': 'Bootcamp · ProfeAnaEslavaEdTech',
+    'hero-eyebrow': 'SCORM · LMS · xAPI',
+    'hero-title': 'SCORM → LMS: Deploy Guide',
+    'hero-sub': 'Step-by-step guide to publish your SCORM course to any LMS and track learners with xAPI. For dummies.',
+    'p1-title': 'Upload to SCORM Cloud for testing',
+    's1-title': 'Go to app.scorm.com and log in',
+    's1-desc': 'Free account: 10 free course registrations. Use it to test before uploading to your real LMS.',
+    's2-title': 'Click "+ Add Content" → Import a SCORM package',
+    's2-desc': 'Upload the .zip file from your <code>dist/</code> folder.',
+    's3-title': 'Click "Launch" to test the course as a student',
+    's3-desc': 'Complete the course — you\'ll see Completion, Score and Time update in real time.',
+    'tip1': 'If it imports without errors and Launch works, the .zip is ready for any LMS.',
+    'p2-title': 'Create a Dispatch (share with an LMS or external partner)',
+    's4-title': 'Go to Dispatch → Create New Destination',
+    's4-desc': 'A Destination is the LMS where the course will be hosted (e.g. "Moodle", "Chamilo").',
+    's5-title': 'Create the Dispatch — select course + destination',
+    's5-desc': 'Select the course, pick your destination, check "Hash all PII data", then click Create.',
+    's6-title': 'Download the Dispatch SCORM 1.2 package',
+    's6-desc': 'Click Share → "Download SCORM 1.2 package". This special zip reports back to SCORM Cloud\'s xAPI LRS.',
+    'warn1': 'Use this Dispatch zip for Moodle/Chamilo — NOT the original from your dist/ folder. This one sends xAPI data back to SCORM Cloud.',
+    'p3-title': 'Upload to Moodle',
+    's7-title': 'Enable editing and add a SCORM activity',
+    's7-desc': 'In your course: Turn editing on → Add activity or resource → SCORM package.',
+    's8-title': 'Upload the Dispatch zip and save',
+    's8-desc': 'In the SCORM settings, give it a name and upload the zip. Leave all other settings at default.',
+    'tip2': 'Students now see the course in their Moodle dashboard. When they complete it, the data appears in SCORM Cloud → xAPI LRS.',
+    'p4-title': 'Upload to Chamilo',
+    's9-title': 'Go to your course → Learning Paths → Import SCORM',
+    's9-desc': 'In Chamilo, SCORM courses live under Learning Paths (Rutas de aprendizaje).',
+    's10-title': 'Select the zip and import',
+    's10-desc': 'Browse for the Dispatch zip file → click Import. Chamilo unpacks it automatically.',
+    'p5-title': 'Track learners with xAPI LRS',
+    's11-title': 'View xAPI data in SCORM Cloud',
+    's11-desc': 'Go to xAPI LRS in SCORM Cloud\'s left menu. Every time a student completes the Dispatch course, an xAPI statement arrives here.',
+    's12-title': 'Optional: forward data to Veracity LRS',
+    's12-desc': 'Veracity LRS (lrs.io) is a free hosted xAPI store. You can pipe SCORM Cloud\'s data there for richer analytics.',
+    'tip3': 'Veracity LRS is free at lrs.io — create an account, copy the endpoint URL and credentials, paste them in SCORM Cloud\'s xAPI Pipe settings.',
+    'lrs-title': 'LRS options at a glance',
+    'lrs-col1': 'LRS', 'lrs-col2': 'Free tier', 'lrs-col3': 'xAPI', 'lrs-col4': 'Dashboard', 'lrs-col5': 'Best for',
+    'lrs-scorm': 'Testing + dispatch', 'lrs-veracity': 'Analytics + reporting', 'lrs-ltijs': 'Developers',
+    'qr-title': 'Quick reference',
+    'qr1-title': 'Build the zip', 'qr1-1': 'PowerShell: <code>cd bootcampLearningArchitech</code>', 'qr1-2': '<code>python scripts/pack-scorm.py ai-literacy</code>', 'qr1-3': 'Output: <code>dist/ai-literacy.zip</code>',
+    'qr2-title': 'Test in SCORM Cloud', 'qr2-1': '+ Add Content → upload zip', 'qr2-2': 'Launch → verify completion',
+    'qr3-title': 'Deploy to LMS', 'qr3-1': 'Dispatch → download zip', 'qr3-2': 'Moodle: Add activity → SCORM', 'qr3-3': 'Chamilo: Learning Paths → Import SCORM',
+    'qr4-title': 'Track learners', 'qr4-1': 'SCORM Cloud → xAPI LRS', 'qr4-2': 'Veracity: lrs.io (free)', 'qr4-3': 'Pipe: SCORM Cloud → Veracity',
+    'back-link': '← Back to Bootcamp', 'portfolio-link': 'Portfolio (opens in new tab) →'
+  },
+  es: {
+    'site-title': 'Bootcamp · ProfeAnaEslavaEdTech',
+    'hero-eyebrow': 'SCORM · LMS · xAPI',
+    'hero-title': 'SCORM → LMS: Guía de publicación',
+    'hero-sub': 'Guía paso a paso para publicar tu curso SCORM en cualquier LMS y rastrear el aprendizaje con xAPI. Para principiantes.',
+    'p1-title': 'Subir a SCORM Cloud para probar',
+    's1-title': 'Ve a app.scorm.com e inicia sesión',
+    's1-desc': 'Cuenta gratuita: 10 registros de curso gratis. Úsala para probar antes de subir a tu LMS real.',
+    's2-title': 'Haz clic en "+ Add Content" → Importar paquete SCORM',
+    's2-desc': 'Sube el archivo .zip de tu carpeta <code>dist/</code>.',
+    's3-title': 'Haz clic en "Launch" para probar el curso como estudiante',
+    's3-desc': 'Completa el curso — verás Completion, Score y Time actualizarse en tiempo real.',
+    'tip1': 'Si importa sin errores y Launch funciona, el .zip está listo para cualquier LMS.',
+    'p2-title': 'Crear un Dispatch (compartir con un LMS o socio externo)',
+    's4-title': 'Ve a Dispatch → Create New Destination',
+    's4-desc': 'Un Destination es el LMS donde estará el curso (p. ej. "Moodle", "Chamilo").',
+    's5-title': 'Crea el Dispatch — selecciona curso + destination',
+    's5-desc': 'Selecciona el curso, elige tu destination, marca "Hash all PII data" y haz clic en Create.',
+    's6-title': 'Descarga el paquete SCORM 1.2 del Dispatch',
+    's6-desc': 'Haz clic en Share → "Download SCORM 1.2 package". Este zip especial reporta datos al xAPI LRS de SCORM Cloud.',
+    'warn1': 'Usa este zip del Dispatch para Moodle/Chamilo — NO el original de tu carpeta dist/. Este envía datos xAPI de vuelta a SCORM Cloud.',
+    'p3-title': 'Subir a Moodle',
+    's7-title': 'Activa la edición y agrega una actividad SCORM',
+    's7-desc': 'En tu curso: Activar edición → Agregar actividad o recurso → Paquete SCORM.',
+    's8-title': 'Sube el zip del Dispatch y guarda',
+    's8-desc': 'En la configuración SCORM, ponle un nombre y sube el zip. Deja el resto en valores por defecto.',
+    'tip2': 'Los estudiantes ven el curso en su panel de Moodle. Al completarlo, los datos aparecen en SCORM Cloud → xAPI LRS.',
+    'p4-title': 'Subir a Chamilo',
+    's9-title': 'Ve a tu curso → Rutas de aprendizaje → Importar SCORM',
+    's9-desc': 'En Chamilo, los cursos SCORM viven bajo Rutas de aprendizaje.',
+    's10-title': 'Selecciona el zip e importa',
+    's10-desc': 'Busca el zip del Dispatch → haz clic en Importar. Chamilo lo descomprime automáticamente.',
+    'p5-title': 'Rastrear estudiantes con xAPI LRS',
+    's11-title': 'Ver datos xAPI en SCORM Cloud',
+    's11-desc': 'Ve a xAPI LRS en el menú izquierdo de SCORM Cloud. Cada vez que un estudiante complete el curso del Dispatch, llegará una sentencia xAPI.',
+    's12-title': 'Opcional: enviar datos a Veracity LRS',
+    's12-desc': 'Veracity LRS (lrs.io) es un almacén xAPI gratuito. Puedes redirigir los datos de SCORM Cloud allí para un análisis más completo.',
+    'tip3': 'Veracity LRS es gratis en lrs.io — crea una cuenta, copia la URL del endpoint y las credenciales, pégalas en la configuración de xAPI Pipe de SCORM Cloud.',
+    'lrs-title': 'Opciones de LRS de un vistazo',
+    'lrs-col1': 'LRS', 'lrs-col2': 'Gratis', 'lrs-col3': 'xAPI', 'lrs-col4': 'Panel', 'lrs-col5': 'Ideal para',
+    'lrs-scorm': 'Testing + dispatch', 'lrs-veracity': 'Análisis + reportes', 'lrs-ltijs': 'Desarrolladores',
+    'qr-title': 'Referencia rápida',
+    'qr1-title': 'Crear el zip', 'qr1-1': 'PowerShell: <code>cd bootcampLearningArchitech</code>', 'qr1-2': '<code>python scripts/pack-scorm.py ai-literacy</code>', 'qr1-3': 'Salida: <code>dist/ai-literacy.zip</code>',
+    'qr2-title': 'Probar en SCORM Cloud', 'qr2-1': '+ Add Content → subir zip', 'qr2-2': 'Launch → verificar completion',
+    'qr3-title': 'Publicar en LMS', 'qr3-1': 'Dispatch → descargar zip', 'qr3-2': 'Moodle: Agregar actividad → SCORM', 'qr3-3': 'Chamilo: Rutas de aprendizaje → Importar SCORM',
+    'qr4-title': 'Rastrear estudiantes', 'qr4-1': 'SCORM Cloud → xAPI LRS', 'qr4-2': 'Veracity: lrs.io (gratis)', 'qr4-3': 'Pipe: SCORM Cloud → Veracity',
+    'back-link': '← Volver al Bootcamp', 'portfolio-link': 'Portafolio (abre en nueva pestaña) →'
+  }
+};
+</script>

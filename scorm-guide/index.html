@@ -557,6 +557,116 @@
   </div>
   <div class="phase-sep"></div>
 
+  <!-- ── PHASE 6 ── -->
+  <div class="phase-label" data-i18n="p6-label">Phase 6 — Dispatch &amp; xAPI Tracking</div>
+  <div class="phase-title" data-i18n="p6-title">Share via Dispatch and track with Veracity LRS</div>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">14</div>
+      <div>
+        <div class="step-title" data-i18n="s14-title">Create a Destination in SCORM Cloud</div>
+        <p class="step-desc" data-i18n="s14-desc">In SCORM Cloud, go to <strong>Dispatch</strong> (top menu) → <strong>Destinations</strong> → <strong>New Destination</strong>. Give it a name (e.g. "Moodle Campus") and save.</p>
+        <div class="mockup" style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem;font-size:.82rem;line-height:1.6;">
+          <div style="color:var(--muted);margin-bottom:.5rem;">SCORM Cloud → Dispatch → Destinations</div>
+          <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.4rem;">
+            <span style="background:var(--primary);color:#fff;padding:.25rem .75rem;border-radius:4px;font-size:.78rem;" data-i18n="btn-new-dest">+ New Destination</span>
+          </div>
+          <div style="border:1px solid var(--line);border-radius:4px;padding:.5rem .75rem;background:var(--canvas);">
+            <div style="font-weight:600;color:var(--fg);">Moodle Campus</div>
+            <div style="color:var(--muted);font-size:.78rem;" data-i18n="dest-id-label">Destination ID generated automatically</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">15</div>
+      <div>
+        <div class="step-title" data-i18n="s15-title">Create the Dispatch — select course + destination</div>
+        <p class="step-desc" data-i18n="s15-desc">Go to <strong>Dispatch</strong> → <strong>Dispatches</strong> → <strong>New Dispatch</strong>. Select the course from the dropdown, then select the destination you just created. Click Create.</p>
+        <ul class="checklist">
+          <li data-i18n="d1">Click the <strong>Courses</strong> dropdown — select your course (e.g. AI Literacy)</li>
+          <li data-i18n="d2">Click the <strong>Destinations</strong> dropdown — select "Moodle Campus"</li>
+          <li data-i18n="d3">Click <strong>Create Dispatch</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">16</div>
+      <div>
+        <div class="step-title" data-i18n="s16-title">Download the Dispatch SCORM 1.2 package</div>
+        <p class="step-desc" data-i18n="s16-desc">In the Dispatch list, click your dispatch → <strong>Share</strong> → <strong>Download SCORM 1.2 package</strong>. This zip reports data back to SCORM Cloud's LRS — not to the LMS.</p>
+        <div class="info warn" style="background:color-mix(in srgb,var(--accent) 12%,transparent);border-left-color:var(--accent);">
+          <strong data-i18n="warn-label">Important:</strong> <span data-i18n="warn-dispatch">Use THIS Dispatch zip when uploading to Moodle or Chamilo — NOT the original zip from your <code style="font-size:.8rem">dist/</code> folder. The Dispatch zip tunnels xAPI data back to SCORM Cloud.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">17</div>
+      <div>
+        <div class="step-title" data-i18n="s17-title">Upload to Moodle: Add activity → SCORM</div>
+        <p class="step-desc" data-i18n="s17-desc">In your Moodle course, turn editing on and add a SCORM activity with the Dispatch zip.</p>
+        <ul class="checklist">
+          <li data-i18n="m1"><strong>Turn editing on</strong> → <strong>Add an activity or resource</strong></li>
+          <li data-i18n="m2">Select <strong>SCORM package</strong> → click Add</li>
+          <li data-i18n="m3">Give it a name → drag the Dispatch zip into the <strong>Package file</strong> area</li>
+          <li data-i18n="m4">Save and display — learners open it and data flows to SCORM Cloud</li>
+        </ul>
+        <div class="info" style="margin-top:.6rem;">
+          <strong data-i18n="note-label">Note:</strong> <span data-i18n="s17-note">Moodle's own gradebook shows completion/score from the SCORM wrapper. The full xAPI detail — actor, verb, raw score, timestamps — lives in SCORM Cloud's LRS under Dispatch → Registrations.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">18</div>
+      <div>
+        <div class="step-title" data-i18n="s18-title">Optional: pipe xAPI data to Veracity LRS (lrs.io — free)</div>
+        <p class="step-desc" data-i18n="s18-desc">Veracity LRS (lrs.io) is a free hosted xAPI Learning Record Store. Connect it to SCORM Cloud so every statement also lands in your own LRS.</p>
+        <ul class="checklist">
+          <li data-i18n="v1">Create a free account at <strong>lrs.io</strong> → note the LRS endpoint URL and credentials</li>
+          <li data-i18n="v2">In SCORM Cloud: <strong>Applications</strong> (top menu) → <strong>xAPI Pipes</strong> → <strong>Add Pipe</strong></li>
+          <li data-i18n="v3">Paste the Veracity LRS endpoint, username and password → Save</li>
+          <li data-i18n="v4">From now on, every xAPI statement SCORM Cloud receives is also forwarded to Veracity in real time</li>
+        </ul>
+        <div class="mockup" style="background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem;font-size:.82rem;line-height:1.6;margin-top:.75rem;">
+          <div style="color:var(--muted);margin-bottom:.5rem;" data-i18n="lrs-table-title">LRS options at a glance</div>
+          <table style="width:100%;border-collapse:collapse;font-size:.8rem;">
+            <thead>
+              <tr style="border-bottom:2px solid var(--line);">
+                <th style="text-align:left;padding:.3rem .5rem;color:var(--primary-deep);" data-i18n="lrs-col-name">LRS</th>
+                <th style="text-align:left;padding:.3rem .5rem;color:var(--primary-deep);" data-i18n="lrs-col-cost">Cost</th>
+                <th style="text-align:left;padding:.3rem .5rem;color:var(--primary-deep);" data-i18n="lrs-col-where">Where</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--line);">
+                <td style="padding:.3rem .5rem;font-weight:600;">SCORM Cloud</td>
+                <td style="padding:.3rem .5rem;" data-i18n="lrs-sc-cost">Free (10 reg.) → paid</td>
+                <td style="padding:.3rem .5rem;" data-i18n="lrs-sc-where">Built-in, Dispatch → Registrations</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--line);">
+                <td style="padding:.3rem .5rem;font-weight:600;">Veracity (lrs.io)</td>
+                <td style="padding:.3rem .5rem;" data-i18n="lrs-v-cost">Free tier available</td>
+                <td style="padding:.3rem .5rem;" data-i18n="lrs-v-where">External — via xAPI Pipe from SCORM Cloud</td>
+              </tr>
+              <tr>
+                <td style="padding:.3rem .5rem;font-weight:600;">Chamilo built-in</td>
+                <td style="padding:.3rem .5rem;" data-i18n="lrs-ch-cost">Free (open source)</td>
+                <td style="padding:.3rem .5rem;" data-i18n="lrs-ch-where">Course → Tracking → scores &amp; completion</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="phase-sep"></div>
+
   <!-- ── Quick reference ── -->
   <div class="phase-label" data-i18n="ref-label">Quick reference</div>
   <div class="phase-title" data-i18n="ref-title">All commands at a glance</div>
@@ -682,7 +792,45 @@ window.PAGE_I18N = {
     'ref3a-note': 'Build one course — replace ai-literacy with any folder name',
     'ref3b-note': 'Build all 22 courses at once',
     'ref4-note': 'Get latest changes next time you run the script',
-    'final-tip': 'Every time content is updated in GitHub, run <code style="font-size:.82rem">git pull</code> then the pack script again — it overwrites the old zips automatically.'
+    'final-tip': 'Every time content is updated in GitHub, run <code style="font-size:.82rem">git pull</code> then the pack script again — it overwrites the old zips automatically.',
+    'p6-label': 'Phase 6 — Dispatch &amp; xAPI Tracking',
+    'p6-title': 'Share via Dispatch and track with Veracity LRS',
+    's14-title': 'Create a Destination in SCORM Cloud',
+    's14-desc': 'In SCORM Cloud, go to <strong>Dispatch</strong> (top menu) → <strong>Destinations</strong> → <strong>New Destination</strong>. Give it a name (e.g. "Moodle Campus") and save.',
+    'btn-new-dest': '+ New Destination',
+    'dest-id-label': 'Destination ID generated automatically',
+    's15-title': 'Create the Dispatch — select course + destination',
+    's15-desc': 'Go to <strong>Dispatch</strong> → <strong>Dispatches</strong> → <strong>New Dispatch</strong>. Select the course from the dropdown, then select the destination you just created. Click Create.',
+    'd1': 'Click the <strong>Courses</strong> dropdown — select your course (e.g. AI Literacy)',
+    'd2': 'Click the <strong>Destinations</strong> dropdown — select "Moodle Campus"',
+    'd3': 'Click <strong>Create Dispatch</strong>',
+    's16-title': 'Download the Dispatch SCORM 1.2 package',
+    's16-desc': 'In the Dispatch list, click your dispatch → <strong>Share</strong> → <strong>Download SCORM 1.2 package</strong>. This zip reports data back to SCORM Cloud\'s LRS — not to the LMS.',
+    'warn-label': 'Important:',
+    'warn-dispatch': 'Use THIS Dispatch zip when uploading to Moodle or Chamilo — NOT the original zip from your <code style="font-size:.8rem">dist/</code> folder. The Dispatch zip tunnels xAPI data back to SCORM Cloud.',
+    's17-title': 'Upload to Moodle: Add activity → SCORM',
+    's17-desc': 'In your Moodle course, turn editing on and add a SCORM activity with the Dispatch zip.',
+    'm1': '<strong>Turn editing on</strong> → <strong>Add an activity or resource</strong>',
+    'm2': 'Select <strong>SCORM package</strong> → click Add',
+    'm3': 'Give it a name → drag the Dispatch zip into the <strong>Package file</strong> area',
+    'm4': 'Save and display — learners open it and data flows to SCORM Cloud',
+    's17-note': 'Moodle\'s own gradebook shows completion/score from the SCORM wrapper. The full xAPI detail — actor, verb, raw score, timestamps — lives in SCORM Cloud\'s LRS under Dispatch → Registrations.',
+    's18-title': 'Optional: pipe xAPI data to Veracity LRS (lrs.io — free)',
+    's18-desc': 'Veracity LRS (lrs.io) is a free hosted xAPI Learning Record Store. Connect it to SCORM Cloud so every statement also lands in your own LRS.',
+    'v1': 'Create a free account at <strong>lrs.io</strong> → note the LRS endpoint URL and credentials',
+    'v2': 'In SCORM Cloud: <strong>Applications</strong> (top menu) → <strong>xAPI Pipes</strong> → <strong>Add Pipe</strong>',
+    'v3': 'Paste the Veracity LRS endpoint, username and password → Save',
+    'v4': 'From now on, every xAPI statement SCORM Cloud receives is also forwarded to Veracity in real time',
+    'lrs-table-title': 'LRS options at a glance',
+    'lrs-col-name': 'LRS',
+    'lrs-col-cost': 'Cost',
+    'lrs-col-where': 'Where',
+    'lrs-sc-cost': 'Free (10 reg.) → paid',
+    'lrs-sc-where': 'Built-in, Dispatch → Registrations',
+    'lrs-v-cost': 'Free tier available',
+    'lrs-v-where': 'External — via xAPI Pipe from SCORM Cloud',
+    'lrs-ch-cost': 'Free (open source)',
+    'lrs-ch-where': 'Course → Tracking → scores &amp; completion'
   },
   es: {
     'brand-role': 'DXA · CAL · Gobernanza IA',
@@ -758,7 +906,45 @@ window.PAGE_I18N = {
     'ref3a-note': 'Construir un curso — reemplaza ai-literacy con cualquier nombre de carpeta',
     'ref3b-note': 'Construir los 22 cursos a la vez',
     'ref4-note': 'Obtener los últimos cambios la próxima vez que ejecutes el script',
-    'final-tip': 'Cada vez que el contenido se actualice en GitHub, ejecuta <code style="font-size:.82rem">git pull</code> y luego el script de empaquetado — sobreescribe los zips antiguos automáticamente.'
+    'final-tip': 'Cada vez que el contenido se actualice en GitHub, ejecuta <code style="font-size:.82rem">git pull</code> y luego el script de empaquetado — sobreescribe los zips antiguos automáticamente.',
+    'p6-label': 'Fase 6 — Dispatch y rastreo xAPI',
+    'p6-title': 'Distribuir con Dispatch y rastrear con Veracity LRS',
+    's14-title': 'Crear un Destino en SCORM Cloud',
+    's14-desc': 'En SCORM Cloud, ve a <strong>Dispatch</strong> (menú superior) → <strong>Destinations</strong> → <strong>New Destination</strong>. Dale un nombre (p. ej. "Moodle Campus") y guarda.',
+    'btn-new-dest': '+ New Destination',
+    'dest-id-label': 'ID de destino generado automáticamente',
+    's15-title': 'Crear el Dispatch — seleccionar curso + destino',
+    's15-desc': 'Ve a <strong>Dispatch</strong> → <strong>Dispatches</strong> → <strong>New Dispatch</strong>. Selecciona el curso en el desplegable y luego el destino que acabas de crear. Haz clic en Create.',
+    'd1': 'Haz clic en el desplegable <strong>Courses</strong> — selecciona tu curso (p. ej. AI Literacy)',
+    'd2': 'Haz clic en el desplegable <strong>Destinations</strong> — selecciona "Moodle Campus"',
+    'd3': 'Haz clic en <strong>Create Dispatch</strong>',
+    's16-title': 'Descargar el paquete Dispatch SCORM 1.2',
+    's16-desc': 'En la lista de Dispatches, haz clic en el tuyo → <strong>Share</strong> → <strong>Download SCORM 1.2 package</strong>. Este zip envía los datos de vuelta al LRS de SCORM Cloud, no al LMS.',
+    'warn-label': 'Importante:',
+    'warn-dispatch': 'Usa ESTE zip Dispatch al cargar en Moodle o Chamilo — NO el zip original de tu carpeta <code style="font-size:.8rem">dist/</code>. El zip Dispatch canaliza las sentencias xAPI de vuelta a SCORM Cloud.',
+    's17-title': 'Cargar en Moodle: Añadir actividad → SCORM',
+    's17-desc': 'En tu curso de Moodle, activa la edición y añade una actividad SCORM con el zip Dispatch.',
+    'm1': '<strong>Activar edición</strong> → <strong>Añadir una actividad o recurso</strong>',
+    'm2': 'Selecciona <strong>Paquete SCORM</strong> → clic en Añadir',
+    'm3': 'Dale un nombre → arrastra el zip Dispatch al área <strong>Archivo del paquete</strong>',
+    'm4': 'Guardar y mostrar — los estudiantes lo abren y los datos fluyen a SCORM Cloud',
+    's17-note': 'El libro de calificaciones de Moodle muestra la finalización/puntuación del contenedor SCORM. El detalle xAPI completo — actor, verbo, puntuación, marcas de tiempo — está en SCORM Cloud bajo Dispatch → Registrations.',
+    's18-title': 'Opcional: enviar sentencias xAPI a Veracity LRS (lrs.io — gratis)',
+    's18-desc': 'Veracity LRS (lrs.io) es un almacén de registros xAPI gratuito alojado en la nube. Conéctalo a SCORM Cloud para que cada sentencia llegue también a tu propio LRS.',
+    'v1': 'Crea una cuenta gratuita en <strong>lrs.io</strong> → anota la URL del endpoint LRS y las credenciales',
+    'v2': 'En SCORM Cloud: <strong>Applications</strong> (menú superior) → <strong>xAPI Pipes</strong> → <strong>Add Pipe</strong>',
+    'v3': 'Pega el endpoint de Veracity LRS, usuario y contraseña → Guardar',
+    'v4': 'A partir de ahora, cada sentencia xAPI que reciba SCORM Cloud se reenvía a Veracity en tiempo real',
+    'lrs-table-title': 'Opciones de LRS de un vistazo',
+    'lrs-col-name': 'LRS',
+    'lrs-col-cost': 'Coste',
+    'lrs-col-where': 'Dónde',
+    'lrs-sc-cost': 'Gratis (10 reg.) → pago',
+    'lrs-sc-where': 'Integrado, Dispatch → Registrations',
+    'lrs-v-cost': 'Plan gratuito disponible',
+    'lrs-v-where': 'Externo — vía xAPI Pipe desde SCORM Cloud',
+    'lrs-ch-cost': 'Gratis (código abierto)',
+    'lrs-ch-where': 'Curso → Seguimiento → puntuaciones y finalización'
   }
 };
 </script>
