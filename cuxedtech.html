@@ -447,6 +447,7 @@ details.platform-detail[open] > summary::after { content: '−'; }
 }
 .code-row code {
   flex: 1;
+  min-width: 0;
   background: none;
   border: none;
   padding: 0;
@@ -549,7 +550,15 @@ details.platform-detail[open] > summary::after { content: '−'; }
   .hero { padding-block: 56px 48px; }
   .platform-grid { grid-template-columns: 1fr; }
   .platform-card { padding: 20px; }
-  .nav { padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+  .nav { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .nav-right { gap: 12px; }
+  .section { padding-block: 48px; }
+}
+@media (max-width: 420px) {
+  .hero { padding-block: 44px 36px; }
+  .nav-right .nav-link + .nav-link { display: none; }
+  .section { padding-block: 36px; }
+  .footer { padding-left: 0; padding-right: 0; }
 }
 </style>
 <script src="./shared/i18n.js" defer></script>
