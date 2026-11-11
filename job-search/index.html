@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Job Search Intelligence — Ana Eslava Bootcamp</title>
 <link rel="stylesheet" href="../shared/oi.css">
 <style>
@@ -48,7 +48,9 @@
   .site-header {
     background: var(--indigo);
     color: white;
-    padding: 24px 28px 20px;
+    padding: 24px 0 20px;
+    padding-left: max(28px, env(safe-area-inset-left, 0px));
+    padding-right: max(28px, env(safe-area-inset-right, 0px));
     display: flex;
     align-items: flex-start;
     gap: 18px;

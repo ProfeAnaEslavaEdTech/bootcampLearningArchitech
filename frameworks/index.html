@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Framework Fluency — A Micro-Course</title>
 <link rel="stylesheet" href="../shared/oi.css">
 <style>
@@ -28,7 +28,9 @@
 
   /* ── Proficiency rail (signature) ─────────────────────── */
   header{
-    background:var(--navy); color:#fff; padding:14px 20px 18px;
+    background:var(--navy); color:#fff; padding-top:14px; padding-bottom:18px;
+  padding-left:max(20px,env(safe-area-inset-left,0px));
+  padding-right:max(20px,env(safe-area-inset-right,0px));
     position:sticky; top:0; z-index:10;
   }
   .head-row{display:flex; justify-content:space-between; align-items:baseline; max-width:760px; margin:0 auto 10px;}

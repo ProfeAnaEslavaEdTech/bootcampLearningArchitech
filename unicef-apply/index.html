@@ -8,7 +8,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>UNICEF Application Lab — How to Land This Role</title>
 <link rel="stylesheet" href="../shared/oi.css">
 <style>
@@ -48,7 +48,10 @@
   /* TOP BAR */
   .top-bar {
     background: var(--cobalt); color: #fff;
-    padding: 10px 24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: max(24px, env(safe-area-inset-left, 0px));
+    padding-right: max(24px, env(safe-area-inset-right, 0px));
     font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
     display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center;
   }
