@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Mission: Learning Architect — Nexthink Interview Prep</title>
 <link rel="stylesheet" href="../shared/oi.css">
 <style>
@@ -72,7 +72,9 @@
     background: rgba(247,245,240,0.92);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
-    padding: 14px 20px;
+    padding: 14px 0;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Language Learning Architect Bootcamp — Ana Eslava-Graterol</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,600;9..144,0,700;9..144,1,600;9..144,1,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
@@ -93,7 +93,8 @@ h1, h2, h3 { font-family: 'Fraunces', 'Palatino Linotype', Palatino, Georgia, se
   position: sticky; top: 0; z-index: 100;
   background: var(--canvas);
   border-bottom: 1px solid var(--line);
-  padding: 0 max(24px, env(safe-area-inset-left, 0px));
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
   display: flex; align-items: center; justify-content: space-between;
   height: 56px;
   backdrop-filter: saturate(180%) blur(12px);
