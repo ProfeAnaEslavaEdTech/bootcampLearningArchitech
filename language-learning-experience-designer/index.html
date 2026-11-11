@@ -317,19 +317,19 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="oi-site-header">
   <div class="oi-brand">
-    <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-brand-name">Ana Eslava-Graterol</a>
     <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
 <a href="#main" class="skip-link">Skip to content</a>
 <button id="theme-btn" aria-label="Colour theme: system. Click to switch."></button>
 
-<div class="top-bar">
-  <a href="../" class="back-link">← All tracks</a>
+<div class="top-bar" data-i18n-sec="sec-topbar">
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="back-link">← All tracks</a>
   <span class="top-sep">|</span>
   <strong>Track 15 · Language Learning Experience Designer</strong>
   <span class="top-sep">·</span>
@@ -338,7 +338,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   <span>6 modules · pedagogy to proof</span>
 </div>
 
-<div class="hero">
+<div class="hero" data-i18n-sec="sec-hero">
   <div class="hero-label">MLLDE methodology · Standards-anchored · Evidence-valid</div>
   <h1>From pedagogy<br>to <em>proof.</em></h1>
   <p class="hero-sub">Every language learning product you design anchors to CEFR, ships with an AI tutor contract, and generates statements — not claims. Six modules from the MLLDE engine to the investor pack.</p>
@@ -363,7 +363,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
   <div id="map"></div>
 </div>
 
-<div class="final-screen" id="finalScreen">
+<div class="final-screen" id="finalScreen" data-i18n-sec="sec-final">
   <div class="final-icon"></div>
   <h2>MLLDE cycle complete.</h2>
   <p>You can now design a language learning product from brief to investor pack — CEFR-anchored, AI-tutored, evidence-valid. Every module ends with a statement. Every statement feeds a report.</p>
@@ -376,7 +376,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
     <span class="final-chip">Engineering + owner packs split</span>
   </div>
   <div class="btn-row" style="justify-content:center;margin-top:28px;">
-    <a href="../" class="btn btn-ghost">← All tracks</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="btn btn-ghost">← All tracks</a>
   </div>
 </div>
 
@@ -391,7 +391,7 @@ footer .ai-note { font-size: 10.5px; margin-top: 6px; }
 <div class="toast" id="toast"></div>
 
 <footer>
-  <a href="../">← Learning Architect Bootcamp</a> · MLLDE methodology · Track 15 · Language Learning Experience Designer
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/">← Learning Architect Bootcamp</a> · MLLDE methodology · Track 15 · Language Learning Experience Designer
   <div class="ai-note">¹ AI-assisted instructional content · Reviewed, adapted and approved by the instructional designer · <a href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence">EU AI Act, Art. 50</a> · © Ana Eslava-Graterol · Ocean Ink v0.1</div>
 </footer>
 
@@ -782,5 +782,43 @@ window.PAGE_I18N = {
   btn.addEventListener('click',function(){apply(cycle[(cycle.indexOf(saved)+1)%cycle.length]);});
 })();
 </script>
+<template id="sec-topbar-es">
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="back-link">← Todos los módulos</a>
+  <span class="top-sep">|</span>
+  <strong>Módulo 15 · Diseñadora de Experiencias de Aprendizaje de Idiomas</strong>
+  <span class="top-sep">·</span>
+  <span>MLLDE · CEFR · Tutor IA · Métricas</span>
+  <span class="top-sep">·</span>
+  <span>6 módulos · de la pedagogía a la evidencia</span>
+</template>
+<template id="sec-hero-es">
+  <div class="hero-label">Metodología MLLDE · Anclado en Estándares · Evidencia Válida</div>
+  <h1>De la pedagogía<br>a la <em>evidencia.</em></h1>
+  <p class="hero-sub">Cada producto de aprendizaje de idiomas que diseñas se ancla en CEFR, se publica con un contrato de tutor IA y genera enunciados — no afirmaciones. Seis módulos del motor MLLDE al paquete para inversores.</p>
+  <div class="skill-grid">
+    <div class="skill-chip">Pila MLLDE 4 capas<span class="chip-label">motor · siempre</span></div>
+    <div class="skill-chip">Volumen complementario CEFR<span class="chip-label">escala · siempre</span></div>
+    <div class="skill-chip">Flujo Avatar-como-Entrada<span class="chip-label">diseño de lección</span></div>
+    <div class="skill-chip">Arquitectura Tutor IA<span class="chip-label">voz · persona</span></div>
+    <div class="skill-chip">xAPI + registro IRI<span class="chip-label">métricas · evidencia</span></div>
+    <div class="skill-chip">Entregables duales<span class="chip-label">ingeniero + propietario</span></div>
+  </div>
+</template>
+<template id="sec-final-es">
+  <div class="final-icon"></div>
+  <h2>Ciclo MLLDE completado.</h2>
+  <p>Ahora puedes diseñar un producto de aprendizaje de idiomas desde el brief hasta el paquete para inversores — anclado en CEFR, con tutoría IA, con evidencia válida. Cada módulo termina con un enunciado. Cada enunciado alimenta un informe.</p>
+  <div class="final-chips">
+    <span class="final-chip">Mapa MLLDE 4 capas</span>
+    <span class="final-chip">Plan de lección IPO diseñado</span>
+    <span class="final-chip">Escala CEFR nombrada y anclada</span>
+    <span class="final-chip">Persona del tutor empaquetada</span>
+    <span class="final-chip">Familias de métricas mapeadas</span>
+    <span class="final-chip">Paquetes de ingeniería y propietario separados</span>
+  </div>
+  <div class="btn-row" style="justify-content:center;margin-top:28px;">
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="btn btn-ghost">← Todos los módulos</a>
+  </div>
+</template>
 </body>
 </html>
