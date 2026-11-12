@@ -570,6 +570,7 @@ details.platform-detail[open] > summary::after { content: '−'; }
     <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="nav-link" data-i18n="nav-portfolio">← Portfolio</a>
     <a href="./ocean-ink.html" class="nav-link">Ocean Ink</a>
     <button id="oi-theme-btn" class="theme-toggle" aria-label="Toggle light/dark theme" style="display:none"></button>
+    <button id="lang-btn" class="theme-toggle" aria-label="Switch language">ES</button>
     <button class="theme-toggle" id="themeBtn" aria-label="Toggle light/dark theme">◑</button>
   </div>
 </nav>
@@ -580,27 +581,23 @@ details.platform-detail[open] > summary::after { content: '−'; }
   <h1 data-i18n="hero-h1">Twelve dimensions.<br><em>One evaluation.</em></h1>
   <p class="hero-desc" data-i18n="hero-desc">UX Writing · Accessibility · Information architecture · Interaction design — and eight more. Available in ChatGPT and Claude Code.</p>
   <div class="hero-actions">
-    <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn btn-filled">
-      Try in ChatGPT <span style="font-size:12px;opacity:0.7;">(opens in a new tab)</span>
-    </a>
-    <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline">
-      ↓ Claude Code plugin (.zip)
-    </a>
+    <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn btn-filled" data-i18n="hero-btn-chatgpt">Try in ChatGPT <span style="font-size:12px;opacity:0.7;">(opens in a new tab)</span></a>
+    <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline" data-i18n="hero-btn-claude">↓ Claude Code plugin (.zip)</a>
   </div>
 </header>
 
 <!-- ── ATTRIBUTION ── -->
 <section class="section">
-  <p class="section-kicker">Origin</p>
-  <h2>Born from a masterclass.</h2>
-  <p class="section-sub">Not taken from a slide — rebuilt into something reusable.</p>
+  <p class="section-kicker" data-i18n="origin-kicker">Origin</p>
+  <h2 data-i18n="origin-h2">Born from a masterclass.</h2>
+  <p class="section-sub" data-i18n="origin-sub">Not taken from a slide — rebuilt into something reusable.</p>
 
   <details class="attribution">
     <summary>
-      Formative attribution
+      <span data-i18n="origin-summary">Formative attribution</span>
       <span class="toggle-icon" aria-hidden="true">+</span>
     </summary>
-    <div class="attribution-body">
+    <div class="attribution-body" data-i18n-sec="sec-attr-body">
       <p>UX Writing principles derived from the masterclass by <strong>Antonio Estévez Funes, Conversational Designer at BBVA</strong> — Instructional Design School, UPV, 6 Nov 2026. The session covered the difference between copywriting and UX Writing; the three principles (clear, consistent, useful); voice versus tone; plain language; CTA patterns; error feedback; and the relationship between UX Writing and WCAG accessibility.</p>
       <p>Synthesis, Travel Good case study, and all extensions: <strong>Ana Eslava-Graterol's own adaptation</strong>. Not reviewed or endorsed by Antonio Estévez Funes, BBVA, or the UPV.</p>
       <div class="attribution-note">The A/B test data point (33% → 59% login comprehension) was shared publicly during the session. If cited outside this portfolio, attribute it to the session, not to CUXedTech.</div>
@@ -610,11 +607,11 @@ details.platform-detail[open] > summary::after { content: '−'; }
 
 <!-- ── SKILLS ── -->
 <section class="section">
-  <p class="section-kicker">What's inside</p>
-  <h2>Five skills.</h2>
-  <p class="section-sub">Tap each skill to expand.</p>
+  <p class="section-kicker" data-i18n="skills-kicker">What's inside</p>
+  <h2 data-i18n="skills-h2">Five skills.</h2>
+  <p class="section-sub" data-i18n="skills-sub">Tap each skill to expand.</p>
 
-  <div class="skills-grid">
+  <div class="skills-grid" data-i18n-sec="sec-skills">
     <details class="skill-card">
       <summary class="skill-header">
         <div class="skill-icon" aria-hidden="true">UX</div>
@@ -689,19 +686,19 @@ details.platform-detail[open] > summary::after { content: '−'; }
 
 <!-- ── TWO PLATFORMS ── -->
 <section class="section">
-  <p class="section-kicker">Try CUXedTech</p>
-  <h2>Two ways to use it.</h2>
-  <p class="section-sub">ChatGPT — no install. Claude Code — download and add to your project.</p>
+  <p class="section-kicker" data-i18n="platform-kicker">Try CUXedTech</p>
+  <h2 data-i18n="platform-h2">Two ways to use it.</h2>
+  <p class="section-sub" data-i18n="platform-sub">ChatGPT — no install. Claude Code — download and add to your project.</p>
 
   <div class="platform-grid">
 
     <div class="platform-card">
-      <div class="platform-label"><span aria-hidden="true">◆</span> ChatGPT — no install</div>
-      <h3>Evaluate any digital experience</h3>
-      <p>Open ChatGPT → search <strong>@CUXedTech</strong> → paste your URL.</p>
+      <div class="platform-label"><span aria-hidden="true">◆</span> <span data-i18n="platform1-label">ChatGPT — no install</span></div>
+      <h3 data-i18n="platform1-h3">Evaluate any digital experience</h3>
+      <p data-i18n="platform1-p">Open ChatGPT → search <strong>@CUXedTech</strong> → paste your URL.</p>
 
       <details class="platform-detail">
-        <summary>Plugin URI — paste inside ChatGPT</summary>
+        <summary data-i18n="platform1-d1">Plugin URI — paste inside ChatGPT</summary>
         <div class="platform-detail-body">
           <div class="code-row">
             <code id="pluginUri">plugin://cuxedtech@openai-curated-remote?remotePluginId=plugins_6aee1736a6cc81918d7de246a1c85b80</code>
@@ -711,24 +708,20 @@ details.platform-detail[open] > summary::after { content: '−'; }
       </details>
 
       <details class="platform-detail">
-        <summary>Example prompt</summary>
-        <div class="platform-detail-body">
-          "Evaluate [your URL] using the relevant CUXedTech UX quality criteria. Focus on UX Writing, accessibility and information architecture."
-        </div>
+        <summary data-i18n="platform1-d2">Example prompt</summary>
+        <div class="platform-detail-body" data-i18n="platform1-prompt">"Evaluate [your URL] using the relevant CUXedTech UX quality criteria. Focus on UX Writing, accessibility and information architecture."</div>
       </details>
 
-      <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn btn-filled btn-block">
-        Open ChatGPT (opens in a new tab) →
-      </a>
+      <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer" class="btn btn-filled btn-block" data-i18n="platform1-btn">Open ChatGPT (opens in a new tab) →</a>
     </div>
 
     <div class="platform-card">
-      <div class="platform-label"><span aria-hidden="true">◇</span> Claude Code — download &amp; install</div>
-      <h3>Slash commands in your project</h3>
-      <p>Download → unzip → add to your Claude Code project.</p>
+      <div class="platform-label"><span aria-hidden="true">◇</span> <span data-i18n="platform2-label">Claude Code — download &amp; install</span></div>
+      <h3 data-i18n="platform2-h3">Slash commands in your project</h3>
+      <p data-i18n="platform2-p">Download → unzip → add to your Claude Code project.</p>
 
       <details class="platform-detail">
-        <summary>Available commands</summary>
+        <summary data-i18n="platform2-d1">Available commands</summary>
         <div class="platform-detail-body">
           <code>/ux-writing-travel-good</code>
           <code>/ocean-ink-design-system</code>
@@ -738,7 +731,7 @@ details.platform-detail[open] > summary::after { content: '−'; }
       </details>
 
       <details class="platform-detail">
-        <summary>Install command</summary>
+        <summary data-i18n="platform2-d2">Install command</summary>
         <div class="platform-detail-body">
           <div class="code-row">
             <code>unzip cuxedtech-plugin.zip -d .claude/plugins/cuxedtech</code>
@@ -746,9 +739,7 @@ details.platform-detail[open] > summary::after { content: '−'; }
         </div>
       </details>
 
-      <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline btn-block">
-        ↓ Download plugin (.zip)
-      </a>
+      <a href="./assets/cuxedtech-plugin.zip" class="btn btn-outline btn-block" data-i18n="platform2-btn">↓ Download plugin (.zip)</a>
     </div>
 
   </div>
@@ -756,25 +747,25 @@ details.platform-detail[open] > summary::after { content: '−'; }
 
 <!-- ── 12 DIMENSIONS ── -->
 <section class="section">
-  <p class="section-kicker">Evaluation framework</p>
-  <h2>Twelve dimensions.</h2>
-  <p class="section-sub">Focus on what matters most, or let CUXedTech identify the opportunities.</p>
+  <p class="section-kicker" data-i18n="dim-kicker">Evaluation framework</p>
+  <h2 data-i18n="dim-h2">Twelve dimensions.</h2>
+  <p class="section-sub" data-i18n="dim-sub">Focus on what matters most, or let CUXedTech identify the opportunities.</p>
 
   <div class="dim-grid" id="dimGrid">
-    <div class="dim-item"><div class="dim-num">01</div><h4>User research</h4><p>Needs, goals, context, mental models</p></div>
-    <div class="dim-item"><div class="dim-num">02</div><h4>UX strategy</h4><p>Vision, value proposition, success criteria</p></div>
-    <div class="dim-item"><div class="dim-num">03</div><h4>Information architecture</h4><p>Navigation, labels, hierarchy, discoverability</p></div>
-    <div class="dim-item"><div class="dim-num">04</div><h4>Interaction design</h4><p>Component behaviour, feedback, flows</p></div>
-    <div class="dim-item" hidden><div class="dim-num">05</div><h4>UI & visual identity</h4><p>Typography, colour, spacing, brand consistency</p></div>
-    <div class="dim-item" hidden><div class="dim-num">06</div><h4>UX Writing</h4><p>Microcopy, CTAs, errors, plain language</p></div>
-    <div class="dim-item" hidden><div class="dim-num">07</div><h4>Accessibility</h4><p>WCAG POUR principles, screen reader, focus</p></div>
-    <div class="dim-item" hidden><div class="dim-num">08</div><h4>Responsive design</h4><p>Breakpoints, touch targets, layout</p></div>
-    <div class="dim-item" hidden><div class="dim-num">09</div><h4>Multilingual UX</h4><p>Language adaptation, market conventions</p></div>
-    <div class="dim-item" hidden><div class="dim-num">10</div><h4>Personalisation</h4><p>Adaptive content, user state, context</p></div>
-    <div class="dim-item" hidden><div class="dim-num">11</div><h4>Technical experience</h4><p>Performance, errors, edge cases</p></div>
-    <div class="dim-item" hidden><div class="dim-num">12</div><h4>Usability evaluation</h4><p>Task success, heuristics, friction points</p></div>
+    <div class="dim-item"><div class="dim-num">01</div><h4 data-i18n="d01-h">User research</h4><p data-i18n="d01-p">Needs, goals, context, mental models</p></div>
+    <div class="dim-item"><div class="dim-num">02</div><h4 data-i18n="d02-h">UX strategy</h4><p data-i18n="d02-p">Vision, value proposition, success criteria</p></div>
+    <div class="dim-item"><div class="dim-num">03</div><h4 data-i18n="d03-h">Information architecture</h4><p data-i18n="d03-p">Navigation, labels, hierarchy, discoverability</p></div>
+    <div class="dim-item"><div class="dim-num">04</div><h4 data-i18n="d04-h">Interaction design</h4><p data-i18n="d04-p">Component behaviour, feedback, flows</p></div>
+    <div class="dim-item" hidden><div class="dim-num">05</div><h4 data-i18n="d05-h">UI &amp; visual identity</h4><p data-i18n="d05-p">Typography, colour, spacing, brand consistency</p></div>
+    <div class="dim-item" hidden><div class="dim-num">06</div><h4 data-i18n="d06-h">UX Writing</h4><p data-i18n="d06-p">Microcopy, CTAs, errors, plain language</p></div>
+    <div class="dim-item" hidden><div class="dim-num">07</div><h4 data-i18n="d07-h">Accessibility</h4><p data-i18n="d07-p">WCAG POUR principles, screen reader, focus</p></div>
+    <div class="dim-item" hidden><div class="dim-num">08</div><h4 data-i18n="d08-h">Responsive design</h4><p data-i18n="d08-p">Breakpoints, touch targets, layout</p></div>
+    <div class="dim-item" hidden><div class="dim-num">09</div><h4 data-i18n="d09-h">Multilingual UX</h4><p data-i18n="d09-p">Language adaptation, market conventions</p></div>
+    <div class="dim-item" hidden><div class="dim-num">10</div><h4 data-i18n="d10-h">Personalisation</h4><p data-i18n="d10-p">Adaptive content, user state, context</p></div>
+    <div class="dim-item" hidden><div class="dim-num">11</div><h4 data-i18n="d11-h">Technical experience</h4><p data-i18n="d11-p">Performance, errors, edge cases</p></div>
+    <div class="dim-item" hidden><div class="dim-num">12</div><h4 data-i18n="d12-h">Usability evaluation</h4><p data-i18n="d12-p">Task success, heuristics, friction points</p></div>
   </div>
-  <button class="dim-toggle-btn" id="dimToggle">Show all 12 →</button>
+  <button class="dim-toggle-btn" id="dimToggle" data-i18n="dim-toggle">Show all 12 →</button>
 </section>
 
 <!-- ── FOOTER ── -->
@@ -785,8 +776,87 @@ details.platform-detail[open] > summary::after { content: '−'; }
     <a href="https://profeanaeslavaedtech.github.io/eLearningportfolio/" target="_blank" rel="noopener noreferrer">eLearning portfolio (opens in a new tab)</a>
     <a href="https://www.linkedin.com/in/anaeslava" target="_blank" rel="noopener noreferrer">LinkedIn (opens in a new tab)</a>
   </div>
-  <p class="footer-copy">CUXedTech plugin © 2026 Ana Eslava-Graterol. UX Writing skill developed after the masterclass by Antonio Estévez Funes (BBVA, UPV, 6 Nov 2026). AI-assisted; author-reviewed. EU AI Act Art. 50 disclosure applies.</p>
+  <p class="footer-copy" data-i18n="footer-copy">CUXedTech plugin © 2026 Ana Eslava-Graterol. UX Writing skill developed after the masterclass by Antonio Estévez Funes (BBVA, UPV, 6 Nov 2026). AI-assisted; author-reviewed. EU AI Act Art. 50 disclosure applies.</p>
 </footer>
+
+<!-- ── ES TEMPLATES ── -->
+<template id="sec-attr-body-es">
+  <p>Principios de UX Writing derivados de la masterclass de <strong>Antonio Estévez Funes, Conversational Designer en BBVA</strong> — Escuela de Diseño Instruccional, UPV, 6 nov. 2026. La sesión abordó la diferencia entre copywriting y UX Writing; los tres principios (claro, consistente, útil); voz frente a tono; lenguaje claro; patrones de CTA; feedback de error; y la relación entre UX Writing y la accesibilidad WCAG.</p>
+  <p>Síntesis, caso práctico Travel Good y todas las extensiones: <strong>adaptación propia de Ana Eslava-Graterol</strong>. No revisado ni avalado por Antonio Estévez Funes, BBVA ni la UPV.</p>
+  <div class="attribution-note">El dato del test A/B (comprensión del inicio de sesión del 33% al 59%) se compartió públicamente durante la sesión. Si se cita fuera de este portafolio, atribuirlo a la sesión, no a CUXedTech.</div>
+</template>
+
+<template id="sec-skills-es">
+  <details class="skill-card">
+    <summary class="skill-header">
+      <div class="skill-icon" aria-hidden="true">UX</div>
+      <div class="skill-title-group">
+        <h3>UX Writing y Diseño de Contenido</h3>
+        <span class="skill-label">Tras la masterclass de Antonio</span>
+      </div>
+      <span class="skill-chevron" aria-hidden="true">›</span>
+    </summary>
+    <div class="skill-body">
+      <p>Analiza microcopia, CTAs, errores, onboarding, estados vacíos y notificaciones. Aplica las máximas de Grice y WCAG. Incluye la guía de estilo de Travel Good como caso práctico.</p>
+    </div>
+  </details>
+
+  <details class="skill-card">
+    <summary class="skill-header">
+      <div class="skill-icon" aria-hidden="true">OI</div>
+      <div class="skill-title-group">
+        <h3>Sistema de Diseño Ocean Ink</h3>
+        <span class="skill-label">Sistema propio de Ana</span>
+      </div>
+      <span class="skill-chevron" aria-hidden="true">›</span>
+    </summary>
+    <div class="skill-body">
+      <p>Aplica la identidad de marca personal de Ana — Azul Índigo, Azul Profundo, Dorado — a todos los entregables visuales. Verificado WCAG 2.1 AA. Temas claro y oscuro. Tipografía Fraunces + Inter.</p>
+    </div>
+  </details>
+
+  <details class="skill-card">
+    <summary class="skill-header">
+      <div class="skill-icon" aria-hidden="true">FW</div>
+      <div class="skill-title-group">
+        <h3>Marco Integrado de Calidad UX</h3>
+        <span class="skill-label">Marco de 12 dimensiones</span>
+      </div>
+      <span class="skill-chevron" aria-hidden="true">›</span>
+    </summary>
+    <div class="skill-body">
+      <p>Coordina las 12 dimensiones de evaluación: investigación de usuario, estrategia, IA, interacción, UI, UX Writing, accesibilidad, diseño responsivo, UX multilingüe, personalización, experiencia técnica y usabilidad.</p>
+    </div>
+  </details>
+
+  <details class="skill-card">
+    <summary class="skill-header">
+      <div class="skill-icon" aria-hidden="true">AI</div>
+      <div class="skill-title-group">
+        <h3>Suite de Declaración de IA</h3>
+        <span class="skill-label">Ley de IA de la UE · Art. 50</span>
+      </div>
+      <span class="skill-chevron" aria-hidden="true">›</span>
+    </summary>
+    <div class="skill-body">
+      <p>Genera declaraciones de divulgación del art. 50 de la Ley de IA de la UE. Regula qué puede y qué no puede atribuirse a la IA, y produce el pie de declaración estándar para piezas de portafolio y contenido publicado.</p>
+    </div>
+  </details>
+
+  <details class="skill-card">
+    <summary class="skill-header">
+      <div class="skill-icon" aria-hidden="true">DR</div>
+      <div class="skill-title-group">
+        <h3>Enrutamiento de Diseño y Declaración</h3>
+        <span class="skill-label">Enrutamiento interno</span>
+      </div>
+      <span class="skill-chevron" aria-hidden="true">›</span>
+    </summary>
+    <div class="skill-body">
+      <p>Enruta las solicitudes entrantes a la skill correcta — Ocean Ink para trabajo visual, UX Writing para tareas de contenido, el marco de calidad para evaluaciones, la suite de declaración para publicación.</p>
+    </div>
+  </details>
+</template>
 
 <script>
 (function () {
@@ -824,7 +894,10 @@ details.platform-detail[open] > summary::after { content: '−'; }
   dimToggle.addEventListener('click', () => {
     expanded = !expanded;
     dimItems.forEach(item => { item.hidden = !expanded; });
-    dimToggle.textContent = expanded ? '← Show fewer' : 'Show all 12 →';
+    const lang = document.documentElement.getAttribute('data-lang') || 'en';
+    dimToggle.textContent = expanded
+      ? (lang === 'es' ? '← Ver menos' : '← Show fewer')
+      : (lang === 'es' ? 'Ver las 12 →' : 'Show all 12 →');
   });
 })();
 </script>
@@ -834,13 +907,97 @@ window.PAGE_I18N = {
     'nav-portfolio': '← Portfolio',
     'hero-kicker': 'Claude plugin · v 0.1.8',
     'hero-h1': 'Twelve dimensions.<br><em>One evaluation.</em>',
-    'hero-desc': 'UX Writing · Accessibility · Information architecture · Interaction design — and eight more. Available in ChatGPT and Claude Code.'
+    'hero-desc': 'UX Writing · Accessibility · Information architecture · Interaction design — and eight more. Available in ChatGPT and Claude Code.',
+    'hero-btn-chatgpt': 'Try in ChatGPT <span style="font-size:12px;opacity:0.7;">(opens in a new tab)</span>',
+    'hero-btn-claude': '↓ Claude Code plugin (.zip)',
+    'origin-kicker': 'Origin',
+    'origin-h2': 'Born from a masterclass.',
+    'origin-sub': 'Not taken from a slide — rebuilt into something reusable.',
+    'origin-summary': 'Formative attribution',
+    'skills-kicker': "What's inside",
+    'skills-h2': 'Five skills.',
+    'skills-sub': 'Tap each skill to expand.',
+    'platform-kicker': 'Try CUXedTech',
+    'platform-h2': 'Two ways to use it.',
+    'platform-sub': 'ChatGPT — no install. Claude Code — download and add to your project.',
+    'platform1-label': 'ChatGPT — no install',
+    'platform1-h3': 'Evaluate any digital experience',
+    'platform1-p': 'Open ChatGPT → search <strong>@CUXedTech</strong> → paste your URL.',
+    'platform1-d1': 'Plugin URI — paste inside ChatGPT',
+    'platform1-d2': 'Example prompt',
+    'platform1-prompt': '"Evaluate [your URL] using the relevant CUXedTech UX quality criteria. Focus on UX Writing, accessibility and information architecture."',
+    'platform1-btn': 'Open ChatGPT (opens in a new tab) →',
+    'platform2-label': 'Claude Code — download &amp; install',
+    'platform2-h3': 'Slash commands in your project',
+    'platform2-p': 'Download → unzip → add to your Claude Code project.',
+    'platform2-d1': 'Available commands',
+    'platform2-d2': 'Install command',
+    'platform2-btn': '↓ Download plugin (.zip)',
+    'dim-kicker': 'Evaluation framework',
+    'dim-h2': 'Twelve dimensions.',
+    'dim-sub': 'Focus on what matters most, or let CUXedTech identify the opportunities.',
+    'dim-toggle': 'Show all 12 →',
+    'd01-h': 'User research',       'd01-p': 'Needs, goals, context, mental models',
+    'd02-h': 'UX strategy',         'd02-p': 'Vision, value proposition, success criteria',
+    'd03-h': 'Information architecture', 'd03-p': 'Navigation, labels, hierarchy, discoverability',
+    'd04-h': 'Interaction design',  'd04-p': 'Component behaviour, feedback, flows',
+    'd05-h': 'UI & visual identity','d05-p': 'Typography, colour, spacing, brand consistency',
+    'd06-h': 'UX Writing',          'd06-p': 'Microcopy, CTAs, errors, plain language',
+    'd07-h': 'Accessibility',       'd07-p': 'WCAG POUR principles, screen reader, focus',
+    'd08-h': 'Responsive design',   'd08-p': 'Breakpoints, touch targets, layout',
+    'd09-h': 'Multilingual UX',     'd09-p': 'Language adaptation, market conventions',
+    'd10-h': 'Personalisation',     'd10-p': 'Adaptive content, user state, context',
+    'd11-h': 'Technical experience','d11-p': 'Performance, errors, edge cases',
+    'd12-h': 'Usability evaluation','d12-p': 'Task success, heuristics, friction points',
+    'footer-copy': 'CUXedTech plugin © 2026 Ana Eslava-Graterol. UX Writing skill developed after the masterclass by Antonio Estévez Funes (BBVA, UPV, 6 Nov 2026). AI-assisted; author-reviewed. EU AI Act Art. 50 disclosure applies.'
   },
   es: {
-    'nav-portfolio': '← Portfolio',
+    'nav-portfolio': '← Portafolio',
     'hero-kicker': 'Plugin de Claude · v 0.1.8',
     'hero-h1': 'Doce dimensiones.<br><em>Una evaluación.</em>',
-    'hero-desc': 'UX Writing · Accesibilidad · Arquitectura de la información · Diseño de interacción — y ocho más. Disponible en ChatGPT y Claude Code.'
+    'hero-desc': 'UX Writing · Accesibilidad · Arquitectura de la información · Diseño de interacción — y ocho más. Disponible en ChatGPT y Claude Code.',
+    'hero-btn-chatgpt': 'Probar en ChatGPT <span style="font-size:12px;opacity:0.7;">(abre en pestaña nueva)</span>',
+    'hero-btn-claude': '↓ Plugin para Claude Code (.zip)',
+    'origin-kicker': 'Origen',
+    'origin-h2': 'Nacido de una masterclass.',
+    'origin-sub': 'No copiado de una diapositiva — reconstruido como algo reutilizable.',
+    'origin-summary': 'Atribución formativa',
+    'skills-kicker': 'Qué contiene',
+    'skills-h2': 'Cinco skills.',
+    'skills-sub': 'Toca cada skill para expandir.',
+    'platform-kicker': 'Prueba CUXedTech',
+    'platform-h2': 'Dos formas de usarlo.',
+    'platform-sub': 'ChatGPT — sin instalación. Claude Code — descarga y añade a tu proyecto.',
+    'platform1-label': 'ChatGPT — sin instalación',
+    'platform1-h3': 'Evalúa cualquier experiencia digital',
+    'platform1-p': 'Abre ChatGPT → busca <strong>@CUXedTech</strong> → pega tu URL.',
+    'platform1-d1': 'URI del plugin — pega dentro de ChatGPT',
+    'platform1-d2': 'Ejemplo de prompt',
+    'platform1-prompt': '"Evalúa [tu URL] usando los criterios de calidad UX relevantes de CUXedTech. Enfócate en UX Writing, accesibilidad y arquitectura de la información."',
+    'platform1-btn': 'Abrir ChatGPT (abre en pestaña nueva) →',
+    'platform2-label': 'Claude Code — descarga e instala',
+    'platform2-h3': 'Comandos slash en tu proyecto',
+    'platform2-p': 'Descarga → descomprime → añade a tu proyecto de Claude Code.',
+    'platform2-d1': 'Comandos disponibles',
+    'platform2-d2': 'Comando de instalación',
+    'platform2-btn': '↓ Descargar plugin (.zip)',
+    'dim-kicker': 'Marco de evaluación',
+    'dim-h2': 'Doce dimensiones.',
+    'dim-sub': 'Enfócate en lo que más importa, o deja que CUXedTech identifique las oportunidades.',
+    'dim-toggle': 'Ver las 12 →',
+    'd01-h': 'Investigación de usuario',    'd01-p': 'Necesidades, objetivos, contexto, modelos mentales',
+    'd02-h': 'Estrategia UX',              'd02-p': 'Visión, propuesta de valor, criterios de éxito',
+    'd03-h': 'Arquitectura de la información', 'd03-p': 'Navegación, etiquetas, jerarquía, encontrabilidad',
+    'd04-h': 'Diseño de interacción',      'd04-p': 'Comportamiento de componentes, feedback, flujos',
+    'd05-h': 'UI e identidad visual',      'd05-p': 'Tipografía, color, espaciado, consistencia de marca',
+    'd06-h': 'UX Writing',                 'd06-p': 'Microcopia, CTAs, errores, lenguaje claro',
+    'd07-h': 'Accesibilidad',              'd07-p': 'Principios WCAG POUR, lector de pantalla, foco',
+    'd08-h': 'Diseño responsivo',          'd08-p': 'Breakpoints, objetivos táctiles, maquetación',
+    'd09-h': 'UX multilingüe',             'd09-p': 'Adaptación de idioma, convenciones de mercado',
+    'd10-h': 'Personalización',            'd10-p': 'Contenido adaptativo, estado del usuario, contexto',
+    'd11-h': 'Experiencia técnica',        'd11-p': 'Rendimiento, errores, casos extremos',
+    'd12-h': 'Evaluación de usabilidad',   'd12-p': 'Éxito en tareas, heurísticas, puntos de fricción',
+    'footer-copy': 'CUXedTech plugin © 2026 Ana Eslava-Graterol. Skill de UX Writing desarrollado tras la masterclass de Antonio Estévez Funes (BBVA, UPV, 6 nov. 2026). Asistido por IA; revisado por la autora. Se aplica la declaración del art. 50 de la Ley de IA de la UE.'
   }
 };
 </script>
