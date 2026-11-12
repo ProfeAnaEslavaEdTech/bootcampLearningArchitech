@@ -4,96 +4,380 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UX/UI Design for Learning — Ana Eslava Bootcamp</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../shared/oi.css">
 <script src="../shared/i18n.js" defer></script>
 <style>
-  :root {
-    --ink: #1C1E2E; --canvas: #F7F8FC; --surface: #FFFFFF;
-    --primary: #3B5BD6; --primary-deep: #22307C;
-    --accent: #E8A33D; --muted: #5B5F77; --border: #DDE1EE;
-    --radius: 12px;
+/* ── TOKENS ── */
+:root {
+  --ink: #1C1E2E;
+  --canvas: #F7F8FC;
+  --surface: #FFFFFF;
+  --surface-alt: #F0F2FA;
+  --line: #E6E8F2;
+  --muted: #5B5F77;
+  --primary: #3B5BD6;
+  --primary-deep: #22307C;
+  --on-primary: #FFFFFF;
+  --accent: #E8A33D;
+  --accent-text: #9A5B00;
+  --success: #0A7E5B;
+  --success-soft: #E6FAF4;
+  --focus-ring: #3B5BD6;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ink: #EEF0F8;
+    --canvas: #0F1120;
+    --surface: #171A2B;
+    --surface-alt: #1E2238;
+    --line: #2A2D44;
+    --muted: #A6ADC8;
+    --primary: #9DB2FF;
+    --primary-deep: #B9C8F6;
+    --on-primary: #131A44;
+    --accent: #EEC272;
+    --accent-text: #EEC272;
+    --success: #34C98C;
+    --success-soft: rgba(52,201,140,0.12);
+    --focus-ring: #9DB2FF;
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
-      --muted: #9397B0; --border: #2A2D45; color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --ink: #E8EAF6; --canvas: #0F1120; --surface: #181B2E;
-    --muted: #9397B0; --border: #2A2D45; color-scheme: dark;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--canvas); color: var(--ink);
-    font-family: 'Inter', sans-serif; min-height: 100vh;
-    padding: 0 max(16px, env(safe-area-inset-left,0px));
-    padding-right: max(16px, env(safe-area-inset-right,0px));
-  }
-  .header {
-    background: var(--primary-deep); color: #fff;
-    padding: 36px max(16px, env(safe-area-inset-left,0px));
-    padding-right: max(16px, env(safe-area-inset-right,0px));
-  }
-  .header a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.85rem; }
-  .header a:hover { color: #fff; }
-  .tag {
-    display: inline-block; background: var(--accent); color: #1C1E2E;
-    font-size: 0.72rem; font-weight: 600; letter-spacing: .06em;
-    text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
-    margin-bottom: 12px;
-  }
-  h1 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.6rem,4vw,2.4rem);
-       font-weight: 600; line-height: 1.2; margin-bottom: 8px; }
-  .subtitle { color: rgba(255,255,255,0.75); font-size: 1rem; max-width: 580px; }
-  .main { max-width: 900px; margin: 40px auto; }
-  .coming-soon {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 40px; text-align: center;
-    margin-bottom: 32px;
-  }
-  .coming-soon .icon { font-size: 3rem; margin-bottom: 16px; }
-  .coming-soon h2 { font-family: 'Fraunces', serif; font-size: 1.5rem;
-                    font-weight: 600; margin-bottom: 8px; }
-  .coming-soon p { color: var(--muted); line-height: 1.6; max-width: 480px;
-                   margin: 0 auto; }
-  .evidence-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  @media (max-width: 600px) { .evidence-grid { grid-template-columns: 1fr; } }
-  .evidence-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 20px 24px;
-  }
-  .evidence-label {
-    font-size: 0.72rem; font-weight: 600; letter-spacing: .06em;
-    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
-  }
-  .evidence-title { font-weight: 600; margin-bottom: 4px; }
-  .evidence-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
-  .modules { display: grid; gap: 16px; margin-top: 32px; }
-  .module-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 20px 24px;
-    display: flex; align-items: flex-start; gap: 16px;
-  }
-  .module-num {
-    min-width: 36px; height: 36px; background: var(--border); color: var(--muted);
-    border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; font-size: 0.85rem; font-weight: 600; flex-shrink: 0;
-  }
-  .module-title { font-weight: 600; margin-bottom: 4px; }
-  .module-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
-  .gap-tag {
-    display: inline-block; background: rgba(59,91,214,0.1); color: var(--primary);
-    font-size: 0.72rem; font-weight: 600; letter-spacing: .04em;
-    padding: 2px 8px; border-radius: 4px; margin-top: 6px;
-  }
-  h3 { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600;
-       margin-bottom: 16px; }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #EEF0F8;
+  --canvas: #0F1120;
+  --surface: #171A2B;
+  --surface-alt: #1E2238;
+  --line: #2A2D44;
+  --muted: #A6ADC8;
+  --primary: #9DB2FF;
+  --primary-deep: #B9C8F6;
+  --on-primary: #131A44;
+  --accent: #EEC272;
+  --accent-text: #EEC272;
+  --success: #34C98C;
+  --success-soft: rgba(52,201,140,0.12);
+  --focus-ring: #9DB2FF;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--canvas);
+}
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+a { color: var(--primary); }
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+ul, ol { padding-left: 20px; }
+li { line-height: 1.65; margin-bottom: 6px; }
+p { line-height: 1.65; margin-bottom: 10px; }
+p:last-child { margin-bottom: 0; }
+
+/* ── HERO HEADER ── */
+.hero-header {
+  background: var(--primary-deep);
+  color: #fff;
+  padding: 40px max(32px, env(safe-area-inset-left,0px)) 48px;
+  padding-right: max(32px, env(safe-area-inset-right,0px));
+}
+.hero-breadcrumb {
+  display: inline-block;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+.hero-breadcrumb:hover { color: #fff; }
+.hero-kicker {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.hero-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4.5vw, 46px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  margin-bottom: 16px;
+  max-width: 640px;
+}
+.hero-header h1 em { font-style: italic; color: var(--accent); }
+.hero-desc {
+  font-size: 17px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-bottom: 28px;
+}
+.meta-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.meta-pill {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+/* ── SECTION ── */
+.section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px max(16px, env(safe-area-inset-left,0px));
+  padding-right: max(16px, env(safe-area-inset-right,0px));
+}
+.section + .section { border-top: 1px solid var(--line); }
+.section-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  margin-bottom: 10px;
+}
+.section h2 {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  color: var(--primary-deep);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+  margin-bottom: 10px;
+}
+.section-sub {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 540px;
+  margin-bottom: 0;
+}
+
+/* ── EVIDENCE GRID ── */
+.ev-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 32px;
+}
+.ev-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+.ev-score {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+}
+.ev-score.public  { background: var(--success); color: #fff; }
+.ev-score.private { background: var(--primary-deep); color: #fff; }
+.ev-score.system  { background: var(--accent); color: #1C1E2E; }
+:root[data-theme="dark"] .ev-score.system { color: #1C1E2E; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .ev-score.system { color:#1C1E2E; } }
+.ev-title { font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--primary-deep); margin-bottom: 6px; }
+.ev-meta { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── MODULE NAV ── */
+.module-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  margin-bottom: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.module-btn {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: default;
+  text-decoration: none;
+}
+.module-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+:root[data-theme="dark"] .module-btn.active { color: #fff; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .module-btn.active { color:#fff; } }
+
+/* ── CONTENT CARD ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-deep);
+  margin-bottom: 10px;
+}
+.card h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 6px; margin-top: 16px; }
+
+/* ── TLO BOX ── */
+.tlo-box {
+  background: rgba(59,91,214,0.07);
+  border: 1px solid rgba(59,91,214,0.2);
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--primary-deep);
+  margin-bottom: 20px;
+}
+:root[data-theme="dark"] .tlo-box { color: #A5B4FC; border-color: rgba(157,178,255,0.25); background: rgba(157,178,255,0.08); }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tlo-box { color:#A5B4FC; border-color:rgba(157,178,255,0.25); background:rgba(157,178,255,0.08); } }
+
+/* ── CALLOUT ── */
+.callout {
+  border-left: 3px solid var(--primary);
+  padding: 14px 16px;
+  background: rgba(59,91,214,0.07);
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.callout.success { border-color: var(--success); background: var(--success-soft); }
+.callout strong { color: var(--primary-deep); font-weight: 600; }
+.callout.success strong { color: var(--success); }
+:root[data-theme="dark"] .callout strong { color: var(--primary); }
+:root[data-theme="dark"] .callout.success strong { color: var(--success); }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .callout strong { color:var(--primary); } :root:not([data-theme="light"]) .callout.success strong { color:var(--success); } }
+
+/* ── STEP LIST ── */
+.step-list { list-style: none; padding: 0; counter-reset: steps; }
+.step-list li {
+  counter-increment: steps;
+  padding: 10px 0 10px 36px;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.step-list li:last-child { border-bottom: none; }
+.step-list li::before {
+  content: counter(steps);
+  position: absolute;
+  left: 0; top: 10px;
+  width: 24px; height: 24px;
+  background: var(--accent);
+  color: #1C1E2E;
+  border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── SKILL TABLE ── */
+.skill-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px; }
+.skill-table th {
+  text-align: left;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--line);
+}
+.skill-table td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.skill-table tr:last-child td { border-bottom: none; }
+
+/* ── TOKEN SWATCHES ── */
+.token-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.token-swatch {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 8px; padding: 8px 12px; font-size: 12px;
+}
+.swatch { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+
+/* ── STATUS PILLS ── */
+.status-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.pill {
+  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+  background: var(--success-soft); color: var(--success);
+}
+.pill.blue { background: rgba(59,91,214,0.1); color: var(--primary); }
+:root[data-theme="dark"] .pill.blue { color: var(--primary); }
+
+/* ── DELIVERABLE BOX ── */
+.deliverable-box {
+  border: 1.5px dashed var(--accent);
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-top: 16px;
+}
+.deliverable-box h4 { color: var(--accent-text); margin-top: 0; }
+
+/* ── FOOTER ── */
+.page-footer {
+  border-top: 1px solid var(--line);
+  padding: 40px max(16px, env(safe-area-inset-left,0px)) 56px;
+  padding-right: max(16px, env(safe-area-inset-right,0px));
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+}
+.btn-nav {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 600; padding: 10px 20px;
+  border-radius: 10px; text-decoration: none;
+  border: 1.5px solid var(--line); background: var(--surface);
+  color: var(--primary);
+}
+.btn-nav.filled { background: var(--primary); border-color: var(--primary); color: #fff; }
+:root[data-theme="dark"] .btn-nav.filled { color: #fff; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .btn-nav.filled { color:#fff; } }
+.btn-nav:hover { opacity: 0.85; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  .hero-header { padding-left: max(16px, env(safe-area-inset-left,0px)); padding-right: max(16px, env(safe-area-inset-right,0px)); }
+  .skill-table th:nth-child(3), .skill-table td:nth-child(3) { display: none; }
+}
 </style>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
+
+<!-- OI shared nav -->
 <header class="oi-site-header">
   <div class="oi-brand">
     <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-brand-name">Ana Eslava-Graterol</a>
@@ -101,176 +385,430 @@
   </div>
   <div class="oi-ctrl-row">
     <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
+    <button id="lang-btn" class="oi-ctrl-btn" aria-label="Switch language">ES</button>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
-<div class="header">
-  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" data-i18n="breadcrumb">← Bootcamp Hub</a>
-  <div style="margin-top: 16px;">
-    <span class="tag" data-i18n="tag">Design evidence</span>
-    <h1 data-i18n="page-h1">UX/UI Design for Learning</h1>
-    <p class="subtitle" data-i18n="page-sub">From wireframes to usability testing — making existing UX work visible as portfolio evidence.</p>
+
+<!-- Hero -->
+<div class="hero-header">
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="hero-breadcrumb" data-i18n="breadcrumb">← Bootcamp Hub</a>
+  <div class="hero-kicker" data-i18n="tag">Design evidence</div>
+  <h1 data-i18n="page-h1">UX/UI Design <em>for Learning</em></h1>
+  <p class="hero-desc" data-i18n="page-sub">Evidence-based UX: wireframes, usability testing (AWJ 10/10), the Ocean Ink design system, and the learner-experience layer of TK CoachAI for Talketika.</p>
+  <div class="meta-row">
+    <span class="meta-pill" data-i18n="meta1">4 modules</span>
+    <span class="meta-pill" data-i18n="meta2">~45 min</span>
+    <span class="meta-pill" data-i18n="meta3">3 public evidence pieces</span>
+    <span class="meta-pill" data-i18n="meta4">1 private documented case</span>
   </div>
 </div>
 
-<div class="main">
-  <div class="coming-soon">
-    <div class="icon">️</div>
-    <h2 data-i18n="cs-h2">Track in development</h2>
-    <p data-i18n="cs-p">Four modules converting existing UX/UI work (AWJ, TK CoachAI, Ocean Ink) into documented, public portfolio evidence. The core principle: many gaps are evidence gaps, not skill gaps.</p>
-  </div>
+<main id="main-content">
 
-  <h3 data-i18n="evidence-h3">Evidence already built — needs publication</h3>
-  <div class="evidence-grid">
-    <div class="evidence-card">
-      <div class="evidence-label" data-i18n="ec1-label">AWJ — Academic Writing Journey</div>
-      <div class="evidence-title" data-i18n="ec1-title">Wireframes &amp; Usability Testing</div>
-      <div class="evidence-desc" data-i18n="ec1-desc">Subject project (instructional design + WCAG web accessibility, 10/10). Usability testing results exist but are not public. Making them visible closes the UX/UI evidence gap.</div>
-    </div>
-    <div class="evidence-card">
-      <div class="evidence-label" data-i18n="ec2-label">TK CoachAI — for Talketika</div>
-      <div class="evidence-title" data-i18n="ec2-title">Learner-Experience Interface</div>
-      <div class="evidence-desc" data-i18n="ec2-desc">MLLDE Measurement Module applied to Talketika's AI tutor app (software by Orkelia). The LX layer — learner dashboard, session feedback, gamification metaphors — is documented.</div>
-    </div>
-    <div class="evidence-card">
-      <div class="evidence-label" data-i18n="ec3-label">Ocean Ink Design System</div>
-      <div class="evidence-title" data-i18n="ec3-title">Personal Brand &amp; Design Tokens</div>
-      <div class="evidence-desc" data-i18n="ec3-desc">Complete design system: Indigo Blue (#3B5BD6), Deep Blue (#22307C), Gold (#E8A33D) palette; Fraunces/Inter/IBM Plex Mono type scale; component library for all portfolio pieces.</div>
-    </div>
-    <div class="evidence-card">
-      <div class="evidence-label" data-i18n="ec4-label">Portfolio Renovation</div>
-      <div class="evidence-title" data-i18n="ec4-title">Site Architecture &amp; IA</div>
-      <div class="evidence-desc" data-i18n="ec4-desc">Information architecture decisions for the bootcamp hub: sector/track hierarchy, tab navigation, glossary cross-linking, accessibility (WCAG 2.1 AA). The hub itself is a UX artefact.</div>
-    </div>
-  </div>
+  <!-- MODULE 1 — Evidence map -->
+  <section class="section">
+    <p class="section-kicker" data-i18n="m1-kicker">Module 1 · Evidence map</p>
+    <h2 data-i18n="m1-h2">What counts as UX/UI evidence in a learning portfolio</h2>
+    <p class="section-sub" data-i18n="m1-sub">Four existing artefacts — AWJ, TK CoachAI, Ocean Ink, the bootcamp hub — each closes a specific evidence gap.</p>
 
-  <div class="modules">
-    <div class="module-card">
-      <div class="module-num">1</div>
-      <div>
-        <div class="module-title" data-i18n="m1-title">From Evidence Gap to Portfolio Entry</div>
-        <div class="module-desc" data-i18n="m1-desc">Framework for documenting existing UX work: the annotated case-study format, what screenshots + metrics to include, how to write the design rationale without breaking client NDA.</div>
-        <span class="gap-tag" data-i18n="m1-gap">Gap: UX/UI evidence not public (AWJ, TK CoachAI)</span>
+    <div class="ev-grid">
+      <div class="ev-card">
+        <span class="ev-score public">10/10 · Public</span>
+        <div class="ev-title" data-i18n="ev1-title">AWJ — Academic Writing Journey</div>
+        <div class="ev-meta" data-i18n="ev1-meta">UPV Master's subject project. Wireframes → HTML/CSS implementation → think-aloud usability test → WCAG 2.1 AA compliant deployed site. Competency: end-to-end UX process.</div>
+      </div>
+      <div class="ev-card">
+        <span class="ev-score private">Documented · Private</span>
+        <div class="ev-title" data-i18n="ev2-title">TK CoachAI — for Talketika</div>
+        <div class="ev-meta" data-i18n="ev2-meta">App owner: Talketika · Software: Orkelia · MLLDE design: Ana Eslava-Graterol. LX layer: learner dashboard, session-end feedback, gamification, zero-error mastery gate display. Competency: AI-tutor UX.</div>
+      </div>
+      <div class="ev-card">
+        <span class="ev-score system">Design system · Public</span>
+        <div class="ev-title" data-i18n="ev3-title">Ocean Ink Design System</div>
+        <div class="ev-meta" data-i18n="ev3-meta">CSS token file, dual theme, WCAG-measured contrast ratios, component library applied across 25+ bootcamp pages. Competency: design system architecture — tokens → components → product cohesion.</div>
+      </div>
+      <div class="ev-card">
+        <span class="ev-score system">IA artefact · Public</span>
+        <div class="ev-title" data-i18n="ev4-title">Bootcamp Hub — Information Architecture</div>
+        <div class="ev-meta" data-i18n="ev4-meta">6-sector hierarchy, 24 skill pages, bilingual toggle, tabbed navigation, WCAG 2.2 AA. Competency: information architecture for large-scale eLearning hubs — hierarchy, wayfinding, accessibility.</div>
       </div>
     </div>
-    <div class="module-card">
-      <div class="module-num">2</div>
-      <div>
-        <div class="module-title" data-i18n="m2-title">Wireframing for L&D — Lo-Fi to Hi-Fi</div>
-        <div class="module-desc" data-i18n="m2-desc">Lo-fi wireframes for three canonical eLearning interaction types (branching scenario, knowledge check, dashboard). Figma or paper → annotated handoff document.</div>
-        <span class="gap-tag" data-i18n="m2-gap">Gap: wireframe artefacts in portfolio (confirmed multiple postings)</span>
+
+    <div class="callout success" style="margin-top:24px;">
+      <strong data-i18n="ev-callout-label">Key principle:</strong> <span data-i18n="ev-callout-text">Many L&D UX gaps are <em>evidence labelling gaps</em>, not skill gaps. AWJ is a live, WCAG-compliant, usability-tested product — it needs to be named as a UX artefact, not only an instructional design project.</span>
+    </div>
+
+    <div class="status-row">
+      <span class="pill" data-i18n="pill1">AWJ wireframes → deployed site ✓</span>
+      <span class="pill" data-i18n="pill2">Usability testing protocol ✓</span>
+      <span class="pill" data-i18n="pill3">Ocean Ink documented ✓</span>
+      <span class="pill" data-i18n="pill4">TK CoachAI LX layer documented ✓</span>
+    </div>
+
+    <!-- module nav -->
+    <nav class="module-nav" aria-label="Modules">
+      <span class="module-btn active" data-i18n="mod1">Module 1 · Evidence map</span>
+      <span class="module-btn" data-i18n="mod2">Module 2 · Wireframing</span>
+      <span class="module-btn" data-i18n="mod3">Module 3 · Usability testing</span>
+      <span class="module-btn" data-i18n="mod4">Module 4 · Design systems</span>
+    </nav>
+  </section>
+
+  <!-- MODULE 2 — Wireframing -->
+  <section class="section">
+    <p class="section-kicker" data-i18n="m2-kicker">Module 2 · Wireframing for L&amp;D</p>
+    <h2 data-i18n="m2-h2">Lo-fi to hi-fi — wireframing eLearning interactions</h2>
+    <p class="section-sub" data-i18n="m2-sub">Three canonical eLearning wireframe types cover 80% of what appears in job postings.</p>
+
+    <div class="card" style="margin-top:28px;">
+      <div class="tlo-box" data-i18n="m2-tlo">By the end of this module you can produce an annotated wireframe for each of the three canonical eLearning interaction types, applying WCAG constraints from the lo-fi stage and generating a handoff-ready specification document.</div>
+
+      <table class="skill-table">
+        <thead>
+          <tr>
+            <th data-i18n="tbl-h1">Interaction</th>
+            <th data-i18n="tbl-h2">What to wireframe</th>
+            <th data-i18n="tbl-h3">AWJ worked example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong data-i18n="t1-type">Branching scenario</strong></td>
+            <td data-i18n="t1-what">Decision node → 2–3 branches → consequence screen → re-entry point. Label feedback type (corrective / elaborative).</td>
+            <td data-i18n="t1-ex">Hedging-language choice → over-hedged / under-hedged / correct → model answer screen.</td>
+          </tr>
+          <tr>
+            <td><strong data-i18n="t2-type">Knowledge check</strong></td>
+            <td data-i18n="t2-what">Question stem → response options → answer feedback layer → progress indicator. WCAG: keyboard navigable, error state, focus ring.</td>
+            <td data-i18n="t2-ex">Single-best-answer on metadiscourse markers → highlight correct + explain distractor.</td>
+          </tr>
+          <tr>
+            <td><strong data-i18n="t3-type">Dashboard / progress</strong></td>
+            <td data-i18n="t3-what">Learner state at a glance: modules completed, score, next step, mastery gate. Data density first.</td>
+            <td data-i18n="t3-ex">TK CoachAI for Talketika: session score, MLLDE gate status (<em>"Measure, Not Decide"</em>), next recommended session.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3 data-i18n="m2-process-h">Lo-fi → hi-fi process (AWJ as the worked example)</h3>
+      <ol class="step-list">
+        <li data-i18n="m2-s1"><strong>Sketch (lo-fi):</strong> boxes for content zones, arrows for navigation flow, labels only — no colour, no fonts. Validate the logic, not the look.</li>
+        <li data-i18n="m2-s2"><strong>Annotate interactions:</strong> every element that does something — click target, hover state, keyboard trigger. Label feedback type (corrective, confirmatory, elaborative).</li>
+        <li data-i18n="m2-s3"><strong>Apply WCAG constraints early:</strong> minimum tap target 44×44px, focus order marked, error states labelled, contrast ratio noted. Fixing WCAG at wireframe stage costs zero rework.</li>
+        <li data-i18n="m2-s4"><strong>Hi-fi pass:</strong> apply Ocean Ink tokens (<code>--primary</code>, <code>--accent</code>, <code>--canvas</code>). Fraunces headings, Inter body. The wireframe becomes a spec sheet.</li>
+        <li data-i18n="m2-s5"><strong>Handoff document:</strong> colour tokens (hex + purpose), font sizes, spacing grid, interaction states, WCAG notes. This is the portfolio artefact.</li>
+      </ol>
+      <div class="callout" style="margin-top:16px;">
+        <strong data-i18n="m2-callout-label">Portfolio move:</strong> <span data-i18n="m2-callout-text">Export two frames from the AWJ wireframing process — lo-fi and hi-fi — annotated with the design decisions. That two-frame artefact answers "can you wireframe?" in one image.</span>
       </div>
     </div>
-    <div class="module-card">
-      <div class="module-num">3</div>
-      <div>
-        <div class="module-title" data-i18n="m3-title">Usability Testing in Instructional Design</div>
-        <div class="module-desc" data-i18n="m3-desc">The five-user test, think-aloud protocol, and writing the usability report. Applying the AWJ test findings as a worked example.</div>
-        <span class="gap-tag" data-i18n="m3-gap">Gap: usability testing evidence (AWJ exists, not public)</span>
+  </section>
+
+  <!-- MODULE 3 — Usability testing -->
+  <section class="section">
+    <p class="section-kicker" data-i18n="m3-kicker">Module 3 · Usability testing</p>
+    <h2 data-i18n="m3-h2">The AWJ usability test — method and findings</h2>
+    <p class="section-sub" data-i18n="m3-sub">Think-aloud protocol applied to AWJ before final submission. Graded 10/10 at the UPV Master's programme.</p>
+
+    <div class="card" style="margin-top:28px;">
+      <div class="tlo-box" data-i18n="m3-tlo">Conduct a five-user think-aloud usability test: recruit participants, write task scenarios, record observations, categorise findings by severity, and produce a before/after revision report that closes the WCAG and usability gaps identified.</div>
+
+      <h3 data-i18n="m3-protocol-h">Think-aloud protocol — five steps</h3>
+      <ol class="step-list">
+        <li data-i18n="m3-s1"><strong>Recruit 5 participants:</strong> 5 is the threshold at which 85% of usability issues surface (Nielsen, 1993). For AWJ: peers from the master's programme — same academic writing context as the target learner.</li>
+        <li data-i18n="m3-s2"><strong>Give the task, not the instructions:</strong> "Use the site to find the section on hedging language and complete the first exercise." Never say "click on…"</li>
+        <li data-i18n="m3-s3"><strong>Record think-aloud observations:</strong> note hesitations, wrong clicks, re-reads, and verbal expressions of confusion — exact quotes. These become the finding statements.</li>
+        <li data-i18n="m3-s4"><strong>Categorise by severity:</strong> Critical (blocks task completion) · Major (significant delay) · Minor (cosmetic). AWJ had 0 critical issues post-revision.</li>
+        <li data-i18n="m3-s5"><strong>Report with before/after:</strong> each finding gets: screenshot of the problem → revision applied → rationale. The revision log is the portfolio artefact.</li>
+      </ol>
+
+      <div class="callout success" style="margin-top:16px;">
+        <strong data-i18n="m3-result-label">AWJ result:</strong> <span data-i18n="m3-result-text">10/10 · WCAG 2.1 AA compliant · 0 critical usability issues post-revision.</span>
       </div>
     </div>
-    <div class="module-card">
-      <div class="module-num">4</div>
-      <div>
-        <div class="module-title" data-i18n="m4-title">Design Systems for L&D — Ocean Ink</div>
-        <div class="module-desc" data-i18n="m4-desc">How to build and document a design system for a learning portfolio: tokens, components, accessibility rationale. Ocean Ink as the worked example.</div>
-        <span class="gap-tag" data-i18n="m4-gap">Gap: public-facing presence / portfolio cohesion (now a hard blocker)</span>
+
+    <div class="card">
+      <h3 data-i18n="m3-wcag-h">WCAG as a systematic usability audit method</h3>
+      <p data-i18n="m3-wcag-p1">Running a WCAG 2.2 AA audit alongside a think-aloud test surfaces issues that typical usability tests miss: keyboard-only navigation, screen-reader label completeness, focus ring visibility, colour contrast under different display conditions.</p>
+      <p data-i18n="m3-wcag-p2">For AWJ, every WCAG checkpoint was verified before submission. This is documented evidence of accessibility competence as part of the UX process — not as a separate compliance exercise.</p>
+      <div class="callout">
+        <strong data-i18n="m3-gap-label">Common gap in portfolios:</strong> <span data-i18n="m3-gap-text">L&D professionals list "WCAG" as a skill but have no artefact that shows the process — no audit report, no before/after comparison. The AWJ revision log closes that gap with real evidence.</span>
       </div>
     </div>
-  </div>
-</div>
+  </section>
+
+  <!-- MODULE 4 — Design systems -->
+  <section class="section">
+    <p class="section-kicker" data-i18n="m4-kicker">Module 4 · Design systems for L&amp;D</p>
+    <h2 data-i18n="m4-h2">Ocean Ink — building a design system for a learning portfolio</h2>
+    <p class="section-sub" data-i18n="m4-sub">Make visual decisions once; apply them consistently. Reviewers see a coherent designer, not a collection of disconnected experiments.</p>
+
+    <div class="card" style="margin-top:28px;">
+      <div class="tlo-box" data-i18n="m4-tlo">Document Ocean Ink as a shareable design system artefact: token table, type scale with use cases, one component (button or feedback banner) in light + dark mode, and a paragraph explaining the WCAG rationale behind each choice.</div>
+
+      <h3 data-i18n="m4-tokens-h">Token architecture</h3>
+      <p data-i18n="m4-tokens-p">Every colour is a CSS custom property with a defined purpose, a light value, and a dark value. WCAG contrast ratios are pre-measured:</p>
+      <div class="token-row">
+        <div class="token-swatch">
+          <div class="swatch" style="background:#3B5BD6"></div>
+          <span><code>--primary</code> #3B5BD6 · links, active, button fills</span>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background:#22307C"></div>
+          <span><code>--primary-deep</code> #22307C · headings, hero bands (light)</span>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background:#E8A33D"></div>
+          <span><code>--accent</code> #E8A33D · gold, single CTAs, labels</span>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background:#F7F8FC; border:1px solid #DDE1EE"></div>
+          <span><code>--canvas</code> (light) #F7F8FC</span>
+        </div>
+        <div class="token-swatch">
+          <div class="swatch" style="background:#0F1120; border:1px solid #2A2D45"></div>
+          <span><code>--canvas</code> (dark) #0F1120</span>
+        </div>
+      </div>
+
+      <h4 data-i18n="m4-type-h">Type scale — Fraunces + Inter + IBM Plex Mono</h4>
+      <ul style="font-size:14px;">
+        <li data-i18n="m4-t1"><strong>Fraunces 600–700</strong> — display, H1–H2. Optical-size variable font. Carries the senior, editorial register.</li>
+        <li data-i18n="m4-t2"><strong>Inter 400–600</strong> — body, UI, H3, kicker labels. Chosen for readability at small sizes on screen — a deliberate legibility decision, not "generic sans".</li>
+        <li data-i18n="m4-t3"><strong>IBM Plex Mono 400–500</strong> — code, timestamps, metadata labels. Signals precision without monospace overuse.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 data-i18n="m4-apply-h">Applying Ocean Ink to TK CoachAI for Talketika</h3>
+      <p data-i18n="m4-apply-p">The TK CoachAI learner-experience layer — designed for <strong>Talketika</strong> (app owner; software by <strong>Orkelia</strong>; MLLDE design © Ana Eslava-Graterol. Copyright registration in progress.) — applies Ocean Ink tokens to the AI-tutor interface: learner dashboard, session-end feedback, the zero-error mastery gate display, and the <em>"Measure, Not Decide"</em> principle made visible in the UI.</p>
+      <div class="callout">
+        <strong data-i18n="m4-callout-label">Design system as portfolio argument:</strong> <span data-i18n="m4-callout-text">When a reviewer opens AWJ, the TK CoachAI documentation, and the bootcamp hub, the same type scale, colour logic, and component pattern appear across all three. That consistency is itself a UX competency — it shows systems thinking, not one-off screens.</span>
+      </div>
+      <div class="deliverable-box">
+        <h4 data-i18n="m4-deliverable-h">Module 4 deliverable</h4>
+        <p data-i18n="m4-deliverable-p" style="font-size:14px;">A one-page design system summary (PDF or Figma frame): colour tokens with contrast ratios, type scale with use cases, one component in light + dark modes. This is the artefact that answers "design system experience" on a job application.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="page-footer">
+  <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="btn-nav" data-i18n="footer-back">← Bootcamp</a>
+  <a href="https://profeanaeslavaedtech.github.io/portofolio/" class="btn-nav filled" data-i18n="footer-portfolio">Portfolio →</a>
+</footer>
+
 <script>
 window.PAGE_I18N = {
   en: {
-    'brand-role': 'LXD · LQA · AI Governance',
-    'nav-back': 'Bootcamp',
-    'breadcrumb': '← Bootcamp Hub',
-    'tag': 'Design evidence',
-    'page-h1': 'UX/UI Design for Learning',
-    'page-sub': 'From wireframes to usability testing — making existing UX work visible as portfolio evidence.',
-    'cs-h2': 'Track in development',
-    'cs-p': 'Four modules converting existing UX/UI work (AWJ, TK CoachAI, Ocean Ink) into documented, public portfolio evidence. The core principle: many gaps are evidence gaps, not skill gaps.',
-    'evidence-h3': 'Evidence already built — needs publication',
-    'ec1-label': 'AWJ — Academic Writing Journey',
-    'ec1-title': 'Wireframes &amp; Usability Testing',
-    'ec1-desc': 'Subject project (instructional design + WCAG web accessibility, 10/10). Usability testing results exist but are not public. Making them visible closes the UX/UI evidence gap.',
-    'ec2-label': 'TK CoachAI — for Talketika',
-    'ec2-title': 'Learner-Experience Interface',
-    'ec2-desc': 'MLLDE Measurement Module applied to Talketika\'s AI tutor app (software by Orkelia). The LX layer — learner dashboard, session feedback, gamification metaphors — is documented.',
-    'ec3-label': 'Ocean Ink Design System',
-    'ec3-title': 'Personal Brand &amp; Design Tokens',
-    'ec3-desc': 'Complete design system: Indigo Blue (#3B5BD6), Deep Blue (#22307C), Gold (#E8A33D) palette; Fraunces/Inter/IBM Plex Mono type scale; component library for all portfolio pieces.',
-    'ec4-label': 'Portfolio Renovation',
-    'ec4-title': 'Site Architecture &amp; IA',
-    'ec4-desc': 'Information architecture decisions for the bootcamp hub: sector/track hierarchy, tab navigation, glossary cross-linking, accessibility (WCAG 2.1 AA). The hub itself is a UX artefact.',
-    'm1-title': 'From Evidence Gap to Portfolio Entry',
-    'm1-desc': 'Framework for documenting existing UX work: the annotated case-study format, what screenshots + metrics to include, how to write the design rationale without breaking client NDA.',
-    'm1-gap': 'Gap: UX/UI evidence not public (AWJ, TK CoachAI)',
-    'm2-title': 'Wireframing for L&D — Lo-Fi to Hi-Fi',
-    'm2-desc': 'Lo-fi wireframes for three canonical eLearning interaction types (branching scenario, knowledge check, dashboard). Figma or paper → annotated handoff document.',
-    'm2-gap': 'Gap: wireframe artefacts in portfolio (confirmed multiple postings)',
-    'm3-title': 'Usability Testing in Instructional Design',
-    'm3-desc': 'The five-user test, think-aloud protocol, and writing the usability report. Applying the AWJ test findings as a worked example.',
-    'm3-gap': 'Gap: usability testing evidence (AWJ exists, not public)',
-    'm4-title': 'Design Systems for L&D — Ocean Ink',
-    'm4-desc': 'How to build and document a design system for a learning portfolio: tokens, components, accessibility rationale. Ocean Ink as the worked example.',
-    'm4-gap': 'Gap: public-facing presence / portfolio cohesion (now a hard blocker)'
+    'brand-role':  'LXD · LQA · AI Governance',
+    'nav-back':    'Bootcamp',
+    'breadcrumb':  '← Bootcamp Hub',
+    'tag':         'Design evidence',
+    'page-h1':     'UX/UI Design <em>for Learning</em>',
+    'page-sub':    'Evidence-based UX: wireframes, usability testing (AWJ 10/10), the Ocean Ink design system, and the learner-experience layer of TK CoachAI for Talketika.',
+    'meta1':       '4 modules',
+    'meta2':       '~45 min',
+    'meta3':       '3 public evidence pieces',
+    'meta4':       '1 private documented case',
+    'm1-kicker':   'Module 1 · Evidence map',
+    'm1-h2':       'What counts as UX/UI evidence in a learning portfolio',
+    'm1-sub':      'Four existing artefacts — AWJ, TK CoachAI, Ocean Ink, the bootcamp hub — each closes a specific evidence gap.',
+    'ev1-title':   'AWJ — Academic Writing Journey',
+    'ev1-meta':    'UPV Master\'s subject project. Wireframes → HTML/CSS implementation → think-aloud usability test → WCAG 2.1 AA compliant deployed site. Competency: end-to-end UX process.',
+    'ev2-title':   'TK CoachAI — for Talketika',
+    'ev2-meta':    'App owner: Talketika · Software: Orkelia · MLLDE design: Ana Eslava-Graterol. LX layer: learner dashboard, session-end feedback, gamification, zero-error mastery gate display. Competency: AI-tutor UX.',
+    'ev3-title':   'Ocean Ink Design System',
+    'ev3-meta':    'CSS token file, dual theme, WCAG-measured contrast ratios, component library applied across 25+ bootcamp pages. Competency: design system architecture — tokens → components → product cohesion.',
+    'ev4-title':   'Bootcamp Hub — Information Architecture',
+    'ev4-meta':    '6-sector hierarchy, 24 skill pages, bilingual toggle, tabbed navigation, WCAG 2.2 AA. Competency: information architecture for large-scale eLearning hubs.',
+    'ev-callout-label': 'Key principle:',
+    'ev-callout-text': 'Many L&D UX gaps are <em>evidence labelling gaps</em>, not skill gaps. AWJ is a live, WCAG-compliant, usability-tested product — it needs to be named as a UX artefact, not only an instructional design project.',
+    'pill1':       'AWJ wireframes → deployed site ✓',
+    'pill2':       'Usability testing protocol ✓',
+    'pill3':       'Ocean Ink documented ✓',
+    'pill4':       'TK CoachAI LX layer documented ✓',
+    'mod1':        'Module 1 · Evidence map',
+    'mod2':        'Module 2 · Wireframing',
+    'mod3':        'Module 3 · Usability testing',
+    'mod4':        'Module 4 · Design systems',
+    'm2-kicker':   'Module 2 · Wireframing for L&D',
+    'm2-h2':       'Lo-fi to hi-fi — wireframing eLearning interactions',
+    'm2-sub':      'Three canonical eLearning wireframe types cover 80% of what appears in job postings.',
+    'm2-tlo':      'By the end of this module you can produce an annotated wireframe for each of the three canonical eLearning interaction types, applying WCAG constraints from the lo-fi stage and generating a handoff-ready specification document.',
+    'tbl-h1':      'Interaction',
+    'tbl-h2':      'What to wireframe',
+    'tbl-h3':      'AWJ worked example',
+    't1-type':     'Branching scenario',
+    't1-what':     'Decision node → 2–3 branches → consequence screen → re-entry point. Label feedback type.',
+    't1-ex':       'Hedging-language choice → over-hedged / under-hedged / correct → model answer screen.',
+    't2-type':     'Knowledge check',
+    't2-what':     'Question stem → response options → answer feedback layer → progress indicator. WCAG: keyboard navigable, error state, focus ring.',
+    't2-ex':       'Single-best-answer on metadiscourse markers → highlight correct + explain distractor.',
+    't3-type':     'Dashboard / progress',
+    't3-what':     'Learner state at a glance: modules completed, score, next step, mastery gate. Data density first.',
+    't3-ex':       'TK CoachAI for Talketika: session score, MLLDE gate status (<em>"Measure, Not Decide"</em>), next recommended session.',
+    'm2-process-h':'Lo-fi → hi-fi process (AWJ as the worked example)',
+    'm2-s1':       '<strong>Sketch (lo-fi):</strong> boxes for content zones, arrows for navigation flow, labels only — no colour, no fonts. Validate the logic, not the look.',
+    'm2-s2':       '<strong>Annotate interactions:</strong> every element that does something — click target, hover state, keyboard trigger. Label feedback type.',
+    'm2-s3':       '<strong>Apply WCAG constraints early:</strong> minimum tap target 44×44px, focus order marked, error states labelled, contrast ratio noted. Fixing WCAG at wireframe stage costs zero rework.',
+    'm2-s4':       '<strong>Hi-fi pass:</strong> apply Ocean Ink tokens (<code>--primary</code>, <code>--accent</code>, <code>--canvas</code>). Fraunces headings, Inter body. The wireframe becomes a spec sheet.',
+    'm2-s5':       '<strong>Handoff document:</strong> colour tokens (hex + purpose), font sizes, spacing grid, interaction states, WCAG notes. This is the portfolio artefact.',
+    'm2-callout-label': 'Portfolio move:',
+    'm2-callout-text': 'Export two frames from the AWJ wireframing process — lo-fi and hi-fi — annotated with the design decisions. That two-frame artefact answers "can you wireframe?" in one image.',
+    'm3-kicker':   'Module 3 · Usability testing',
+    'm3-h2':       'The AWJ usability test — method and findings',
+    'm3-sub':      'Think-aloud protocol applied to AWJ before final submission. Graded 10/10 at the UPV Master\'s programme.',
+    'm3-tlo':      'Conduct a five-user think-aloud usability test: recruit participants, write task scenarios, record observations, categorise findings by severity, and produce a before/after revision report.',
+    'm3-protocol-h':'Think-aloud protocol — five steps',
+    'm3-s1':       '<strong>Recruit 5 participants:</strong> 5 is the threshold at which 85% of usability issues surface (Nielsen, 1993). For AWJ: peers from the master\'s programme.',
+    'm3-s2':       '<strong>Give the task, not the instructions:</strong> "Use the site to find the section on hedging language and complete the first exercise." Never say "click on…"',
+    'm3-s3':       '<strong>Record think-aloud observations:</strong> note hesitations, wrong clicks, re-reads, verbal confusion — exact quotes. These become the finding statements.',
+    'm3-s4':       '<strong>Categorise by severity:</strong> Critical (blocks task completion) · Major (significant delay) · Minor (cosmetic). AWJ had 0 critical issues post-revision.',
+    'm3-s5':       '<strong>Report with before/after:</strong> screenshot of the problem → revision applied → rationale. The revision log is the portfolio artefact.',
+    'm3-result-label': 'AWJ result:',
+    'm3-result-text': '10/10 · WCAG 2.1 AA compliant · 0 critical usability issues post-revision.',
+    'm3-wcag-h':   'WCAG as a systematic usability audit method',
+    'm3-wcag-p1':  'Running a WCAG 2.2 AA audit alongside a think-aloud test surfaces issues that typical usability tests miss: keyboard-only navigation, screen-reader label completeness, focus ring visibility, colour contrast under different display conditions.',
+    'm3-wcag-p2':  'For AWJ, every WCAG checkpoint was verified before submission. Documented evidence of accessibility competence as part of the UX process — not as a separate compliance exercise.',
+    'm3-gap-label':'Common gap in portfolios:',
+    'm3-gap-text': 'L&D professionals list "WCAG" as a skill but have no artefact that shows the process — no audit report, no before/after comparison. The AWJ revision log closes that gap with real evidence.',
+    'm4-kicker':   'Module 4 · Design systems for L&D',
+    'm4-h2':       'Ocean Ink — building a design system for a learning portfolio',
+    'm4-sub':      'Make visual decisions once; apply them consistently. Reviewers see a coherent designer, not a collection of disconnected experiments.',
+    'm4-tlo':      'Document Ocean Ink as a shareable design system artefact: token table, type scale with use cases, one component in light + dark mode, and WCAG rationale for each choice.',
+    'm4-tokens-h': 'Token architecture',
+    'm4-tokens-p': 'Every colour is a CSS custom property with a defined purpose, a light value, and a dark value. WCAG contrast ratios are pre-measured:',
+    'm4-type-h':   'Type scale — Fraunces + Inter + IBM Plex Mono',
+    'm4-t1':       '<strong>Fraunces 600–700</strong> — display, H1–H2. Optical-size variable font. Carries the senior, editorial register.',
+    'm4-t2':       '<strong>Inter 400–600</strong> — body, UI, H3, kicker labels. Chosen for readability at small sizes — a deliberate legibility decision, not "generic sans".',
+    'm4-t3':       '<strong>IBM Plex Mono 400–500</strong> — code, timestamps, metadata labels. Signals precision without monospace overuse.',
+    'm4-apply-h':  'Applying Ocean Ink to TK CoachAI for Talketika',
+    'm4-apply-p':  'The TK CoachAI learner-experience layer — designed for <strong>Talketika</strong> (app owner; software by <strong>Orkelia</strong>; MLLDE design © Ana Eslava-Graterol. Copyright registration in progress.) — applies Ocean Ink tokens to the AI-tutor interface: learner dashboard, session-end feedback, the zero-error mastery gate display, and the <em>"Measure, Not Decide"</em> principle made visible in the UI.',
+    'm4-callout-label': 'Design system as portfolio argument:',
+    'm4-callout-text': 'When a reviewer opens AWJ, the TK CoachAI documentation, and the bootcamp hub, the same type scale, colour logic, and component pattern appear across all three. That consistency is itself a UX competency — systems thinking, not one-off screens.',
+    'm4-deliverable-h': 'Module 4 deliverable',
+    'm4-deliverable-p': 'A one-page design system summary (PDF or Figma frame): colour tokens with contrast ratios, type scale with use cases, one component in light + dark modes. This is the artefact that answers "design system experience" on a job application.',
+    'footer-back': '← Bootcamp',
+    'footer-portfolio': 'Portfolio →'
   },
   es: {
-    'brand-role': 'LXD · LQA · Gobernanza de IA',
-    'nav-back': 'Bootcamp',
-    'breadcrumb': '← Centro del Bootcamp',
-    'tag': 'Evidencia de diseño',
-    'page-h1': 'Diseño UX/UI para el Aprendizaje',
-    'page-sub': 'Desde wireframes hasta pruebas de usabilidad — visibilizando trabajo UX existente como evidencia de portafolio.',
-    'cs-h2': 'Módulo en desarrollo',
-    'cs-p': 'Cuatro módulos para convertir trabajo UX/UI existente (AWJ, TK CoachAI, Ocean Ink) en evidencia documentada y pública de portafolio. El principio central: muchas brechas son brechas de evidencia, no de habilidad.',
-    'evidence-h3': 'Evidencia ya construida — pendiente de publicación',
-    'ec1-label': 'AWJ — Academic Writing Journey',
-    'ec1-title': 'Wireframes y Pruebas de Usabilidad',
-    'ec1-desc': 'Proyecto de asignatura (diseño instruccional + accesibilidad web WCAG, 10/10). Los resultados de las pruebas de usabilidad existen pero no son públicos. Hacerlos visibles cierra la brecha de evidencia UX/UI.',
-    'ec2-label': 'TK CoachAI — para Talketika',
-    'ec2-title': 'Interfaz de Experiencia del Aprendiz',
-    'ec2-desc': 'Módulo de Medición MLLDE aplicado a la app de tutoría IA de Talketika (software de Orkelia). La capa LX — panel del aprendiz, retroalimentación de sesión, metáforas de gamificación — está documentada.',
-    'ec3-label': 'Ocean Ink Design System',
-    'ec3-title': 'Marca Personal y Tokens de Diseño',
-    'ec3-desc': 'Sistema de diseño completo: paleta Azul Índigo (#3B5BD6), Azul Profundo (#22307C), Dorado (#E8A33D); escala tipográfica Fraunces/Inter/IBM Plex Mono; biblioteca de componentes para todas las piezas del portafolio.',
-    'ec4-label': 'Renovación del Portafolio',
-    'ec4-title': 'Arquitectura del Sitio e IA',
-    'ec4-desc': 'Decisiones de arquitectura de información para el hub del bootcamp: jerarquía sector/módulo, navegación por pestañas, enlaces cruzados en glosario, accesibilidad (WCAG 2.1 AA). El hub en sí mismo es un artefacto UX.',
-    'm1-title': 'De la Brecha de Evidencia a la Entrada del Portafolio',
-    'm1-desc': 'Marco para documentar trabajo UX existente: el formato de estudio de caso anotado, qué capturas + métricas incluir, cómo redactar el razonamiento de diseño sin violar el NDA del cliente.',
-    'm1-gap': 'Brecha: evidencia UX/UI no pública (AWJ, TK CoachAI)',
-    'm2-title': 'Wireframing para el D&F — Lo-Fi a Hi-Fi',
-    'm2-desc': 'Wireframes lo-fi para tres tipos canónicos de interacción en eLearning (escenario de ramificación, verificación de conocimiento, panel de control). Figma o papel → documento de handoff anotado.',
-    'm2-gap': 'Brecha: artefactos de wireframe en portafolio (confirmado en múltiples ofertas)',
-    'm3-title': 'Pruebas de Usabilidad en Diseño Instruccional',
-    'm3-desc': 'La prueba de cinco usuarios, el protocolo de pensamiento en voz alta y la redacción del informe de usabilidad. Los resultados de la prueba AWJ como ejemplo trabajado.',
-    'm3-gap': 'Brecha: evidencia de pruebas de usabilidad (AWJ existe, no es pública)',
-    'm4-title': 'Sistemas de Diseño para el D&F — Ocean Ink',
-    'm4-desc': 'Cómo construir y documentar un sistema de diseño para un portafolio de aprendizaje: tokens, componentes, razonamiento de accesibilidad. Ocean Ink como ejemplo trabajado.',
-    'm4-gap': 'Brecha: presencia pública / cohesión del portafolio (bloqueante crítico)'
+    'brand-role':  'LXD · LQA · Gobernanza de IA',
+    'nav-back':    'Bootcamp',
+    'breadcrumb':  '← Centro del Bootcamp',
+    'tag':         'Evidencia de diseño',
+    'page-h1':     'Diseño UX/UI <em>para el Aprendizaje</em>',
+    'page-sub':    'UX basado en evidencia: wireframes, pruebas de usabilidad (AWJ 10/10), el sistema de diseño Ocean Ink y la capa de experiencia del aprendiz de TK CoachAI para Talketika.',
+    'meta1':       '4 módulos',
+    'meta2':       '~45 min',
+    'meta3':       '3 piezas de evidencia pública',
+    'meta4':       '1 caso privado documentado',
+    'm1-kicker':   'Módulo 1 · Mapa de evidencia',
+    'm1-h2':       'Qué cuenta como evidencia UX/UI en un portafolio de aprendizaje',
+    'm1-sub':      'Cuatro artefactos existentes — AWJ, TK CoachAI, Ocean Ink, el hub del bootcamp — cada uno cierra una brecha de evidencia específica.',
+    'ev1-title':   'AWJ — Academic Writing Journey',
+    'ev1-meta':    'Proyecto de asignatura del Máster de la UPV. Wireframes → implementación HTML/CSS → prueba de usabilidad en voz alta → sitio desplegado conforme a WCAG 2.1 AA. Competencia: proceso UX completo.',
+    'ev2-title':   'TK CoachAI — para Talketika',
+    'ev2-meta':    'Propietario de la app: Talketika · Software: Orkelia · Diseño MLLDE: Ana Eslava-Graterol. Capa LX: panel del aprendiz, feedback al final de sesión, gamificación, visualización de la puerta de dominio sin errores. Competencia: UX para tutor de IA.',
+    'ev3-title':   'Ocean Ink Design System',
+    'ev3-meta':    'Archivo de tokens CSS, tema dual, ratios de contraste WCAG medidos, biblioteca de componentes aplicada en más de 25 páginas del bootcamp. Competencia: arquitectura de sistema de diseño — tokens → componentes → cohesión de producto.',
+    'ev4-title':   'Hub del Bootcamp — Arquitectura de la Información',
+    'ev4-meta':    'Jerarquía de 6 sectores, 24 páginas de habilidades, alternancia bilingüe, navegación por pestañas, WCAG 2.2 AA. Competencia: arquitectura de información para hubs de eLearning a gran escala.',
+    'ev-callout-label': 'Principio clave:',
+    'ev-callout-text': 'Muchas brechas UX en L&D son <em>brechas de etiquetado de evidencia</em>, no de habilidades. AWJ es un producto desplegado en vivo, conforme a WCAG y probado con usuarios — debe nombrarse como artefacto UX, no solo como proyecto de diseño instruccional.',
+    'pill1':       'AWJ wireframes → sitio desplegado ✓',
+    'pill2':       'Protocolo de prueba de usabilidad ✓',
+    'pill3':       'Ocean Ink documentado ✓',
+    'pill4':       'Capa LX de TK CoachAI documentada ✓',
+    'mod1':        'Módulo 1 · Mapa de evidencia',
+    'mod2':        'Módulo 2 · Wireframing',
+    'mod3':        'Módulo 3 · Pruebas de usabilidad',
+    'mod4':        'Módulo 4 · Sistemas de diseño',
+    'm2-kicker':   'Módulo 2 · Wireframing para L&D',
+    'm2-h2':       'De lo-fi a hi-fi — wireframing de interacciones eLearning',
+    'm2-sub':      'Tres tipos canónicos de wireframe para eLearning cubren el 80% de lo que aparece en las ofertas de empleo.',
+    'm2-tlo':      'Al final de este módulo puedes producir un wireframe anotado para cada uno de los tres tipos canónicos de interacción eLearning, aplicando restricciones WCAG desde la etapa lo-fi y generando un documento de especificaciones listo para handoff.',
+    'tbl-h1':      'Interacción',
+    'tbl-h2':      'Qué wireframear',
+    'tbl-h3':      'Ejemplo trabajado en AWJ',
+    't1-type':     'Escenario de ramificación',
+    't1-what':     'Nodo de decisión → 2–3 ramas → pantalla de consecuencia → punto de reingreso. Etiquetar el tipo de feedback.',
+    't1-ex':       'Elección de lenguaje de mitigación → sobre-mitigado / bajo-mitigado / correcto → pantalla de respuesta modelo.',
+    't2-type':     'Verificación de conocimiento',
+    't2-what':     'Enunciado → opciones de respuesta → capa de feedback → indicador de progreso. WCAG: navegable por teclado, estado de error, anillo de foco.',
+    't2-ex':       'Respuesta única sobre marcadores metadiscursivos → resaltar la correcta + explicar el distractor.',
+    't3-type':     'Panel de control / progreso',
+    't3-what':     'Estado del aprendiz de un vistazo: módulos, puntuación, siguiente paso, puerta de dominio. Densidad de datos primero.',
+    't3-ex':       'TK CoachAI para Talketika: puntuación de sesión, estado de la puerta MLLDE (<em>"Measure, Not Decide"</em>), siguiente sesión recomendada.',
+    'm2-process-h':'Proceso lo-fi → hi-fi (AWJ como ejemplo trabajado)',
+    'm2-s1':       '<strong>Boceto (lo-fi):</strong> cajas para zonas de contenido, flechas para el flujo de navegación, solo etiquetas — sin color ni tipografía. Valida la lógica, no el aspecto.',
+    'm2-s2':       '<strong>Anotar interacciones:</strong> cada elemento que hace algo — target de clic, estado hover, activador de teclado. Etiquetar el tipo de feedback.',
+    'm2-s3':       '<strong>Aplicar restricciones WCAG desde el principio:</strong> target táctil mínimo 44×44px, orden de foco marcado, estados de error etiquetados, ratio de contraste anotado. Corregir WCAG en wireframe no tiene coste de rediseño.',
+    'm2-s4':       '<strong>Pasada hi-fi:</strong> aplicar tokens Ocean Ink (<code>--primary</code>, <code>--accent</code>, <code>--canvas</code>). Fraunces para títulos, Inter para cuerpo. El wireframe se convierte en hoja de especificaciones.',
+    'm2-s5':       '<strong>Documento de handoff:</strong> tokens de color (hex + propósito), tamaños de fuente, cuadrícula de espaciado, estados de interacción, notas WCAG. Este es el artefacto de portafolio.',
+    'm2-callout-label': 'Movimiento de portafolio:',
+    'm2-callout-text': 'Exportar dos frames del proceso de wireframing de AWJ — lo-fi y hi-fi — anotados con las decisiones de diseño. Ese artefacto responde "¿puedes hacer wireframes?" en una sola imagen.',
+    'm3-kicker':   'Módulo 3 · Pruebas de usabilidad',
+    'm3-h2':       'La prueba de usabilidad de AWJ — método y hallazgos',
+    'm3-sub':      'Protocolo de pensamiento en voz alta aplicado a AWJ antes de la entrega final. Calificado con 10/10 en el Máster de la UPV.',
+    'm3-tlo':      'Realizar una prueba de usabilidad de cinco usuarios en pensamiento en voz alta: reclutar participantes, escribir escenarios de tareas, registrar observaciones, categorizar hallazgos por gravedad y producir un informe de revisión antes/después.',
+    'm3-protocol-h':'Protocolo de pensamiento en voz alta — cinco pasos',
+    'm3-s1':       '<strong>Reclutar 5 participantes:</strong> 5 es el umbral en el que emergen el 85% de los problemas de usabilidad (Nielsen, 1993). Para AWJ: compañeros del máster.',
+    'm3-s2':       '<strong>Dar la tarea, no las instrucciones:</strong> "Usa el sitio para encontrar la sección sobre lenguaje de mitigación y completa el primer ejercicio." Nunca decir "haz clic en…"',
+    'm3-s3':       '<strong>Registrar observaciones en voz alta:</strong> vacilaciones, clics incorrectos, relecturas, confusión verbal — citas exactas. Estas se convierten en los enunciados de hallazgos.',
+    'm3-s4':       '<strong>Categorizar por gravedad:</strong> Crítico (bloquea la tarea) · Mayor (retraso significativo) · Menor (cosmético). AWJ tuvo 0 problemas críticos tras la revisión.',
+    'm3-s5':       '<strong>Informe con antes/después:</strong> captura del problema → revisión aplicada → razonamiento. El registro de revisión es el artefacto de portafolio.',
+    'm3-result-label': 'Resultado AWJ:',
+    'm3-result-text': '10/10 · Conforme a WCAG 2.1 AA · 0 problemas críticos de usabilidad tras la revisión.',
+    'm3-wcag-h':   'WCAG como método sistemático de auditoría de usabilidad',
+    'm3-wcag-p1':  'Realizar una auditoría WCAG 2.2 AA junto con una prueba en voz alta revela problemas que las pruebas típicas pasan por alto: navegación solo con teclado, completitud de etiquetas para lectores de pantalla, visibilidad del anillo de foco, contraste bajo diferentes condiciones de visualización.',
+    'm3-wcag-p2':  'Para AWJ, cada punto de control WCAG fue verificado antes de la entrega. Evidencia documentada de competencia en accesibilidad como parte del proceso UX — no como ejercicio de cumplimiento separado.',
+    'm3-gap-label':'Brecha común en portafolios:',
+    'm3-gap-text': 'Los profesionales L&D listan "WCAG" como habilidad pero no tienen ningún artefacto que muestre el proceso — ni informe de auditoría ni comparación antes/después. El registro de revisión de AWJ cierra esa brecha con evidencia real.',
+    'm4-kicker':   'Módulo 4 · Sistemas de diseño para L&D',
+    'm4-h2':       'Ocean Ink — construyendo un sistema de diseño para un portafolio de aprendizaje',
+    'm4-sub':      'Toma las decisiones visuales una vez; aplícalas de forma coherente. Los evaluadores ven a una diseñadora coherente, no una colección de experimentos desconectados.',
+    'm4-tlo':      'Documentar Ocean Ink como artefacto de sistema de diseño compartible: tabla de tokens, escala tipográfica con casos de uso, un componente en modo claro y oscuro, y razón WCAG para cada elección.',
+    'm4-tokens-h': 'Arquitectura de tokens',
+    'm4-tokens-p': 'Cada color es una custom property CSS con un propósito definido, un valor para modo claro y un valor para modo oscuro. Los ratios de contraste WCAG están pre-medidos:',
+    'm4-type-h':   'Escala tipográfica — Fraunces + Inter + IBM Plex Mono',
+    'm4-t1':       '<strong>Fraunces 600–700</strong> — display, H1–H2. Fuente variable óptica. Aporta el registro editorial y sénior.',
+    'm4-t2':       '<strong>Inter 400–600</strong> — cuerpo, UI, H3, etiquetas kicker. Elegida por legibilidad a tamaños pequeños — una decisión deliberada, no "sans genérica".',
+    'm4-t3':       '<strong>IBM Plex Mono 400–500</strong> — código, marcas de tiempo, etiquetas de metadatos. Señala precisión sin usar monoespaciado en exceso.',
+    'm4-apply-h':  'Aplicando Ocean Ink a TK CoachAI para Talketika',
+    'm4-apply-p':  'La capa de experiencia del aprendiz de TK CoachAI — diseñada para <strong>Talketika</strong> (propietario de la app; software de <strong>Orkelia</strong>; diseño MLLDE © Ana Eslava-Graterol. Registro de derechos de autor en trámite.) — aplica tokens de Ocean Ink a la interfaz del tutor de IA: panel del aprendiz, feedback al final de sesión, la visualización de la puerta de dominio sin errores y el principio <em>"Measure, Not Decide"</em> hecho visible en la UI.',
+    'm4-callout-label': 'El sistema de diseño como argumento de portafolio:',
+    'm4-callout-text': 'Cuando un evaluador abre AWJ, la documentación de TK CoachAI y el hub del bootcamp, aparecen la misma escala tipográfica, la misma lógica de color y el mismo patrón de componentes en los tres. Esa coherencia es en sí misma una competencia UX — pensamiento en sistemas, no pantallas individuales.',
+    'm4-deliverable-h': 'Entregable del módulo 4',
+    'm4-deliverable-p': 'Un resumen de sistema de diseño de una página (PDF o frame de Figma): tokens de color con ratios de contraste, escala tipográfica con casos de uso, un componente en modos claro y oscuro. Este es el artefacto que responde "experiencia en sistemas de diseño" en una solicitud de empleo.',
+    'footer-back': '← Bootcamp',
+    'footer-portfolio': 'Portafolio →'
   }
 };
 </script>
 <script>
 (function(){
-  var btn=document.getElementById('oi-theme-btn');
-  if(!btn)return;
+  /* theme */
+  var tb=document.getElementById('oi-theme-btn');
+  if(!tb)return;
   var root=document.documentElement;
   var cycle=['dark','light','system'];
   var nextLabel={dark:'Light',light:'Auto',system:'Dark'};
-  var saved=localStorage.getItem('oi-theme')||'dark';
-  function apply(t){
+  var saved;
+  try{saved=localStorage.getItem('oi-theme')||'dark';}catch(e){saved='dark';}
+  function applyTheme(t){
     if(t==='system') root.removeAttribute('data-theme');
     else root.setAttribute('data-theme',t);
-    var ni=(cycle.indexOf(t)+1)%cycle.length;
-    btn.textContent=nextLabel[cycle[ni]];
-    localStorage.setItem('oi-theme',t);
+    tb.textContent=nextLabel[cycle[(cycle.indexOf(t)+1)%cycle.length]];
+    try{localStorage.setItem('oi-theme',t);}catch(e){}
     saved=t;
   }
-  apply(saved);
-  btn.addEventListener('click',function(){apply(cycle[(cycle.indexOf(saved)+1)%cycle.length]);});
+  applyTheme(saved);
+  tb.addEventListener('click',function(){applyTheme(cycle[(cycle.indexOf(saved)+1)%cycle.length]);});
 })();
 </script>
 </body>
