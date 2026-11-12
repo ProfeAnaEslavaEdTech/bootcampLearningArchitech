@@ -555,8 +555,12 @@ body {
   color: var(--ink);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 680px) {
   .type-row { grid-template-columns: 1fr; }
+  .space-row { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .hero { padding-block: 40px 32px; }
+  table { display: block; overflow-x: auto; min-width: 0 !important; }
 }
 
 /* ─── Component states ─── */
