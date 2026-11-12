@@ -282,11 +282,11 @@
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="oi-site-header">
   <div class="oi-brand">
-    <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-brand-name">Ana Eslava-Graterol</a>
     <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
@@ -295,7 +295,7 @@
 <div class="top-bar">
   <div class="brand">
     <span class="brand-mark">Hands-On Track</span>
-    <span class="brand-title">Build, don't memorize</span>
+    <span class="brand-title" data-i18n="brand-title">Build, don't memorize</span>
   </div>
   <div class="progress-tracker">
     <span class="progress-label" id="progLabel">0 / 14 projects</span>
@@ -306,33 +306,33 @@
 <main id="main">
 
   <section class="hero">
-    <div class="hero-eyebrow">Nexthink · Learning Architect · Learning by Doing</div>
-    <h1>Don't study the job. <em>Do the job</em> — once, in miniature, before they ask you to.</h1>
-    <p>Fourteen real, scoped mini-projects — one for nearly every responsibility line in the job description. Each one produces an actual artifact you could open and show in the interview: a storyboard, a quiz, a script, a one-page certification plan. No quizzes about theory. Just the work.</p>
+    <div class="hero-eyebrow" data-i18n="hero-eyebrow">Nexthink · Learning Architect · Learning by Doing</div>
+    <h1 data-i18n="hero-h1">Don't study the job. <em>Do the job</em> — once, in miniature, before they ask you to.</h1>
+    <p data-i18n="hero-p">Fourteen real, scoped mini-projects — one for nearly every responsibility line in the job description. Each one produces an actual artifact you could open and show in the interview: a storyboard, a quiz, a script, a one-page certification plan. No quizzes about theory. Just the work.</p>
   </section>
 
   <nav class="section-nav" aria-label="Jump to responsibility group">
-    <button class="nav-chip" onclick="scrollToGroup('group-1')">1 · Strategy & design</button>
-    <button class="nav-chip" onclick="scrollToGroup('group-2')">2 · Content & delivery</button>
-    <button class="nav-chip" onclick="scrollToGroup('group-3')">3 · Continuous improvement</button>
-    <button class="nav-chip" onclick="scrollToGroup('group-4')">4 · Stakeholder partnership</button>
-    <button class="nav-chip" onclick="scrollToGroup('group-5')">5 · AI & automation</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-1')" data-i18n="nav-g1">1 · Strategy & design</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-2')" data-i18n="nav-g2">2 · Content & delivery</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-3')" data-i18n="nav-g3">3 · Continuous improvement</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-4')" data-i18n="nav-g4">4 · Stakeholder partnership</button>
+    <button class="nav-chip" onclick="scrollToGroup('group-5')" data-i18n="nav-g5">5 · AI & automation</button>
   </nav>
 
   <div id="projectsRoot"></div>
 
   <section class="portfolio-section">
     <div class="portfolio-box">
-      <h2>What you walk into the interview with</h2>
-      <p>Complete all 14 and you don't just understand the role — you have a small, real portfolio built specifically for it.</p>
+      <h2 data-i18n="port-h2">What you walk into the interview with</h2>
+      <p data-i18n="port-p1">Complete all 14 and you don't just understand the role — you have a small, real portfolio built specifically for it.</p>
       <ul class="portfolio-list" id="portfolioChecklist"></ul>
-      <p style="font-size:12.5px;color:var(--oi-muted);">Bring 3–4 of these to the interview, not all 14. Pick the ones that best match what they ask first.</p>
+      <p style="font-size:12.5px;color:var(--oi-muted);" data-i18n="port-p2">Bring 3–4 of these to the interview, not all 14. Pick the ones that best match what they ask first.</p>
     </div>
   </section>
 
 </main>
 
-<footer>Built for one interview. Use the artifacts for the next ten.</footer>
+<footer data-i18n="footer">Built for one interview. Use the artifacts for the next ten.</footer>
 
 <script>
 // ═══════════════════════════════════════════════════════════════════
@@ -710,8 +710,40 @@ renderPortfolioChecklist();
 </script>
 <script>
 window.PAGE_I18N = {
-  en: { 'brand-role': 'LXD · LQA · AI Governance', 'nav-back': 'Bootcamp' },
-  es: { 'brand-role': 'LXD · LQA · Gobernanza de IA', 'nav-back': 'Bootcamp' }
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'brand-title': "Build, don't memorize",
+    'hero-eyebrow': 'Nexthink · Learning Architect · Learning by Doing',
+    'hero-h1': 'Don\'t study the job. <em>Do the job</em> — once, in miniature, before they ask you to.',
+    'hero-p': 'Fourteen real, scoped mini-projects — one for nearly every responsibility line in the job description. Each one produces an actual artifact you could open and show in the interview: a storyboard, a quiz, a script, a one-page certification plan. No quizzes about theory. Just the work.',
+    'nav-g1': '1 · Strategy &amp; design',
+    'nav-g2': '2 · Content &amp; delivery',
+    'nav-g3': '3 · Continuous improvement',
+    'nav-g4': '4 · Stakeholder partnership',
+    'nav-g5': '5 · AI &amp; automation',
+    'port-h2': 'What you walk into the interview with',
+    'port-p1': "Complete all 14 and you don't just understand the role — you have a small, real portfolio built specifically for it.",
+    'port-p2': 'Bring 3–4 of these to the interview, not all 14. Pick the ones that best match what they ask first.',
+    'footer': 'Built for one interview. Use the artifacts for the next ten.'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'brand-title': 'Construye, no memorices',
+    'hero-eyebrow': 'Nexthink · Arquitecto de Aprendizaje · Aprender Haciendo',
+    'hero-h1': 'No estudies el puesto. <em>Haz el trabajo</em> — una vez, en miniatura, antes de que te lo pidan.',
+    'hero-p': 'Catorce miniproyectos reales y delimitados — uno por cada línea de responsabilidad en la descripción del puesto. Cada uno produce un artefacto real que podrías abrir y mostrar en la entrevista: un storyboard, un cuestionario, un guión, un plan de certificación de una página. Sin cuestionarios teóricos. Solo el trabajo.',
+    'nav-g1': '1 · Estrategia y diseño',
+    'nav-g2': '2 · Contenido y entrega',
+    'nav-g3': '3 · Mejora continua',
+    'nav-g4': '4 · Gestión de partes interesadas',
+    'nav-g5': '5 · IA y automatización',
+    'port-h2': 'Con qué entras a la entrevista',
+    'port-p1': 'Completa los 14 y no solo entenderás el rol — tendrás un portafolio pequeño y real construido específicamente para él.',
+    'port-p2': 'Lleva 3–4 de estos a la entrevista, no los 14. Elige los que mejor coincidan con lo que te pregunten primero.',
+    'footer': 'Construido para una entrevista. Usa los artefactos para las siguientes diez.'
+  }
 };
 </script>
 <script>

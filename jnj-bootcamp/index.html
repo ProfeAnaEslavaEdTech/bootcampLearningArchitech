@@ -251,11 +251,11 @@
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="oi-site-header">
   <div class="oi-brand">
-    <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-brand-name">Ana Eslava-Graterol</a>
     <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
@@ -278,9 +278,9 @@
 <main id="main">
 
   <section class="hero">
-    <div class="hero-eyebrow">Bachelor's required · 7+ years preferred · $122K–$213K</div>
-    <h1>Ten duties. <em>Ten real cases.</em><br>One Articulate file at the end.</h1>
-    <p>Each module below maps to one line of the actual qualifications list. Real pharma/life-sciences-style scenarios, practiced the way you'd actually do the work — not multiple choice about theory.</p>
+    <div class="hero-eyebrow" data-i18n="hero-eyebrow">Bachelor's required · 7+ years preferred · $122K–$213K</div>
+    <h1 data-i18n="hero-h1">Ten duties. <em>Ten real cases.</em><br>One Articulate file at the end.</h1>
+    <p data-i18n="hero-p">Each module below maps to one line of the actual qualifications list. Real pharma/life-sciences-style scenarios, practiced the way you'd actually do the work — not multiple choice about theory.</p>
   </section>
 
   <section class="map-section" id="mapSection">
@@ -299,7 +299,7 @@
 
 </main>
 
-<footer>Practice cases are illustrative, not based on real J&J products or confidential content.</footer>
+<footer data-i18n="footer-txt">Practice cases are illustrative, not based on real J&J products or confidential content.</footer>
 
 <div class="toast" id="toast">
   <span class="toast-text" id="toastText"></span>
@@ -939,8 +939,22 @@ if (allDoneOnLoad) showFinalScreen();
 </script>
 <script>
 window.PAGE_I18N = {
-  en: { 'brand-role': 'LXD · LQA · AI Governance', 'nav-back': 'Bootcamp' },
-  es: { 'brand-role': 'LXD · LQA · Gobernanza de IA', 'nav-back': 'Bootcamp' }
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'hero-eyebrow': 'Bachelor\'s required · 7+ years preferred · $122K–$213K',
+    'hero-h1': 'Ten duties. <em>Ten real cases.</em><br>One Articulate file at the end.',
+    'hero-p': 'Each module below maps to one line of the actual qualifications list. Real pharma/life-sciences-style scenarios, practiced the way you\'d actually do the work — not multiple choice about theory.',
+    'footer-txt': 'Practice cases are illustrative, not based on real J&amp;J products or confidential content.'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'hero-eyebrow': 'Título universitario requerido · 7+ años preferidos · $122K–$213K',
+    'hero-h1': 'Diez responsabilidades. <em>Diez casos reales.</em><br>Un archivo de Articulate al final.',
+    'hero-p': 'Cada módulo corresponde a una línea de los requisitos reales del puesto. Escenarios reales del sector farmacéutico y ciencias de la vida, practicados como los harías en el trabajo — no preguntas de opción múltiple sobre teoría.',
+    'footer-txt': 'Los casos de práctica son ilustrativos; no se basan en productos reales de J&amp;J ni en contenido confidencial.'
+  }
 };
 </script>
 <script>

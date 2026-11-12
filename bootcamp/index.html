@@ -772,11 +772,11 @@
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
 <header class="oi-site-header">
   <div class="oi-brand">
-    <a href="../index.html" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-brand-name">Ana Eslava-Graterol</a>
     <span class="oi-brand-role" data-i18n="brand-role">LXD · LQA · AI Governance</span>
   </div>
   <div class="oi-ctrl-row">
-    <a href="../index.html" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
     <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
   </div>
 </header>
@@ -784,8 +784,8 @@
 
 <div class="top-bar">
   <div class="brand">
-    <span class="brand-mark">Mission Brief</span>
-    <span class="brand-title">Learning Architect Bootcamp</span>
+    <span class="brand-mark" data-i18n="brand-mark">Mission Brief</span>
+    <span class="brand-title" data-i18n="brand-title">Learning Architect Bootcamp</span>
   </div>
   <div class="xp-tracker">
     <span class="xp-label" id="xpLabel">0 / 2400 XP</span>
@@ -796,34 +796,34 @@
 <main id="main">
 
   <section class="hero">
-    <div class="hero-eyebrow">Nexthink · Product Education · Learning Architect</div>
-    <h1>Ten levels between you and <em>"you're hired."</em></h1>
-    <p>A self-paced, gamified training built around exactly what this role tests: SCORM/xAPI fluency, LMS telemetry thinking, Articulate Rise mechanics, and game-based learning design for adult, inclusive audiences. Clear a level, earn XP, unlock the next.</p>
+    <div class="hero-eyebrow" data-i18n="hero-eyebrow">Nexthink · Product Education · Learning Architect</div>
+    <h1 data-i18n="hero-h1">Ten levels between you and <em>"you're hired."</em></h1>
+    <p data-i18n="hero-p">A self-paced, gamified training built around exactly what this role tests: SCORM/xAPI fluency, LMS telemetry thinking, Articulate Rise mechanics, and game-based learning design for adult, inclusive audiences. Clear a level, earn XP, unlock the next.</p>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-lbl">Levels</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">2400</div><div class="hero-stat-lbl">Total XP</div></div>
-      <div class="hero-stat"><div class="hero-stat-num">~3h</div><div class="hero-stat-lbl">Full run</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">10</div><div class="hero-stat-lbl" data-i18n="stat-lbl-1">Levels</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">2400</div><div class="hero-stat-lbl" data-i18n="stat-lbl-2">Total XP</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">~3h</div><div class="hero-stat-lbl" data-i18n="stat-lbl-3">Full run</div></div>
     </div>
   </section>
 
   <section class="map-section" id="mapSection">
-    <div class="map-title">Choose your level</div>
+    <div class="map-title" data-i18n="map-title">Choose your level</div>
     <div class="level-grid" id="levelGrid"></div>
   </section>
 
   <section class="level-detail" id="levelDetail"></section>
 
   <section class="final-screen" id="finalScreen">
-    <div class="hero-eyebrow">Mission complete</div>
-    <h2>Diamond Crown of Readiness </h2>
-    <p style="color:#4A4639; font-size:15px; line-height:1.6;">You've cleared every level. You know SCORM from xAPI, you can talk Rise vs. Storyline with confidence, you've drafted your gamified onboarding pitch, and you've rehearsed your STAR stories out loud. That's not luck — that's preparation. Go get the offer.</p>
+    <div class="hero-eyebrow" data-i18n="final-eyebrow">Mission complete</div>
+    <h2 data-i18n="final-h2">Diamond Crown of Readiness </h2>
+    <p style="color:#4A4639; font-size:15px; line-height:1.6;" data-i18n="final-p">You've cleared every level. You know SCORM from xAPI, you can talk Rise vs. Storyline with confidence, you've drafted your gamified onboarding pitch, and you've rehearsed your STAR stories out loud. That's not luck — that's preparation. Go get the offer.</p>
     <div class="badge-grid" id="badgeGrid"></div>
-    <button class="back-btn" onclick="goToMap()" style="margin-top:10px;">↺ Replay any level</button>
+    <button class="back-btn" onclick="goToMap()" style="margin-top:10px;" data-i18n="final-btn">↺ Replay any level</button>
   </section>
 
 </main>
 
-<footer>Built for one interview. Use it as many times as you need.</footer>
+<footer data-i18n="footer">Built for one interview. Use it as many times as you need.</footer>
 
 <div class="toast" id="toast">
   <span class="toast-icon" id="toastIcon"></span>
@@ -1654,8 +1654,42 @@ if (allDoneOnLoad) {
 </script>
 <script>
 window.PAGE_I18N = {
-  en: { 'brand-role': 'LXD · LQA · AI Governance', 'nav-back': 'Bootcamp' },
-  es: { 'brand-role': 'LXD · LQA · Gobernanza de IA', 'nav-back': 'Bootcamp' }
+  en: {
+    'brand-role': 'LXD · LQA · AI Governance',
+    'nav-back': 'Bootcamp',
+    'brand-mark': 'Mission Brief',
+    'brand-title': 'Learning Architect Bootcamp',
+    'hero-eyebrow': 'Nexthink · Product Education · Learning Architect',
+    'hero-h1': 'Ten levels between you and <em>"you\'re hired."</em>',
+    'hero-p': 'A self-paced, gamified training built around exactly what this role tests: SCORM/xAPI fluency, LMS telemetry thinking, Articulate Rise mechanics, and game-based learning design for adult, inclusive audiences. Clear a level, earn XP, unlock the next.',
+    'stat-lbl-1': 'Levels',
+    'stat-lbl-2': 'Total XP',
+    'stat-lbl-3': 'Full run',
+    'map-title': 'Choose your level',
+    'final-eyebrow': 'Mission complete',
+    'final-h2': 'Diamond Crown of Readiness',
+    'final-p': "You've cleared every level. You know SCORM from xAPI, you can talk Rise vs. Storyline with confidence, you've drafted your gamified onboarding pitch, and you've rehearsed your STAR stories out loud. That's not luck — that's preparation. Go get the offer.",
+    'final-btn': '↺ Replay any level',
+    'footer': 'Built for one interview. Use it as many times as you need.'
+  },
+  es: {
+    'brand-role': 'LXD · LQA · Gobernanza de IA',
+    'nav-back': 'Bootcamp',
+    'brand-mark': 'Resumen de Misión',
+    'brand-title': 'Bootcamp Arquitecto de Aprendizaje',
+    'hero-eyebrow': 'Nexthink · Educación de Producto · Arquitecto de Aprendizaje',
+    'hero-h1': 'Diez niveles entre tú y <em>"estás contratado/a."</em>',
+    'hero-p': 'Una formación gamificada y autodirigida construida alrededor de exactamente lo que este rol evalúa: fluidez en SCORM/xAPI, pensamiento en telemetría LMS, mecánicas de Articulate Rise y diseño de aprendizaje basado en juegos para audiencias adultas e inclusivas. Supera un nivel, gana XP, desbloquea el siguiente.',
+    'stat-lbl-1': 'Niveles',
+    'stat-lbl-2': 'XP Total',
+    'stat-lbl-3': 'Recorrido completo',
+    'map-title': 'Elige tu nivel',
+    'final-eyebrow': 'Misión completada',
+    'final-h2': 'Corona Diamante de Preparación',
+    'final-p': 'Has superado todos los niveles. Dominas SCORM y xAPI, puedes hablar de Rise vs. Storyline con confianza, has redactado tu propuesta de incorporación gamificada y has ensayado tus historias STAR en voz alta. No es suerte — es preparación. Ve a conseguir la oferta.',
+    'final-btn': '↺ Repetir cualquier nivel',
+    'footer': 'Construido para una entrevista. Úsalo tantas veces como necesites.'
+  }
 };
 </script>
 <script>

@@ -399,3 +399,7 @@ nav:not(.oi-site-nav) {
 @media (max-width: 600px) {
   .scenario, [class*="grid-"] { grid-template-columns: 1fr !important; }
 }
+
+/* ── EN/ES language visibility ── */
+[data-lang="en"] .lang-es{display:none!important}
+[data-lang="es"] .lang-en{display:none!important}

@@ -6,11 +6,13 @@
 */
 (function () {
   var lang = localStorage.getItem('oi-lang') || 'en';
+  var secOriginals = {};
 
   function applyLang(l) {
     lang = l;
     localStorage.setItem('oi-lang', l);
     document.documentElement.lang = l;
+    document.documentElement.setAttribute('data-lang', l);
 
     var t = window.PAGE_I18N && window.PAGE_I18N[l];
     if (t) {
@@ -20,11 +22,17 @@
       });
     }
 
-    /* Section-level swap: data-i18n-sec="key" swaps innerHTML from <template id="key-{lang}"> */
+    /* Section-level swap: data-i18n-sec="key" swaps innerHTML from <template id="key-{lang}">
+       Original EN HTML is cached before first swap so switching back to EN restores it. */
     document.querySelectorAll('[data-i18n-sec]').forEach(function (el) {
       var key = el.getAttribute('data-i18n-sec');
-      var tmpl = document.getElementById(key + '-' + l);
-      if (tmpl) el.innerHTML = tmpl.innerHTML;
+      if (!secOriginals[key]) secOriginals[key] = el.innerHTML;
+      if (l === 'en') {
+        el.innerHTML = secOriginals[key];
+      } else {
+        var tmpl = document.getElementById(key + '-' + l);
+        if (tmpl) el.innerHTML = tmpl.innerHTML;
+      }
     });
 
     var btn = document.getElementById('oi-lang-btn');
