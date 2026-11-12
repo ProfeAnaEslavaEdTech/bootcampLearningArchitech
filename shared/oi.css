@@ -396,8 +396,67 @@ nav:not(.oi-site-nav) {
 }
 
 /* ── Responsive ── */
-@media (max-width: 600px) {
-  .scenario, [class*="grid-"] { grid-template-columns: 1fr !important; }
+
+/* Sidebar layout: collapse at tablet */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr !important;
+  }
+  .sidebar {
+    position: static !important;
+    height: auto !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--oi-line) !important;
+  }
+}
+
+/* Mobile: collapse all multi-column grids, fix nav, tables */
+@media (max-width: 680px) {
+  /* Nav: allow ctrl buttons to shrink and wrap */
+  .oi-site-header {
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 56px;
+    padding-block: 10px;
+    gap: 8px;
+  }
+  .oi-ctrl-row { flex-wrap: wrap; gap: 6px; }
+  .oi-ctrl-btn { padding: 0 10px !important; font-size: 10px !important; height: 30px !important; }
+
+  /* Hero padding */
+  .hero, section.hero { padding: 40px 0 32px !important; }
+
+  /* Collapse all 2+ column grids */
+  .scenario,
+  .diff-row,
+  .track-switcher,
+  .platform-grid,
+  .level-grid,
+  .card-grid,
+  .module-grid,
+  .skills-grid,
+  .portfolio-list,
+  [class*="grid-"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tables: horizontal scroll */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    min-width: 0 !important;
+  }
+
+  /* Code blocks */
+  pre { overflow-x: auto !important; }
+
+  /* Ensure no element causes horizontal page overflow */
+  img, video, iframe { max-width: 100% !important; }
 }
 
 /* ── EN/ES language visibility ── */
