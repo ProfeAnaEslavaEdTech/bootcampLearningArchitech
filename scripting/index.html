@@ -216,7 +216,7 @@
   .quiz-q { font-weight: 700; font-size: 15px; margin-bottom: 14px; line-height: 1.4; }
   .quiz-q .q-num { font-family: var(--mono); color: var(--amber-bright); font-size: 12px; display: block; margin-bottom: 4px; }
   .quiz-option {
-    display: block; width: 100%; text-align: left; background: #F9F7F1;
+    display: block; width: 100%; text-align: left; background: var(--panel);
     border: 1.5px solid var(--line); border-radius: 8px; padding: 11px 16px;
     margin-bottom: 8px; cursor: pointer; font-size: 14px; font-family: inherit;
     transition: all 0.15s; color: var(--ink);
@@ -229,6 +229,17 @@
   .quiz-feedback.show { display: block; }
   .quiz-feedback.ok  { background: var(--green-soft); color: #065F46; }
   .quiz-feedback.no  { background: var(--red-soft);   color: #991B1B; }
+  /* dark-mode: flip hardcoded dark text to readable light values */
+  [data-theme="dark"] .quiz-option.correct, [data-theme="dark"] .quiz-feedback.ok { color: #6EE7B7; }
+  [data-theme="dark"] .quiz-option.wrong,   [data-theme="dark"] .quiz-feedback.no { color: #FCA5A5; }
+  [data-theme="dark"] .callout.warn { color: var(--ink); }
+  [data-theme="dark"] .callout.good { color: var(--ink); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .quiz-option.correct, :root:not([data-theme="light"]) .quiz-feedback.ok { color: #6EE7B7; }
+    :root:not([data-theme="light"]) .quiz-option.wrong,   :root:not([data-theme="light"]) .quiz-feedback.no { color: #FCA5A5; }
+    :root:not([data-theme="light"]) .callout.warn { color: var(--ink); }
+    :root:not([data-theme="light"]) .callout.good { color: var(--ink); }
+  }
 
   /* ── SCENARIO BOX ── */
   .scenario {
