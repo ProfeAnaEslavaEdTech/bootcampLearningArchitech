@@ -219,7 +219,11 @@
     display: block; width: 100%; text-align: left; background: var(--panel);
     border: 1.5px solid var(--line); border-radius: 8px; padding: 11px 16px;
     margin-bottom: 8px; cursor: pointer; font-size: 14px; font-family: inherit;
-    transition: all 0.15s; color: var(--ink);
+    transition: all 0.15s;
+    /* appearance: none resets browser UA button color (ButtonText system color)
+       so var(--ink) always controls the text — fixes Edge/iOS dark-mode toggle */
+    -webkit-appearance: none; appearance: none;
+    color: var(--ink) !important;
   }
   .quiz-option:hover { border-color: var(--amber-bright); background: var(--amber-pale); }
   .quiz-option.correct { border-color: var(--green); background: var(--green-soft); color: #065F46; font-weight: 600; }
