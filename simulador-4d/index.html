@@ -133,6 +133,26 @@
   .needle svg{display:block; pointer-events:none;}
   .needle-hint{font-size:.82rem; color:#A9B8F5;}
 
+  /* ── N1/N2: sim tabs + synced step-by-step instructions ─────────── */
+  .sim-tabs{display:flex; gap:8px; margin:10px 0; flex-wrap:wrap;}
+  .sim-tab{flex:1 1 170px; min-height:48px; font:inherit; font-family:'IBM Plex Mono',monospace; font-size:.74rem; font-weight:700; letter-spacing:.03em; background:var(--mist); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:10px 12px; cursor:pointer;}
+  .sim-tab:hover{border-color:var(--blue);}
+  .sim-tab:focus-visible{outline:3px solid var(--oi-focus); outline-offset:2px;}
+  .sim-tab[aria-selected="true"]{background:var(--oi-primary-btn); color:#fff; border-color:var(--oi-primary-btn);}
+  .instr{list-style:none; margin:4px 0; padding:0;}
+  .instr .ins{display:flex; align-items:flex-start; gap:10px; padding:11px 13px; border:1px solid var(--line); border-radius:8px; margin-bottom:8px; background:var(--mist); font-size:.95rem;}
+  .instr .ins::before{content:'○'; color:var(--muted); font-weight:700; line-height:1.4;}
+  .instr .ins.active{border-color:var(--gold); background:rgba(243,184,97,.14);}
+  .instr .ins.active::before{content:'▸'; color:var(--oi-accent);}
+  .instr .ins.done{border-color:var(--oi-berry); background:rgba(224,166,184,.12);}
+  .instr .ins.done::before{content:'✓'; color:var(--oi-berry);}
+
+  /* ── N5: zoom + enlarge + PPE-friendly sizing ─────────── */
+  .sim .sim-btn{min-height:48px;}
+  .sim.enlarged{position:fixed; inset:0; z-index:1000; margin:0; max-width:none; width:auto; border-radius:0; overflow:auto; padding:18px max(18px,env(safe-area-inset-left,0px));}
+  .sim.enlarged .sim-stage{height:68vh;}
+  html.sim-lock, body.sim-lock{overflow:hidden;}
+
   /* ── Touchscreen audit recorder ─────────────────────── */
   .rec{margin-top:14px; border:1px solid #2A3566; border-radius:10px; background:#101830; overflow:hidden;}
   .rec-head{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #2A3566;}
@@ -387,17 +407,17 @@
     <div class="card">
       <div class="eyebrow" data-i18n="s4-eye">The signature · 4D learning-by-doing flow</div>
       <h2 class="display" data-i18n="s4-h">Disassemble → Understand → Handle → Suture (in time).</h2>
-      <p data-i18n="s4-p1">The "4D" is 3D geometry <b>plus time</b>: the operator doesn't just see the piece — they move through the procedure step by step. Four stages, each a doing-task, not a watching-task:</p>
-      <ol>
-        <li data-i18n="s4-l1"><b>Disassemble</b> — explode the digital twin into cuff / stent / core and name each part.</li>
-        <li data-i18n="s4-l2"><b>Understand</b> — rotate it to see the seam and every suture hole from any angle.</li>
-        <li data-i18n="s4-l3"><b>Handle</b> — reseat the parts; feel the orientation that must match the real jig.</li>
-        <li data-i18n="s4-l4"><b>Suture in time</b> — advance the procedure hole by hole; the sim coaches angle, tension and sequence, and <b>blocks</b> a skipped hole.</li>
-      </ol>
+      <p data-i18n="s4-p1">The "4D" is 3D geometry <b>plus time</b>: you don't just see the piece — you <b>do</b> the procedure, and the instruction for each step appears as you move the simulator.</p>
 
-      <h3 data-i18n="s4-simh">Try it — the 4D simulator (demo)</h3>
+      <h3 data-i18n="s4-simh">The 4D simulator</h3>
       <p class="eyebrow" data-i18n="s4-simnote">A lightweight stand-in for the Storyline/WebGL build — same interaction logic, zero real material.</p>
 
+      <div class="sim-tabs" role="tablist">
+        <button class="sim-tab" id="simTab1" role="tab" aria-selected="true" data-i18n="sim-tab1">Simulator</button>
+        <button class="sim-tab" id="simTab2" role="tab" aria-selected="false" data-i18n="sim-tab2">Step-by-step instructions</button>
+      </div>
+
+      <div id="panelSim">
       <div class="sim" role="group" aria-label="4D suturing simulator demo">
         <div class="sim-stage">
           <div class="sim-piece" id="simPiece">
@@ -425,6 +445,12 @@
           </div>
         </div>
 
+        <div class="sim-controls" style="margin-top:8px;">
+          <button class="sim-btn" id="btnZoomOut" data-i18n="sim-zoomout">– Zoom</button>
+          <button class="sim-btn" id="btnZoomIn" data-i18n="sim-zoomin">+ Zoom</button>
+          <button class="sim-btn" id="btnEnlarge" data-i18n="sim-enlarge">⛶ Enlarge</button>
+        </div>
+
         <div class="sim-controls" style="margin-top:12px;">
           <button class="sim-btn" id="btnStitchKey" data-i18n="sim-stitchkey">✚ Suture highlighted point (accessible)</button>
           <button class="sim-btn" id="btnReset" data-i18n="sim-reset">⟲ Reset run</button>
@@ -446,6 +472,17 @@
           </div>
         </div>
         <p class="rec-note" data-i18n="rec-note">Every tap, drag and gesture is captured with its <code>pointerType</code> (touch / mouse / pen), timestamp and coordinates — an auditable training record and a UX-usability signal. On a phone you'll see <code>touch</code>.</p>
+      </div>
+      </div><!-- /panelSim -->
+
+      <div id="panelInstr" hidden>
+        <ul class="instr" id="instrList">
+          <li class="ins" id="ins1" data-i18n="sim-ins1">Explode and name the parts (cuff, stent, core).</li>
+          <li class="ins" id="ins2" data-i18n="sim-ins2">Rotate to inspect every suture point.</li>
+          <li class="ins" id="ins3" data-i18n="sim-ins3">Drag the needle to the highlighted point, in order.</li>
+          <li class="ins" id="ins4" data-i18n="sim-ins4">Complete the pass with no skips (mastery).</li>
+        </ul>
+        <p class="eyebrow" data-i18n="sim-instr-note">The active step highlights as you manipulate the simulator.</p>
       </div>
 
       <h3 data-i18n="br-h">Cleanroom readiness — a complementary branch (ISO 7 / ISO 8)</h3>
@@ -643,12 +680,19 @@ window.PAGE_I18N = {
 
     's4-eye':'The signature · 4D learning-by-doing flow',
     's4-h':'Disassemble → Understand → Handle → Suture (in time).',
-    's4-p1':'The “4D” is 3D geometry <b>plus time</b>: the operator doesn’t just see the piece — they move through the procedure step by step. Four stages, each a doing-task, not a watching-task:',
+    's4-p1':'The “4D” is 3D geometry <b>plus time</b>: you don’t just see the piece — you <b>do</b> the procedure, and the instruction for each step appears as you move the simulator.',
+    'sim-tab1':'Simulator','sim-tab2':'Step-by-step instructions',
+    'sim-ins1':'Explode and name the parts (cuff, stent, core).',
+    'sim-ins2':'Rotate to inspect every suture point.',
+    'sim-ins3':'Drag the needle to the highlighted point, in order.',
+    'sim-ins4':'Complete the pass with no skips (mastery).',
+    'sim-instr-note':'The active step highlights as you manipulate the simulator.',
+    'sim-zoomout':'– Zoom','sim-zoomin':'+ Zoom','sim-enlarge':'⛶ Enlarge',
     's4-l1':'<b>Disassemble</b> — explode the digital twin into cuff / stent / core and name each part.',
     's4-l2':'<b>Understand</b> — rotate it to see the seam and every suture hole from any angle.',
     's4-l3':'<b>Handle</b> — reseat the parts; feel the orientation that must match the real jig.',
     's4-l4':'<b>Suture in time</b> — advance the procedure hole by hole; the sim coaches angle, tension and sequence, and <b>blocks</b> a skipped hole.',
-    's4-simh':'Try it — the 4D simulator (demo)',
+    's4-simh':'The 4D simulator',
     's4-simnote':'A lightweight stand-in for the Storyline/WebGL build — same interaction logic, zero real material.',
     'sim-cuff':'Fabric cuff','sim-stent':'Stent ring','sim-core':'Core / lumen',
     'sim-rotate':'⟳ Auto-rotate','sim-explode':'⤢ Explode parts','sim-angle':'Rotate (angle)',
@@ -785,12 +829,19 @@ window.PAGE_I18N = {
 
     's4-eye':'La firma · flujo 4D de aprender haciendo',
     's4-h':'Desmontar → Comprender → Manipular → Surcir (en el tiempo).',
-    's4-p1':'La “4D” es geometría 3D <b>más tiempo</b>: el operario no solo ve la pieza — avanza por el procedimiento paso a paso. Cuatro etapas, cada una una tarea-de-hacer, no de-mirar:',
+    's4-p1':'La “4D” es geometría 3D <b>más tiempo</b>: no solo ves la pieza — <b>haces</b> el procedimiento, y la instrucción de cada paso aparece a medida que mueves el simulador.',
+    'sim-tab1':'Simulador','sim-tab2':'Instrucciones paso a paso',
+    'sim-ins1':'Explosionar y nombrar las partes (manguito, stent, núcleo).',
+    'sim-ins2':'Rotar para inspeccionar cada punto de sutura.',
+    'sim-ins3':'Arrastrar la aguja al punto resaltado, en orden.',
+    'sim-ins4':'Completar la pasada sin saltos (maestría).',
+    'sim-instr-note':'El paso activo se resalta a medida que manipulas el simulador.',
+    'sim-zoomout':'– Zoom','sim-zoomin':'+ Zoom','sim-enlarge':'⛶ Ampliar',
     's4-l1':'<b>Desmontar</b> — explosiona el gemelo digital en manguito / stent / núcleo y nombra cada parte.',
     's4-l2':'<b>Comprender</b> — rótalo para ver la costura y cada orificio desde cualquier ángulo.',
     's4-l3':'<b>Manipular</b> — reasienta las partes; siente la orientación que debe coincidir con el jig real.',
     's4-l4':'<b>Surcir en el tiempo</b> — avanza el procedimiento orificio a orificio; el simulador guía ángulo, tensión y secuencia, y <b>bloquea</b> un orificio saltado.',
-    's4-simh':'Pruébalo — el simulador 4D (demo)',
+    's4-simh':'El simulador 4D',
     's4-simnote':'Un sustituto ligero de la build en Storyline/WebGL — misma lógica de interacción, cero material real.',
     'sim-cuff':'Manguito de tejido','sim-stent':'Anillo de stent','sim-core':'Núcleo / lumen',
     'sim-rotate':'⟳ Auto-rotar','sim-explode':'⤢ Explosionar partes','sim-angle':'Rotar (ángulo)',
@@ -964,6 +1015,7 @@ window.PAGE_I18N = {
   var angle = 20, exploded = false, autoRot = false, rotTimer = null;
   var current = 0, skipsBlocked = 0;
   var dots = [], R = 92;
+  var zoom = 1, enlarged = false;
 
   function es(){ return localStorage.getItem('oi-lang')==='es'; }
 
@@ -1025,10 +1077,12 @@ window.PAGE_I18N = {
   }
   function sizePiece(){
     var w = stage.clientWidth || 300;
-    var size = Math.max(150, Math.min(220, w - 40));
+    var cap = (enlarged ? 560 : 260) * zoom;
+    var size = Math.max(150, Math.min(cap, w - 24));
     piece.style.width = size + 'px';
     piece.style.height = size + 'px';
     R = size * 0.42;
+    stage.style.height = Math.max(enlarged ? 420 : 240, Math.round(size + 70)) + 'px';
     placeDots(); renderThread();
   }
   function applyTransform(){ piece.style.transform = 'rotateY(' + angle + 'deg) rotateX(12deg)'; }
@@ -1048,6 +1102,7 @@ window.PAGE_I18N = {
   function setMetric(){
     metric.innerHTML = (es()?'puntada ':'stitch ') + Math.min(current,TOTAL) + ' / ' + TOTAL +
       ' · ' + (es()?'saltos bloqueados: ':'skips blocked: ') + '<span class="ok">' + skipsBlocked + '</span>';
+    updateInstr();
   }
 
   /* ---- slider: live rotate, record at end of drag ---- */
@@ -1085,7 +1140,7 @@ window.PAGE_I18N = {
   });
 
   btnExplode.addEventListener('click', function(ev){
-    exploded = !exploded; btnExplode.setAttribute('aria-pressed', exploded); applyExplode();
+    exploded = !exploded; btnExplode.setAttribute('aria-pressed', exploded); applyExplode(); updateInstr();
     rec(exploded?'disassembled':'reassembled','parts', ev, {exploded:exploded}, 'tap');
     setStatus(exploded
       ? (es()?'<b>Desmontado.</b> Manguito, stent y núcleo separados. Rótalo e identifica cada parte, luego reasienta y surce.':'<b>Disassembled.</b> Cuff, stent and core separated. Rotate and identify each part, then reseat and suture.')
@@ -1136,6 +1191,45 @@ window.PAGE_I18N = {
     window.addEventListener('pointercancel', needleUp);
   }
   if (btnStitchKey) btnStitchKey.addEventListener('click', function(ev){ if(current>=TOTAL){ masteryDone(ev); return; } place(ev,'tap'); });
+
+  /* ---- N2: step-by-step instructions tab (synced) + just-in-time highlight ---- */
+  var simTab1=document.getElementById('simTab1'), simTab2=document.getElementById('simTab2');
+  var panelSim=document.getElementById('panelSim'), panelInstr=document.getElementById('panelInstr');
+  function showTab(which){
+    if(!panelSim||!panelInstr) return;
+    var instr = (which==='instr');
+    panelInstr.hidden=!instr; panelSim.hidden=instr;
+    if(simTab1) simTab1.setAttribute('aria-selected', !instr);
+    if(simTab2) simTab2.setAttribute('aria-selected', instr);
+    if(!instr) setTimeout(sizePiece,0);
+  }
+  if(simTab1) simTab1.addEventListener('click', function(){ showTab('sim'); });
+  if(simTab2) simTab2.addEventListener('click', function(){ showTab('instr'); });
+  function updateInstr(){
+    var ids=['ins1','ins2','ins3','ins4'];
+    var ai = (!exploded && current===0) ? 0 : (exploded && current===0 ? 1 : (current>0 && current<TOTAL ? 2 : 3));
+    ids.forEach(function(id,i){ var el=document.getElementById(id); if(!el) return;
+      var done = (i<ai) || (current>=TOTAL);
+      el.classList.toggle('done', done);
+      el.classList.toggle('active', (i===ai) && !done);
+    });
+  }
+
+  /* ---- N5: zoom + enlarge (PPE-friendly) ---- */
+  var btnZoomIn=document.getElementById('btnZoomIn'), btnZoomOut=document.getElementById('btnZoomOut'), btnEnlarge=document.getElementById('btnEnlarge');
+  var simEl = piece.closest ? piece.closest('.sim') : null;
+  if(btnZoomIn) btnZoomIn.addEventListener('click', function(ev){ zoom=Math.min(2.5, Math.round((zoom+0.25)*100)/100); sizePiece(); rec('interacted','zoomIn', ev, {zoom:zoom}, 'tap'); });
+  if(btnZoomOut) btnZoomOut.addEventListener('click', function(ev){ zoom=Math.max(1, Math.round((zoom-0.25)*100)/100); sizePiece(); rec('interacted','zoomOut', ev, {zoom:zoom}, 'tap'); });
+  function setEnlarge(on, ev){
+    enlarged=on;
+    if(simEl) simEl.classList.toggle('enlarged', on);
+    document.documentElement.classList.toggle('sim-lock', on);
+    if(btnEnlarge) btnEnlarge.textContent = on ? (es()?'⛶ Cerrar':'⛶ Close') : (es()?'⛶ Ampliar':'⛶ Enlarge');
+    rec('interacted', on?'enlarge':'restore', ev, {enlarged:on}, 'tap');
+    setTimeout(sizePiece, 30);
+  }
+  if(btnEnlarge) btnEnlarge.addEventListener('click', function(ev){ setEnlarge(!enlarged, ev); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && enlarged) setEnlarge(false, null); });
 
   btnReset.addEventListener('click', function(ev){
     current = 0; skipsBlocked = 0; paintDots(); renderThread(); setMetric();
