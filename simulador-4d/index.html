@@ -1104,11 +1104,15 @@ window.PAGE_I18N = {
   /* ---- export / copy / clear the audit trail ---- */
   function uuid(){ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);}); }
   function envelope(){
-    var NS='https://profeanaeslava.example/xapi/', ADL='http://adlnet.gov/expapi/verbs/';
-    var VERB={ launched:ADL+'launched', initialized:ADL+'initialized', progressed:ADL+'progressed',
-      experienced:ADL+'experienced', interacted:ADL+'interacted', passed:ADL+'passed', failed:ADL+'failed',
-      completed:ADL+'completed', terminated:ADL+'terminated', suspended:ADL+'suspended' };
-    function verbIri(v){ return VERB[v] || (NS+'verb/'+v); }
+    var NS='https://profeanaeslava.example/xapi/', ADL='http://adlnet.gov/expapi/verbs/', EXT=NS+'ext/';
+    // Canonical ADL verbs only — no project-invented verb IRIs. UI actions resolve to ADL 'interacted';
+    // the specific action is preserved in object.definition.name and result.extensions.action.
+    var CANON={ launched:'launched', initialized:'initialized', terminated:'terminated', suspended:'suspended',
+      progressed:'progressed', experienced:'experienced', passed:'passed', failed:'failed', completed:'completed',
+      interacted:'interacted', selected:'interacted', toggled:'interacted', disassembled:'interacted',
+      reassembled:'interacted', rotated:'interacted', tapped:'interacted', adjusted:'interacted',
+      blocked:'interacted', exported:'interacted' };
+    function canon(v){ return CANON[v] || 'interacted'; }
     var course={id:NS+'course/simulador-4d'}, au={id:NS+'au/zero-error-suturing'};
     var reg = window.__reg || (window.__reg = uuid());
     var actor={ objectType:'Agent', account:{ homePage:'https://profeanaeslava.example', name:'operator-anonymous' } };
@@ -1116,13 +1120,18 @@ window.PAGE_I18N = {
     var tot=(j.total||1)-1, enters=(j.enters||[]);
     var perStep=enters.map(function(e,k){ return { step:e.step, msSincePrev: k? e.t-enters[k-1].t : 0 }; });
     function toXapi(s){
+      var cv = canon(s.verb);
+      var res = { response: s.result? JSON.stringify(s.result) : undefined, extensions: {} };
+      res.extensions[EXT+'action'] = s.verb;
+      res.extensions[EXT+'pointerType'] = s.pointerType;
+      res.extensions[EXT+'msOffset'] = s.ms;
+      if (s.verb==='passed') res.success = true;
+      if (s.verb==='blocked') res.success = false;
       return {
         id: uuid(), timestamp: s.timestamp, actor: actor,
-        verb: { id: verbIri(s.verb), display: {'en-US': s.verb, 'es': s.verb} },
-        object: { id: NS+'activity/'+s.object, definition: { type:'http://adlnet.gov/expapi/activities/interaction' } },
-        result: { response: s.result? JSON.stringify(s.result) : undefined,
-          extensions: { 'https://profeanaeslava.example/xapi/ext/pointerType': s.pointerType,
-                        'https://profeanaeslava.example/xapi/ext/msOffset': s.ms } },
+        verb: { id: ADL+cv, display: {'en-US': cv, 'es': cv} },
+        object: { id: NS+'activity/'+s.object, definition: { type:'http://adlnet.gov/expapi/activities/interaction', name:{'en-US': s.verb} } },
+        result: res,
         context: { registration: reg, contextActivities: {
           category:[{ id:'https://w3id.org/xapi/cmi5/context/categories/cmi5' }], grouping:[{ id: au.id }] } }
       };
@@ -1130,7 +1139,7 @@ window.PAGE_I18N = {
     return {
       format:'cmi5 / xAPI (ADL verbs) — Cornerstone-ready',
       note:'Conformant statement set for an LRS (cmi5 profile). A SCORM 2004 wrapper is available for SCORM-only LMS. Demo captures client-side; production streams to the LRS.',
-      conformance:{ profile:'cmi5', verbs:'ADL canonical where defined, project-namespaced otherwise', wcag:'2.2 AA' },
+      conformance:{ profile:'cmi5', verbs:'ADL canonical only (UI actions use adlnet.gov interacted; specific action in object.name + result.extensions.action)', wcag:'2.2 AA' },
       course: course, au: au, registration: reg, actor: actor,
       recordedFrom: sessionStart,
       device:{ touchSeen: sawTouch, userAgent: navigator.userAgent },
