@@ -101,9 +101,10 @@
   .layer{position:absolute; inset:0; border-radius:50%; display:flex; align-items:center; justify-content:center;
     transition:transform .4s ease; transform-style:preserve-3d;}
   @media (prefers-reduced-motion: reduce){ .layer{transition:none;} }
-  .layer-cuff{border:18px solid #6E7BFF; background:rgba(110,123,255,.10);}
-  .layer-stent{inset:40px; border:10px solid #F3B861; background:rgba(243,184,97,.08);}
-  .layer-core{inset:78px; border:2px dashed #9DB2FF; background:rgba(157,178,255,.06);}
+  .layer-cuff{border:16px solid #6E7BFF; background:rgba(110,123,255,.10);}
+  .layer-stent{inset:18%; border:9px solid #F3B861; background:rgba(243,184,97,.08);}
+  .layer-core{inset:35%; border:2px dashed #9DB2FF; background:rgba(157,178,255,.06);}
+  .sim-piece{touch-action:none;}
   .sim-label{position:absolute; bottom:-18px; left:50%; transform:translateX(-50%); font-family:'IBM Plex Mono',monospace; font-size:.6rem; letter-spacing:.08em; color:#A9B8F5; white-space:nowrap;}
   /* suture points around the cuff */
   .dot{position:absolute; width:14px; height:14px; border-radius:50%; background:#3B4680; border:2px solid #6E7BFF; top:50%; left:50%; margin:-7px; transform-origin:center;}
@@ -122,6 +123,40 @@
   .sim-metric{font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:#A9B8F5; margin-top:6px;}
   .sim-metric .ok{color:#8FE0B0;}
 
+  /* ── Touchscreen audit recorder ─────────────────────── */
+  .rec{margin-top:14px; border:1px solid #2A3566; border-radius:10px; background:#101830; overflow:hidden;}
+  .rec-head{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #2A3566;}
+  .rec-title{font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.06em; color:#A9B8F5; font-weight:700;}
+  .rec-dot{display:inline-block; width:9px; height:9px; border-radius:50%; background:#E06B6B; margin-right:7px; vertical-align:middle; animation:recpulse 1.4s infinite;}
+  @keyframes recpulse{0%,100%{opacity:1} 50%{opacity:.3}}
+  @media (prefers-reduced-motion:reduce){ .rec-dot{animation:none;} }
+  .rec-sum{font-family:'IBM Plex Mono',monospace; font-size:.66rem; color:#8FA0D8;}
+  .rec-sum b{color:#8FE0B0;}
+  .rec-log{max-height:148px; overflow-y:auto; -webkit-overflow-scrolling:touch; margin:0; padding:8px 14px; list-style:none; font-family:'IBM Plex Mono',monospace; font-size:.67rem; line-height:1.75;}
+  .rec-log li{color:#C7D0F0; border-bottom:1px dashed #212a4a; padding:2px 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .rec-log li .v{color:#F3B861;}
+  .rec-log li .pt{color:#8FE0B0;}
+  .rec-log li.block .v{color:#F0A6A6;}
+  .rec-actions{display:flex; flex-wrap:wrap; gap:8px; padding:10px 14px; border-top:1px solid #2A3566;}
+  .rec-note{font-size:.72rem; color:#66707F; margin-top:8px;}
+
+  /* ── Mobile responsive ─────────────────────── */
+  @media (max-width:600px){
+    main{padding:20px 14px 132px;}
+    .card{padding:20px 16px;}
+    h2{font-size:1.28rem;}
+    .head-row h1{font-size:.9rem;}
+    .rail-labels{font-size:.5rem; letter-spacing:.02em;}
+    .sim{padding:12px;}
+    .sim-stage{height:240px;}
+    .sim-btn{flex:1 1 auto; justify-content:center; text-align:center;}
+    .sim-slider{flex:1 1 100%;}
+    .btn{padding:11px 16px;}
+    .nav-inner{gap:8px;}
+    .stepcount{font-size:.7rem;}
+    .anchor{font-size:.9rem;}
+  }
+
   /* Footer nav */
   nav.foot{position:fixed; bottom:0; left:0; right:0; background:var(--paper); border-top:1px solid var(--line); padding:12px 20px; z-index:50;}
   .nav-inner{max-width:820px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:12px;}
@@ -138,6 +173,15 @@
   .score-line{font-size:1.05rem; margin-bottom:10px;}
   .gold{color:#9A5B00; font-weight:700;}
   .disclosure{font-size:.72rem; color:#66707F; margin-top:28px; border-top:1px solid var(--line); padding-top:12px; line-height:1.5;}
+
+  /* Methodology / skills credit */
+  .methods{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; text-align:left;}
+  @media (max-width:600px){ .methods{grid-template-columns:1fr;} }
+  .method{border:1px solid var(--line); border-radius:10px; padding:14px 16px; background:var(--mist);}
+  .method .mk{font-family:'IBM Plex Mono',monospace; font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--blue); font-weight:700; margin-bottom:4px;}
+  .method h4{margin:0 0 6px; font-size:.95rem; color:var(--navy); font-family:'Fraunces',Georgia,serif;}
+  .method p{font-size:.82rem; margin:0; color:var(--ink);}
+  .method .tags{margin-top:8px;}
 </style>
 <style>/* OI token remap — applied after local tokens */
 :root{
@@ -296,6 +340,20 @@
 
         <div class="sim-status" id="simStatus" aria-live="polite" data-i18n="sim-status0">Press <b>Explode parts</b> to disassemble, rotate to inspect, then run the stitches with <b>Next stitch</b>.</div>
         <div class="sim-metric" id="simMetric">stitch 0 / 12 · skips blocked: <span class="ok">0</span></div>
+
+        <div class="rec" role="group" aria-label="Touchscreen recording audit log">
+          <div class="rec-head">
+            <span class="rec-title"><span class="rec-dot" aria-hidden="true"></span><span data-i18n="rec-title">REC · touchscreen telemetry (xAPI)</span></span>
+            <span class="rec-sum" id="recSum" aria-live="polite">0 events</span>
+          </div>
+          <ul class="rec-log" id="recLog" aria-label="Recorded interaction events"></ul>
+          <div class="rec-actions">
+            <button class="sim-btn" id="recExport" data-i18n="rec-export">⭳ Export xAPI (JSON)</button>
+            <button class="sim-btn" id="recCopy" data-i18n="rec-copy">⧉ Copy</button>
+            <button class="sim-btn" id="recClear" data-i18n="rec-clear">⌫ Clear</button>
+          </div>
+        </div>
+        <p class="rec-note" data-i18n="rec-note">Every tap, drag and gesture is captured with its <code>pointerType</code> (touch / mouse / pen), timestamp and coordinates — an auditable training record and a UX-usability signal. On a phone you'll see <code>touch</code>.</p>
       </div>
 
       <div class="anchor" data-i18n="s4-anchor"><b>Pedagogy:</b> this is andragogy in action — relevance (the real part), autonomy (self-paced handling), immediate consequence (a skip is blocked, not punished with red). Errors are surfaced as <i>"needs review"</i> amber, never red — lowering the affective filter so adults keep practising.</div>
@@ -370,6 +428,27 @@
       <p class="score-line" data-i18n="s8-score">Your XP: <span class="gold" id="finalXP">0</span> of 80</p>
       <div class="big-level display" id="finalLevel">—</div>
       <p id="finalMsg"></p>
+      <h3 style="text-align:left;" data-i18n="meth-h">Built with two engines</h3>
+      <div class="methods">
+        <div class="method">
+          <div class="mk" data-i18n="meth-id-k">Instructional design</div>
+          <h4 data-i18n="meth-id-h">Technical &amp; Compliance Training Architect</h4>
+          <p data-i18n="meth-id-p">The learning spine: ADDIE, job/task analysis with DIF, Mager + Bloom objectives, Kirkpatrick L1–L4 and the zero-error mastery gate — the method that decides <em>what</em> is taught, how it is proven, and how it stays auditable.</p>
+          <div class="tags">
+            <span class="pill std">ADDIE</span><span class="pill std">DIF</span><span class="pill std">Mager · Bloom</span><span class="pill std">Kirkpatrick</span><span class="pill crit" data-i18n="meth-id-zero">zero-error</span>
+          </div>
+        </div>
+        <div class="method">
+          <div class="mk" data-i18n="meth-ux-k">UXEdTech</div>
+          <h4 data-i18n="meth-ux-h">CUXedTech · UX Quality Framework</h4>
+          <p data-i18n="meth-ux-p">The craft layer: UX Writing (<b>clear · consistent · useful</b>), error feedback as amber <i>“needs review”</i> not red, WCAG POUR accessibility, responsive design and multilingual UX — the method that decides <em>how</em> the interface reads, feels and includes.</p>
+          <div class="tags">
+            <span class="pill std" data-i18n="meth-ux-t1">UX Writing</span><span class="pill std" data-i18n="meth-ux-t2">WCAG POUR</span><span class="pill std" data-i18n="meth-ux-t3">responsive</span><span class="pill std" data-i18n="meth-ux-t4">multilingual</span>
+          </div>
+        </div>
+      </div>
+      <div class="anchor" style="text-align:left;" data-i18n="meth-bridge"><b>Where they meet — this build:</b> the touchscreen recorder turns UX usability signals into an xAPI-style, exportable audit trail (D6/D7). The same capture that proves <i>mastery</i> for the instructional designer also exposes <i>friction</i> for the UX designer. One interaction, two kinds of evidence.</div>
+
       <div class="anchor" style="text-align:left;" data-i18n="s8-anchor"><b>What this proves (portfolio):</b> a full D1–D7 compliance-training design — performance-first analysis, DIF-driven scope, criterion objectives, a signature simulation-based learning-by-doing method, zero-error mastery, and an auditable SCORM/cmi5 trace — for a regulated MedTech manufacturing process. The teaching move: <i>move the error into a simulator where it costs nothing, so it never reaches the material.</i></div>
       <p class="disclosure" data-i18n="s8-disc">Design case for portfolio and training-design purposes. Step names, DIF ratings and defect figures are illustrative placeholders to be replaced with the client's validated SOP, process data and tolerances before any build. No regulatory citation here substitutes for the controlling standard text. · Interactive demo built with HTML/CSS/JS as a stand-in for the Storyline/WebGL production target. · AI-assisted instructional design, authored and verified by Ana Eslava-Graterol.</p>
     </div>
@@ -488,7 +567,22 @@ window.PAGE_I18N = {
     's8-h':'Error rehearsed out, not scrapped in.',
     's8-score':'Your XP: <span class="gold" id="finalXP">0</span> of 80',
     's8-anchor':'<b>What this proves (portfolio):</b> a full D1–D7 compliance-training design — performance-first analysis, DIF-driven scope, criterion objectives, a signature simulation-based learning-by-doing method, zero-error mastery, and an auditable SCORM/cmi5 trace — for a regulated MedTech manufacturing process. The teaching move: <i>move the error into a simulator where it costs nothing, so it never reaches the material.</i>',
-    's8-disc':'Design case for portfolio and training-design purposes. Step names, DIF ratings and defect figures are illustrative placeholders to be replaced with the client’s validated SOP, process data and tolerances before any build. No regulatory citation here substitutes for the controlling standard text. · Interactive demo built with HTML/CSS/JS as a stand-in for the Storyline/WebGL production target. · AI-assisted instructional design, authored and verified by Ana Eslava-Graterol.'
+    's8-disc':'Design case for portfolio and training-design purposes. Step names, DIF ratings and defect figures are illustrative placeholders to be replaced with the client’s validated SOP, process data and tolerances before any build. No regulatory citation here substitutes for the controlling standard text. · Interactive demo built with HTML/CSS/JS as a stand-in for the Storyline/WebGL production target. · AI-assisted instructional design, authored and verified by Ana Eslava-Graterol.',
+    'rec-title':'REC · touchscreen telemetry (xAPI)',
+    'rec-export':'⭳ Export xAPI (JSON)',
+    'rec-copy':'⧉ Copy',
+    'rec-clear':'⌫ Clear',
+    'rec-note':'Every tap, drag and gesture is captured with its <code>pointerType</code> (touch / mouse / pen), timestamp and coordinates — an auditable training record and a UX-usability signal. On a phone you’ll see <code>touch</code>.',
+    'meth-h':'Built with two engines',
+    'meth-id-k':'Instructional design',
+    'meth-id-h':'Technical & Compliance Training Architect',
+    'meth-id-p':'The learning spine: ADDIE, job/task analysis with DIF, Mager + Bloom objectives, Kirkpatrick L1–L4 and the zero-error mastery gate — the method that decides <em>what</em> is taught, how it is proven, and how it stays auditable.',
+    'meth-id-zero':'zero-error',
+    'meth-ux-k':'UXEdTech',
+    'meth-ux-h':'CUXedTech · UX Quality Framework',
+    'meth-ux-p':'The craft layer: UX Writing (<b>clear · consistent · useful</b>), error feedback as amber <i>“needs review”</i> not red, WCAG POUR accessibility, responsive design and multilingual UX — the method that decides <em>how</em> the interface reads, feels and includes.',
+    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG POUR','meth-ux-t3':'responsive','meth-ux-t4':'multilingual',
+    'meth-bridge':'<b>Where they meet — this build:</b> the touchscreen recorder turns UX usability signals into an xAPI-style, exportable audit trail (D6/D7). The same capture that proves <i>mastery</i> for the instructional designer also exposes <i>friction</i> for the UX designer. One interaction, two kinds of evidence.'
   },
   es: {
     'brand-role':'LXD · Compliance · MedTech', 'nav-back':'Bootcamp',
@@ -591,7 +685,22 @@ window.PAGE_I18N = {
     's8-h':'El error se ensaya fuera, no se desecha dentro.',
     's8-score':'Tu XP: <span class="gold" id="finalXP">0</span> de 80',
     's8-anchor':'<b>Qué demuestra (portfolio):</b> un diseño completo D1–D7 de formación en compliance — análisis desempeño-primero, alcance guiado por DIF, objetivos con criterio, un método firma de aprender-haciendo basado en simulación, maestría cero-error y una traza SCORM/cmi5 auditable — para un proceso regulado de manufactura MedTech. La jugada pedagógica: <i>mover el error a un simulador donde no cuesta nada, para que nunca llegue al material.</i>',
-    's8-disc':'Caso de diseño para fines de portfolio y diseño instruccional. Los nombres de pasos, las puntuaciones DIF y las cifras de defecto son marcadores ilustrativos a sustituir por el SOP validado del cliente, sus datos de proceso y tolerancias antes de cualquier build. Ninguna cita normativa aquí sustituye el texto de la norma controladora. · Demo interactiva construida con HTML/CSS/JS como sustituto del objetivo de producción Storyline/WebGL. · Diseño instruccional asistido por IA, autoría y verificación de Ana Eslava-Graterol.'
+    's8-disc':'Caso de diseño para fines de portfolio y diseño instruccional. Los nombres de pasos, las puntuaciones DIF y las cifras de defecto son marcadores ilustrativos a sustituir por el SOP validado del cliente, sus datos de proceso y tolerancias antes de cualquier build. Ninguna cita normativa aquí sustituye el texto de la norma controladora. · Demo interactiva construida con HTML/CSS/JS como sustituto del objetivo de producción Storyline/WebGL. · Diseño instruccional asistido por IA, autoría y verificación de Ana Eslava-Graterol.',
+    'rec-title':'REC · telemetría táctil (xAPI)',
+    'rec-export':'⭳ Exportar xAPI (JSON)',
+    'rec-copy':'⧉ Copiar',
+    'rec-clear':'⌫ Limpiar',
+    'rec-note':'Cada toque, arrastre y gesto se captura con su <code>pointerType</code> (touch / mouse / pen), marca de tiempo y coordenadas — un registro de formación auditable y una señal de usabilidad UX. En el móvil verás <code>touch</code>.',
+    'meth-h':'Construido con dos motores',
+    'meth-id-k':'Diseño instruccional',
+    'meth-id-h':'Technical & Compliance Training Architect',
+    'meth-id-p':'La columna de aprendizaje: ADDIE, análisis de tarea con DIF, objetivos Mager + Bloom, Kirkpatrick L1–L4 y la compuerta de maestría cero-error — el método que decide <em>qué</em> se enseña, cómo se prueba y cómo se mantiene auditable.',
+    'meth-id-zero':'cero-error',
+    'meth-ux-k':'UXEdTech',
+    'meth-ux-h':'CUXedTech · Marco de Calidad UX',
+    'meth-ux-p':'La capa de oficio: UX Writing (<b>claro · consistente · útil</b>), feedback de error en ámbar <i>“para revisar”</i> no en rojo, accesibilidad WCAG POUR, diseño responsive y UX multilingüe — el método que decide <em>cómo</em> se lee, se siente y se incluye en la interfaz.',
+    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG POUR','meth-ux-t3':'responsive','meth-ux-t4':'multilingüe',
+    'meth-bridge':'<b>Donde se encuentran — esta build:</b> el grabador táctil convierte señales de usabilidad UX en una traza de auditoría estilo xAPI, exportable (D6/D7). La misma captura que prueba <i>maestría</i> para la diseñadora instruccional también expone <i>fricción</i> para la diseñadora UX. Una interacción, dos tipos de evidencia.'
   }
 };
 </script>
@@ -674,10 +783,11 @@ window.PAGE_I18N = {
 </script>
 
 <script>
-/* ── 4D simulator demo ─────────────────────── */
+/* ── 4D simulator demo · responsive + touchscreen telemetry ─────────────── */
 (function(){
   var piece = document.getElementById('simPiece');
   if (!piece) return;
+  var stage = piece.parentElement;
   var cuff = document.getElementById('layerCuff');
   var stent = document.getElementById('layerStent');
   var core = document.getElementById('layerCore');
@@ -693,21 +803,74 @@ window.PAGE_I18N = {
   var TOTAL = 12;
   var angle = 20, exploded = false, autoRot = false, rotTimer = null;
   var current = 0, skipsBlocked = 0;
-  var dots = [];
+  var dots = [], R = 92;
 
   function es(){ return localStorage.getItem('oi-lang')==='es'; }
 
-  // build suture dots around the cuff
-  var R = 92;
+  /* ---- auditable touchscreen recorder (xAPI-style) ---- */
+  var recLog = document.getElementById('recLog');
+  var recSum = document.getElementById('recSum');
+  var statements = [], t0 = (performance && performance.now) ? performance.now() : Date.now();
+  var sessionStart = new Date().toISOString();
+  var taps = 0, drags = 0, lastPT = 'mouse', sawTouch = false;
+  document.addEventListener('pointerdown', function(e){ if (e.pointerType){ lastPT = e.pointerType; if (e.pointerType==='touch') sawTouch = true; } }, true);
+  function ptype(ev){
+    if (ev && ev.pointerType) return ev.pointerType;
+    if (ev && ev.type==='click' && ev.detail===0) return 'key';
+    return lastPT || 'mouse';
+  }
+  function rec(verb, object, ev, result, kind){
+    var now = (performance && performance.now) ? performance.now() : Date.now();
+    var pt = ptype(ev);
+    if (pt==='touch') sawTouch = true;
+    if (kind==='tap') taps++; else if (kind==='drag') drags++;
+    var s = {
+      seq: statements.length+1,
+      timestamp: new Date().toISOString(),
+      ms: Math.round(now - t0),
+      verb: verb, object: 'sim.' + object,
+      pointerType: pt,
+      x: ev && ev.clientX!=null ? Math.round(ev.clientX) : null,
+      y: ev && ev.clientY!=null ? Math.round(ev.clientY) : null,
+      result: result || null
+    };
+    statements.push(s);
+    if (recLog){
+      var li = document.createElement('li');
+      if (verb==='blocked') li.className = 'block';
+      var ts = s.timestamp.substr(11,12);
+      li.innerHTML = ts + ' · <span class="v">' + verb + '</span> ' + s.object + ' · <span class="pt">[' + pt + ']</span>';
+      recLog.appendChild(li);
+      while (recLog.children.length > 60) recLog.removeChild(recLog.firstChild);
+      recLog.scrollTop = recLog.scrollHeight;
+    }
+    if (recSum){
+      recSum.textContent = statements.length + (es()?' eventos · toques ':' events · taps ') + taps +
+        (es()?' · arrastres ':' · drags ') + drags + ' · touch:' + (sawTouch?(es()?'sí':'yes'):'no');
+    }
+  }
+
+  /* ---- geometry (responsive) ---- */
   for (var d=0; d<TOTAL; d++){
     var el = document.createElement('div');
     el.className = 'dot';
-    var a = (d/TOTAL) * 2*Math.PI - Math.PI/2;
-    el.style.transform = 'translate(' + (Math.cos(a)*R) + 'px,' + (Math.sin(a)*R) + 'px)';
     piece.appendChild(el);
     dots.push(el);
   }
-
+  function placeDots(){
+    dots.forEach(function(e,k){
+      var a = (k/TOTAL) * 2*Math.PI - Math.PI/2;
+      e.style.transform = 'translate(' + (Math.cos(a)*R) + 'px,' + (Math.sin(a)*R) + 'px)';
+    });
+  }
+  function sizePiece(){
+    var w = stage.clientWidth || 300;
+    var size = Math.max(150, Math.min(220, w - 40));
+    piece.style.width = size + 'px';
+    piece.style.height = size + 'px';
+    R = size * 0.42;
+    placeDots();
+  }
   function applyTransform(){ piece.style.transform = 'rotateY(' + angle + 'deg) rotateX(12deg)'; }
   function applyExplode(){
     var z = exploded ? 1 : 0;
@@ -716,9 +879,9 @@ window.PAGE_I18N = {
     core.style.transform  = 'translateZ(' + (z*-50) + 'px)';
   }
   function paintDots(){
-    dots.forEach(function(el,k){
-      el.classList.toggle('done', k < current);
-      el.classList.toggle('active', k === current && current < TOTAL);
+    dots.forEach(function(e,k){
+      e.classList.toggle('done', k < current);
+      e.classList.toggle('active', k === current && current < TOTAL);
     });
   }
   function setStatus(html){ status.innerHTML = html; }
@@ -727,10 +890,32 @@ window.PAGE_I18N = {
       ' · ' + (es()?'saltos bloqueados: ':'skips blocked: ') + '<span class="ok">' + skipsBlocked + '</span>';
   }
 
+  /* ---- slider: live rotate, record at end of drag ---- */
   rot.addEventListener('input', function(){ angle = +rot.value; applyTransform(); });
+  rot.addEventListener('change', function(ev){ rec('adjusted','angle', ev, {degrees:+rot.value}, 'drag'); });
 
-  btnRotate.addEventListener('click', function(){
+  /* ---- drag-to-rotate directly on the piece (touch/mouse/pen) ---- */
+  var dragging=false, startX=0, startAngle=0, moved=false;
+  stage.addEventListener('pointerdown', function(ev){
+    dragging=true; moved=false; startX=ev.clientX; startAngle=angle;
+    if (stage.setPointerCapture){ try{ stage.setPointerCapture(ev.pointerId); }catch(e){} }
+  });
+  stage.addEventListener('pointermove', function(ev){
+    if (!dragging) return;
+    var dx = ev.clientX - startX;
+    if (Math.abs(dx) > 3){ moved=true; angle = (startAngle + dx) % 360; rot.value = ((angle%360)+360)%360; applyTransform(); }
+  });
+  function endDrag(ev){
+    if (!dragging) return; dragging=false;
+    if (moved) rec('rotated','piece', ev, {degrees: Math.round(((angle%360)+360)%360)}, 'drag');
+    else rec('tapped','piece', ev, null, 'tap');
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  btnRotate.addEventListener('click', function(ev){
     autoRot = !autoRot; btnRotate.setAttribute('aria-pressed', autoRot);
+    rec('toggled','autorotate', ev, {on:autoRot}, 'tap');
     if (autoRot){
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
         angle = (angle+45)%360; rot.value = angle; applyTransform(); autoRot=false; btnRotate.setAttribute('aria-pressed','false'); return;
@@ -739,42 +924,83 @@ window.PAGE_I18N = {
     } else { clearInterval(rotTimer); }
   });
 
-  btnExplode.addEventListener('click', function(){
+  btnExplode.addEventListener('click', function(ev){
     exploded = !exploded; btnExplode.setAttribute('aria-pressed', exploded); applyExplode();
+    rec(exploded?'disassembled':'reassembled','parts', ev, {exploded:exploded}, 'tap');
     setStatus(exploded
       ? (es()?'<b>Desmontado.</b> Manguito, stent y núcleo separados. Rótalo e identifica cada parte, luego reasienta y surce.':'<b>Disassembled.</b> Cuff, stent and core separated. Rotate and identify each part, then reseat and suture.')
       : (es()?'<b>Reasentado.</b> Listo para surcir — pulsa <b>Siguiente puntada</b>.':'<b>Reseated.</b> Ready to suture — press <b>Next stitch</b>.'));
   });
 
-  btnStep.addEventListener('click', function(){
+  btnStep.addEventListener('click', function(ev){
     if (current >= TOTAL){
       setStatus(es()?'<b>Pasada completa.</b> Cero errores de secuencia · tensión en tolerancia → <b>maestría superada</b>. +20 XP':'<b>Run complete.</b> Zero sequence errors · tension in tolerance → <b>mastery passed</b>. +20 XP');
       return;
     }
     current++;
     paintDots(); setMetric();
+    rec('progressed','stitch', ev, {stitch:current, of:TOTAL}, 'tap');
     if (current >= TOTAL){
       setStatus(es()?'<b>Pasada completa.</b> Cero saltos → <b>maestría superada</b>. +20 XP':'<b>Run complete.</b> Zero skips → <b>mastery passed</b>. +20 XP');
-      if (window.__simAddXP){ window.__simAddXP(20); window.__simAddXP = null; } // award once
+      rec('passed','masteryRun', ev, {success:true, seqErrors:0, skipsBlocked:skipsBlocked});
+      if (window.__simAddXP){ window.__simAddXP(20); window.__simAddXP = null; }
     } else {
       setStatus((es()?'Puntada ':'Stitch ') + current + '/' + TOTAL + (es()?' colocada. Ángulo y tensión en verde. Continúa la secuencia.':' placed. Angle and tension green. Continue the sequence.'));
     }
   });
 
-  btnSkip.addEventListener('click', function(){
+  btnSkip.addEventListener('click', function(ev){
     if (current >= TOTAL) return;
     skipsBlocked++; setMetric();
+    rec('blocked','sequence', ev, {attemptedHole:current+2, requiredHole:current+1}, 'tap');
     setStatus(es()
       ? '<b style="color:#F3B861">Para revisar:</b> no puedes saltar al orificio ' + (current+2) + '. La secuencia exige el orificio ' + (current+1) + ' primero. Avance <b>bloqueado</b> — así el error nunca llega al material.'
       : '<b style="color:#F3B861">Needs review:</b> you can’t jump to hole ' + (current+2) + '. The sequence requires hole ' + (current+1) + ' first. Advance <b>blocked</b> — this is how the error never reaches the material.');
   });
 
-  btnReset.addEventListener('click', function(){
+  btnReset.addEventListener('click', function(ev){
     current = 0; skipsBlocked = 0; paintDots(); setMetric();
+    rec('initialized','run', ev, null, 'tap');
     setStatus(es()?'Pasada reiniciada. Explosiona, rota y vuelve a surcir.':'Run reset. Explode, rotate, and suture again.');
   });
 
-  applyTransform(); applyExplode(); paintDots(); setMetric();
+  /* ---- export / copy / clear the audit trail ---- */
+  function envelope(){
+    return {
+      format:'xAPI-style touchscreen telemetry (demo)',
+      course:'simulador-4d · zero-error suturing',
+      actor:{ account:'operator-anonymous' },
+      recordedFrom: sessionStart,
+      device:{ touchSeen: sawTouch, userAgent: navigator.userAgent },
+      summary:{ events: statements.length, taps: taps, drags: drags, skipsBlocked: skipsBlocked },
+      statements: statements
+    };
+  }
+  var eExport=document.getElementById('recExport'), eCopy=document.getElementById('recCopy'), eClear=document.getElementById('recClear');
+  if (eExport) eExport.addEventListener('click', function(ev){
+    rec('exported','auditTrail', ev, {events:statements.length}, 'tap');
+    var blob = new Blob([JSON.stringify(envelope(), null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = 'touchscreen-audit.json';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+  if (eCopy) eCopy.addEventListener('click', function(ev){
+    var txt = JSON.stringify(envelope(), null, 2);
+    var done = function(){ eCopy.textContent = es()?'✓ Copiado':'✓ Copied'; setTimeout(function(){ window.setLang && null; eCopy.textContent = es()?'⧉ Copiar':'⧉ Copy'; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, done); }
+    else { var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} ta.remove(); done(); }
+  });
+  if (eClear) eClear.addEventListener('click', function(){
+    statements = []; taps = 0; drags = 0; sawTouch = false;
+    if (recLog) recLog.innerHTML = '';
+    if (recSum) recSum.textContent = '0' + (es()?' eventos':' events');
+  });
+
+  /* ---- init + resize ---- */
+  function refreshAll(){ sizePiece(); applyTransform(); applyExplode(); paintDots(); }
+  var rzT; window.addEventListener('resize', function(){ clearTimeout(rzT); rzT = setTimeout(refreshAll, 150); });
+  refreshAll(); setMetric();
+  if (recSum) recSum.textContent = '0' + (es()?' eventos':' events');
 })();
 </script>
 
