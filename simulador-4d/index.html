@@ -1,0 +1,1443 @@
+<!-- ============================================================
+     FILE: simulador-4d/index.html
+     UPLOAD TO: create folder "simulador-4d" → upload as index.html
+     WHAT IT IS: 4D Simulator — Zero-Error Suturing. A compliance-training
+                 design case (D1–D7) for a MedTech sewing/suturing operation.
+                 Learner rehearses on a rotatable, explodable digital twin
+                 BEFORE touching real material, to reduce defect rate.
+                 Bilingual EN/ES · Ocean Ink · WCAG 2.2 AA · cmi5/xAPI auditable.
+     ============================================================ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>4D Simulator · Zero-Error Suturing — a Compliance Training Design</title>
+<meta name="description" content="An instructional-design case (D1–D7): a 4D digital-twin simulator that lets MedTech operators disassemble, understand, handle and rehearse the suturing operation before touching real material — to reduce the defect rate.">
+<link rel="stylesheet" href="../shared/oi.css">
+<style>
+  :root{
+    --navy:#1F3864; --blue:#2E5395; --ink:#1D2433; --mist:#EEF1F7;
+    --paper:#FFFFFF; --gold:#C9A227; --ok:#2E7D4F; --no:#B3403A;
+    --line:#D6DCE8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{font-size:16px;}
+  body{
+    font-family:'Inter', system-ui, -apple-system, Roboto, Arial, sans-serif;
+    background:var(--mist); color:var(--ink); line-height:1.55;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  .display{font-family:'Fraunces','Palatino Linotype',Georgia,serif;}
+  code,.lvl{font-family:'IBM Plex Mono','Consolas',Menlo,monospace;}
+
+  /* ── Proficiency rail ─────────────────────── */
+  header.game{
+    background:var(--navy); color:#fff; padding-top:14px; padding-bottom:18px;
+    padding-left:max(20px,env(safe-area-inset-left,0px));
+    padding-right:max(20px,env(safe-area-inset-right,0px));
+    position:sticky; top:56px; z-index:9;
+  }
+  .head-row{display:flex; justify-content:space-between; align-items:baseline; max-width:820px; margin:0 auto 10px; gap:12px;}
+  .head-row h1{font-size:1.02rem; font-weight:700; letter-spacing:.01em;}
+  .xp{font-size:.85rem; color:var(--gold); font-weight:700; white-space:nowrap;}
+  .rail{max-width:820px; margin:0 auto; display:flex; gap:4px; align-items:center;}
+  .rail .seg{flex:1; height:6px; background:rgba(255,255,255,.18); border-radius:3px; position:relative; transition:background .4s;}
+  .rail .seg.done{background:var(--gold);}
+  .rail-labels{max-width:820px; margin:4px auto 0; display:flex; justify-content:space-between; font-size:.6rem; letter-spacing:.05em; text-transform:uppercase; color:rgba(255,255,255,.75);}
+  .rail-labels span.now{color:var(--gold); font-weight:700;}
+
+  main{flex:1; width:100%; max-width:820px; margin:0 auto; padding:26px 20px 120px;}
+  .step{display:none; animation:rise .35s ease;}
+  .step.active{display:block;}
+  @keyframes rise{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion: reduce){ .step{animation:none;} .rail .seg{transition:none;} }
+
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:26px 28px; margin-bottom:18px;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); font-weight:700; margin-bottom:8px;}
+  h2{font-size:1.55rem; color:var(--navy); margin-bottom:14px; line-height:1.2;}
+  h3{font-size:1.02rem; color:var(--navy); margin:18px 0 6px;}
+  h4{font-size:.9rem; color:var(--blue); margin:14px 0 4px; font-family:'Inter',sans-serif;}
+  p{margin-bottom:12px;}
+  ul,ol{margin:0 0 12px 20px;}
+  li{margin-bottom:6px;}
+  .anchor{border-left:4px solid var(--gold); background:#FBF7EA; padding:12px 16px; border-radius:0 8px 8px 0; margin:14px 0; font-size:.95rem;}
+  .anchor b{color:var(--navy);}
+  .pill{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:700; letter-spacing:.06em; padding:3px 9px; border-radius:20px; border:1px solid var(--line); margin:2px 4px 2px 0;}
+  .pill.crit{border-color:var(--gold); color:#9A5B00; background:#FBF4E4;}
+  .pill.std{color:var(--blue);}
+
+  table{width:100%; border-collapse:collapse; font-size:.82rem; margin:12px 0;}
+  th{background:var(--navy); color:#fff; text-align:left; padding:8px 10px; font-weight:600;}
+  td{border-bottom:1px solid var(--line); padding:8px 10px; vertical-align:top;}
+  tr:nth-child(even) td{background:var(--mist);}
+  .tbl-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+
+  /* Quiz */
+  .quiz{border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin:16px 0; background:#FAFBFE;}
+  .quiz .qq{font-weight:600; color:var(--navy); margin-bottom:10px;}
+  .opt{display:block; width:100%; text-align:left; background:#fff; border:1.5px solid var(--line);
+    border-radius:8px; padding:10px 14px; margin-bottom:8px; font:inherit; cursor:pointer; transition:border-color .15s; min-height:44px;}
+  .opt:hover{border-color:var(--blue);}
+  .opt:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .opt.right{border-color:var(--ok); background:#EAF4EE; font-weight:600;}
+  .opt.wrong{border-color:#9A5B00; background:#FBF4E4;}
+  .opt:disabled{cursor:default; opacity:.95;}
+  .fb{font-size:.9rem; margin-top:6px; display:none;}
+  .fb.show{display:block;}
+  .fb.good{color:var(--ok); font-weight:600;}
+  .fb.bad{color:#9A5B00; font-weight:600;}
+  .fb .why{color:var(--ink); font-weight:400; display:block; margin-top:2px;}
+
+  details{border:1px solid var(--line); border-radius:8px; padding:12px 16px; margin:12px 0; background:#fff;}
+  summary{cursor:pointer; font-weight:600; color:var(--blue);}
+  details[open]{background:#FAFBFE;}
+
+  /* ── 4D Simulator demo ─────────────────────── */
+  .sim{border:1px solid var(--line); border-radius:12px; background:#0E1428; color:#EAF0FF; padding:18px; margin:16px 0; overflow:hidden;}
+  .sim-stage{height:300px; display:flex; align-items:center; justify-content:center; perspective:900px;}
+  .sim-piece{position:relative; width:220px; height:220px; transform-style:preserve-3d; transition:transform .25s ease;}
+  @media (prefers-reduced-motion: reduce){ .sim-piece{transition:none;} }
+  .layer{position:absolute; inset:0; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    transition:transform .4s ease; transform-style:preserve-3d;}
+  @media (prefers-reduced-motion: reduce){ .layer{transition:none;} }
+  .layer-cuff{border:16px solid #6E7BFF; background:rgba(110,123,255,.10);}
+  .layer-stent{inset:18%; border:9px solid #F3B861; background:rgba(243,184,97,.08);}
+  .layer-core{inset:35%; border:2px dashed #9DB2FF; background:rgba(157,178,255,.06);}
+  .sim-piece{touch-action:none;}
+  .sim-label{position:absolute; bottom:-18px; left:50%; transform:translateX(-50%); font-family:'IBM Plex Mono',monospace; font-size:.6rem; letter-spacing:.08em; color:#A9B8F5; white-space:nowrap;}
+  /* suture points around the cuff */
+  .dot{position:absolute; width:14px; height:14px; border-radius:50%; background:#3B4680; border:2px solid #6E7BFF; top:50%; left:50%; margin:-7px; transform-origin:center;}
+  .dot.active{background:var(--gold); border-color:#fff; box-shadow:0 0 0 4px rgba(243,184,97,.25);}
+  .dot.done{background:#2E7D4F; border-color:#8FE0B0;}
+  .sim-controls{display:flex; flex-wrap:wrap; gap:8px; margin-top:26px; align-items:center;}
+  .sim-btn{font:inherit; font-family:'IBM Plex Mono',monospace; font-size:.72rem; font-weight:700; letter-spacing:.04em;
+    background:#1B2545; color:#EAF0FF; border:1px solid #33407A; border-radius:8px; padding:9px 13px; cursor:pointer; min-height:40px;}
+  .sim-btn:hover{border-color:#6E7BFF;}
+  .sim-btn:focus-visible{outline:3px solid #F3B861; outline-offset:2px;}
+  .sim-btn[aria-pressed="true"]{background:#3B5BD6; border-color:#3B5BD6;}
+  .sim-slider{flex:1; min-width:140px;}
+  .sim-slider input{width:100%;}
+  .sim-status{margin-top:12px; font-size:.9rem; background:#121a35; border:1px solid #2A3566; border-radius:8px; padding:10px 14px;}
+  .sim-status b{color:#F3B861;}
+  .sim-metric{font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:#A9B8F5; margin-top:6px;}
+  .sim-metric .ok{color:#8FE0B0;}
+  /* suture thread (piece-local, rotates with the cuff) */
+  .thread{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible;}
+  .thread polyline{fill:none; stroke:#F3B861; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 3px rgba(243,184,97,.5));}
+  /* draggable needle + tray */
+  .needle-tray{display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap;}
+  .needle{touch-action:none; cursor:grab; user-select:none; -webkit-user-select:none; display:inline-flex; padding:7px 9px; border:1px dashed #33407A; border-radius:10px; background:#121a35; position:relative; z-index:3; transition:transform .12s ease;}
+  .needle:active, .needle.grab{cursor:grabbing; border-color:#F3B861; transition:none;}
+  @media (prefers-reduced-motion:reduce){ .needle{transition:none;} }
+  .needle svg{display:block; pointer-events:none;}
+  .needle-hint{font-size:.82rem; color:#A9B8F5;}
+
+  /* ── N1/N2: sim tabs + synced step-by-step instructions ─────────── */
+  .sim-tabs{display:flex; gap:8px; margin:10px 0; flex-wrap:wrap;}
+  .sim-tab{flex:1 1 170px; min-height:48px; font:inherit; font-family:'IBM Plex Mono',monospace; font-size:.74rem; font-weight:700; letter-spacing:.03em; background:var(--mist); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:10px 12px; cursor:pointer;}
+  .sim-tab:hover{border-color:var(--blue);}
+  .sim-tab:focus-visible{outline:3px solid var(--oi-focus); outline-offset:2px;}
+  .sim-tab[aria-selected="true"]{background:var(--oi-primary-btn); color:#fff; border-color:var(--oi-primary-btn);}
+  .instr{list-style:none; margin:4px 0; padding:0;}
+  .instr .ins{display:flex; align-items:flex-start; gap:10px; padding:11px 13px; border:1px solid var(--line); border-radius:8px; margin-bottom:8px; background:var(--mist); font-size:.95rem;}
+  .instr .ins::before{content:'○'; color:var(--muted); font-weight:700; line-height:1.4;}
+  .instr .ins.active{border-color:var(--gold); background:rgba(243,184,97,.14);}
+  .instr .ins.active::before{content:'▸'; color:var(--oi-accent);}
+  .instr .ins.done{border-color:var(--oi-berry); background:rgba(224,166,184,.12);}
+  .instr .ins.done::before{content:'✓'; color:var(--oi-berry);}
+
+  /* ── N5: zoom + enlarge + PPE-friendly sizing ─────────── */
+  .sim .sim-btn{min-height:48px;}
+  .sim.enlarged{position:fixed; inset:0; z-index:1000; margin:0; max-width:none; width:auto; border-radius:0; overflow:auto; padding:18px max(18px,env(safe-area-inset-left,0px));}
+  .sim.enlarged .sim-stage{height:68vh;}
+  html.sim-lock, body.sim-lock{overflow:hidden;}
+
+  /* ── Touchscreen audit recorder ─────────────────────── */
+  .rec{margin-top:14px; border:1px solid #2A3566; border-radius:10px; background:#101830; overflow:hidden;}
+  .rec-head{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #2A3566;}
+  .rec-title{font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.06em; color:#A9B8F5; font-weight:700;}
+  .rec-dot{display:inline-block; width:9px; height:9px; border-radius:50%; background:#E06B6B; margin-right:7px; vertical-align:middle; animation:recpulse 1.4s infinite;}
+  @keyframes recpulse{0%,100%{opacity:1} 50%{opacity:.3}}
+  @media (prefers-reduced-motion:reduce){ .rec-dot{animation:none;} }
+  .rec-sum{font-family:'IBM Plex Mono',monospace; font-size:.66rem; color:#8FA0D8;}
+  .rec-sum b{color:#8FE0B0;}
+  .rec-log{max-height:148px; overflow-y:auto; -webkit-overflow-scrolling:touch; margin:0; padding:8px 14px; list-style:none; font-family:'IBM Plex Mono',monospace; font-size:.67rem; line-height:1.75;}
+  .rec-log li{color:#C7D0F0 !important; border-bottom:1px dashed #212a4a; padding:2px 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .rec-log li .v{color:#F3B861;}
+  .rec-log li .pt{color:#8FE0B0;}
+  .rec-log li.block .v{color:#F0A6A6;}
+  .rec-actions{display:flex; flex-wrap:wrap; gap:8px; padding:10px 14px; border-top:1px solid #2A3566;}
+  .rec-note{font-size:.72rem; color:#66707F; margin-top:8px;}
+
+  /* ── Cleanroom readiness branch (ISO 7 / ISO 8) ─────────── */
+  .branch{border:1px solid var(--line); border-radius:12px; background:#0E1428; color:#EAF0FF; padding:16px; margin:12px 0;}
+  .branch-tabs{display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;}
+  .branch-tab{flex:1 1 150px; min-width:140px; font:inherit; font-family:'IBM Plex Mono',monospace; font-size:.74rem; font-weight:700; letter-spacing:.03em;
+    background:#1B2545; color:#EAF0FF; border:1px solid #33407A; border-radius:8px; padding:10px 12px; cursor:pointer; min-height:48px; text-align:left;}
+  .branch-tab small{display:block; font-weight:400; letter-spacing:0; color:#A9B8F5; margin-top:3px; font-size:.64rem;}
+  .branch-tab:hover{border-color:#6E7BFF;}
+  .branch-tab:focus-visible{outline:3px solid #F3B861; outline-offset:2px;}
+  .branch-tab[aria-selected="true"]{background:#3B5BD6; border-color:#3B5BD6;}
+  .branch-tab[aria-selected="true"] small{color:#D7E0FF;}
+  .branch-params{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .branch-params .pill{border-color:#33407A; color:#A9B8F5; background:#121a35;}
+  .gown{list-style:none; margin:0 0 10px; padding:0;}
+  .gown li{display:flex; align-items:center; gap:10px; padding:7px 10px; border:1px solid #2A3566; border-radius:8px; margin-bottom:6px; background:#121a35; font-size:.85rem; color:#EAF0FF !important;}
+  .gown li .g-ix{font-family:'IBM Plex Mono',monospace; font-size:.74rem; width:24px; height:24px; flex:0 0 24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border:1px solid #33407A; color:#A9B8F5;}
+  .gown li.done{border-color:#2E7D4F;} .gown li.done .g-ix{background:#2E7D4F; border-color:#8FE0B0; color:#06210f;}
+  .gown li.active{border-color:#F3B861;} .gown li.active .g-ix{background:#F3B861; border-color:#fff; color:#3a2600;}
+  .branch-complement{border-left:4px solid #6E7BFF; background:rgba(110,123,255,.08); padding:10px 14px; border-radius:0 8px 8px 0; margin-top:12px; font-size:.84rem; color:#D7E0FF;}
+  @media (max-width:600px){ .branch-tab{flex:1 1 100%;} }
+
+  /* ── Screen-reader only ─────────────────────── */
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+
+  /* ── Unit opener: learning objectives + awareness video ─────────── */
+  .lo{border:1px solid var(--line); border-left:4px solid var(--blue); border-radius:0 10px 10px 0; background:var(--mist); padding:14px 16px; margin:14px 0;}
+  .lo h3{margin:0 0 6px; font-size:.95rem; color:var(--navy);}
+  .lo ul{margin:0 0 0 18px;} .lo li{margin-bottom:5px; font-size:.92rem;}
+  .vid{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:14px 0; background:#0E1428;}
+  .vid-poster{position:relative; height:170px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1B2545,#0E1428);}
+  .vid-badge{position:absolute; top:10px; left:12px; font-family:'IBM Plex Mono',monospace; font-size:.6rem; letter-spacing:.07em; color:#A9B8F5; background:rgba(0,0,0,.4); padding:3px 9px; border-radius:20px;}
+  .vid-ecg{position:absolute; opacity:.5;}
+  .vid-ecg polyline{stroke-dasharray:300; stroke-dashoffset:300; animation:ecg 2.6s linear infinite;}
+  @keyframes ecg{to{stroke-dashoffset:0;}}
+  @media (prefers-reduced-motion:reduce){ .vid-ecg polyline{animation:none; stroke-dashoffset:0;} }
+  .vid-play{position:relative; z-index:1; width:58px; height:58px; border-radius:50%; background:#3B5BD6; color:#fff; border:none; display:flex; align-items:center; justify-content:center; font-size:1.3rem; cursor:pointer;}
+  .vid-play:hover{background:#2E49B5;}
+  .vid-play:focus-visible{outline:3px solid #F3B861; outline-offset:3px;}
+  .vid-body{padding:12px 16px;}
+  .vid-body h3{color:#EAF0FF !important; font-size:.98rem; margin:0 0 4px;}
+  .vid-body p{color:#C7D0F0 !important; font-size:.86rem; margin:0 0 8px;}
+  .vid-body details{background:#121a35; border-color:#2A3566;}
+  .vid-body summary{color:#A9B8F5; font-weight:600;}
+  .vid-body details p{color:#C7D0F0 !important;}
+
+  /* ── Mobile responsive ─────────────────────── */
+  @media (max-width:600px){
+    main{padding:20px 14px 132px;}
+    .card{padding:20px 16px;}
+    h2{font-size:1.28rem;}
+    .head-row h1{font-size:.9rem;}
+    .rail-labels{font-size:.5rem; letter-spacing:.02em;}
+    .sim{padding:12px;}
+    .sim-stage{height:240px;}
+    .sim-btn{flex:1 1 auto; justify-content:center; text-align:center;}
+    .sim-slider{flex:1 1 100%;}
+    .btn{padding:11px 16px;}
+    .nav-inner{gap:8px;}
+    .stepcount{font-size:.7rem;}
+    .anchor{font-size:.9rem;}
+  }
+
+  /* Footer nav */
+  nav.foot{position:fixed; bottom:0; left:0; right:0; background:var(--paper); border-top:1px solid var(--line); padding:12px 20px; z-index:50;}
+  .nav-inner{max-width:820px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  .btn{font:inherit; font-weight:600; border-radius:8px; padding:11px 22px; cursor:pointer; border:1.5px solid var(--navy); min-height:44px;}
+  .btn:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .btn.primary{background:var(--navy); color:#fff;}
+  .btn.primary:hover{background:var(--blue); border-color:var(--blue);}
+  .btn.ghost{background:#fff; color:var(--navy);}
+  .btn.ghost:hover{background:var(--mist);}
+  .btn[disabled]{opacity:.35; cursor:not-allowed;}
+  .stepcount{font-size:.8rem; color:#66707F;}
+
+  .big-level{font-size:2.2rem; color:var(--navy); margin:6px 0;}
+  .score-line{font-size:1.05rem; margin-bottom:10px;}
+  .gold{color:#9A5B00; font-weight:700;}
+  .disclosure{font-size:.72rem; color:#66707F; margin-top:28px; border-top:1px solid var(--line); padding-top:12px; line-height:1.5;}
+
+  /* Methodology / skills credit */
+  .methods{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; text-align:left;}
+  @media (max-width:600px){ .methods{grid-template-columns:1fr;} }
+  .method{border:1px solid var(--line); border-radius:10px; padding:14px 16px; background:var(--mist);}
+  .method .mk{font-family:'IBM Plex Mono',monospace; font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--blue); font-weight:700; margin-bottom:4px;}
+  .method h4{margin:0 0 6px; font-size:.95rem; color:var(--navy); font-family:'Fraunces',Georgia,serif;}
+  .method p{font-size:.82rem; margin:0; color:var(--ink);}
+  .method .tags{margin-top:8px;}
+</style>
+<style>/* OI token remap — applied after local tokens */
+:root{
+  --navy:var(--oi-primary-deep); --blue:var(--oi-primary); --ink:var(--oi-ink);
+  --mist:var(--oi-surface2); --paper:var(--oi-surface); --gold:var(--oi-accent);
+  --ok:var(--oi-berry); --no:var(--oi-muted); --line:var(--oi-line);
+}
+</style>
+<script src="../shared/i18n.js" defer></script>
+</head>
+<body>
+<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px">Skip to content</a>
+<header class="oi-site-header">
+  <div class="oi-brand">
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-brand-name">Ana Eslava-Graterol</a>
+    <span class="oi-brand-role" data-i18n="brand-role">LXD · Compliance · MedTech</span>
+  </div>
+  <div class="oi-ctrl-row">
+    <a href="https://profeanaeslavaedtech.github.io/bootcampLearningArchitech/" class="oi-ctrl-btn oi-back-btn" data-i18n="nav-back">Bootcamp</a>
+    <button id="oi-theme-btn" class="oi-ctrl-btn" aria-label="Theme">Light</button>
+  </div>
+</header>
+
+<header class="game">
+  <div class="head-row">
+    <h1 class="display" data-i18n="game-h1">4D Simulator · Zero-Error Suturing</h1>
+    <div class="xp" aria-live="polite">XP <span id="xp">0</span></div>
+  </div>
+  <div class="rail" aria-hidden="true">
+    <div class="seg" data-r="0"></div><div class="seg" data-r="1"></div><div class="seg" data-r="2"></div>
+    <div class="seg" data-r="3"></div><div class="seg" data-r="4"></div><div class="seg" data-r="5"></div>
+  </div>
+  <div class="rail-labels" id="railLabels">
+    <span data-i18n="ph-0">Brief</span><span data-i18n="ph-1">Analyse</span><span data-i18n="ph-2">Objectives</span>
+    <span data-i18n="ph-3">Simulate</span><span data-i18n="ph-4">Assess</span><span data-i18n="ph-5">Package</span>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- STEP 0 · Welcome / the problem -->
+  <section class="step active" data-step="0">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s0-eye">Design case · ADDIE · ISO 13485 context</div>
+      <h2 class="display" data-i18n="s0-h">Rehearse the hands before they touch the device.</h2>
+
+      <div class="vid">
+        <div class="vid-poster">
+          <span class="vid-badge" data-i18n="vid-badge">Intro · 90s · awareness · [storyboard placeholder]</span>
+          <svg class="vid-ecg" width="220" height="64" viewBox="0 0 220 64" aria-hidden="true"><polyline points="0,32 60,32 78,10 96,54 112,32 220,32" fill="none" stroke="#F3B861" stroke-width="3"/></svg>
+          <button class="vid-play" id="vidPlay"><span aria-hidden="true">▶</span><span class="sr-only" data-i18n="vid-play">Play the awareness intro and open its transcript</span></button>
+        </div>
+        <div class="vid-body">
+          <h3 data-i18n="vid-title">Why this stitch matters — a life depends on it</h3>
+          <p data-i18n="vid-sub">A 90-second opener: the cuff you sew holds a patient's heart valve. Compliance here is not paperwork — it is someone's life. (Awareness video to be produced; storyboard &amp; transcript below.)</p>
+          <details id="vidTs">
+            <summary data-i18n="vid-ts-label">Transcript &amp; storyboard · captions + audio description in production</summary>
+            <p data-i18n="vid-ts">[0–15s] A person at home, living their day — then a heart-valve graphic beats in rhythm. VO: "Somewhere, someone's heart depends on a valve." [15–45s] Cut to the sewing bench: a gloved hand places a stitch on the cuff. VO: "That valve is held by the cuff you sew — stitch by stitch." [45–75s] A skipped hole highlights amber. VO: "One skipped stitch can fail where it matters most. That is why the standard exists — not for the audit, for the patient." [75–90s] The simulator appears. VO: "So we rehearse here, where a mistake costs nothing — and never reaches them."</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="lo">
+        <h3 data-i18n="lo-h">Learning objectives — by the end of this unit you will be able to…</h3>
+        <ul>
+          <li data-i18n="lo-1">Complete a full cuff suturing in the simulator with <b>zero sequence errors</b> and tension within tolerance, unaided.</li>
+          <li data-i18n="lo-2">Enter the cleanroom with correct, in-order gowning for the selected class (<b>ISO 7 / ISO 8</b>).</li>
+          <li data-i18n="lo-3">Identify and name the cuff, stent and suture line on an exploded view.</li>
+          <li data-i18n="lo-4">Explain why a suturing defect is a <b>patient-safety</b> event under the device's quality system.</li>
+        </ul>
+      </div>
+
+      <p data-i18n="s0-p1">A MedTech sewing station attaches a fabric <b>sewing cuff</b> to the stent of a <b>Class III implantable heart valve</b> — a manual <b>suturing</b> operation where a mis-placed stitch, uneven tension or a skipped hole becomes a scrapped unit or, worse, a patient-safety field complaint. New operators learn on real material, so every error destroys a controlled component and their first weeks carry the highest defect rate.</p>
+      <p data-i18n="s0-p2">This case designs a <b>4D simulator</b>: a digital twin of the piece the operator can <b>rotate, pull apart, handle and suture — in time — before cutting a single real thread</b>. Learning by doing, with zero scrap while learning.</p>
+      <div class="anchor" data-i18n="s0-reg"><b>Regulatory frame — worst-case by design:</b> the part is treated as a <b>Class III implantable prosthesis (FDA)</b> — a heart-valve sewing cuff, life-sustaining, PMA pathway — so a suturing defect is a <b>patient-safety</b> event, not merely scrap. Work runs under an <b>ISO 13485</b> QMS with <b>21 CFR 820 (QMSR)</b> and <b>EU MDR</b> controls, inside a <b>cleanroom (ISO 14644)</b> under <b>GMP / GxP</b>, and every unit carries a <b>Device History Record (DHR)</b>. This maximises the zero-error bar and brings cleanroom readiness into scope.<br><span class="pill crit">Class III</span><span class="pill std">PMA</span><span class="pill std">ISO 13485</span><span class="pill std">21 CFR 820 · QMSR</span><span class="pill std">EU MDR</span><span class="pill std">ISO 14644</span><span class="pill std">GMP / GxP</span><span class="pill std">DHR</span> <em>[VERIFY cleanroom grade &amp; device specifics against the site's validated spec.]</em></div>
+      <div class="anchor" data-i18n="s0-anchor"><b>The senior instinct first:</b> training is only justified if the gap is a <i>skill/knowledge</i> gap. Before building anything, this project confirmed with the line that defects cluster among operators in weeks 1–6 doing correct tooling — a practice gap, not a broken fixture. If the jigs were faulty, the fix would be engineering, not a course. That judgement is deliverable&nbsp;zero.</p></div>
+      <p class="eyebrow" data-i18n="s0-nav">Use Continue to walk the seven deliverables. Toggle ES/EN and theme top-right.</p>
+    </div>
+  </section>
+
+  <!-- STEP 1 · D1 Strategy -->
+  <section class="step" data-step="1">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s1-eye">D1 · Training strategy &amp; stakeholder agreement</div>
+      <h2 class="display" data-i18n="s1-h">One page the plant manager signs.</h2>
+      <p data-i18n="s1-p1">The strategy layer names the driver, the recommended solution, the audience, the modality and — critically — the <b>success metrics stakeholders agree to before anything is built</b>.</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th data-i18n="s1-t-a">Element</th><th data-i18n="s1-t-b">This project</th></tr>
+        <tr><td data-i18n="s1-r1a">Driver</td><td data-i18n="s1-r1b">Scrap &amp; rework on a <b>Class III implantable prosthesis</b> (heart-valve sewing cuff); ISO 13485 / 21 CFR 820 (QMSR) / EU MDR training-record &amp; <b>DHR</b> expectations for a critical manual process performed in a cleanroom.</td></tr>
+        <tr><td data-i18n="s1-r2a">Recommended solution</td><td data-i18n="s1-r2b">A 4D digital-twin simulator for <b>pre-tissue rehearsal</b> + a short job aid at the bench. Not a lecture course.</td></tr>
+        <tr><td data-i18n="s1-r3a">Audience</td><td data-i18n="s1-r3b">New line operators (weeks 1–6) + cross-trained operators returning after &gt;90 days. Multilingual workforce.</td></tr>
+        <tr><td data-i18n="s1-r4a">Modality</td><td data-i18n="s1-r4b">Simulation-based CBT (self-paced) → supervised first live unit. Blended, not either/or.</td></tr>
+        <tr><td data-i18n="s1-r5a">Success metrics</td><td data-i18n="s1-r5b">(1) First-pass yield in weeks 1–6 ↑; (2) scrap units/operator while qualifying ↓; (3) time-to-first-good-unit ↓; (4) 100% zero-error mastery before live work.</td></tr>
+        <tr><td data-i18n="s1-r6a">Risk if we do nothing</td><td data-i18n="s1-r6b">Error is learned on controlled material — every trainee mistake is cost + a quality record.</td></tr>
+      </table>
+      </div>
+      <div class="anchor" data-i18n="s1-anchor"><b>Dual model — ADDIE + SAM.</b> The stable suturing SOP is built with <b>ADDIE</b> (regulated, auditable, formal sign-off, traceable objective↔source↔assessment). Evolving / new-product steps use <b>SAM</b> — rapid iterative prototyping — to keep pace without losing the audit trail. Right method per process, not one-size-fits-all.</div>
+    </div>
+  </section>
+
+  <!-- STEP 2 · D2 Job/Task analysis + DIF -->
+  <section class="step" data-step="2">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s2-eye">D2 · Job / task analysis + DIF</div>
+      <h2 class="display" data-i18n="s2-h">Decompose the hands, then decide what earns a simulation.</h2>
+      <p data-i18n="s2-p1">Break the operation into steps and, with <b>DIF</b> (Difficulty · Importance · Frequency), define the <b>KSAs</b> (knowledge, skills, attitudes) each demands; tag the safety/compliance-critical ones. High-DIF critical steps earn heavy simulation; low-DIF steps get a job aid, not a screen.</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th data-i18n="s2-t1">Step</th><th>D</th><th>I</th><th>F</th><th data-i18n="s2-t2">Treatment</th></tr>
+        <tr><td data-i18n="s2-g1">G1 · Gown &amp; aseptic cleanroom entry</td><td>M</td><td>H</td><td>H</td><td data-i18n="s2-gtr1"><span class="pill crit">Simulate ·critical</span></td></tr>
+        <tr><td data-i18n="s2-g2">G2 · Line clearance &amp; environmental check (GMP)</td><td>M</td><td>H</td><td>H</td><td data-i18n="s2-gtr2"><span class="pill crit">Simulate ·critical</span></td></tr>
+        <tr><td data-i18n="s2-s1">1 · Orient cuff seam to stent post</td><td>M</td><td>H</td><td>H</td><td data-i18n="s2-tr1"><span class="pill crit">Simulate ·critical</span></td></tr>
+        <tr><td data-i18n="s2-s2">2 · Set bite depth &amp; needle angle</td><td>H</td><td>H</td><td>H</td><td data-i18n="s2-tr2"><span class="pill crit">Simulate ·critical</span></td></tr>
+        <tr><td data-i18n="s2-s3">3 · Maintain even thread tension</td><td>H</td><td>H</td><td>H</td><td data-i18n="s2-tr3"><span class="pill crit">Simulate ·critical</span></td></tr>
+        <tr><td data-i18n="s2-s4">4 · Follow suture-hole sequence (no skips)</td><td>M</td><td>H</td><td>H</td><td data-i18n="s2-tr4"><span class="pill crit">Simulate ·critical</span></td></tr>
+        <tr><td data-i18n="s2-s5">5 · Tie &amp; seat the final knot</td><td>M</td><td>H</td><td>M</td><td data-i18n="s2-tr5"><span class="pill crit">Simulate ·critical</span></td></tr>
+        <tr><td data-i18n="s2-s6">6 · Trim thread to spec length</td><td>L</td><td>M</td><td>H</td><td data-i18n="s2-tr6"><span class="pill std">Job aid</span></td></tr>
+        <tr><td data-i18n="s2-s7">7 · Complete &amp; sign the Device History Record (DHR)</td><td>L</td><td>H</td><td>H</td><td data-i18n="s2-tr7"><span class="pill std">Job aid + SOP</span></td></tr>
+      </table>
+      </div>
+      <div class="anchor" data-i18n="s2-anchor"><b>Why this matters:</b> over-simulating step 6 (trim to length) would waste build time and bore adults. DIF keeps the simulator focused on the five steps that actually create defects.</div>
+    </div>
+  </section>
+
+  <!-- STEP 3 · D3 Objectives -->
+  <section class="step" data-step="3">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s3-eye">D3 · Learning objectives map</div>
+      <h2 class="display" data-i18n="s3-h">Observable, criterion-referenced, traceable.</h2>
+      <p data-i18n="s3-p1">Every objective is Mager-style (<b>condition · behaviour · criterion</b>), written at Bloom's <b>Apply / execute</b> level, and maps to a task from D2 and the assessment item that proves it. This table is the traceability backbone the auditor asks for.</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th data-i18n="s3-t1">Terminal / enabling objective</th><th data-i18n="s3-t2">Task</th><th>Bloom</th><th data-i18n="s3-t3">Measured by</th></tr>
+        <tr><td data-i18n="s3-o1"><b>Terminal:</b> In the simulator, complete a full cuff suturing with zero sequence errors and tension within tolerance, unaided.</td><td>1–5</td><td data-i18n="s3-b1">Apply</td><td data-i18n="s3-m1">Zero-error mastery run</td></tr>
+        <tr><td data-i18n="s3-o2">Identify the cuff, stent and suture line on an exploded view, naming each part.</td><td>—</td><td data-i18n="s3-b2">Understand</td><td data-i18n="s3-m2">Label-the-part check</td></tr>
+        <tr><td data-i18n="s3-o3">Given a stitch, set needle angle &amp; bite depth within spec.</td><td>2</td><td data-i18n="s3-b3">Apply</td><td data-i18n="s3-m3">Simulator tolerance score</td></tr>
+        <tr><td data-i18n="s3-o4">Maintain even tension across ≥ 12 consecutive stitches.</td><td>3</td><td data-i18n="s3-b4">Apply</td><td data-i18n="s3-m4">Tension-variance gate</td></tr>
+        <tr><td data-i18n="s3-o5">Execute the suture-hole sequence with no skipped or doubled holes.</td><td>4</td><td data-i18n="s3-b5">Apply</td><td data-i18n="s3-m5">Sequence check (zero-error)</td></tr>
+        <tr><td data-i18n="s3-o6">Enter the cleanroom with correct gowning/aseptic technique and confirm line clearance before any suturing.</td><td>G1–G2</td><td data-i18n="s3-b6">Apply</td><td data-i18n="s3-m6">Cleanroom-readiness gate</td></tr>
+      </table>
+      </div>
+      <div class="anchor" data-i18n="s3-anchor"><b>Not an objective:</b> "Understand the suturing SOP." <b>An objective:</b> "Given the simulator, complete the hole sequence with zero skips." Only the second can be observed, scored, and signed off.</div>
+    </div>
+  </section>
+
+  <!-- STEP 4 · The 4D flow + interactive simulator -->
+  <section class="step" data-step="4">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s4-eye">The signature · 4D learning-by-doing flow</div>
+      <h2 class="display" data-i18n="s4-h">Disassemble → Understand → Handle → Suture (in time).</h2>
+      <p data-i18n="s4-p1">The "4D" is 3D geometry <b>plus time</b>: you don't just see the piece — you <b>do</b> the procedure, and the instruction for each step appears as you move the simulator.</p>
+
+      <h3 data-i18n="s4-simh">The 4D simulator</h3>
+      <p class="eyebrow" data-i18n="s4-simnote">A lightweight stand-in for the Storyline/WebGL build — same interaction logic, zero real material.</p>
+
+      <div class="sim-tabs" role="tablist">
+        <button class="sim-tab" id="simTab1" role="tab" aria-selected="true" data-i18n="sim-tab1">Simulator</button>
+        <button class="sim-tab" id="simTab2" role="tab" aria-selected="false" data-i18n="sim-tab2">Step-by-step instructions</button>
+      </div>
+
+      <div id="panelSim">
+      <div class="sim" role="group" aria-label="4D suturing simulator demo">
+        <div class="sim-stage">
+          <div class="sim-piece" id="simPiece">
+            <div class="layer layer-cuff" id="layerCuff"><span class="sim-label" data-i18n="sim-cuff">Fabric cuff</span></div>
+            <div class="layer layer-stent" id="layerStent"><span class="sim-label" data-i18n="sim-stent">Stent ring</span></div>
+            <div class="layer layer-core" id="layerCore"><span class="sim-label" data-i18n="sim-core">Core / lumen</span></div>
+            <svg class="thread" id="simThread" viewBox="0 0 220 220" preserveAspectRatio="none" aria-hidden="true"><polyline id="threadLine" points=""></polyline></svg>
+            <!-- suture dots injected by JS into #simPiece -->
+          </div>
+        </div>
+
+        <div class="needle-tray">
+          <div class="needle" id="needle" aria-hidden="true" title="Needle / Aguja">
+            <svg width="62" height="20" viewBox="0 0 62 20"><circle cx="9" cy="10" r="3.5" fill="none" stroke="#C9D2F5" stroke-width="2"></circle><line x1="9" y1="10" x2="53" y2="10" stroke="#C9D2F5" stroke-width="3"></line><polygon points="53,5 62,10 53,15" fill="#C9D2F5"></polygon><path d="M9 10 q-7 4 -3 9" stroke="#F3B861" stroke-width="2" fill="none"></path></svg>
+          </div>
+          <span class="needle-hint" id="needleHint" data-i18n="sim-needlehint">Drag the needle to the highlighted point to place each stitch.</span>
+        </div>
+
+        <div class="sim-controls">
+          <button class="sim-btn" id="btnRotate" aria-pressed="false" data-i18n="sim-rotate">⟳ Auto-rotate</button>
+          <button class="sim-btn" id="btnExplode" aria-pressed="false" data-i18n="sim-explode">⤢ Explode parts</button>
+          <div class="sim-slider">
+            <label for="rotRange" class="sim-label" style="position:static;transform:none;display:block;margin-bottom:2px;" data-i18n="sim-angle">Rotate (angle)</label>
+            <input type="range" id="rotRange" min="0" max="360" value="20" aria-label="Rotation angle in degrees">
+          </div>
+        </div>
+
+        <div class="sim-controls" style="margin-top:8px;">
+          <button class="sim-btn" id="btnZoomOut" data-i18n="sim-zoomout">– Zoom</button>
+          <button class="sim-btn" id="btnZoomIn" data-i18n="sim-zoomin">+ Zoom</button>
+          <button class="sim-btn" id="btnEnlarge" data-i18n="sim-enlarge">⛶ Enlarge</button>
+        </div>
+
+        <div class="sim-controls" style="margin-top:12px;">
+          <button class="sim-btn" id="btnStitchKey" data-i18n="sim-stitchkey">✚ Suture highlighted point (accessible)</button>
+          <button class="sim-btn" id="btnReset" data-i18n="sim-reset">⟲ Reset run</button>
+        </div>
+
+        <div class="sim-status" id="simStatus" aria-live="polite" data-i18n="sim-status0">Explode to disassemble, rotate to inspect, then <b>drag the needle</b> to the highlighted point to suture.</div>
+        <div class="sim-metric" id="simMetric">stitch 0 / 12 · skips blocked: <span class="ok">0</span></div>
+
+        <div class="rec" role="group" aria-label="Touchscreen recording audit log">
+          <div class="rec-head">
+            <span class="rec-title"><span class="rec-dot" aria-hidden="true"></span><span data-i18n="rec-title">REC · touchscreen telemetry (xAPI)</span></span>
+            <span class="rec-sum" id="recSum" aria-live="polite">0 events</span>
+          </div>
+          <ul class="rec-log" id="recLog" aria-label="Recorded interaction events"></ul>
+          <div class="rec-actions">
+            <button class="sim-btn" id="recExport" data-i18n="rec-export">⭳ Export xAPI (JSON)</button>
+            <button class="sim-btn" id="recCopy" data-i18n="rec-copy">⧉ Copy</button>
+            <button class="sim-btn" id="recClear" data-i18n="rec-clear">⌫ Clear</button>
+          </div>
+        </div>
+        <p class="rec-note" data-i18n="rec-note">Every tap, drag and gesture is captured with its <code>pointerType</code> (touch / mouse / pen), timestamp and coordinates — an auditable training record and a UX-usability signal. On a phone you'll see <code>touch</code>.</p>
+      </div>
+      </div><!-- /panelSim -->
+
+      <div id="panelInstr" hidden>
+        <ul class="instr" id="instrList">
+          <li class="ins" id="ins1" data-i18n="sim-ins1">Explode and name the parts (cuff, stent, core).</li>
+          <li class="ins" id="ins2" data-i18n="sim-ins2">Rotate to inspect every suture point.</li>
+          <li class="ins" id="ins3" data-i18n="sim-ins3">Drag the needle to the highlighted point, in order.</li>
+          <li class="ins" id="ins4" data-i18n="sim-ins4">Complete the pass with no skips (mastery).</li>
+        </ul>
+        <p class="eyebrow" data-i18n="sim-instr-note">The active step highlights as you manipulate the simulator.</p>
+      </div>
+
+      <h3 data-i18n="br-h">Cleanroom readiness — a complementary branch (ISO 7 / ISO 8)</h3>
+      <p class="eyebrow" data-i18n="br-sub">Two instructional designs that scaffold: ISO 8 is the baseline readiness; ISO 7 builds on it for the critical zone. Pick a class to run its gowning gate.</p>
+      <div class="branch" role="group" aria-label="Cleanroom readiness branch">
+        <div class="branch-tabs" role="tablist">
+          <button class="branch-tab" id="tabIso8" role="tab" aria-selected="true" data-i18n="br-iso8">ISO 8 · baseline<small>Onboarding readiness · ≈ Grade D</small></button>
+          <button class="branch-tab" id="tabIso7" role="tab" aria-selected="false" data-i18n="br-iso7">ISO 7 · advanced<small>Critical-zone readiness · ≈ Grade C</small></button>
+        </div>
+        <div class="branch-params" id="brParams"></div>
+        <ul class="gown" id="brGown"></ul>
+        <div class="sim-controls" style="margin-top:4px;">
+          <button class="sim-btn" id="brNext" data-i18n="br-next">▸ Don next item</button>
+          <button class="sim-btn" id="brWrong" data-i18n="br-wrong">↷ Try wrong order</button>
+          <button class="sim-btn" id="brReset" data-i18n="br-reset">⟲ Reset gowning</button>
+        </div>
+        <div class="sim-status" id="brStatus" aria-live="polite" data-i18n="br-status0">Pick a class, then don each item in order. The gate opens only on a complete, correctly-ordered gowning run.</div>
+        <div class="branch-complement" data-i18n="br-comp"><b>How they complement:</b> ISO 8 is the foundational design every operator takes first; ISO 7 reuses it and adds critical-zone discipline (more PPE, stricter order, laminar flow). Master the baseline, then step up — the same learner, two linked designs, one audit trail.</div>
+      </div>
+
+      <div class="anchor" data-i18n="s4-anchor"><b>Pedagogy:</b> this is andragogy in action — relevance (the real part), autonomy (self-paced handling), immediate consequence (a skip is blocked, not punished with red). Errors are surfaced as <i>"needs review"</i> amber, never red — lowering the affective filter so adults keep practising.</div>
+    </div>
+  </section>
+
+  <!-- STEP 5 · D4/D5 Storyboard + Articulate -->
+  <section class="step" data-step="5">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s5-eye">D4 + D5 · Storyboard &amp; Articulate build spec</div>
+      <h2 class="display" data-i18n="s5-h">From interaction logic to triggers &amp; states.</h2>
+      <p data-i18n="s5-p1">The storyboard is the build-ready blueprint: on-screen + narration + developer notes (layers, states, triggers, variables, branching, accessibility, EN/ES). A sample frame for the core suturing interaction:</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th data-i18n="s5-t1">On screen</th><th data-i18n="s5-t2">Developer notes (Storyline)</th></tr>
+        <tr><td data-i18n="s5-r1a">Exploded twin; learner drags each part to its labelled slot.</td><td data-i18n="s5-r1b"><code>States</code> normal/hover/correct on each drop target; <code>var</code> <code>partsPlaced</code> (0–3); branch to stage 2 only when =3.</td></tr>
+        <tr><td data-i18n="s5-r2a">Suture point highlighted gold; learner sets angle slider, confirms.</td><td data-i18n="s5-r2b"><code>var angleOK</code> (bool) from slider range; <code>trigger</code>: if in-tolerance → +score, next point; else show amber "needs review" layer.</td></tr>
+        <tr><td data-i18n="s5-r3a">Learner attempts next hole out of order.</td><td data-i18n="s5-r3b"><b>Zero-error branch:</b> <code>trigger</code> blocks advance, replays the correct next hole; <code>var skipBlocked++</code> logged, not scored against mastery.</td></tr>
+        <tr><td data-i18n="s5-r4a">End-of-run summary.</td><td data-i18n="s5-r4b"><code>var tensionVar</code>, <code>seqErrors</code>; mastery = seqErrors=0 AND tensionVar≤tol. Result drives completion.</td></tr>
+      </table>
+      </div>
+      <div class="anchor" data-i18n="s5-anchor"><b>Tool choice:</b> <b>Storyline 360</b> (not Rise) — the free-form drag/rotate, slider tolerances, variables and zero-error branching need slide-level logic Rise's block model can't express. Rise would host the surrounding lesson; Storyline hosts the simulator. WebGL/3D is the production target; Storyline is the pilot that proves the interaction.</div>
+    </div>
+  </section>
+
+  <!-- STEP 6 · D6 Assessment + Kirkpatrick -->
+  <section class="step" data-step="6">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s6-eye">D6 · Assessment &amp; Kirkpatrick plan</div>
+      <h2 class="display" data-i18n="s6-h">The Kirkpatrick × zero-error model.</h2>
+      <p data-i18n="s6-p1">Safety/compliance-critical steps get a <b>zero-error gate</b>: the learner cannot be marked complete until a full run has <b>no sequence errors and tension within tolerance</b>. Applied to exactly the critical steps — not sprinkled everywhere (over-gating frustrates and teaches nothing).</p>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>Level</th><th data-i18n="s6-t1">What we measure</th><th data-i18n="s6-t2">Instrument</th></tr>
+        <tr><td><b>L1</b></td><td data-i18n="s6-r1a">Reaction — clarity &amp; psychological safety (blame-free practice).</td><td data-i18n="s6-r1b">2-item confidence + usability prompt in-course</td></tr>
+        <tr><td><b>L2</b></td><td data-i18n="s6-r2a">Learning — total mastery: suture to spec, unaided.</td><td data-i18n="s6-r2b">Zero-error mastery run (gated) + label-the-part check</td></tr>
+        <tr><td><b>L3</b></td><td data-i18n="s6-r3a">Behaviour — supervised performance on real units.</td><td data-i18n="s6-r3b">Supervisor sign-off on first 5 live units; xAPI from the bench</td></tr>
+        <tr><td><b>L4</b></td><td data-i18n="s6-r4a">Results — absence of incidents &amp; audit findings; yield.</td><td data-i18n="s6-r4b">First-pass yield, scrap/operator &amp; deviations vs. baseline</td></tr>
+      </table>
+      </div>
+      <div class="anchor" data-i18n="s6-anchor"><b>The honest line:</b> the simulator proves L1–L2; L3–L4 need the plant's quality data, so the design <i>hooks</i> them (xAPI, a defined baseline) rather than claiming them. For a <b>Class III</b> device the L2 zero-error gate is the prerequisite to <b>DHR sign-off</b> — no mastery, no live unit. Leading indicators — <b>time-to-competency</b> and <b>retraining rate</b> — are tracked against quality-system deviations.</div>
+    </div>
+  </section>
+
+  <!-- STEP 7 · D7 Packaging -->
+  <section class="step" data-step="7">
+    <div class="card">
+      <div class="eyebrow" data-i18n="s7-eye">D7 · SCORM / cmi5 / xAPI packaging</div>
+      <h2 class="display" data-i18n="s7-h">What the LMS records, and why cmi5.</h2>
+      <p data-i18n="s7-p1">For a controlled training record, completion and success are separated and the mastery logic reaches the LMS cleanly:</p>
+      <ul>
+        <li data-i18n="s7-l1"><b>completion</b> = all four stages visited; <b>success</b> = zero-error mastery run passed. Two different flags — an operator can finish the lesson without yet passing the gate.</li>
+        <li data-i18n="s7-l2"><b>cmi5 (xAPI)</b> over SCORM 1.2: each statement is <code>actor · verb · object · result</code> (e.g. <code>passed</code> the gate), streamed to an <b>LRS</b> and reportable through an enterprise LMS such as <b>Cornerstone</b> — and it lets us add <b>on-the-job (L3)</b> statements from the bench to the same LRS.</li>
+        <li data-i18n="s7-l3"><b>Reported to LMS/LRS:</b> mastery pass, sequence-error count, tension variance, attempts-to-mastery, time-in-sim. These become the training record <i>and</i> the early-warning signal for a struggling operator.</li>
+      </ul>
+      <div class="anchor" data-i18n="s7-anchor"><b>Traceability closes here:</b> every screen → an objective (D3) → a task (D2) → an assessment item (D6) → an LMS/LRS record (D7). No orphans. That chain is what makes the course auditable under ISO 13485 / 21 CFR 820.</div>
+      <div class="quiz" data-xp="30">
+        <p class="qq" data-i18n="s7-q">Checkpoint: why separate <b>completion</b> from <b>success</b> in this package?</p>
+        <button class="opt" data-ok="0" data-i18n="s7-q-a">Because SCORM requires both fields to be identical.</button>
+        <button class="opt" data-ok="1" data-i18n="s7-q-b">So an operator can finish the lesson but still be blocked from live work until the zero-error gate is passed.</button>
+        <button class="opt" data-ok="0" data-i18n="s7-q-c">To make the course shorter.</button>
+        <p class="fb" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 8 · Completion -->
+  <section class="step" data-step="8">
+    <div class="card" style="text-align:center;">
+      <div class="eyebrow" data-i18n="s8-eye">Design case complete</div>
+      <h2 class="display" data-i18n="s8-h">Error rehearsed out, not scrapped in.</h2>
+      <p class="score-line" data-i18n="s8-score">Your XP: <span class="gold" id="finalXP">0</span> of 80</p>
+      <div class="big-level display" id="finalLevel">—</div>
+      <p id="finalMsg"></p>
+      <h3 style="text-align:left;" data-i18n="meth-h">Built with two engines</h3>
+      <div class="methods">
+        <div class="method">
+          <div class="mk" data-i18n="meth-id-k">Instructional design</div>
+          <h4 data-i18n="meth-id-h">Technical &amp; Compliance Training Architect</h4>
+          <p data-i18n="meth-id-p">The learning spine: ADDIE, job/task analysis with DIF, Mager + Bloom objectives, Kirkpatrick L1–L4 and the zero-error mastery gate — the method that decides <em>what</em> is taught, how it is proven, and how it stays auditable.</p>
+          <div class="tags">
+            <span class="pill std">ADDIE</span><span class="pill std">SAM</span><span class="pill std">DIF</span><span class="pill std">Mager · Bloom</span><span class="pill std">Kirkpatrick</span><span class="pill crit" data-i18n="meth-id-zero">zero-error</span><span class="pill std">ISO 13485</span><span class="pill std">21 CFR 820</span><span class="pill std">EU MDR</span><span class="pill crit">Class III</span>
+          </div>
+        </div>
+        <div class="method">
+          <div class="mk" data-i18n="meth-ux-k">UXEdTech</div>
+          <h4 data-i18n="meth-ux-h">CUXedTech · UX Quality Framework</h4>
+          <p data-i18n="meth-ux-p">The craft layer: UX Writing (<b>clear · consistent · useful</b>), error feedback as amber <i>“needs review”</i> not red, WCAG POUR accessibility, responsive design and multilingual UX — the method that decides <em>how</em> the interface reads, feels and includes.</p>
+          <div class="tags">
+            <span class="pill std" data-i18n="meth-ux-t1">UX Writing</span><span class="pill std" data-i18n="meth-ux-t2">WCAG POUR</span><span class="pill std" data-i18n="meth-ux-t3">responsive</span><span class="pill std" data-i18n="meth-ux-t4">multilingual</span>
+          </div>
+        </div>
+      </div>
+      <div class="anchor" style="text-align:left;" data-i18n="meth-bridge"><b>Where they meet — this build:</b> the touchscreen recorder turns UX usability signals into an xAPI-style, exportable audit trail (D6/D7). The same capture that proves <i>mastery</i> for the instructional designer also exposes <i>friction</i> for the UX designer. One interaction, two kinds of evidence.</div>
+
+      <div class="anchor" style="text-align:left;" data-i18n="s8-anchor"><b>What this proves (portfolio):</b> a full D1–D7 compliance-training design — performance-first analysis, DIF-driven scope, criterion objectives, a signature simulation-based learning-by-doing method, zero-error mastery, and an auditable SCORM/cmi5 trace — for a regulated MedTech manufacturing process. The teaching move: <i>move the error into a simulator where it costs nothing, so it never reaches the material.</i></div>
+      <p class="disclosure" data-i18n="s8-disc">Portfolio / interview design case. The part is framed as a Class III implantable prosthesis (heart-valve sewing cuff) under ISO 13485 / 21 CFR 820 (QMSR) / EU MDR, cleanroom (ISO 14644) and GMP/GxP; standards are named, not quoted — verify device class, cleanroom grade and tolerances against the site's validated documentation ([VERIFY]). Step names, DIF ratings and defect figures are illustrative placeholders. · Interactive demo built with HTML/CSS/JS as a stand-in for the Storyline/WebGL production target. · AI-assisted instructional design under human governance, authored and verified by Ana Eslava-Graterol.</p>
+    </div>
+  </section>
+
+</main>
+
+<nav class="foot">
+  <div class="nav-inner">
+    <button class="btn ghost" id="back" disabled data-i18n="nav-prev">Back</button>
+    <span class="stepcount" id="count">Step 1 of 9</span>
+    <button class="btn primary" id="next">Begin</button>
+  </div>
+</nav>
+
+<script>
+window.PAGE_I18N = {
+  en: {
+    'brand-role':'LXD · Compliance · MedTech', 'nav-back':'Bootcamp',
+    'game-h1':'4D Simulator · Zero-Error Suturing',
+    'ph-0':'Brief','ph-1':'Analyse','ph-2':'Objectives','ph-3':'Simulate','ph-4':'Assess','ph-5':'Package',
+    'nav-prev':'Back','nav-begin':'Begin','nav-cont':'Continue','nav-restart':'Restart',
+
+    's0-eye':'Design case · ADDIE · ISO 13485 context',
+    's0-h':'Rehearse the hands before they touch the device.',
+    'vid-badge':'Intro · 90s · awareness · [storyboard placeholder]',
+    'vid-play':'Play the awareness intro and open its transcript',
+    'vid-title':'Why this stitch matters — a life depends on it',
+    'vid-sub':'A 90-second opener: the cuff you sew holds a patient’s heart valve. Compliance here is not paperwork — it is someone’s life. (Awareness video to be produced; storyboard &amp; transcript below.)',
+    'vid-ts-label':'Transcript &amp; storyboard · captions + audio description in production',
+    'vid-ts':'[0–15s] A person at home, living their day — then a heart-valve graphic beats in rhythm. VO: “Somewhere, someone’s heart depends on a valve.” [15–45s] Cut to the sewing bench: a gloved hand places a stitch on the cuff. VO: “That valve is held by the cuff you sew — stitch by stitch.” [45–75s] A skipped hole highlights amber. VO: “One skipped stitch can fail where it matters most. That is why the standard exists — not for the audit, for the patient.” [75–90s] The simulator appears. VO: “So we rehearse here, where a mistake costs nothing — and never reaches them.”',
+    'lo-h':'Learning objectives — by the end of this unit you will be able to…',
+    'lo-1':'Complete a full cuff suturing in the simulator with <b>zero sequence errors</b> and tension within tolerance, unaided.',
+    'lo-2':'Enter the cleanroom with correct, in-order gowning for the selected class (<b>ISO 7 / ISO 8</b>).',
+    'lo-3':'Identify and name the cuff, stent and suture line on an exploded view.',
+    'lo-4':'Explain why a suturing defect is a <b>patient-safety</b> event under the device’s quality system.',
+    's0-p1':'A MedTech sewing station attaches a fabric <b>sewing cuff</b> to the stent of a <b>Class III implantable heart valve</b> — a manual <b>suturing</b> operation where a mis-placed stitch, uneven tension or a skipped hole becomes a scrapped unit or, worse, a patient-safety field complaint. New operators learn on real material, so every error destroys a controlled component and their first weeks carry the highest defect rate.',
+    's0-reg':'<b>Regulatory frame — worst-case by design:</b> the part is treated as a <b>Class III implantable prosthesis (FDA)</b> — a heart-valve sewing cuff, life-sustaining, PMA pathway — so a suturing defect is a <b>patient-safety</b> event, not merely scrap. Work runs under an <b>ISO 13485</b> QMS with <b>21 CFR 820 (QMSR)</b> and <b>EU MDR</b> controls, inside a <b>cleanroom (ISO 14644)</b> under <b>GMP / GxP</b>, and every unit carries a <b>Device History Record (DHR)</b>. This maximises the zero-error bar and brings cleanroom readiness into scope.<br><span class="pill crit">Class III</span><span class="pill std">PMA</span><span class="pill std">ISO 13485</span><span class="pill std">21 CFR 820 · QMSR</span><span class="pill std">EU MDR</span><span class="pill std">ISO 14644</span><span class="pill std">GMP / GxP</span><span class="pill std">DHR</span> <em>[VERIFY cleanroom grade &amp; device specifics against the site’s validated spec.]</em>',
+    's0-p2':'This case designs a <b>4D simulator</b>: a digital twin of the piece the operator can <b>rotate, pull apart, handle and suture — in time — before cutting a single real thread</b>. Learning by doing, with zero scrap while learning.',
+    's0-anchor':'<b>The senior instinct first:</b> training is only justified if the gap is a <i>skill/knowledge</i> gap. Before building anything, this project confirmed with the line that defects cluster among operators in weeks 1–6 using correct tooling — a practice gap, not a broken fixture. If the jigs were faulty, the fix would be engineering, not a course. That judgement is deliverable&nbsp;zero.',
+    's0-nav':'Use Continue to walk the seven deliverables. Toggle ES/EN and theme top-right.',
+
+    's1-eye':'D1 · Training strategy & stakeholder agreement',
+    's1-h':'One page the plant manager signs.',
+    's1-p1':'The strategy layer names the driver, the recommended solution, the audience, the modality and — critically — the <b>success metrics stakeholders agree to before anything is built</b>.',
+    's1-t-a':'Element','s1-t-b':'This project',
+    's1-r1a':'Driver','s1-r1b':'Scrap & rework on a <b>Class III implantable prosthesis</b> (heart-valve sewing cuff); ISO 13485 / 21 CFR 820 (QMSR) / EU MDR training-record & <b>DHR</b> expectations for a critical manual process performed in a cleanroom.',
+    's1-r2a':'Recommended solution','s1-r2b':'A 4D digital-twin simulator for <b>pre-tissue rehearsal</b> + a short job aid at the bench. Not a lecture course.',
+    's1-r3a':'Audience','s1-r3b':'New line operators (weeks 1–6) + cross-trained operators returning after &gt;90 days. Multilingual workforce.',
+    's1-r4a':'Modality','s1-r4b':'Simulation-based CBT (self-paced) → supervised first live unit. Blended, not either/or.',
+    's1-r5a':'Success metrics','s1-r5b':'(1) First-pass yield in weeks 1–6 ↑; (2) scrap units/operator while qualifying ↓; (3) time-to-first-good-unit ↓; (4) 100% zero-error mastery before live work.',
+    's1-r6a':'Risk if we do nothing','s1-r6b':'Error is learned on controlled material — every trainee mistake is cost + a quality record.',
+    's1-anchor':'<b>Dual model — ADDIE + SAM.</b> The stable suturing SOP is built with <b>ADDIE</b> (regulated, auditable, formal sign-off, traceable objective↔source↔assessment). Evolving / new-product steps use <b>SAM</b> — rapid iterative prototyping — to keep pace without losing the audit trail. Right method per process, not one-size-fits-all.',
+
+    's2-eye':'D2 · Job / task analysis + DIF',
+    's2-h':'Decompose the hands, then decide what earns a simulation.',
+    's2-p1':'Break the operation into steps and, with <b>DIF</b> (Difficulty · Importance · Frequency), define the <b>KSAs</b> (knowledge, skills, attitudes) each demands; tag the safety/compliance-critical ones. High-DIF critical steps earn heavy simulation; low-DIF steps get a job aid, not a screen.',
+    's2-t1':'Step','s2-t2':'Treatment',
+    's2-g1':'G1 · Gown & aseptic cleanroom entry','s2-gtr1':'<span class="pill crit">Simulate ·critical</span>',
+    's2-g2':'G2 · Line clearance & environmental check (GMP)','s2-gtr2':'<span class="pill crit">Simulate ·critical</span>',
+    's2-s1':'1 · Orient cuff seam to stent post','s2-tr1':'<span class="pill crit">Simulate ·critical</span>',
+    's2-s2':'2 · Set bite depth & needle angle','s2-tr2':'<span class="pill crit">Simulate ·critical</span>',
+    's2-s3':'3 · Maintain even thread tension','s2-tr3':'<span class="pill crit">Simulate ·critical</span>',
+    's2-s4':'4 · Follow suture-hole sequence (no skips)','s2-tr4':'<span class="pill crit">Simulate ·critical</span>',
+    's2-s5':'5 · Tie & seat the final knot','s2-tr5':'<span class="pill crit">Simulate ·critical</span>',
+    's2-s6':'6 · Trim thread to spec length','s2-tr6':'<span class="pill std">Job aid</span>',
+    's2-s7':'7 · Complete & sign the Device History Record (DHR)','s2-tr7':'<span class="pill std">Job aid + SOP</span>',
+    's2-anchor':'<b>Why this matters:</b> over-simulating step 6 (trim to length) would waste build time and bore adults. DIF keeps the simulator focused on the five steps that actually create defects.',
+
+    's3-eye':'D3 · Learning objectives map',
+    's3-h':'Observable, criterion-referenced, traceable.',
+    's3-p1':'Every objective is Mager-style (<b>condition · behaviour · criterion</b>), written at Bloom’s <b>Apply / execute</b> level, and maps to a task from D2 and the assessment item that proves it. This table is the traceability backbone the auditor asks for.',
+    's3-t1':'Terminal / enabling objective','s3-t2':'Task','s3-t3':'Measured by',
+    's3-o1':'<b>Terminal:</b> In the simulator, complete a full cuff suturing with zero sequence errors and tension within tolerance, unaided.',
+    's3-b1':'Apply','s3-m1':'Zero-error mastery run',
+    's3-o2':'Identify the cuff, stent and suture line on an exploded view, naming each part.','s3-b2':'Understand','s3-m2':'Label-the-part check',
+    's3-o3':'Given a stitch, set needle angle & bite depth within spec.','s3-b3':'Apply','s3-m3':'Simulator tolerance score',
+    's3-o4':'Maintain even tension across ≥ 12 consecutive stitches.','s3-b4':'Apply','s3-m4':'Tension-variance gate',
+    's3-o5':'Execute the suture-hole sequence with no skipped or doubled holes.','s3-b5':'Apply','s3-m5':'Sequence check (zero-error)',
+    's3-o6':'Enter the cleanroom with correct gowning/aseptic technique and confirm line clearance before any suturing.','s3-b6':'Apply','s3-m6':'Cleanroom-readiness gate',
+    's3-anchor':'<b>Not an objective:</b> “Understand the suturing SOP.” <b>An objective:</b> “Given the simulator, complete the hole sequence with zero skips.” Only the second can be observed, scored, and signed off.',
+
+    's4-eye':'The signature · 4D learning-by-doing flow',
+    's4-h':'Disassemble → Understand → Handle → Suture (in time).',
+    's4-p1':'The “4D” is 3D geometry <b>plus time</b>: you don’t just see the piece — you <b>do</b> the procedure, and the instruction for each step appears as you move the simulator.',
+    'sim-tab1':'Simulator','sim-tab2':'Step-by-step instructions',
+    'sim-ins1':'Explode and name the parts (cuff, stent, core).',
+    'sim-ins2':'Rotate to inspect every suture point.',
+    'sim-ins3':'Drag the needle to the highlighted point, in order.',
+    'sim-ins4':'Complete the pass with no skips (mastery).',
+    'sim-instr-note':'The active step highlights as you manipulate the simulator.',
+    'sim-zoomout':'– Zoom','sim-zoomin':'+ Zoom','sim-enlarge':'⛶ Enlarge',
+    's4-l1':'<b>Disassemble</b> — explode the digital twin into cuff / stent / core and name each part.',
+    's4-l2':'<b>Understand</b> — rotate it to see the seam and every suture hole from any angle.',
+    's4-l3':'<b>Handle</b> — reseat the parts; feel the orientation that must match the real jig.',
+    's4-l4':'<b>Suture in time</b> — advance the procedure hole by hole; the sim coaches angle, tension and sequence, and <b>blocks</b> a skipped hole.',
+    's4-simh':'The 4D simulator',
+    's4-simnote':'A lightweight stand-in for the Storyline/WebGL build — same interaction logic, zero real material.',
+    'sim-cuff':'Fabric cuff','sim-stent':'Stent ring','sim-core':'Core / lumen',
+    'sim-rotate':'⟳ Auto-rotate','sim-explode':'⤢ Explode parts','sim-angle':'Rotate (angle)',
+    'sim-reset':'⟲ Reset run',
+    'sim-stitchkey':'✚ Suture highlighted point (accessible)',
+    'sim-needlehint':'Drag the needle to the highlighted point to place each stitch.',
+    'sim-status0':'Explode to disassemble, rotate to inspect, then <b>drag the needle</b> to the highlighted point to suture.',
+    'br-h':'Cleanroom readiness — a complementary branch (ISO 7 / ISO 8)',
+    'br-sub':'Two instructional designs that scaffold: ISO 8 is the baseline readiness; ISO 7 builds on it for the critical zone. Pick a class to run its gowning gate.',
+    'br-iso8':'ISO 8 · baseline<small>Onboarding readiness · ≈ Grade D</small>',
+    'br-iso7':'ISO 7 · advanced<small>Critical-zone readiness · ≈ Grade C</small>',
+    'br-next':'▸ Don next item','br-wrong':'↷ Try wrong order','br-reset':'⟲ Reset gowning',
+    'br-status0':'Pick a class, then don each item in order. The gate opens only on a complete, correctly-ordered gowning run.',
+    'br-comp':'<b>How they complement:</b> ISO 8 is the foundational design every operator takes first; ISO 7 reuses it and adds critical-zone discipline (more PPE, stricter order, laminar flow). Master the baseline, then step up — the same learner, two linked designs, one audit trail.',
+    's4-anchor':'<b>Pedagogy:</b> this is andragogy in action — relevance (the real part), autonomy (self-paced handling), immediate consequence (a skip is blocked, not punished with red). Errors are surfaced as <i>“needs review”</i> amber, never red — lowering the affective filter so adults keep practising.',
+
+    's5-eye':'D4 + D5 · Storyboard & Articulate build spec',
+    's5-h':'From interaction logic to triggers & states.',
+    's5-p1':'The storyboard is the build-ready blueprint: on-screen + narration + developer notes (layers, states, triggers, variables, branching, accessibility, EN/ES). A sample frame for the core suturing interaction:',
+    's5-t1':'On screen','s5-t2':'Developer notes (Storyline)',
+    's5-r1a':'Exploded twin; learner drags each part to its labelled slot.','s5-r1b':'<code>States</code> normal/hover/correct on each drop target; <code>var</code> <code>partsPlaced</code> (0–3); branch to stage 2 only when =3.',
+    's5-r2a':'Suture point highlighted gold; learner sets angle slider, confirms.','s5-r2b':'<code>var angleOK</code> (bool) from slider range; <code>trigger</code>: if in-tolerance → +score, next point; else show amber “needs review” layer.',
+    's5-r3a':'Learner attempts next hole out of order.','s5-r3b':'<b>Zero-error branch:</b> <code>trigger</code> blocks advance, replays the correct next hole; <code>var skipBlocked++</code> logged, not scored against mastery.',
+    's5-r4a':'End-of-run summary.','s5-r4b':'<code>var tensionVar</code>, <code>seqErrors</code>; mastery = seqErrors=0 AND tensionVar≤tol. Result drives completion.',
+    's5-anchor':'<b>Tool choice:</b> <b>Storyline 360</b> (not Rise) — the free-form drag/rotate, slider tolerances, variables and zero-error branching need slide-level logic Rise’s block model can’t express. Rise would host the surrounding lesson; Storyline hosts the simulator. WebGL/3D is the production target; Storyline is the pilot that proves the interaction.',
+
+    's6-eye':'D6 · Assessment & Kirkpatrick plan',
+    's6-h':'The Kirkpatrick × zero-error model.',
+    's6-p1':'Safety/compliance-critical steps get a <b>zero-error gate</b>: the learner cannot be marked complete until a full run has <b>no sequence errors and tension within tolerance</b>. Applied to exactly the critical steps — not sprinkled everywhere (over-gating frustrates and teaches nothing).',
+    's6-t1':'What we measure','s6-t2':'Instrument',
+    's6-r1a':'Reaction — clarity & psychological safety (blame-free practice).','s6-r1b':'2-item confidence + usability prompt in-course',
+    's6-r2a':'Learning — total mastery: suture to spec, unaided.','s6-r2b':'Zero-error mastery run (gated) + label-the-part check',
+    's6-r3a':'Behaviour — supervised performance on real units.','s6-r3b':'Supervisor sign-off on first 5 live units; xAPI from the bench',
+    's6-r4a':'Results — absence of incidents & audit findings; yield.','s6-r4b':'First-pass yield, scrap/operator & deviations vs. baseline',
+    's6-anchor':'<b>The honest line:</b> the simulator proves L1–L2; L3–L4 need the plant’s quality data, so the design <i>hooks</i> them (xAPI, a defined baseline) rather than claiming them. For a <b>Class III</b> device the L2 zero-error gate is the prerequisite to <b>DHR sign-off</b> — no mastery, no live unit. Leading indicators — <b>time-to-competency</b> and <b>retraining rate</b> — are tracked against quality-system deviations.',
+
+    's7-eye':'D7 · SCORM / cmi5 / xAPI packaging',
+    's7-h':'What the LMS records, and why cmi5.',
+    's7-p1':'For a controlled training record, completion and success are separated and the mastery logic reaches the LMS cleanly:',
+    's7-l1':'<b>completion</b> = all four stages visited; <b>success</b> = zero-error mastery run passed. Two different flags — an operator can finish the lesson without yet passing the gate.',
+    's7-l2':'<b>cmi5 (xAPI)</b> over SCORM 1.2: each statement is <code>actor · verb · object · result</code> (e.g. <code>passed</code> the gate), streamed to an <b>LRS</b> and reportable through an enterprise LMS such as <b>Cornerstone</b> — and it lets us add <b>on-the-job (L3)</b> statements from the bench to the same LRS.',
+    's7-l3':'<b>Reported to LMS/LRS:</b> mastery pass, sequence-error count, tension variance, attempts-to-mastery, time-in-sim. These become the training record <i>and</i> the early-warning signal for a struggling operator.',
+    's7-anchor':'<b>Traceability closes here:</b> every screen → an objective (D3) → a task (D2) → an assessment item (D6) → an LMS/LRS record (D7). No orphans. That chain is what makes the course auditable under ISO 13485 / 21 CFR 820.',
+    's7-q':'Checkpoint: why separate <b>completion</b> from <b>success</b> in this package?',
+    's7-q-a':'Because SCORM requires both fields to be identical.',
+    's7-q-b':'So an operator can finish the lesson but still be blocked from live work until the zero-error gate is passed.',
+    's7-q-c':'To make the course shorter.',
+
+    's8-eye':'Design case complete',
+    's8-h':'Error rehearsed out, not scrapped in.',
+    's8-score':'Your XP: <span class="gold" id="finalXP">0</span> of 80',
+    's8-anchor':'<b>What this proves (portfolio):</b> a full D1–D7 compliance-training design — performance-first analysis, DIF-driven scope, criterion objectives, a signature simulation-based learning-by-doing method, zero-error mastery, and an auditable SCORM/cmi5 trace — for a regulated MedTech manufacturing process. The teaching move: <i>move the error into a simulator where it costs nothing, so it never reaches the material.</i>',
+    's8-disc':'Portfolio / interview design case. The part is framed as a Class III implantable prosthesis (heart-valve sewing cuff) under ISO 13485 / 21 CFR 820 (QMSR) / EU MDR, cleanroom (ISO 14644) and GMP/GxP; standards are named, not quoted — verify device class, cleanroom grade and tolerances against the site’s validated documentation ([VERIFY]). Step names, DIF ratings and defect figures are illustrative placeholders. · Interactive demo built with HTML/CSS/JS as a stand-in for the Storyline/WebGL production target. · AI-assisted instructional design under human governance, authored and verified by Ana Eslava-Graterol.',
+    'rec-title':'REC · touchscreen telemetry (xAPI)',
+    'rec-export':'⭳ Export cmi5/xAPI',
+    'rec-copy':'⧉ Copy',
+    'rec-clear':'⌫ Clear',
+    'rec-note':'Every tap, drag and gesture is captured as an <b>ADL xAPI</b> statement (<code>actor · verb · object · result</code>) with <code>pointerType</code>, timestamp and coordinates — the UI itself is traceable. Export is <b>cmi5-conformant</b> (Cornerstone-ready) and includes a <b>drop-off</b> summary (furthest step, time per step) for SAM iteration. Auditable training record and UX signal in one.',
+    'meth-h':'Built with two engines',
+    'meth-id-k':'Instructional design',
+    'meth-id-h':'Technical & Compliance Training Architect',
+    'meth-id-p':'The learning spine: ADDIE, job/task analysis with DIF, Mager + Bloom objectives, Kirkpatrick L1–L4 and the zero-error mastery gate — the method that decides <em>what</em> is taught, how it is proven, and how it stays auditable.',
+    'meth-id-zero':'zero-error',
+    'meth-ux-k':'UXEdTech',
+    'meth-ux-h':'CUXedTech · UX Quality Framework',
+    'meth-ux-p':'The craft layer: UX Writing (<b>clear · consistent · useful</b>), error feedback as amber <i>“needs review”</i> not red, <b>WCAG 2.2 AA</b> (POUR) accessibility, responsive design and multilingual UX — the method that decides <em>how</em> the interface reads, feels and includes.',
+    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG 2.2 AA','meth-ux-t3':'responsive','meth-ux-t4':'multilingual',
+    'meth-bridge':'<b>Where they meet — this build:</b> the touchscreen recorder turns UX usability signals into an xAPI-style, exportable audit trail (D6/D7). The same capture that proves <i>mastery</i> for the instructional designer also exposes <i>friction</i> for the UX designer. One interaction, two kinds of evidence.'
+  },
+  es: {
+    'brand-role':'LXD · Compliance · MedTech', 'nav-back':'Bootcamp',
+    'game-h1':'Simulador 4D · Surcido Cero-Error',
+    'ph-0':'Brief','ph-1':'Analizar','ph-2':'Objetivos','ph-3':'Simular','ph-4':'Evaluar','ph-5':'Empaquetar',
+    'nav-prev':'Atrás','nav-begin':'Empezar','nav-cont':'Continuar','nav-restart':'Reiniciar',
+
+    's0-eye':'Caso de diseño · ADDIE · contexto ISO 13485',
+    's0-h':'Ensaya las manos antes de que toquen el dispositivo.',
+    'vid-badge':'Intro · 90s · concienciación · [storyboard placeholder]',
+    'vid-play':'Reproducir la intro de concienciación y abrir su transcripción',
+    'vid-title':'Por qué importa esta puntada — una vida depende de ella',
+    'vid-sub':'Apertura de 90 segundos: el manguito que coses sostiene la válvula cardíaca de un paciente. El cumplimiento aquí no es papeleo — es la vida de alguien. (Vídeo de concienciación por producir; storyboard y transcripción abajo.)',
+    'vid-ts-label':'Transcripción y storyboard · subtítulos + audiodescripción en producción',
+    'vid-ts':'[0–15s] Una persona en casa, viviendo su día — luego un gráfico de válvula cardíaca late al ritmo. VO: «En algún lugar, el corazón de alguien depende de una válvula.» [15–45s] Corte al puesto de costura: una mano con guante coloca una puntada en el manguito. VO: «Esa válvula la sostiene el manguito que coses — puntada a puntada.» [45–75s] Un orificio saltado se resalta en ámbar. VO: «Una puntada saltada puede fallar donde más importa. Por eso existe la norma — no para la auditoría, para el paciente.» [75–90s] Aparece el simulador. VO: «Así que ensayamos aquí, donde un error no cuesta nada — y nunca les llega.»',
+    'lo-h':'Objetivos de aprendizaje — al terminar esta unidad serás capaz de…',
+    'lo-1':'Completar un surcido de manguito completo en el simulador con <b>cero errores de secuencia</b> y tensión dentro de tolerancia, sin ayuda.',
+    'lo-2':'Entrar a la sala blanca con el vestido correcto y en orden para la clase elegida (<b>ISO 7 / ISO 8</b>).',
+    'lo-3':'Identificar y nombrar el manguito, el stent y la línea de surcido en una vista explosionada.',
+    'lo-4':'Explicar por qué un defecto de surcido es un evento de <b>seguridad del paciente</b> bajo el sistema de calidad del dispositivo.',
+    's0-p1':'Una estación de costura MedTech une un <b>sewing cuff</b> de tejido al stent de una <b>válvula cardíaca implantable Clase III</b> — una operación manual de <b>surcido</b> donde una puntada mal colocada, tensión despareja o un orificio saltado se convierte en una pieza desechada o, peor, en una reclamación de campo de seguridad del paciente. Los operarios nuevos aprenden sobre material real, así que cada error destruye un componente controlado y sus primeras semanas acumulan la tasa de defecto más alta.',
+    's0-reg':'<b>Marco normativo — el peor caso por diseño:</b> la pieza se trata como <b>prótesis implantable Clase III (FDA)</b> — un sewing cuff de válvula cardíaca, life-sustaining, vía PMA — así que un defecto de surcido es un evento de <b>seguridad del paciente</b>, no mero desecho. El trabajo corre bajo un QMS <b>ISO 13485</b> con controles <b>21 CFR 820 (QMSR)</b> y <b>EU MDR</b>, dentro de una <b>sala blanca (ISO 14644)</b> bajo <b>GMP / GxP</b>, y cada unidad lleva su <b>Device History Record (DHR)</b>. Esto maximiza el listón cero-error y añade la preparación de sala blanca al alcance.<br><span class="pill crit">Clase III</span><span class="pill std">PMA</span><span class="pill std">ISO 13485</span><span class="pill std">21 CFR 820 · QMSR</span><span class="pill std">EU MDR</span><span class="pill std">ISO 14644</span><span class="pill std">GMP / GxP</span><span class="pill std">DHR</span> <em>[VERIFICAR la clase de sala blanca y los detalles del dispositivo contra la especificación validada del sitio.]</em>',
+    's0-p2':'Este caso diseña un <b>simulador 4D</b>: un gemelo digital de la pieza que el operario puede <b>rotar, desmontar, manipular y surcir — en el tiempo — antes de cortar un solo hilo real</b>. Aprender haciendo, con cero desperdicio mientras se aprende.',
+    's0-anchor':'<b>Primero el instinto senior:</b> la formación solo se justifica si la brecha es de <i>habilidad/conocimiento</i>. Antes de construir nada, este proyecto confirmó con la línea que los defectos se concentran en operarios de las semanas 1–6 usando el utillaje correcto — una brecha de práctica, no una sujeción rota. Si los jigs fallaran, el arreglo sería de ingeniería, no un curso. Ese juicio es el entregable&nbsp;cero.',
+    's0-nav':'Usa Continuar para recorrer los siete entregables. Cambia ES/EN y tema arriba a la derecha.',
+
+    's1-eye':'D1 · Estrategia de formación y acuerdo con stakeholders',
+    's1-h':'Una página que firma el jefe de planta.',
+    's1-p1':'La capa estratégica nombra el motivo, la solución recomendada, la audiencia, la modalidad y — crucial — las <b>métricas de éxito que los stakeholders acuerdan antes de construir nada</b>.',
+    's1-t-a':'Elemento','s1-t-b':'Este proyecto',
+    's1-r1a':'Motivo','s1-r1b':'Desperdicio y retrabajo en una <b>prótesis implantable Clase III</b> (sewing cuff de válvula cardíaca); exigencias de registro de formación y <b>DHR</b> (ISO 13485 / 21 CFR 820 · QMSR / EU MDR) para un proceso manual crítico realizado en sala blanca.',
+    's1-r2a':'Solución recomendada','s1-r2b':'Un simulador de gemelo digital 4D para <b>ensayo previo al tejido</b> + una ayuda de trabajo corta en el puesto. No un curso magistral.',
+    's1-r3a':'Audiencia','s1-r3b':'Operarios nuevos de línea (semanas 1–6) + operarios polivalentes que regresan tras &gt;90 días. Plantilla multilingüe.',
+    's1-r4a':'Modalidad','s1-r4b':'CBT basado en simulación (autoritmo) → primera unidad real supervisada. Blended, no una u otra.',
+    's1-r5a':'Métricas de éxito','s1-r5b':'(1) Rendimiento a la primera en semanas 1–6 ↑; (2) piezas desechadas/operario durante la cualificación ↓; (3) tiempo-a-primera-pieza-buena ↓; (4) 100% de maestría cero-error antes del trabajo real.',
+    's1-r6a':'Riesgo si no hacemos nada','s1-r6b':'El error se aprende sobre material controlado — cada fallo del aprendiz es coste + un registro de calidad.',
+    's1-anchor':'<b>Modelo dual — ADDIE + SAM.</b> El SOP de surcido estable se construye con <b>ADDIE</b> (regulado, auditable, firma formal, traza objetivo↔fuente↔evaluación). Los pasos en evolución / de nuevo producto usan <b>SAM</b> — prototipado rápido e iterativo — para ir al ritmo sin perder la traza de auditoría. El método correcto por proceso, no café para todos.',
+
+    's2-eye':'D2 · Análisis de puesto / tarea + DIF',
+    's2-h':'Descompón las manos, luego decide qué merece simulación.',
+    's2-p1':'Parte la operación en pasos y, con <b>DIF</b> (Dificultad · Importancia · Frecuencia), define los <b>KSA</b> (conocimientos, habilidades, actitudes) que exige cada uno; etiqueta los críticos de seguridad/compliance. Los pasos críticos de DIF alto merecen simulación intensa; los de DIF bajo, una ayuda de trabajo, no una pantalla.',
+    's2-t1':'Paso','s2-t2':'Tratamiento',
+    's2-g1':'G1 · Vestido y entrada aséptica a sala blanca','s2-gtr1':'<span class="pill crit">Simular ·crítico</span>',
+    's2-g2':'G2 · Despeje de línea y control ambiental (GMP)','s2-gtr2':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s1':'1 · Orientar la costura del manguito al poste del stent','s2-tr1':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s2':'2 · Fijar profundidad de puntada y ángulo de aguja','s2-tr2':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s3':'3 · Mantener tensión de hilo pareja','s2-tr3':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s4':'4 · Seguir la secuencia de orificios (sin saltos)','s2-tr4':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s5':'5 · Anudar y asentar el nudo final','s2-tr5':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s6':'6 · Recortar hilo a la longitud de especificación','s2-tr6':'<span class="pill std">Ayuda de trabajo</span>',
+    's2-s7':'7 · Completar y firmar el Device History Record (DHR)','s2-tr7':'<span class="pill std">Ayuda + SOP</span>',
+    's2-anchor':'<b>Por qué importa:</b> sobre-simular el paso 6 (recorte) malgastaría tiempo de construcción y aburriría a adultos. El DIF mantiene el simulador centrado en los cinco pasos que realmente generan defectos.',
+
+    's3-eye':'D3 · Mapa de objetivos de aprendizaje',
+    's3-h':'Observables, con criterio, trazables.',
+    's3-p1':'Cada objetivo es estilo Mager (<b>condición · conducta · criterio</b>), escrito al nivel <b>Aplicar / ejecutar</b> de Bloom, y se mapea a una tarea de D2 y al ítem de evaluación que lo prueba. Esta tabla es la columna de trazabilidad que pide el auditor.',
+    's3-t1':'Objetivo terminal / habilitante','s3-t2':'Tarea','s3-t3':'Se mide con',
+    's3-o1':'<b>Terminal:</b> En el simulador, completar un surcido de manguito completo con cero errores de secuencia y tensión dentro de tolerancia, sin ayuda.',
+    's3-b1':'Aplicar','s3-m1':'Pasada de maestría cero-error',
+    's3-o2':'Identificar el manguito, el stent y la línea de surcido en una vista explosionada, nombrando cada parte.','s3-b2':'Comprender','s3-m2':'Chequeo etiquetar-la-parte',
+    's3-o3':'Dada una puntada, fijar ángulo de aguja y profundidad dentro de especificación.','s3-b3':'Aplicar','s3-m3':'Puntuación de tolerancia del simulador',
+    's3-o4':'Mantener tensión pareja a lo largo de ≥ 12 puntadas consecutivas.','s3-b4':'Aplicar','s3-m4':'Compuerta de varianza de tensión',
+    's3-o5':'Ejecutar la secuencia de orificios sin saltos ni duplicados.','s3-b5':'Aplicar','s3-m5':'Chequeo de secuencia (cero-error)',
+    's3-o6':'Entrar a la sala blanca con vestido/técnica aséptica correctos y confirmar el despeje de línea antes de cualquier surcido.','s3-b6':'Aplicar','s3-m6':'Compuerta de preparación de sala blanca',
+    's3-anchor':'<b>No es un objetivo:</b> “Comprender el SOP de surcido.” <b>Sí es un objetivo:</b> “Dado el simulador, completar la secuencia de orificios con cero saltos.” Solo el segundo se puede observar, puntuar y firmar.',
+
+    's4-eye':'La firma · flujo 4D de aprender haciendo',
+    's4-h':'Desmontar → Comprender → Manipular → Surcir (en el tiempo).',
+    's4-p1':'La “4D” es geometría 3D <b>más tiempo</b>: no solo ves la pieza — <b>haces</b> el procedimiento, y la instrucción de cada paso aparece a medida que mueves el simulador.',
+    'sim-tab1':'Simulador','sim-tab2':'Instrucciones paso a paso',
+    'sim-ins1':'Explosionar y nombrar las partes (manguito, stent, núcleo).',
+    'sim-ins2':'Rotar para inspeccionar cada punto de sutura.',
+    'sim-ins3':'Arrastrar la aguja al punto resaltado, en orden.',
+    'sim-ins4':'Completar la pasada sin saltos (maestría).',
+    'sim-instr-note':'El paso activo se resalta a medida que manipulas el simulador.',
+    'sim-zoomout':'– Zoom','sim-zoomin':'+ Zoom','sim-enlarge':'⛶ Ampliar',
+    's4-l1':'<b>Desmontar</b> — explosiona el gemelo digital en manguito / stent / núcleo y nombra cada parte.',
+    's4-l2':'<b>Comprender</b> — rótalo para ver la costura y cada orificio desde cualquier ángulo.',
+    's4-l3':'<b>Manipular</b> — reasienta las partes; siente la orientación que debe coincidir con el jig real.',
+    's4-l4':'<b>Surcir en el tiempo</b> — avanza el procedimiento orificio a orificio; el simulador guía ángulo, tensión y secuencia, y <b>bloquea</b> un orificio saltado.',
+    's4-simh':'El simulador 4D',
+    's4-simnote':'Un sustituto ligero de la build en Storyline/WebGL — misma lógica de interacción, cero material real.',
+    'sim-cuff':'Manguito de tejido','sim-stent':'Anillo de stent','sim-core':'Núcleo / lumen',
+    'sim-rotate':'⟳ Auto-rotar','sim-explode':'⤢ Explosionar partes','sim-angle':'Rotar (ángulo)',
+    'sim-reset':'⟲ Reiniciar pasada',
+    'sim-stitchkey':'✚ Coser el punto resaltado (accesible)',
+    'sim-needlehint':'Arrastra la aguja al punto resaltado para colocar cada puntada.',
+    'sim-status0':'Explosiona para desmontar, rota para inspeccionar, y <b>arrastra la aguja</b> al punto resaltado para coser.',
+    'br-h':'Preparación de sala blanca — un branch complementario (ISO 7 / ISO 8)',
+    'br-sub':'Dos diseños instruccionales que se escalonan: ISO 8 es la preparación base; ISO 7 se construye sobre ella para la zona crítica. Elige una clase para correr su compuerta de vestido.',
+    'br-iso8':'ISO 8 · base<small>Preparación de onboarding · ≈ Grado D</small>',
+    'br-iso7':'ISO 7 · avanzado<small>Preparación de zona crítica · ≈ Grado C</small>',
+    'br-next':'▸ Poner siguiente','br-wrong':'↷ Intentar orden incorrecto','br-reset':'⟲ Reiniciar vestido',
+    'br-status0':'Elige una clase y pon cada elemento en orden. La compuerta abre solo con una secuencia de vestido completa y correcta.',
+    'br-comp':'<b>Cómo se complementan:</b> ISO 8 es el diseño base que todo operario hace primero; ISO 7 lo reutiliza y añade disciplina de zona crítica (más EPI, orden más estricto, flujo laminar). Domina la base y sube de nivel — el mismo aprendiz, dos diseños enlazados, una sola traza de auditoría.',
+    's4-anchor':'<b>Pedagogía:</b> esto es andragogía en acción — relevancia (la pieza real), autonomía (manipulación a su ritmo), consecuencia inmediata (un salto se bloquea, no se castiga en rojo). Los errores aparecen como <i>“para revisar”</i> en ámbar, nunca en rojo — bajando el filtro afectivo para que los adultos sigan practicando.',
+
+    's5-eye':'D4 + D5 · Storyboard y spec de Articulate',
+    's5-h':'De la lógica de interacción a triggers y estados.',
+    's5-p1':'El storyboard es el plano listo-para-construir: en pantalla + narración + notas de desarrollo (capas, estados, triggers, variables, ramificación, accesibilidad, EN/ES). Un frame de muestra para la interacción central de surcido:',
+    's5-t1':'En pantalla','s5-t2':'Notas de desarrollo (Storyline)',
+    's5-r1a':'Gemelo explosionado; el aprendiz arrastra cada parte a su ranura etiquetada.','s5-r1b':'<code>Estados</code> normal/hover/correcto en cada destino; <code>var</code> <code>partsPlaced</code> (0–3); ramifica a la etapa 2 solo cuando =3.',
+    's5-r2a':'Punto de surcido resaltado en oro; el aprendiz fija el deslizador de ángulo y confirma.','s5-r2b':'<code>var angleOK</code> (bool) desde el rango del deslizador; <code>trigger</code>: si en tolerancia → +puntos, siguiente punto; si no, capa ámbar “para revisar”.',
+    's5-r3a':'El aprendiz intenta el siguiente orificio fuera de orden.','s5-r3b':'<b>Rama cero-error:</b> <code>trigger</code> bloquea el avance, repite el orificio correcto; <code>var skipBlocked++</code> se registra, no penaliza la maestría.',
+    's5-r4a':'Resumen de fin de pasada.','s5-r4b':'<code>var tensionVar</code>, <code>seqErrors</code>; maestría = seqErrors=0 Y tensionVar≤tol. El resultado dispara la finalización.',
+    's5-anchor':'<b>Elección de herramienta:</b> <b>Storyline 360</b> (no Rise) — el arrastre/rotación libre, las tolerancias de deslizador, las variables y la ramificación cero-error necesitan lógica a nivel de diapositiva que el modelo de bloques de Rise no expresa. Rise alojaría la lección envolvente; Storyline aloja el simulador. WebGL/3D es el objetivo de producción; Storyline es el piloto que prueba la interacción.',
+
+    's6-eye':'D6 · Evaluación y plan Kirkpatrick',
+    's6-h':'El modelo Kirkpatrick × cero-error.',
+    's6-p1':'Los pasos críticos de seguridad/compliance tienen una <b>compuerta cero-error</b>: el aprendiz no se marca como completo hasta que una pasada completa tenga <b>cero errores de secuencia y tensión dentro de tolerancia</b>. Aplicada exactamente a los pasos críticos — no rociada por todas partes (sobre-compuertar frustra y no enseña).',
+    's6-t1':'Qué medimos','s6-t2':'Instrumento',
+    's6-r1a':'Reacción — claridad y seguridad psicológica (práctica sin culpa).','s6-r1b':'Confianza de 2 ítems + prompt de usabilidad en curso',
+    's6-r2a':'Aprendizaje — dominio total: surcir a especificación, sin ayuda.','s6-r2b':'Pasada de maestría cero-error (con compuerta) + etiquetar-la-parte',
+    's6-r3a':'Comportamiento — desempeño supervisado en unidades reales.','s6-r3b':'Firma del supervisor en las primeras 5 unidades reales; xAPI desde el puesto',
+    's6-r4a':'Resultados — ausencia de incidentes y hallazgos de auditoría; rendimiento.','s6-r4b':'Rendimiento a la primera, desperdicio/operario y desviaciones vs. línea base',
+    's6-anchor':'<b>La línea honesta:</b> el simulador prueba L1–L2; L3–L4 necesitan los datos de calidad de la planta, así que el diseño los <i>engancha</i> (xAPI, una línea base definida) en vez de afirmarlos. Para un dispositivo <b>Clase III</b> la compuerta cero-error L2 es el prerrequisito de la <b>firma del DHR</b> — sin maestría, no hay unidad real. Indicadores adelantados — <b>tiempo-a-competencia</b> y <b>tasa de reentrenamiento</b> — se vinculan a las desviaciones del sistema de calidad.',
+
+    's7-eye':'D7 · Empaquetado SCORM / cmi5 / xAPI',
+    's7-h':'Qué registra el LMS, y por qué cmi5.',
+    's7-p1':'Para un registro de formación controlado, se separan finalización y éxito y la lógica de maestría llega limpia al LMS:',
+    's7-l1':'<b>completion</b> = las cuatro etapas visitadas; <b>success</b> = pasada de maestría cero-error aprobada. Dos banderas distintas — un operario puede terminar la lección sin haber pasado aún la compuerta.',
+    's7-l2':'<b>cmi5 (xAPI)</b> sobre SCORM 1.2: cada sentencia es <code>actor · verbo · objeto · resultado</code> (p. ej. <code>passed</code> la compuerta), enviada a un <b>LRS</b> y reportable a través de un LMS corporativo como <b>Cornerstone</b> — y permite añadir sentencias de <b>puesto real (L3)</b> al mismo LRS.',
+    's7-l3':'<b>Reportado al LMS/LRS:</b> aprobado de maestría, recuento de errores de secuencia, varianza de tensión, intentos-hasta-maestría, tiempo-en-simulador. Se vuelven el registro de formación <i>y</i> la señal temprana de un operario que batalla.',
+    's7-anchor':'<b>La trazabilidad cierra aquí:</b> cada pantalla → un objetivo (D3) → una tarea (D2) → un ítem de evaluación (D6) → un registro LMS/LRS (D7). Sin huérfanos. Esa cadena es lo que hace el curso auditable bajo ISO 13485 / 21 CFR 820.',
+    's7-q':'Punto de control: ¿por qué separar <b>completion</b> de <b>success</b> en este paquete?',
+    's7-q-a':'Porque SCORM exige que ambos campos sean idénticos.',
+    's7-q-b':'Para que un operario pueda terminar la lección pero siga bloqueado del trabajo real hasta pasar la compuerta cero-error.',
+    's7-q-c':'Para hacer el curso más corto.',
+
+    's8-eye':'Caso de diseño completo',
+    's8-h':'El error se ensaya fuera, no se desecha dentro.',
+    's8-score':'Tu XP: <span class="gold" id="finalXP">0</span> de 80',
+    's8-anchor':'<b>Qué demuestra (portfolio):</b> un diseño completo D1–D7 de formación en compliance — análisis desempeño-primero, alcance guiado por DIF, objetivos con criterio, un método firma de aprender-haciendo basado en simulación, maestría cero-error y una traza SCORM/cmi5 auditable — para un proceso regulado de manufactura MedTech. La jugada pedagógica: <i>mover el error a un simulador donde no cuesta nada, para que nunca llegue al material.</i>',
+    's8-disc':'Caso de diseño de portfolio / entrevista. La pieza se enmarca como prótesis implantable Clase III (sewing cuff de válvula cardíaca) bajo ISO 13485 / 21 CFR 820 (QMSR) / EU MDR, sala blanca (ISO 14644) y GMP/GxP; las normas se nombran, no se citan — verificar clase del dispositivo, grado de sala blanca y tolerancias contra la documentación validada del sitio ([VERIFICAR]). Los nombres de pasos, las puntuaciones DIF y las cifras de defecto son marcadores ilustrativos. · Demo interactiva construida con HTML/CSS/JS como sustituto del objetivo de producción Storyline/WebGL. · Diseño instruccional asistido por IA bajo gobernanza humana, autoría y verificación de Ana Eslava-Graterol.',
+    'rec-title':'REC · telemetría táctil (xAPI)',
+    'rec-export':'⭳ Exportar cmi5/xAPI',
+    'rec-copy':'⧉ Copiar',
+    'rec-clear':'⌫ Limpiar',
+    'rec-note':'Cada toque, arrastre y gesto se captura como una sentencia <b>ADL xAPI</b> (<code>actor · verbo · objeto · resultado</code>) con <code>pointerType</code>, marca de tiempo y coordenadas — la propia UI es trazable. El export es <b>conforme a cmi5</b> (listo para Cornerstone) e incluye un resumen de <b>drop-off</b> (paso más lejano, tiempo por paso) para la iteración SAM. Registro de formación auditable y señal UX a la vez.',
+    'meth-h':'Construido con dos motores',
+    'meth-id-k':'Diseño instruccional',
+    'meth-id-h':'Technical & Compliance Training Architect',
+    'meth-id-p':'La columna de aprendizaje: ADDIE, análisis de tarea con DIF, objetivos Mager + Bloom, Kirkpatrick L1–L4 y la compuerta de maestría cero-error — el método que decide <em>qué</em> se enseña, cómo se prueba y cómo se mantiene auditable.',
+    'meth-id-zero':'cero-error',
+    'meth-ux-k':'UXEdTech',
+    'meth-ux-h':'CUXedTech · Marco de Calidad UX',
+    'meth-ux-p':'La capa de oficio: UX Writing (<b>claro · consistente · útil</b>), feedback de error en ámbar <i>“para revisar”</i> no en rojo, accesibilidad <b>WCAG 2.2 AA</b> (POUR), diseño responsive y UX multilingüe — el método que decide <em>cómo</em> se lee, se siente y se incluye en la interfaz.',
+    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG 2.2 AA','meth-ux-t3':'responsive','meth-ux-t4':'multilingüe',
+    'meth-bridge':'<b>Donde se encuentran — esta build:</b> el grabador táctil convierte señales de usabilidad UX en una traza de auditoría estilo xAPI, exportable (D6/D7). La misma captura que prueba <i>maestría</i> para la diseñadora instruccional también expone <i>fricción</i> para la diseñadora UX. Una interacción, dos tipos de evidencia.'
+  }
+};
+</script>
+
+<script>
+/* ── Step navigation + XP ─────────────────────── */
+(function(){
+  var steps = document.querySelectorAll('.step');
+  var total = steps.length;
+  var i = 0, xp = 0;
+  var xpEl = document.getElementById('xp');
+  var back = document.getElementById('back');
+  var next = document.getElementById('next');
+  var count = document.getElementById('count');
+  var segs = document.querySelectorAll('.rail .seg');
+  var labels = document.getElementById('railLabels').children;
+
+  function T(key, fb){
+    var l = localStorage.getItem('oi-lang') || 'en';
+    var t = window.PAGE_I18N && window.PAGE_I18N[l];
+    return (t && t[key] !== undefined) ? t[key] : fb;
+  }
+  function addXP(n){ xp += n; xpEl.textContent = xp; }
+  function railFor(step){ return Math.min(5, Math.floor(step * 6 / total)); }
+
+  function show(n){
+    steps[i].classList.remove('active');
+    i = n;
+    steps[i].classList.add('active');
+    window.scrollTo({top:0, behavior:'auto'});
+    back.disabled = (i === 0);
+    next.textContent = (i === 0) ? T('nav-begin','Begin') : (i === total-1 ? T('nav-restart','Restart') : T('nav-cont','Continue'));
+    count.textContent = (localStorage.getItem('oi-lang')==='es' ? 'Paso ' : 'Step ') + (i+1) + (localStorage.getItem('oi-lang')==='es' ? ' de ' : ' of ') + total;
+    var r = railFor(i);
+    segs.forEach(function(s,k){ s.classList.toggle('done', k <= r && i > 0); });
+    for (var k=0;k<labels.length;k++){ labels[k].classList.toggle('now', k===r && i>0); }
+    if (i === total-1) finish();
+  }
+  next.addEventListener('click', function(){ if (i===total-1){ location.reload(); return; } show(i+1); });
+  back.addEventListener('click', function(){ if (i>0) show(i-1); });
+
+  // keep the dynamic Next label + step counter correct after a language switch
+  // (i18n.js injects #oi-lang-btn and calls its own applyLang on click, so we
+  //  re-run show(i) via delegation to refresh JS-managed text)
+  document.addEventListener('click', function(e){
+    if (e.target && e.target.id === 'oi-lang-btn') setTimeout(function(){ show(i); }, 0);
+  });
+
+  // Quizzes
+  document.querySelectorAll('.quiz').forEach(function(q){
+    var opts = q.querySelectorAll('.opt');
+    var fb = q.querySelector('.fb');
+    var award = parseInt(q.getAttribute('data-xp'),10) || 0;
+    var done = false;
+    opts.forEach(function(o){
+      o.addEventListener('click', function(){
+        if (done) return; done = true;
+        var ok = o.getAttribute('data-ok') === '1';
+        opts.forEach(function(x){ x.disabled = true; if (x.getAttribute('data-ok')==='1') x.classList.add('right'); });
+        if (ok){ addXP(award); fb.className='fb show good'; fb.textContent = T('fb-good','Correct · +')+award+' XP'; }
+        else { o.classList.add('wrong'); fb.className='fb show bad';
+          fb.innerHTML = T('fb-bad','Not quite — the highlighted answer is the keeper.'); }
+      });
+    });
+  });
+
+  function finish(){
+    var fx = document.getElementById('finalXP'); if (fx) fx.textContent = xp;
+    var lvl, msg, es = localStorage.getItem('oi-lang')==='es';
+    var pct = xp/80;
+    if (pct >= 0.9){ lvl = es?'Maestría · listo para pilotar':'Mastery · pilot-ready'; msg = es?'Recorrido completo y checkpoint superado. Este caso está listo para presentarlo en entrevista o adaptarlo al SOP real de un cliente.':'Full walkthrough and checkpoint passed. This case is ready to present in interview or adapt to a client’s real SOP.'; }
+    else if (pct >= 0.5){ lvl = es?'Competente':'Competent'; msg = es?'Buen recorrido. Vuelve al checkpoint de D7 para fijar la lógica completion vs. success.':'Strong pass. Revisit the D7 checkpoint to lock the completion-vs-success logic.'; }
+    else { lvl = es?'En progreso':'In progress'; msg = es?'Recorre el simulador y el checkpoint para completar el caso.':'Run the simulator and the checkpoint to complete the case.'; }
+    var fl = document.getElementById('finalLevel'); if (fl) fl.textContent = lvl;
+    var fm = document.getElementById('finalMsg'); if (fm) fm.textContent = msg;
+  }
+  show(0);
+  window.__simAddXP = addXP; // let the sim award XP
+})();
+</script>
+
+<script>
+/* ── 4D simulator demo · responsive + touchscreen telemetry ─────────────── */
+(function(){
+  var piece = document.getElementById('simPiece');
+  if (!piece) return;
+  var stage = piece.parentElement;
+  var cuff = document.getElementById('layerCuff');
+  var stent = document.getElementById('layerStent');
+  var core = document.getElementById('layerCore');
+  var status = document.getElementById('simStatus');
+  var metric = document.getElementById('simMetric');
+  var rot = document.getElementById('rotRange');
+  var btnRotate = document.getElementById('btnRotate');
+  var btnExplode = document.getElementById('btnExplode');
+  var btnStitchKey = document.getElementById('btnStitchKey');
+  var btnReset = document.getElementById('btnReset');
+  var needle = document.getElementById('needle');
+  var thread = document.getElementById('simThread');
+  var threadLine = document.getElementById('threadLine');
+
+  var TOTAL = 12;
+  var angle = 20, exploded = false, autoRot = false, rotTimer = null;
+  var current = 0, skipsBlocked = 0;
+  var dots = [], R = 92;
+  var zoom = 1, enlarged = false;
+
+  function es(){ return localStorage.getItem('oi-lang')==='es'; }
+
+  /* ---- auditable touchscreen recorder (xAPI-style) ---- */
+  var recLog = document.getElementById('recLog');
+  var recSum = document.getElementById('recSum');
+  var statements = [], t0 = (performance && performance.now) ? performance.now() : Date.now();
+  var sessionStart = new Date().toISOString();
+  var taps = 0, drags = 0, lastPT = 'mouse', sawTouch = false;
+  document.addEventListener('pointerdown', function(e){ if (e.pointerType){ lastPT = e.pointerType; if (e.pointerType==='touch') sawTouch = true; } }, true);
+  function ptype(ev){
+    if (ev && ev.pointerType) return ev.pointerType;
+    if (ev && ev.type==='click' && ev.detail===0) return 'key';
+    return lastPT || 'mouse';
+  }
+  function rec(verb, object, ev, result, kind){
+    var now = (performance && performance.now) ? performance.now() : Date.now();
+    var pt = ptype(ev);
+    if (pt==='touch') sawTouch = true;
+    if (kind==='tap') taps++; else if (kind==='drag') drags++;
+    var s = {
+      seq: statements.length+1,
+      timestamp: new Date().toISOString(),
+      ms: Math.round(now - t0),
+      verb: verb, object: 'sim.' + object,
+      pointerType: pt,
+      x: ev && ev.clientX!=null ? Math.round(ev.clientX) : null,
+      y: ev && ev.clientY!=null ? Math.round(ev.clientY) : null,
+      result: result || null
+    };
+    statements.push(s);
+    if (recLog){
+      var li = document.createElement('li');
+      if (verb==='blocked') li.className = 'block';
+      var ts = s.timestamp.substr(11,12);
+      li.innerHTML = ts + ' · <span class="v">' + verb + '</span> ' + s.object + ' · <span class="pt">[' + pt + ']</span>';
+      recLog.appendChild(li);
+      while (recLog.children.length > 60) recLog.removeChild(recLog.firstChild);
+      recLog.scrollTop = recLog.scrollHeight;
+    }
+    if (recSum){
+      recSum.textContent = statements.length + (es()?' eventos · toques ':' events · taps ') + taps +
+        (es()?' · arrastres ':' · drags ') + drags + ' · touch:' + (sawTouch?(es()?'sí':'yes'):'no');
+    }
+  }
+
+  /* ---- geometry (responsive) ---- */
+  for (var d=0; d<TOTAL; d++){
+    var el = document.createElement('div');
+    el.className = 'dot';
+    piece.appendChild(el);
+    dots.push(el);
+  }
+  function placeDots(){
+    dots.forEach(function(e,k){
+      var a = (k/TOTAL) * 2*Math.PI - Math.PI/2;
+      e.style.transform = 'translate(' + (Math.cos(a)*R) + 'px,' + (Math.sin(a)*R) + 'px)';
+    });
+  }
+  function sizePiece(){
+    var w = stage.clientWidth || 300;
+    var cap = (enlarged ? 560 : 260) * zoom;
+    var size = Math.max(150, Math.min(cap, w - 24));
+    piece.style.width = size + 'px';
+    piece.style.height = size + 'px';
+    R = size * 0.42;
+    stage.style.height = Math.max(enlarged ? 420 : 240, Math.round(size + 70)) + 'px';
+    placeDots(); renderThread();
+  }
+  function applyTransform(){ piece.style.transform = 'rotateY(' + angle + 'deg) rotateX(12deg)'; }
+  function applyExplode(){
+    var z = exploded ? 1 : 0;
+    cuff.style.transform  = 'translateZ(' + (z*70) + 'px)';
+    stent.style.transform = 'translateZ(' + (z*10) + 'px)';
+    core.style.transform  = 'translateZ(' + (z*-50) + 'px)';
+  }
+  function paintDots(){
+    dots.forEach(function(e,k){
+      e.classList.toggle('done', k < current);
+      e.classList.toggle('active', k === current && current < TOTAL);
+    });
+  }
+  function setStatus(html){ status.innerHTML = html; }
+  function setMetric(){
+    metric.innerHTML = (es()?'puntada ':'stitch ') + Math.min(current,TOTAL) + ' / ' + TOTAL +
+      ' · ' + (es()?'saltos bloqueados: ':'skips blocked: ') + '<span class="ok">' + skipsBlocked + '</span>';
+    updateInstr();
+  }
+
+  /* ---- slider: live rotate, record at end of drag ---- */
+  rot.addEventListener('input', function(){ angle = +rot.value; applyTransform(); });
+  rot.addEventListener('change', function(ev){ rec('adjusted','angle', ev, {degrees:+rot.value}, 'drag'); });
+
+  /* ---- drag-to-rotate directly on the piece (touch/mouse/pen) ---- */
+  var dragging=false, startX=0, startAngle=0, moved=false;
+  stage.addEventListener('pointerdown', function(ev){
+    dragging=true; moved=false; startX=ev.clientX; startAngle=angle;
+    if (stage.setPointerCapture){ try{ stage.setPointerCapture(ev.pointerId); }catch(e){} }
+  });
+  stage.addEventListener('pointermove', function(ev){
+    if (!dragging) return;
+    var dx = ev.clientX - startX;
+    if (Math.abs(dx) > 3){ moved=true; angle = (startAngle + dx) % 360; rot.value = ((angle%360)+360)%360; applyTransform(); }
+  });
+  function endDrag(ev){
+    if (!dragging) return; dragging=false;
+    if (moved) rec('rotated','piece', ev, {degrees: Math.round(((angle%360)+360)%360)}, 'drag');
+    else rec('tapped','piece', ev, null, 'tap');
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  btnRotate.addEventListener('click', function(ev){
+    autoRot = !autoRot; btnRotate.setAttribute('aria-pressed', autoRot);
+    rec('toggled','autorotate', ev, {on:autoRot}, 'tap');
+    if (autoRot){
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+        angle = (angle+45)%360; rot.value = angle; applyTransform(); autoRot=false; btnRotate.setAttribute('aria-pressed','false'); return;
+      }
+      rotTimer = setInterval(function(){ angle=(angle+2)%360; rot.value=angle; applyTransform(); }, 40);
+    } else { clearInterval(rotTimer); }
+  });
+
+  btnExplode.addEventListener('click', function(ev){
+    exploded = !exploded; btnExplode.setAttribute('aria-pressed', exploded); applyExplode(); updateInstr();
+    rec(exploded?'disassembled':'reassembled','parts', ev, {exploded:exploded}, 'tap');
+    setStatus(exploded
+      ? (es()?'<b>Desmontado.</b> Manguito, stent y núcleo separados. Rótalo e identifica cada parte, luego reasienta y surce.':'<b>Disassembled.</b> Cuff, stent and core separated. Rotate and identify each part, then reseat and suture.')
+      : (es()?'<b>Reasentado.</b> Listo para coser — <b>arrastra la aguja</b> al punto resaltado.':'<b>Reseated.</b> Ready to suture — <b>drag the needle</b> to the highlighted point.'));
+  });
+
+  /* ---- needle: real manipulation (drag to the highlighted suture point) ---- */
+  function renderThread(){
+    if(!thread||!threadLine) return;
+    var size = parseFloat(piece.style.width) || 220;
+    thread.setAttribute('viewBox','0 0 '+size+' '+size);
+    var pts=[];
+    for(var k=0;k<current;k++){ var a=(k/TOTAL)*2*Math.PI - Math.PI/2; pts.push((size/2+Math.cos(a)*R).toFixed(1)+','+(size/2+Math.sin(a)*R).toFixed(1)); }
+    threadLine.setAttribute('points', pts.join(' '));
+  }
+  function masteryDone(ev){
+    setStatus(es()?'<b>Pasada completa.</b> Cero errores de secuencia · tensión en tolerancia → <b>maestría superada</b>. +20 XP':'<b>Run complete.</b> Zero sequence errors · tension in tolerance → <b>mastery passed</b>. +20 XP');
+    rec('passed','masteryRun', ev, {success:true, seqErrors:0, skipsBlocked:skipsBlocked});
+    if (window.__simAddXP){ window.__simAddXP(20); window.__simAddXP = null; }
+  }
+  function place(ev, kind){
+    if (current>=TOTAL) return;
+    current++; paintDots(); renderThread(); setMetric();
+    rec('progressed','stitch', ev, {stitch:current, of:TOTAL}, kind||'drag');
+    if (current>=TOTAL) masteryDone(ev);
+    else setStatus((es()?'Puntada ':'Stitch ') + current + '/' + TOTAL + (es()?' colocada. Lleva la aguja al siguiente punto resaltado.':' placed. Bring the needle to the next highlighted point.'));
+  }
+  function block(ev, idx){
+    skipsBlocked++; setMetric();
+    rec('blocked','sequence', ev, {attemptedHole: idx+1, requiredHole: current+1}, 'drag');
+    setStatus(es()
+      ? '<b style="color:#F3B861">Para revisar:</b> ese no es el orden. Lleva la aguja al orificio <b>'+(current+1)+'</b> (resaltado) — así el error nunca llega al material.'
+      : '<b style="color:#F3B861">Needs review:</b> that is out of order. Bring the needle to hole <b>'+(current+1)+'</b> (highlighted) — this is how the error never reaches the material.');
+  }
+  function nearestDot(px,py){ var best=null; dots.forEach(function(e,k){ var r=e.getBoundingClientRect(); var cx=r.left+r.width/2, cy=r.top+r.height/2; var dd=Math.hypot(px-cx,py-cy); if(!best||dd<best.dist) best={idx:k,dist:dd}; }); return best; }
+  var TOL=48, nDrag=false, nsx=0, nsy=0;
+  if (needle){
+    needle.addEventListener('pointerdown', function(ev){ ev.stopPropagation(); if(current>=TOTAL) return; nDrag=true; nsx=ev.clientX; nsy=ev.clientY; needle.classList.add('grab'); if(needle.setPointerCapture){try{needle.setPointerCapture(ev.pointerId);}catch(e){}} ev.preventDefault(); });
+    window.addEventListener('pointermove', function(ev){ if(!nDrag) return; needle.style.transform='translate('+(ev.clientX-nsx)+'px,'+(ev.clientY-nsy)+'px)'; });
+    function needleUp(ev){
+      if(!nDrag) return; nDrag=false; needle.classList.remove('grab');
+      var r=needle.getBoundingClientRect(); var nd=nearestDot(r.right-8, r.top+r.height/2);
+      if (nd && nd.dist<=TOL){ if(nd.idx===current) place(ev,'drag'); else block(ev, nd.idx); }
+      else setStatus(es()?'Lleva la aguja al <b>punto resaltado</b> (en oro).':'Bring the needle to the <b>highlighted point</b> (gold).');
+      needle.style.transform='';
+    }
+    window.addEventListener('pointerup', needleUp);
+    window.addEventListener('pointercancel', needleUp);
+  }
+  if (btnStitchKey) btnStitchKey.addEventListener('click', function(ev){ if(current>=TOTAL){ masteryDone(ev); return; } place(ev,'tap'); });
+
+  /* ---- N2: step-by-step instructions tab (synced) + just-in-time highlight ---- */
+  var simTab1=document.getElementById('simTab1'), simTab2=document.getElementById('simTab2');
+  var panelSim=document.getElementById('panelSim'), panelInstr=document.getElementById('panelInstr');
+  function showTab(which){
+    if(!panelSim||!panelInstr) return;
+    var instr = (which==='instr');
+    panelInstr.hidden=!instr; panelSim.hidden=instr;
+    if(simTab1) simTab1.setAttribute('aria-selected', !instr);
+    if(simTab2) simTab2.setAttribute('aria-selected', instr);
+    if(!instr) setTimeout(sizePiece,0);
+  }
+  if(simTab1) simTab1.addEventListener('click', function(){ showTab('sim'); });
+  if(simTab2) simTab2.addEventListener('click', function(){ showTab('instr'); });
+  function updateInstr(){
+    var ids=['ins1','ins2','ins3','ins4'];
+    var ai = (!exploded && current===0) ? 0 : (exploded && current===0 ? 1 : (current>0 && current<TOTAL ? 2 : 3));
+    ids.forEach(function(id,i){ var el=document.getElementById(id); if(!el) return;
+      var done = (i<ai) || (current>=TOTAL);
+      el.classList.toggle('done', done);
+      el.classList.toggle('active', (i===ai) && !done);
+    });
+  }
+
+  /* ---- N5: zoom + enlarge (PPE-friendly) ---- */
+  var btnZoomIn=document.getElementById('btnZoomIn'), btnZoomOut=document.getElementById('btnZoomOut'), btnEnlarge=document.getElementById('btnEnlarge');
+  var simEl = piece.closest ? piece.closest('.sim') : null;
+  if(btnZoomIn) btnZoomIn.addEventListener('click', function(ev){ zoom=Math.min(2.5, Math.round((zoom+0.25)*100)/100); sizePiece(); rec('interacted','zoomIn', ev, {zoom:zoom}, 'tap'); });
+  if(btnZoomOut) btnZoomOut.addEventListener('click', function(ev){ zoom=Math.max(1, Math.round((zoom-0.25)*100)/100); sizePiece(); rec('interacted','zoomOut', ev, {zoom:zoom}, 'tap'); });
+  function setEnlarge(on, ev){
+    enlarged=on;
+    if(simEl) simEl.classList.toggle('enlarged', on);
+    document.documentElement.classList.toggle('sim-lock', on);
+    if(btnEnlarge) btnEnlarge.textContent = on ? (es()?'⛶ Cerrar':'⛶ Close') : (es()?'⛶ Ampliar':'⛶ Enlarge');
+    rec('interacted', on?'enlarge':'restore', ev, {enlarged:on}, 'tap');
+    setTimeout(sizePiece, 30);
+  }
+  if(btnEnlarge) btnEnlarge.addEventListener('click', function(ev){ setEnlarge(!enlarged, ev); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && enlarged) setEnlarge(false, null); });
+
+  btnReset.addEventListener('click', function(ev){
+    current = 0; skipsBlocked = 0; paintDots(); renderThread(); setMetric();
+    rec('initialized','run', ev, null, 'tap');
+    setStatus(es()?'Pasada reiniciada. Arrastra la aguja al punto resaltado para coser.':'Run reset. Drag the needle to the highlighted point to suture.');
+  });
+
+  /* ---- export / copy / clear the audit trail ---- */
+  function uuid(){ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);}); }
+  function envelope(){
+    var NS='https://profeanaeslava.example/xapi/', ADL='http://adlnet.gov/expapi/verbs/', EXT=NS+'ext/';
+    // Canonical ADL verbs only — no project-invented verb IRIs. UI actions resolve to ADL 'interacted';
+    // the specific action is preserved in object.definition.name and result.extensions.action.
+    var CANON={ launched:'launched', initialized:'initialized', terminated:'terminated', suspended:'suspended',
+      progressed:'progressed', experienced:'experienced', passed:'passed', failed:'failed', completed:'completed',
+      interacted:'interacted', selected:'interacted', toggled:'interacted', disassembled:'interacted',
+      reassembled:'interacted', rotated:'interacted', tapped:'interacted', adjusted:'interacted',
+      blocked:'interacted', exported:'interacted' };
+    function canon(v){ return CANON[v] || 'interacted'; }
+    var course={id:NS+'course/simulador-4d'}, au={id:NS+'au/zero-error-suturing'};
+    var reg = window.__reg || (window.__reg = uuid());
+    var actor={ objectType:'Agent', account:{ homePage:'https://profeanaeslava.example', name:'operator-anonymous' } };
+    var j = window.__journey || { furthest:0, total:document.querySelectorAll('.step').length, enters:[] };
+    var tot=(j.total||1)-1, enters=(j.enters||[]);
+    var perStep=enters.map(function(e,k){ return { step:e.step, msSincePrev: k? e.t-enters[k-1].t : 0 }; });
+    function toXapi(s){
+      var cv = canon(s.verb);
+      var res = { response: s.result? JSON.stringify(s.result) : undefined, extensions: {} };
+      res.extensions[EXT+'action'] = s.verb;
+      res.extensions[EXT+'pointerType'] = s.pointerType;
+      res.extensions[EXT+'msOffset'] = s.ms;
+      if (s.verb==='passed') res.success = true;
+      if (s.verb==='blocked') res.success = false;
+      return {
+        id: uuid(), timestamp: s.timestamp, actor: actor,
+        verb: { id: ADL+cv, display: {'en-US': cv, 'es': cv} },
+        object: { id: NS+'activity/'+s.object, definition: { type:'http://adlnet.gov/expapi/activities/interaction', name:{'en-US': s.verb} } },
+        result: res,
+        context: { registration: reg, contextActivities: {
+          category:[{ id:'https://w3id.org/xapi/cmi5/context/categories/cmi5' }], grouping:[{ id: au.id }] } }
+      };
+    }
+    return {
+      format:'cmi5 / xAPI (ADL verbs) — Cornerstone-ready',
+      note:'Conformant statement set for an LRS (cmi5 profile). A SCORM 2004 wrapper is available for SCORM-only LMS. Demo captures client-side; production streams to the LRS.',
+      conformance:{ profile:'cmi5', verbs:'ADL canonical only (UI actions use adlnet.gov interacted; specific action in object.name + result.extensions.action)', wcag:'2.2 AA' },
+      course: course, au: au, registration: reg, actor: actor,
+      recordedFrom: sessionStart,
+      device:{ touchSeen: sawTouch, userAgent: navigator.userAgent },
+      dropOff:{ furthestStep: j.furthest, totalSteps: tot,
+        completedPct: Math.round((j.furthest/(tot||1))*100),
+        abandonedAt: (j.abandoned? j.abandoned.step : null),
+        perStep: perStep },
+      summary:{ events: statements.length, taps: taps, drags: drags, skipsBlocked: skipsBlocked },
+      statements: statements.map(toXapi)
+    };
+  }
+  var eExport=document.getElementById('recExport'), eCopy=document.getElementById('recCopy'), eClear=document.getElementById('recClear');
+  if (eExport) eExport.addEventListener('click', function(ev){
+    rec('terminated','unit', ev, {reason:'export'});
+    rec('exported','auditTrail', ev, {events:statements.length}, 'tap');
+    var blob = new Blob([JSON.stringify(envelope(), null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = 'cmi5-xapi-statements.json';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+  if (eCopy) eCopy.addEventListener('click', function(ev){
+    var txt = JSON.stringify(envelope(), null, 2);
+    var done = function(){ eCopy.textContent = es()?'✓ Copiado':'✓ Copied'; setTimeout(function(){ window.setLang && null; eCopy.textContent = es()?'⧉ Copiar':'⧉ Copy'; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, done); }
+    else { var ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} ta.remove(); done(); }
+  });
+  if (eClear) eClear.addEventListener('click', function(){
+    statements = []; taps = 0; drags = 0; sawTouch = false;
+    if (recLog) recLog.innerHTML = '';
+    if (recSum) recSum.textContent = '0' + (es()?' eventos':' events');
+  });
+
+  /* ---- init + resize ---- */
+  function refreshAll(){ sizePiece(); applyTransform(); applyExplode(); paintDots(); }
+  var rzT; window.addEventListener('resize', function(){ clearTimeout(rzT); rzT = setTimeout(refreshAll, 150); });
+  refreshAll(); setMetric();
+  if (recSum) recSum.textContent = '0' + (es()?' eventos':' events');
+  window.__simRec = rec; // share the audit recorder with the cleanroom branch
+})();
+</script>
+
+<script>
+/* ── Cleanroom readiness branch · two complementary designs (ISO 8 ↔ ISO 7) ── */
+(function(){
+  var t8=document.getElementById('tabIso8'), t7=document.getElementById('tabIso7');
+  if(!t8) return;
+  var elP=document.getElementById('brParams'), elG=document.getElementById('brGown'), elS=document.getElementById('brStatus'),
+      bN=document.getElementById('brNext'), bW=document.getElementById('brWrong'), bR=document.getElementById('brReset');
+  function es(){ return localStorage.getItem('oi-lang')==='es'; }
+  function R(verb,obj,ev,result,kind){ if(window.__simRec) window.__simRec(verb,'cleanroom.'+obj,ev,result,kind); }
+
+  var DATA = {
+    iso8:{
+      params:{en:['~ISO 8','≈ Grade D','ACH ~10–25','EM: periodic'], es:['~ISO 8','≈ Grado D','ACH ~10–25','MA: periódico']},
+      gown:{ en:['Hand hygiene','Shoe covers','Hair / beard cover','Face mask','Cleanroom gown','Gloves'],
+             es:['Higiene de manos','Cubrecalzado','Cubrecabello / barba','Mascarilla','Bata de sala','Guantes'] }
+    },
+    iso7:{
+      params:{en:['~ISO 7','≈ Grade C','ACH ~30–60','EM: frequent','Laminar flow @ critical pt'],
+              es:['~ISO 7','≈ Grado C','ACH ~30–60','MA: frecuente','Flujo laminar en pto crítico']},
+      gown:{ en:['Hand hygiene + sanitise','Boot covers','Hood + beard cover','Face mask','Full coverall','Goggles','Inner gloves','Outer gloves + sanitise'],
+             es:['Higiene + sanitizado','Cubrebotas','Capucha + cubrebarba','Mascarilla','Mono completo','Gafas','Guantes internos','Guantes externos + sanitizado'] }
+    }
+  };
+  var cls='iso8', idx=0, blocks=0;
+  function steps(){ return DATA[cls].gown[es()?'es':'en']; }
+  function render(){
+    t8.setAttribute('aria-selected', cls==='iso8'); t7.setAttribute('aria-selected', cls==='iso7');
+    var p=DATA[cls].params[es()?'es':'en'];
+    elP.innerHTML=p.map(function(x){return '<span class="pill">'+x+'</span>';}).join('');
+    var s=steps();
+    elG.innerHTML=s.map(function(label,k){
+      var st=k<idx?'done':(k===idx?'active':''); var ix=k<idx?'✓':(k+1);
+      return '<li class="'+st+'"><span class="g-ix">'+ix+'</span>'+label+'</li>';
+    }).join('');
+  }
+  function setStatus(h){ elS.innerHTML=h; }
+  function pick(c,ev){
+    cls=c; idx=0; render();
+    setStatus(es()
+      ? '<b>'+(c==='iso7'?'ISO 7 · avanzado':'ISO 8 · base')+'</b> seleccionado. Viste cada elemento en orden; la compuerta abre solo con la secuencia completa y correcta.'
+      : '<b>'+(c==='iso7'?'ISO 7 · advanced':'ISO 8 · baseline')+'</b> selected. Don each item in order; the gate opens only on a complete, correct run.');
+    R('selected', c, ev, {cls:c, steps:steps().length}, 'tap');
+  }
+  t8.addEventListener('click', function(e){ pick('iso8', e); });
+  t7.addEventListener('click', function(e){ pick('iso7', e); });
+
+  bN.addEventListener('click', function(ev){
+    var s=steps(); if(idx>=s.length) return;
+    idx++; render();
+    if(idx>=s.length){
+      setStatus(es()?'<b>Preparación completa.</b> Vestido correcto y en orden → <b>compuerta abierta</b>. Habilitado para surcir.':'<b>Readiness complete.</b> Correct, in-order gowning → <b>gate open</b>. Cleared to suture.');
+      R('passed','readinessGate', ev, {cls:cls, steps:s.length}, 'tap');
+    } else {
+      setStatus((es()?'Elemento ':'Item ')+idx+'/'+s.length+(es()?' puesto. Continúa en orden.':' donned. Continue in order.'));
+      R('progressed','gown', ev, {cls:cls, step:idx}, 'tap');
+    }
+  });
+  bW.addEventListener('click', function(ev){
+    var s=steps(); if(idx>=s.length) return; blocks++;
+    setStatus(es()
+      ? '<b style="color:#F3B861">Para revisar:</b> romper el orden rompe la asepsia. El siguiente correcto es «'+s[idx]+'». Avance <b>bloqueado</b>.'
+      : '<b style="color:#F3B861">Needs review:</b> breaking the order breaks asepsis. The correct next item is “'+s[idx]+'”. Advance <b>blocked</b>.');
+    R('blocked','gownOrder', ev, {cls:cls, atStep:idx+1}, 'tap');
+  });
+  bR.addEventListener('click', function(ev){ idx=0; render(); setStatus(es()?'Vestido reiniciado.':'Gowning reset.'); R('initialized','readiness', ev, {cls:cls}, 'tap'); });
+
+  document.addEventListener('click', function(e){ if(e.target && e.target.id==='oi-lang-btn') setTimeout(render, 0); });
+  render();
+})();
+</script>
+<script>
+/* ── Learner journey + drop-off + cmi5 lifecycle (ADL xAPI) ── */
+(function(){
+  var steps = document.querySelectorAll('.step'); if(!steps.length) return;
+  function curStep(){ var a=document.querySelector('.step.active'); return a? +(a.getAttribute('data-step')||0) : 0; }
+  window.__journey = { furthest:0, total:steps.length, enters:[], abandoned:null };
+  function enter(n){
+    window.__journey.enters.push({step:n, t:Date.now()});
+    if(n>window.__journey.furthest) window.__journey.furthest=n;
+    if(window.__simRec) window.__simRec('progressed','unit.step'+n, null, {step:n, of:steps.length-1}, null);
+  }
+  function start(){
+    if(!window.__simRec){ return setTimeout(start,120); }
+    window.__simRec('launched','unit', null, {wcag:'2.2 AA'}, null);
+    window.__simRec('initialized','unit', null, null, null);
+    enter(curStep());
+    var nx=document.getElementById('next'), bk=document.getElementById('back');
+    if(nx) nx.addEventListener('click', function(){ setTimeout(function(){ enter(curStep()); }, 30); });
+    if(bk) bk.addEventListener('click', function(){ setTimeout(function(){ enter(curStep()); }, 30); });
+    var vp=document.getElementById('vidPlay'), vt=document.getElementById('vidTs');
+    if(vp) vp.addEventListener('click', function(ev){ if(vt) vt.open=true; window.__simRec('experienced','intro.awareness', ev, {video:'awareness-90s'}, 'tap'); });
+  }
+  function leave(reason){
+    var j=window.__journey; if(j.abandoned) return;
+    if(j.furthest < j.total-1){ j.abandoned={step:j.furthest, reason:reason};
+      if(window.__simRec) window.__simRec('suspended','unit', null, {furthestStep:j.furthest, reason:reason}, null); }
+  }
+  window.addEventListener('pagehide', function(){ leave('pagehide'); });
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) leave('hidden'); });
+  start();
+})();
+</script>
+<script>
+/* ── Theme toggle (shared pattern) ─────────────────────── */
+(function(){
+  var btn=document.getElementById('oi-theme-btn');
+  if(!btn)return;
+  var root=document.documentElement;
+  var cycle=['dark','light','system'];
+  var nextLabel={dark:'Light',light:'Auto',system:'Dark'};
+  var saved=localStorage.getItem('oi-theme')||'dark';
+  function apply(t){
+    if(t==='system') root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme',t);
+    var ni=(cycle.indexOf(t)+1)%cycle.length;
+    btn.textContent=nextLabel[cycle[ni]];
+    localStorage.setItem('oi-theme',t); saved=t;
+  }
+  apply(saved);
+  btn.addEventListener('click',function(){apply(cycle[(cycle.indexOf(saved)+1)%cycle.length]);});
+})();
+</script>
+</body>
+</html>
