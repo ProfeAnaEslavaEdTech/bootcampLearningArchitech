@@ -1,0 +1,1165 @@
+{
+  "format": "cmi5 / xAPI (ADL verbs) — Cornerstone-ready",
+  "note": "Conformant statement set for an LRS (cmi5 profile). A SCORM 2004 wrapper is available for SCORM-only LMS. Demo captures client-side; production streams to the LRS.",
+  "conformance": {
+    "profile": "cmi5",
+    "verbs": "ADL canonical only (UI actions use adlnet.gov interacted; specific action in object.name + result.extensions.action)",
+    "wcag": "2.2 AA"
+  },
+  "course": {
+    "id": "https://profeanaeslava.example/xapi/course/simulador-4d"
+  },
+  "au": {
+    "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+  },
+  "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+  "actor": {
+    "objectType": "Agent",
+    "account": {
+      "homePage": "https://profeanaeslava.example",
+      "name": "operator-anonymous"
+    }
+  },
+  "recordedFrom": "2026-11-13T19:52:15.585Z",
+  "device": {
+    "touchSeen": false,
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36"
+  },
+  "dropOff": {
+    "furthestStep": 4,
+    "totalSteps": 8,
+    "completedPct": 50,
+    "abandonedAt": null,
+    "perStep": [
+      {
+        "step": 0,
+        "msSincePrev": 0
+      },
+      {
+        "step": 1,
+        "msSincePrev": 987
+      },
+      {
+        "step": 2,
+        "msSincePrev": 85
+      },
+      {
+        "step": 3,
+        "msSincePrev": 77
+      },
+      {
+        "step": 4,
+        "msSincePrev": 102
+      }
+    ]
+  },
+  "summary": {
+    "events": 22,
+    "taps": 14,
+    "drags": 0,
+    "skipsBlocked": 1
+  },
+  "statements": [
+    {
+      "id": "e5f75e34-db23-41b7-8a15-3cee6cfef49d",
+      "timestamp": "2026-11-13T19:52:15.587Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/launched",
+        "display": {
+          "en-US": "launched",
+          "es": "launched"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "launched"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"wcag\":\"2.2 AA\"}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "launched",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "6543e520-4ad7-4aaf-9764-0ee78d76bdd5",
+      "timestamp": "2026-11-13T19:52:15.587Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/initialized",
+        "display": {
+          "en-US": "initialized",
+          "es": "initialized"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "initialized"
+          }
+        }
+      },
+      "result": {
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "initialized",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ab477b26-abb8-4b9f-9baf-245d79bb726c",
+      "timestamp": "2026-11-13T19:52:15.587Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit.step0",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"step\":0,\"of\":8}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "4631dbd1-ecef-4e5a-8719-ea8b8fe9fc50",
+      "timestamp": "2026-11-13T19:52:16.493Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/experienced",
+        "display": {
+          "en-US": "experienced",
+          "es": "experienced"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.intro.awareness",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "experienced"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"video\":\"awareness-90s\"}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "experienced",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 907
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ab5e5624-e2a0-45c2-a1c8-327e9207f0e4",
+      "timestamp": "2026-11-13T19:52:16.574Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit.step1",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"step\":1,\"of\":8}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 988
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "b0554edd-f28c-4faa-a827-ede552d96960",
+      "timestamp": "2026-11-13T19:52:16.659Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit.step2",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"step\":2,\"of\":8}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1074
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "1e9a83c0-5aa1-4df0-bd6e-9541a7bb49be",
+      "timestamp": "2026-11-13T19:52:16.736Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit.step3",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"step\":3,\"of\":8}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1151
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "f378f285-5073-4a76-b7fd-ffe190cb2000",
+      "timestamp": "2026-11-13T19:52:16.838Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit.step4",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"step\":4,\"of\":8}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1252
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "5b7893a3-59d5-4ef9-a749-6e405990b5fb",
+      "timestamp": "2026-11-13T19:52:17.240Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/interacted",
+        "display": {
+          "en-US": "interacted",
+          "es": "interacted"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.parts",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "disassembled"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"exploded\":true}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "disassembled",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1655
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "e9bbef91-10f9-49cd-a33d-e0027d5babc4",
+      "timestamp": "2026-11-13T19:52:17.275Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.stitch",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"stitch\":1,\"of\":12}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1690
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "9334f200-e281-4864-a4fc-378281d4e070",
+      "timestamp": "2026-11-13T19:52:17.322Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.stitch",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"stitch\":2,\"of\":12}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1737
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "c3ba6bd1-003d-458f-bb5f-8508ff58a37d",
+      "timestamp": "2026-11-13T19:52:17.389Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.stitch",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"stitch\":3,\"of\":12}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1803
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cf6a8e39-cd09-4048-88d6-f1a021e55946",
+      "timestamp": "2026-11-13T19:52:17.441Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.stitch",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"stitch\":4,\"of\":12}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1855
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "e66193f1-e246-42e7-9a46-7840fd7444b9",
+      "timestamp": "2026-11-13T19:52:17.489Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.stitch",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"stitch\":5,\"of\":12}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1904
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "091a028d-c44a-4a4c-8d9d-ce47d19c04f4",
+      "timestamp": "2026-11-13T19:52:17.538Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.stitch",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"stitch\":6,\"of\":12}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 1953
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "433c37db-0f76-4fdc-9dfb-2ff4ce1afa60",
+      "timestamp": "2026-11-13T19:52:17.589Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/interacted",
+        "display": {
+          "en-US": "interacted",
+          "es": "interacted"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.sequence",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "blocked"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"attemptedHole\":8,\"requiredHole\":7}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "blocked",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2004
+        },
+        "success": false
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "83e7e268-bbda-4306-974e-97be5356a966",
+      "timestamp": "2026-11-13T19:52:17.622Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/interacted",
+        "display": {
+          "en-US": "interacted",
+          "es": "interacted"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.cleanroom.iso7",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "selected"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"cls\":\"iso7\",\"steps\":8}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "selected",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2036
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "88e38d89-bf54-4193-b63c-92e93c7b25a5",
+      "timestamp": "2026-11-13T19:52:17.655Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.cleanroom.gown",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"cls\":\"iso7\",\"step\":1}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2069
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "11566e78-c02a-4aee-ba0d-261d8ea334f2",
+      "timestamp": "2026-11-13T19:52:17.689Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/interacted",
+        "display": {
+          "en-US": "interacted",
+          "es": "interacted"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.cleanroom.gownOrder",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "blocked"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"cls\":\"iso7\",\"atStep\":2}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "blocked",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2104
+        },
+        "success": false
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "64726f22-fbe8-4626-8966-a5e35c98cf10",
+      "timestamp": "2026-11-13T19:52:17.722Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/progressed",
+        "display": {
+          "en-US": "progressed",
+          "es": "progressed"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.cleanroom.gown",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "progressed"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"cls\":\"iso7\",\"step\":2}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "progressed",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2136
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "14bac0a7-a6d6-46d5-9b11-2853def7dbee",
+      "timestamp": "2026-11-13T19:52:17.755Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/terminated",
+        "display": {
+          "en-US": "terminated",
+          "es": "terminated"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.unit",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "terminated"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"reason\":\"export\"}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "terminated",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2170
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "233ddf18-200a-48d6-8dc8-8b25c61a2f67",
+      "timestamp": "2026-11-13T19:52:17.756Z",
+      "actor": {
+        "objectType": "Agent",
+        "account": {
+          "homePage": "https://profeanaeslava.example",
+          "name": "operator-anonymous"
+        }
+      },
+      "verb": {
+        "id": "http://adlnet.gov/expapi/verbs/interacted",
+        "display": {
+          "en-US": "interacted",
+          "es": "interacted"
+        }
+      },
+      "object": {
+        "id": "https://profeanaeslava.example/xapi/activity/sim.auditTrail",
+        "definition": {
+          "type": "http://adlnet.gov/expapi/activities/interaction",
+          "name": {
+            "en-US": "exported"
+          }
+        }
+      },
+      "result": {
+        "response": "{\"events\":21}",
+        "extensions": {
+          "https://profeanaeslava.example/xapi/ext/action": "exported",
+          "https://profeanaeslava.example/xapi/ext/pointerType": "mouse",
+          "https://profeanaeslava.example/xapi/ext/msOffset": 2171
+        }
+      },
+      "context": {
+        "registration": "3da7849a-42fa-469b-8b4a-c1a84c290a37",
+        "contextActivities": {
+          "category": [
+            {
+              "id": "https://w3id.org/xapi/cmi5/context/categories/cmi5"
+            }
+          ],
+          "grouping": [
+            {
+              "id": "https://profeanaeslava.example/xapi/au/zero-error-suturing"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
