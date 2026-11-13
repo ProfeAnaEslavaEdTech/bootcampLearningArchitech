@@ -29,6 +29,15 @@
 - Orden correcto: llevar la aguja al punto resaltado = puntada colocada; punto equivocado = bloqueo "para revisar" (ámbar, no rojo).
 - Criterio de aceptación: arrastrar la aguja al punto activo cose ese punto y extiende el hilo; soltar en otro punto bloquea y lo indica.
 
+## N5. Zoom / ampliar la imagen (diseño para EPI)
+- Problema: si la imagen queda estática, aunque sea 4D, hay un problema de visión. Los operarios trabajan con EPI (guantes, gafas/goggles, mascarilla), lo que dificulta mucho la visión y la destreza.
+- Cambio deseado: poder abrir / agrandar la imagen del simulador (zoom in/out, desplazamiento/pan, y pantalla completa) para ver con claridad los puntos de sutura.
+- Consideraciones EPI (transversal, afecta a N3/N4):
+  - Objetivos táctiles grandes (con guantes, >44px puede no bastar; probar tamaños mayores y separación entre puntos).
+  - Gestos amplios y tolerantes (pinch-to-zoom; margen de acierto generoso al soltar la aguja).
+  - Alto contraste y tamaño de texto suficiente (gafas/mascarilla empañan la visión).
+- Criterio de aceptación: el operario puede ampliar la pieza y distinguir cada punto de sutura; el zoom y la manipulación funcionan con guantes y con gafas de seguridad.
+
 ---
 
 ## Notas de implementación (para cuando se autorice codificar)
