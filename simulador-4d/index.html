@@ -133,12 +133,32 @@
   .rec-sum{font-family:'IBM Plex Mono',monospace; font-size:.66rem; color:#8FA0D8;}
   .rec-sum b{color:#8FE0B0;}
   .rec-log{max-height:148px; overflow-y:auto; -webkit-overflow-scrolling:touch; margin:0; padding:8px 14px; list-style:none; font-family:'IBM Plex Mono',monospace; font-size:.67rem; line-height:1.75;}
-  .rec-log li{color:#C7D0F0; border-bottom:1px dashed #212a4a; padding:2px 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .rec-log li{color:#C7D0F0 !important; border-bottom:1px dashed #212a4a; padding:2px 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .rec-log li .v{color:#F3B861;}
   .rec-log li .pt{color:#8FE0B0;}
   .rec-log li.block .v{color:#F0A6A6;}
   .rec-actions{display:flex; flex-wrap:wrap; gap:8px; padding:10px 14px; border-top:1px solid #2A3566;}
   .rec-note{font-size:.72rem; color:#66707F; margin-top:8px;}
+
+  /* ── Cleanroom readiness branch (ISO 7 / ISO 8) ─────────── */
+  .branch{border:1px solid var(--line); border-radius:12px; background:#0E1428; color:#EAF0FF; padding:16px; margin:12px 0;}
+  .branch-tabs{display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap;}
+  .branch-tab{flex:1 1 150px; min-width:140px; font:inherit; font-family:'IBM Plex Mono',monospace; font-size:.74rem; font-weight:700; letter-spacing:.03em;
+    background:#1B2545; color:#EAF0FF; border:1px solid #33407A; border-radius:8px; padding:10px 12px; cursor:pointer; min-height:48px; text-align:left;}
+  .branch-tab small{display:block; font-weight:400; letter-spacing:0; color:#A9B8F5; margin-top:3px; font-size:.64rem;}
+  .branch-tab:hover{border-color:#6E7BFF;}
+  .branch-tab:focus-visible{outline:3px solid #F3B861; outline-offset:2px;}
+  .branch-tab[aria-selected="true"]{background:#3B5BD6; border-color:#3B5BD6;}
+  .branch-tab[aria-selected="true"] small{color:#D7E0FF;}
+  .branch-params{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .branch-params .pill{border-color:#33407A; color:#A9B8F5; background:#121a35;}
+  .gown{list-style:none; margin:0 0 10px; padding:0;}
+  .gown li{display:flex; align-items:center; gap:10px; padding:7px 10px; border:1px solid #2A3566; border-radius:8px; margin-bottom:6px; background:#121a35; font-size:.85rem; color:#EAF0FF !important;}
+  .gown li .g-ix{font-family:'IBM Plex Mono',monospace; font-size:.74rem; width:24px; height:24px; flex:0 0 24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; border:1px solid #33407A; color:#A9B8F5;}
+  .gown li.done{border-color:#2E7D4F;} .gown li.done .g-ix{background:#2E7D4F; border-color:#8FE0B0; color:#06210f;}
+  .gown li.active{border-color:#F3B861;} .gown li.active .g-ix{background:#F3B861; border-color:#fff; color:#3a2600;}
+  .branch-complement{border-left:4px solid #6E7BFF; background:rgba(110,123,255,.08); padding:10px 14px; border-radius:0 8px 8px 0; margin-top:12px; font-size:.84rem; color:#D7E0FF;}
+  @media (max-width:600px){ .branch-tab{flex:1 1 100%;} }
 
   /* ── Mobile responsive ─────────────────────── */
   @media (max-width:600px){
@@ -360,6 +380,24 @@
         <p class="rec-note" data-i18n="rec-note">Every tap, drag and gesture is captured with its <code>pointerType</code> (touch / mouse / pen), timestamp and coordinates — an auditable training record and a UX-usability signal. On a phone you'll see <code>touch</code>.</p>
       </div>
 
+      <h3 data-i18n="br-h">Cleanroom readiness — a complementary branch (ISO 7 / ISO 8)</h3>
+      <p class="eyebrow" data-i18n="br-sub">Two instructional designs that scaffold: ISO 8 is the baseline readiness; ISO 7 builds on it for the critical zone. Pick a class to run its gowning gate.</p>
+      <div class="branch" role="group" aria-label="Cleanroom readiness branch">
+        <div class="branch-tabs" role="tablist">
+          <button class="branch-tab" id="tabIso8" role="tab" aria-selected="true" data-i18n="br-iso8">ISO 8 · baseline<small>Onboarding readiness · ≈ Grade D</small></button>
+          <button class="branch-tab" id="tabIso7" role="tab" aria-selected="false" data-i18n="br-iso7">ISO 7 · advanced<small>Critical-zone readiness · ≈ Grade C</small></button>
+        </div>
+        <div class="branch-params" id="brParams"></div>
+        <ul class="gown" id="brGown"></ul>
+        <div class="sim-controls" style="margin-top:4px;">
+          <button class="sim-btn" id="brNext" data-i18n="br-next">▸ Don next item</button>
+          <button class="sim-btn" id="brWrong" data-i18n="br-wrong">↷ Try wrong order</button>
+          <button class="sim-btn" id="brReset" data-i18n="br-reset">⟲ Reset gowning</button>
+        </div>
+        <div class="sim-status" id="brStatus" aria-live="polite" data-i18n="br-status0">Pick a class, then don each item in order. The gate opens only on a complete, correctly-ordered gowning run.</div>
+        <div class="branch-complement" data-i18n="br-comp"><b>How they complement:</b> ISO 8 is the foundational design every operator takes first; ISO 7 reuses it and adds critical-zone discipline (more PPE, stricter order, laminar flow). Master the baseline, then step up — the same learner, two linked designs, one audit trail.</div>
+      </div>
+
       <div class="anchor" data-i18n="s4-anchor"><b>Pedagogy:</b> this is andragogy in action — relevance (the real part), autonomy (self-paced handling), immediate consequence (a skip is blocked, not punished with red). Errors are surfaced as <i>"needs review"</i> amber, never red — lowering the affective filter so adults keep practising.</div>
     </div>
   </section>
@@ -537,6 +575,13 @@ window.PAGE_I18N = {
     'sim-rotate':'⟳ Auto-rotate','sim-explode':'⤢ Explode parts','sim-angle':'Rotate (angle)',
     'sim-step':'▸ Next stitch','sim-skip':'↷ Try to skip a hole','sim-reset':'⟲ Reset run',
     'sim-status0':'Press <b>Explode parts</b> to disassemble, rotate to inspect, then run the stitches with <b>Next stitch</b>.',
+    'br-h':'Cleanroom readiness — a complementary branch (ISO 7 / ISO 8)',
+    'br-sub':'Two instructional designs that scaffold: ISO 8 is the baseline readiness; ISO 7 builds on it for the critical zone. Pick a class to run its gowning gate.',
+    'br-iso8':'ISO 8 · baseline<small>Onboarding readiness · ≈ Grade D</small>',
+    'br-iso7':'ISO 7 · advanced<small>Critical-zone readiness · ≈ Grade C</small>',
+    'br-next':'▸ Don next item','br-wrong':'↷ Try wrong order','br-reset':'⟲ Reset gowning',
+    'br-status0':'Pick a class, then don each item in order. The gate opens only on a complete, correctly-ordered gowning run.',
+    'br-comp':'<b>How they complement:</b> ISO 8 is the foundational design every operator takes first; ISO 7 reuses it and adds critical-zone discipline (more PPE, stricter order, laminar flow). Master the baseline, then step up — the same learner, two linked designs, one audit trail.',
     's4-anchor':'<b>Pedagogy:</b> this is andragogy in action — relevance (the real part), autonomy (self-paced handling), immediate consequence (a skip is blocked, not punished with red). Errors are surfaced as <i>“needs review”</i> amber, never red — lowering the affective filter so adults keep practising.',
 
     's5-eye':'D4 + D5 · Storyboard & Articulate build spec',
@@ -659,6 +704,13 @@ window.PAGE_I18N = {
     'sim-rotate':'⟳ Auto-rotar','sim-explode':'⤢ Explosionar partes','sim-angle':'Rotar (ángulo)',
     'sim-step':'▸ Siguiente puntada','sim-skip':'↷ Intentar saltar un orificio','sim-reset':'⟲ Reiniciar pasada',
     'sim-status0':'Pulsa <b>Explosionar partes</b> para desmontar, rota para inspeccionar, y luego recorre las puntadas con <b>Siguiente puntada</b>.',
+    'br-h':'Preparación de sala blanca — un branch complementario (ISO 7 / ISO 8)',
+    'br-sub':'Dos diseños instruccionales que se escalonan: ISO 8 es la preparación base; ISO 7 se construye sobre ella para la zona crítica. Elige una clase para correr su compuerta de vestido.',
+    'br-iso8':'ISO 8 · base<small>Preparación de onboarding · ≈ Grado D</small>',
+    'br-iso7':'ISO 7 · avanzado<small>Preparación de zona crítica · ≈ Grado C</small>',
+    'br-next':'▸ Poner siguiente','br-wrong':'↷ Intentar orden incorrecto','br-reset':'⟲ Reiniciar vestido',
+    'br-status0':'Elige una clase y pon cada elemento en orden. La compuerta abre solo con una secuencia de vestido completa y correcta.',
+    'br-comp':'<b>Cómo se complementan:</b> ISO 8 es el diseño base que todo operario hace primero; ISO 7 lo reutiliza y añade disciplina de zona crítica (más EPI, orden más estricto, flujo laminar). Domina la base y sube de nivel — el mismo aprendiz, dos diseños enlazados, una sola traza de auditoría.',
     's4-anchor':'<b>Pedagogía:</b> esto es andragogía en acción — relevancia (la pieza real), autonomía (manipulación a su ritmo), consecuencia inmediata (un salto se bloquea, no se castiga en rojo). Los errores aparecen como <i>“para revisar”</i> en ámbar, nunca en rojo — bajando el filtro afectivo para que los adultos sigan practicando.',
 
     's5-eye':'D4 + D5 · Storyboard y spec de Articulate',
@@ -1013,9 +1065,80 @@ window.PAGE_I18N = {
   var rzT; window.addEventListener('resize', function(){ clearTimeout(rzT); rzT = setTimeout(refreshAll, 150); });
   refreshAll(); setMetric();
   if (recSum) recSum.textContent = '0' + (es()?' eventos':' events');
+  window.__simRec = rec; // share the audit recorder with the cleanroom branch
 })();
 </script>
 
+<script>
+/* ── Cleanroom readiness branch · two complementary designs (ISO 8 ↔ ISO 7) ── */
+(function(){
+  var t8=document.getElementById('tabIso8'), t7=document.getElementById('tabIso7');
+  if(!t8) return;
+  var elP=document.getElementById('brParams'), elG=document.getElementById('brGown'), elS=document.getElementById('brStatus'),
+      bN=document.getElementById('brNext'), bW=document.getElementById('brWrong'), bR=document.getElementById('brReset');
+  function es(){ return localStorage.getItem('oi-lang')==='es'; }
+  function R(verb,obj,ev,result,kind){ if(window.__simRec) window.__simRec(verb,'cleanroom.'+obj,ev,result,kind); }
+
+  var DATA = {
+    iso8:{
+      params:{en:['~ISO 8','≈ Grade D','ACH ~10–25','EM: periodic'], es:['~ISO 8','≈ Grado D','ACH ~10–25','MA: periódico']},
+      gown:{ en:['Hand hygiene','Shoe covers','Hair / beard cover','Face mask','Cleanroom gown','Gloves'],
+             es:['Higiene de manos','Cubrecalzado','Cubrecabello / barba','Mascarilla','Bata de sala','Guantes'] }
+    },
+    iso7:{
+      params:{en:['~ISO 7','≈ Grade C','ACH ~30–60','EM: frequent','Laminar flow @ critical pt'],
+              es:['~ISO 7','≈ Grado C','ACH ~30–60','MA: frecuente','Flujo laminar en pto crítico']},
+      gown:{ en:['Hand hygiene + sanitise','Boot covers','Hood + beard cover','Face mask','Full coverall','Goggles','Inner gloves','Outer gloves + sanitise'],
+             es:['Higiene + sanitizado','Cubrebotas','Capucha + cubrebarba','Mascarilla','Mono completo','Gafas','Guantes internos','Guantes externos + sanitizado'] }
+    }
+  };
+  var cls='iso8', idx=0, blocks=0;
+  function steps(){ return DATA[cls].gown[es()?'es':'en']; }
+  function render(){
+    t8.setAttribute('aria-selected', cls==='iso8'); t7.setAttribute('aria-selected', cls==='iso7');
+    var p=DATA[cls].params[es()?'es':'en'];
+    elP.innerHTML=p.map(function(x){return '<span class="pill">'+x+'</span>';}).join('');
+    var s=steps();
+    elG.innerHTML=s.map(function(label,k){
+      var st=k<idx?'done':(k===idx?'active':''); var ix=k<idx?'✓':(k+1);
+      return '<li class="'+st+'"><span class="g-ix">'+ix+'</span>'+label+'</li>';
+    }).join('');
+  }
+  function setStatus(h){ elS.innerHTML=h; }
+  function pick(c,ev){
+    cls=c; idx=0; render();
+    setStatus(es()
+      ? '<b>'+(c==='iso7'?'ISO 7 · avanzado':'ISO 8 · base')+'</b> seleccionado. Viste cada elemento en orden; la compuerta abre solo con la secuencia completa y correcta.'
+      : '<b>'+(c==='iso7'?'ISO 7 · advanced':'ISO 8 · baseline')+'</b> selected. Don each item in order; the gate opens only on a complete, correct run.');
+    R('selected', c, ev, {cls:c, steps:steps().length}, 'tap');
+  }
+  t8.addEventListener('click', function(e){ pick('iso8', e); });
+  t7.addEventListener('click', function(e){ pick('iso7', e); });
+
+  bN.addEventListener('click', function(ev){
+    var s=steps(); if(idx>=s.length) return;
+    idx++; render();
+    if(idx>=s.length){
+      setStatus(es()?'<b>Preparación completa.</b> Vestido correcto y en orden → <b>compuerta abierta</b>. Habilitado para surcir.':'<b>Readiness complete.</b> Correct, in-order gowning → <b>gate open</b>. Cleared to suture.');
+      R('passed','readinessGate', ev, {cls:cls, steps:s.length}, 'tap');
+    } else {
+      setStatus((es()?'Elemento ':'Item ')+idx+'/'+s.length+(es()?' puesto. Continúa en orden.':' donned. Continue in order.'));
+      R('progressed','gown', ev, {cls:cls, step:idx}, 'tap');
+    }
+  });
+  bW.addEventListener('click', function(ev){
+    var s=steps(); if(idx>=s.length) return; blocks++;
+    setStatus(es()
+      ? '<b style="color:#F3B861">Para revisar:</b> romper el orden rompe la asepsia. El siguiente correcto es «'+s[idx]+'». Avance <b>bloqueado</b>.'
+      : '<b style="color:#F3B861">Needs review:</b> breaking the order breaks asepsis. The correct next item is “'+s[idx]+'”. Advance <b>blocked</b>.');
+    R('blocked','gownOrder', ev, {cls:cls, atStep:idx+1}, 'tap');
+  });
+  bR.addEventListener('click', function(ev){ idx=0; render(); setStatus(es()?'Vestido reiniciado.':'Gowning reset.'); R('initialized','readiness', ev, {cls:cls}, 'tap'); });
+
+  document.addEventListener('click', function(e){ if(e.target && e.target.id==='oi-lang-btn') setTimeout(render, 0); });
+  render();
+})();
+</script>
 <script>
 /* ── Theme toggle (shared pattern) ─────────────────────── */
 (function(){
