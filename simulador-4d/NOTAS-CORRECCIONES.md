@@ -47,6 +47,17 @@
 - Conservar: rotar, explosionar, reset, branch ISO 7/ISO 8 y el panel REC/exportación.
 - Hit-test de la aguja sobre los puntos: usar posición en pantalla (getBoundingClientRect) para que funcione aunque la pieza esté rotada.
 
+## Roadmap futuro
+
+### R1. VR + telemetría de guantes + eye tracking (proyecto a futuro)
+- Idea: llevar la simulación a VR, con guantes que capturen la telemetría de los movimientos manuales, junto con la visión VR (eye tracking).
+- Viabilidad: tecnológicamente real y en crecimiento. Hardware: cascos VR con seguimiento ocular (p. ej. Varjo, Quest Pro, Vive Pro Eye) y guantes de datos/hápticos (p. ej. Manus, SenseGlove, HaptX) que miden ángulos de dedos, fuerza de pinza y trayectoria de la mano.
+- Qué mediría (lo que importa en una destreza manual cero-error): trayectoria/fuerza correcta del gesto (guante) + atención visual al punto crítico (mirada: fijaciones, dwell). 
+- Puente con lo que ya tenemos: el mismo modelo xAPI/cmi5 (actor·verbo·objeto·resultado + extensiones) recibe los datos espaciales/hápticos (pose de mano, longitud de trayectoria, temblor, tiempo-en-objetivo, fuerza, fijación de mirada) y alimenta el mismo LRS y las mismas métricas de maestría/drop-off. Evolución natural de este proyecto.
+- Quién lo hace: territorio del Learning Experience Architect (LXA) / XR Learning Engineer. El LXA posee el diseño de experiencia + medición (justo lo que arquitecta el skill `senior-instructional-designer-cux`); se empareja con un desarrollador XR (Unity/Unreal) y, para analítica, un learning engineer del LRS.
+- Cautelas: coste de hardware, producción de contenido, validación del simulador VR bajo el QMS (si se usa para competencia de Clase III, el propio simulador se valida), y privacidad de los datos de guante/mirada (biométricos). Marcar como fase futura.
+- Criterio para avanzar: [DEFINIR] caso de uso, presupuesto de hardware, y si el simulador VR entra en el expediente de validación.
+
 ## Pendiente de decisión
 - [DEFINIR] ¿La aguja vuelve sola a su posición tras cada puntada o se queda en el último punto?
 - [DEFINIR] ¿El hilo se dibuja pegado a la pieza (rota con ella) o en capa fija?
