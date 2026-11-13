@@ -122,6 +122,16 @@
   .sim-status b{color:#F3B861;}
   .sim-metric{font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:#A9B8F5; margin-top:6px;}
   .sim-metric .ok{color:#8FE0B0;}
+  /* suture thread (piece-local, rotates with the cuff) */
+  .thread{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible;}
+  .thread polyline{fill:none; stroke:#F3B861; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 3px rgba(243,184,97,.5));}
+  /* draggable needle + tray */
+  .needle-tray{display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap;}
+  .needle{touch-action:none; cursor:grab; user-select:none; -webkit-user-select:none; display:inline-flex; padding:7px 9px; border:1px dashed #33407A; border-radius:10px; background:#121a35; position:relative; z-index:3; transition:transform .12s ease;}
+  .needle:active, .needle.grab{cursor:grabbing; border-color:#F3B861; transition:none;}
+  @media (prefers-reduced-motion:reduce){ .needle{transition:none;} }
+  .needle svg{display:block; pointer-events:none;}
+  .needle-hint{font-size:.82rem; color:#A9B8F5;}
 
   /* ── Touchscreen audit recorder ─────────────────────── */
   .rec{margin-top:14px; border:1px solid #2A3566; border-radius:10px; background:#101830; overflow:hidden;}
@@ -394,8 +404,16 @@
             <div class="layer layer-cuff" id="layerCuff"><span class="sim-label" data-i18n="sim-cuff">Fabric cuff</span></div>
             <div class="layer layer-stent" id="layerStent"><span class="sim-label" data-i18n="sim-stent">Stent ring</span></div>
             <div class="layer layer-core" id="layerCore"><span class="sim-label" data-i18n="sim-core">Core / lumen</span></div>
+            <svg class="thread" id="simThread" viewBox="0 0 220 220" preserveAspectRatio="none" aria-hidden="true"><polyline id="threadLine" points=""></polyline></svg>
             <!-- suture dots injected by JS into #simPiece -->
           </div>
+        </div>
+
+        <div class="needle-tray">
+          <div class="needle" id="needle" aria-hidden="true" title="Needle / Aguja">
+            <svg width="62" height="20" viewBox="0 0 62 20"><circle cx="9" cy="10" r="3.5" fill="none" stroke="#C9D2F5" stroke-width="2"></circle><line x1="9" y1="10" x2="53" y2="10" stroke="#C9D2F5" stroke-width="3"></line><polygon points="53,5 62,10 53,15" fill="#C9D2F5"></polygon><path d="M9 10 q-7 4 -3 9" stroke="#F3B861" stroke-width="2" fill="none"></path></svg>
+          </div>
+          <span class="needle-hint" id="needleHint" data-i18n="sim-needlehint">Drag the needle to the highlighted point to place each stitch.</span>
         </div>
 
         <div class="sim-controls">
@@ -408,12 +426,11 @@
         </div>
 
         <div class="sim-controls" style="margin-top:12px;">
-          <button class="sim-btn" id="btnStep" data-i18n="sim-step">▸ Next stitch</button>
-          <button class="sim-btn" id="btnSkip" data-i18n="sim-skip">↷ Try to skip a hole</button>
+          <button class="sim-btn" id="btnStitchKey" data-i18n="sim-stitchkey">✚ Suture highlighted point (accessible)</button>
           <button class="sim-btn" id="btnReset" data-i18n="sim-reset">⟲ Reset run</button>
         </div>
 
-        <div class="sim-status" id="simStatus" aria-live="polite" data-i18n="sim-status0">Press <b>Explode parts</b> to disassemble, rotate to inspect, then run the stitches with <b>Next stitch</b>.</div>
+        <div class="sim-status" id="simStatus" aria-live="polite" data-i18n="sim-status0">Explode to disassemble, rotate to inspect, then <b>drag the needle</b> to the highlighted point to suture.</div>
         <div class="sim-metric" id="simMetric">stitch 0 / 12 · skips blocked: <span class="ok">0</span></div>
 
         <div class="rec" role="group" aria-label="Touchscreen recording audit log">
@@ -635,8 +652,10 @@ window.PAGE_I18N = {
     's4-simnote':'A lightweight stand-in for the Storyline/WebGL build — same interaction logic, zero real material.',
     'sim-cuff':'Fabric cuff','sim-stent':'Stent ring','sim-core':'Core / lumen',
     'sim-rotate':'⟳ Auto-rotate','sim-explode':'⤢ Explode parts','sim-angle':'Rotate (angle)',
-    'sim-step':'▸ Next stitch','sim-skip':'↷ Try to skip a hole','sim-reset':'⟲ Reset run',
-    'sim-status0':'Press <b>Explode parts</b> to disassemble, rotate to inspect, then run the stitches with <b>Next stitch</b>.',
+    'sim-reset':'⟲ Reset run',
+    'sim-stitchkey':'✚ Suture highlighted point (accessible)',
+    'sim-needlehint':'Drag the needle to the highlighted point to place each stitch.',
+    'sim-status0':'Explode to disassemble, rotate to inspect, then <b>drag the needle</b> to the highlighted point to suture.',
     'br-h':'Cleanroom readiness — a complementary branch (ISO 7 / ISO 8)',
     'br-sub':'Two instructional designs that scaffold: ISO 8 is the baseline readiness; ISO 7 builds on it for the critical zone. Pick a class to run its gowning gate.',
     'br-iso8':'ISO 8 · baseline<small>Onboarding readiness · ≈ Grade D</small>',
@@ -775,8 +794,10 @@ window.PAGE_I18N = {
     's4-simnote':'Un sustituto ligero de la build en Storyline/WebGL — misma lógica de interacción, cero material real.',
     'sim-cuff':'Manguito de tejido','sim-stent':'Anillo de stent','sim-core':'Núcleo / lumen',
     'sim-rotate':'⟳ Auto-rotar','sim-explode':'⤢ Explosionar partes','sim-angle':'Rotar (ángulo)',
-    'sim-step':'▸ Siguiente puntada','sim-skip':'↷ Intentar saltar un orificio','sim-reset':'⟲ Reiniciar pasada',
-    'sim-status0':'Pulsa <b>Explosionar partes</b> para desmontar, rota para inspeccionar, y luego recorre las puntadas con <b>Siguiente puntada</b>.',
+    'sim-reset':'⟲ Reiniciar pasada',
+    'sim-stitchkey':'✚ Coser el punto resaltado (accesible)',
+    'sim-needlehint':'Arrastra la aguja al punto resaltado para colocar cada puntada.',
+    'sim-status0':'Explosiona para desmontar, rota para inspeccionar, y <b>arrastra la aguja</b> al punto resaltado para coser.',
     'br-h':'Preparación de sala blanca — un branch complementario (ISO 7 / ISO 8)',
     'br-sub':'Dos diseños instruccionales que se escalonan: ISO 8 es la preparación base; ISO 7 se construye sobre ella para la zona crítica. Elige una clase para correr su compuerta de vestido.',
     'br-iso8':'ISO 8 · base<small>Preparación de onboarding · ≈ Grado D</small>',
@@ -933,9 +954,11 @@ window.PAGE_I18N = {
   var rot = document.getElementById('rotRange');
   var btnRotate = document.getElementById('btnRotate');
   var btnExplode = document.getElementById('btnExplode');
-  var btnStep = document.getElementById('btnStep');
-  var btnSkip = document.getElementById('btnSkip');
+  var btnStitchKey = document.getElementById('btnStitchKey');
   var btnReset = document.getElementById('btnReset');
+  var needle = document.getElementById('needle');
+  var thread = document.getElementById('simThread');
+  var threadLine = document.getElementById('threadLine');
 
   var TOTAL = 12;
   var angle = 20, exploded = false, autoRot = false, rotTimer = null;
@@ -1006,7 +1029,7 @@ window.PAGE_I18N = {
     piece.style.width = size + 'px';
     piece.style.height = size + 'px';
     R = size * 0.42;
-    placeDots();
+    placeDots(); renderThread();
   }
   function applyTransform(){ piece.style.transform = 'rotateY(' + angle + 'deg) rotateX(12deg)'; }
   function applyExplode(){
@@ -1066,39 +1089,58 @@ window.PAGE_I18N = {
     rec(exploded?'disassembled':'reassembled','parts', ev, {exploded:exploded}, 'tap');
     setStatus(exploded
       ? (es()?'<b>Desmontado.</b> Manguito, stent y núcleo separados. Rótalo e identifica cada parte, luego reasienta y surce.':'<b>Disassembled.</b> Cuff, stent and core separated. Rotate and identify each part, then reseat and suture.')
-      : (es()?'<b>Reasentado.</b> Listo para surcir — pulsa <b>Siguiente puntada</b>.':'<b>Reseated.</b> Ready to suture — press <b>Next stitch</b>.'));
+      : (es()?'<b>Reasentado.</b> Listo para coser — <b>arrastra la aguja</b> al punto resaltado.':'<b>Reseated.</b> Ready to suture — <b>drag the needle</b> to the highlighted point.'));
   });
 
-  btnStep.addEventListener('click', function(ev){
-    if (current >= TOTAL){
-      setStatus(es()?'<b>Pasada completa.</b> Cero errores de secuencia · tensión en tolerancia → <b>maestría superada</b>. +20 XP':'<b>Run complete.</b> Zero sequence errors · tension in tolerance → <b>mastery passed</b>. +20 XP');
-      return;
-    }
-    current++;
-    paintDots(); setMetric();
-    rec('progressed','stitch', ev, {stitch:current, of:TOTAL}, 'tap');
-    if (current >= TOTAL){
-      setStatus(es()?'<b>Pasada completa.</b> Cero saltos → <b>maestría superada</b>. +20 XP':'<b>Run complete.</b> Zero skips → <b>mastery passed</b>. +20 XP');
-      rec('passed','masteryRun', ev, {success:true, seqErrors:0, skipsBlocked:skipsBlocked});
-      if (window.__simAddXP){ window.__simAddXP(20); window.__simAddXP = null; }
-    } else {
-      setStatus((es()?'Puntada ':'Stitch ') + current + '/' + TOTAL + (es()?' colocada. Ángulo y tensión en verde. Continúa la secuencia.':' placed. Angle and tension green. Continue the sequence.'));
-    }
-  });
-
-  btnSkip.addEventListener('click', function(ev){
-    if (current >= TOTAL) return;
+  /* ---- needle: real manipulation (drag to the highlighted suture point) ---- */
+  function renderThread(){
+    if(!thread||!threadLine) return;
+    var size = parseFloat(piece.style.width) || 220;
+    thread.setAttribute('viewBox','0 0 '+size+' '+size);
+    var pts=[];
+    for(var k=0;k<current;k++){ var a=(k/TOTAL)*2*Math.PI - Math.PI/2; pts.push((size/2+Math.cos(a)*R).toFixed(1)+','+(size/2+Math.sin(a)*R).toFixed(1)); }
+    threadLine.setAttribute('points', pts.join(' '));
+  }
+  function masteryDone(ev){
+    setStatus(es()?'<b>Pasada completa.</b> Cero errores de secuencia · tensión en tolerancia → <b>maestría superada</b>. +20 XP':'<b>Run complete.</b> Zero sequence errors · tension in tolerance → <b>mastery passed</b>. +20 XP');
+    rec('passed','masteryRun', ev, {success:true, seqErrors:0, skipsBlocked:skipsBlocked});
+    if (window.__simAddXP){ window.__simAddXP(20); window.__simAddXP = null; }
+  }
+  function place(ev, kind){
+    if (current>=TOTAL) return;
+    current++; paintDots(); renderThread(); setMetric();
+    rec('progressed','stitch', ev, {stitch:current, of:TOTAL}, kind||'drag');
+    if (current>=TOTAL) masteryDone(ev);
+    else setStatus((es()?'Puntada ':'Stitch ') + current + '/' + TOTAL + (es()?' colocada. Lleva la aguja al siguiente punto resaltado.':' placed. Bring the needle to the next highlighted point.'));
+  }
+  function block(ev, idx){
     skipsBlocked++; setMetric();
-    rec('blocked','sequence', ev, {attemptedHole:current+2, requiredHole:current+1}, 'tap');
+    rec('blocked','sequence', ev, {attemptedHole: idx+1, requiredHole: current+1}, 'drag');
     setStatus(es()
-      ? '<b style="color:#F3B861">Para revisar:</b> no puedes saltar al orificio ' + (current+2) + '. La secuencia exige el orificio ' + (current+1) + ' primero. Avance <b>bloqueado</b> — así el error nunca llega al material.'
-      : '<b style="color:#F3B861">Needs review:</b> you can’t jump to hole ' + (current+2) + '. The sequence requires hole ' + (current+1) + ' first. Advance <b>blocked</b> — this is how the error never reaches the material.');
-  });
+      ? '<b style="color:#F3B861">Para revisar:</b> ese no es el orden. Lleva la aguja al orificio <b>'+(current+1)+'</b> (resaltado) — así el error nunca llega al material.'
+      : '<b style="color:#F3B861">Needs review:</b> that is out of order. Bring the needle to hole <b>'+(current+1)+'</b> (highlighted) — this is how the error never reaches the material.');
+  }
+  function nearestDot(px,py){ var best=null; dots.forEach(function(e,k){ var r=e.getBoundingClientRect(); var cx=r.left+r.width/2, cy=r.top+r.height/2; var dd=Math.hypot(px-cx,py-cy); if(!best||dd<best.dist) best={idx:k,dist:dd}; }); return best; }
+  var TOL=48, nDrag=false, nsx=0, nsy=0;
+  if (needle){
+    needle.addEventListener('pointerdown', function(ev){ ev.stopPropagation(); if(current>=TOTAL) return; nDrag=true; nsx=ev.clientX; nsy=ev.clientY; needle.classList.add('grab'); if(needle.setPointerCapture){try{needle.setPointerCapture(ev.pointerId);}catch(e){}} ev.preventDefault(); });
+    window.addEventListener('pointermove', function(ev){ if(!nDrag) return; needle.style.transform='translate('+(ev.clientX-nsx)+'px,'+(ev.clientY-nsy)+'px)'; });
+    function needleUp(ev){
+      if(!nDrag) return; nDrag=false; needle.classList.remove('grab');
+      var r=needle.getBoundingClientRect(); var nd=nearestDot(r.right-8, r.top+r.height/2);
+      if (nd && nd.dist<=TOL){ if(nd.idx===current) place(ev,'drag'); else block(ev, nd.idx); }
+      else setStatus(es()?'Lleva la aguja al <b>punto resaltado</b> (en oro).':'Bring the needle to the <b>highlighted point</b> (gold).');
+      needle.style.transform='';
+    }
+    window.addEventListener('pointerup', needleUp);
+    window.addEventListener('pointercancel', needleUp);
+  }
+  if (btnStitchKey) btnStitchKey.addEventListener('click', function(ev){ if(current>=TOTAL){ masteryDone(ev); return; } place(ev,'tap'); });
 
   btnReset.addEventListener('click', function(ev){
-    current = 0; skipsBlocked = 0; paintDots(); setMetric();
+    current = 0; skipsBlocked = 0; paintDots(); renderThread(); setMetric();
     rec('initialized','run', ev, null, 'tap');
-    setStatus(es()?'Pasada reiniciada. Explosiona, rota y vuelve a surcir.':'Run reset. Explode, rotate, and suture again.');
+    setStatus(es()?'Pasada reiniciada. Arrastra la aguja al punto resaltado para coser.':'Run reset. Drag the needle to the highlighted point to suture.');
   });
 
   /* ---- export / copy / clear the audit trail ---- */
