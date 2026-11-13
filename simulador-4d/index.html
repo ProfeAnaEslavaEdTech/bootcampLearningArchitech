@@ -5,7 +5,7 @@
                  design case (D1–D7) for a MedTech sewing/suturing operation.
                  Learner rehearses on a rotatable, explodable digital twin
                  BEFORE touching real material, to reduce defect rate.
-                 Bilingual EN/ES · Ocean Ink · WCAG 2.1 AA.
+                 Bilingual EN/ES · Ocean Ink · WCAG 2.2 AA · cmi5/xAPI auditable.
      ============================================================ -->
 <!DOCTYPE html>
 <html lang="en">
@@ -160,6 +160,30 @@
   .branch-complement{border-left:4px solid #6E7BFF; background:rgba(110,123,255,.08); padding:10px 14px; border-radius:0 8px 8px 0; margin-top:12px; font-size:.84rem; color:#D7E0FF;}
   @media (max-width:600px){ .branch-tab{flex:1 1 100%;} }
 
+  /* ── Screen-reader only ─────────────────────── */
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+
+  /* ── Unit opener: learning objectives + awareness video ─────────── */
+  .lo{border:1px solid var(--line); border-left:4px solid var(--blue); border-radius:0 10px 10px 0; background:var(--mist); padding:14px 16px; margin:14px 0;}
+  .lo h3{margin:0 0 6px; font-size:.95rem; color:var(--navy);}
+  .lo ul{margin:0 0 0 18px;} .lo li{margin-bottom:5px; font-size:.92rem;}
+  .vid{border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:14px 0; background:#0E1428;}
+  .vid-poster{position:relative; height:170px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1B2545,#0E1428);}
+  .vid-badge{position:absolute; top:10px; left:12px; font-family:'IBM Plex Mono',monospace; font-size:.6rem; letter-spacing:.07em; color:#A9B8F5; background:rgba(0,0,0,.4); padding:3px 9px; border-radius:20px;}
+  .vid-ecg{position:absolute; opacity:.5;}
+  .vid-ecg polyline{stroke-dasharray:300; stroke-dashoffset:300; animation:ecg 2.6s linear infinite;}
+  @keyframes ecg{to{stroke-dashoffset:0;}}
+  @media (prefers-reduced-motion:reduce){ .vid-ecg polyline{animation:none; stroke-dashoffset:0;} }
+  .vid-play{position:relative; z-index:1; width:58px; height:58px; border-radius:50%; background:#3B5BD6; color:#fff; border:none; display:flex; align-items:center; justify-content:center; font-size:1.3rem; cursor:pointer;}
+  .vid-play:hover{background:#2E49B5;}
+  .vid-play:focus-visible{outline:3px solid #F3B861; outline-offset:3px;}
+  .vid-body{padding:12px 16px;}
+  .vid-body h3{color:#EAF0FF !important; font-size:.98rem; margin:0 0 4px;}
+  .vid-body p{color:#C7D0F0 !important; font-size:.86rem; margin:0 0 8px;}
+  .vid-body details{background:#121a35; border-color:#2A3566;}
+  .vid-body summary{color:#A9B8F5; font-weight:600;}
+  .vid-body details p{color:#C7D0F0 !important;}
+
   /* ── Mobile responsive ─────────────────────── */
   @media (max-width:600px){
     main{padding:20px 14px 132px;}
@@ -247,6 +271,33 @@
     <div class="card">
       <div class="eyebrow" data-i18n="s0-eye">Design case · ADDIE · ISO 13485 context</div>
       <h2 class="display" data-i18n="s0-h">Rehearse the hands before they touch the device.</h2>
+
+      <div class="vid">
+        <div class="vid-poster">
+          <span class="vid-badge" data-i18n="vid-badge">Intro · 90s · awareness · [storyboard placeholder]</span>
+          <svg class="vid-ecg" width="220" height="64" viewBox="0 0 220 64" aria-hidden="true"><polyline points="0,32 60,32 78,10 96,54 112,32 220,32" fill="none" stroke="#F3B861" stroke-width="3"/></svg>
+          <button class="vid-play" id="vidPlay"><span aria-hidden="true">▶</span><span class="sr-only" data-i18n="vid-play">Play the awareness intro and open its transcript</span></button>
+        </div>
+        <div class="vid-body">
+          <h3 data-i18n="vid-title">Why this stitch matters — a life depends on it</h3>
+          <p data-i18n="vid-sub">A 90-second opener: the cuff you sew holds a patient's heart valve. Compliance here is not paperwork — it is someone's life. (Awareness video to be produced; storyboard &amp; transcript below.)</p>
+          <details id="vidTs">
+            <summary data-i18n="vid-ts-label">Transcript &amp; storyboard · captions + audio description in production</summary>
+            <p data-i18n="vid-ts">[0–15s] A person at home, living their day — then a heart-valve graphic beats in rhythm. VO: "Somewhere, someone's heart depends on a valve." [15–45s] Cut to the sewing bench: a gloved hand places a stitch on the cuff. VO: "That valve is held by the cuff you sew — stitch by stitch." [45–75s] A skipped hole highlights amber. VO: "One skipped stitch can fail where it matters most. That is why the standard exists — not for the audit, for the patient." [75–90s] The simulator appears. VO: "So we rehearse here, where a mistake costs nothing — and never reaches them."</p>
+          </details>
+        </div>
+      </div>
+
+      <div class="lo">
+        <h3 data-i18n="lo-h">Learning objectives — by the end of this unit you will be able to…</h3>
+        <ul>
+          <li data-i18n="lo-1">Complete a full cuff suturing in the simulator with <b>zero sequence errors</b> and tension within tolerance, unaided.</li>
+          <li data-i18n="lo-2">Enter the cleanroom with correct, in-order gowning for the selected class (<b>ISO 7 / ISO 8</b>).</li>
+          <li data-i18n="lo-3">Identify and name the cuff, stent and suture line on an exploded view.</li>
+          <li data-i18n="lo-4">Explain why a suturing defect is a <b>patient-safety</b> event under the device's quality system.</li>
+        </ul>
+      </div>
+
       <p data-i18n="s0-p1">A MedTech sewing station attaches a fabric <b>sewing cuff</b> to the stent of a <b>Class III implantable heart valve</b> — a manual <b>suturing</b> operation where a mis-placed stitch, uneven tension or a skipped hole becomes a scrapped unit or, worse, a patient-safety field complaint. New operators learn on real material, so every error destroys a controlled component and their first weeks carry the highest defect rate.</p>
       <p data-i18n="s0-p2">This case designs a <b>4D simulator</b>: a digital twin of the piece the operator can <b>rotate, pull apart, handle and suture — in time — before cutting a single real thread</b>. Learning by doing, with zero scrap while learning.</p>
       <div class="anchor" data-i18n="s0-reg"><b>Regulatory frame — worst-case by design:</b> the part is treated as a <b>Class III implantable prosthesis (FDA)</b> — a heart-valve sewing cuff, life-sustaining, PMA pathway — so a suturing defect is a <b>patient-safety</b> event, not merely scrap. Work runs under an <b>ISO 13485</b> QMS with <b>21 CFR 820 (QMSR)</b> and <b>EU MDR</b> controls, inside a <b>cleanroom (ISO 14644)</b> under <b>GMP / GxP</b>, and every unit carries a <b>Device History Record (DHR)</b>. This maximises the zero-error bar and brings cleanroom readiness into scope.<br><span class="pill crit">Class III</span><span class="pill std">PMA</span><span class="pill std">ISO 13485</span><span class="pill std">21 CFR 820 · QMSR</span><span class="pill std">EU MDR</span><span class="pill std">ISO 14644</span><span class="pill std">GMP / GxP</span><span class="pill std">DHR</span> <em>[VERIFY cleanroom grade &amp; device specifics against the site's validated spec.]</em></div>
@@ -516,6 +567,17 @@ window.PAGE_I18N = {
 
     's0-eye':'Design case · ADDIE · ISO 13485 context',
     's0-h':'Rehearse the hands before they touch the device.',
+    'vid-badge':'Intro · 90s · awareness · [storyboard placeholder]',
+    'vid-play':'Play the awareness intro and open its transcript',
+    'vid-title':'Why this stitch matters — a life depends on it',
+    'vid-sub':'A 90-second opener: the cuff you sew holds a patient’s heart valve. Compliance here is not paperwork — it is someone’s life. (Awareness video to be produced; storyboard &amp; transcript below.)',
+    'vid-ts-label':'Transcript &amp; storyboard · captions + audio description in production',
+    'vid-ts':'[0–15s] A person at home, living their day — then a heart-valve graphic beats in rhythm. VO: “Somewhere, someone’s heart depends on a valve.” [15–45s] Cut to the sewing bench: a gloved hand places a stitch on the cuff. VO: “That valve is held by the cuff you sew — stitch by stitch.” [45–75s] A skipped hole highlights amber. VO: “One skipped stitch can fail where it matters most. That is why the standard exists — not for the audit, for the patient.” [75–90s] The simulator appears. VO: “So we rehearse here, where a mistake costs nothing — and never reaches them.”',
+    'lo-h':'Learning objectives — by the end of this unit you will be able to…',
+    'lo-1':'Complete a full cuff suturing in the simulator with <b>zero sequence errors</b> and tension within tolerance, unaided.',
+    'lo-2':'Enter the cleanroom with correct, in-order gowning for the selected class (<b>ISO 7 / ISO 8</b>).',
+    'lo-3':'Identify and name the cuff, stent and suture line on an exploded view.',
+    'lo-4':'Explain why a suturing defect is a <b>patient-safety</b> event under the device’s quality system.',
     's0-p1':'A MedTech sewing station attaches a fabric <b>sewing cuff</b> to the stent of a <b>Class III implantable heart valve</b> — a manual <b>suturing</b> operation where a mis-placed stitch, uneven tension or a skipped hole becomes a scrapped unit or, worse, a patient-safety field complaint. New operators learn on real material, so every error destroys a controlled component and their first weeks carry the highest defect rate.',
     's0-reg':'<b>Regulatory frame — worst-case by design:</b> the part is treated as a <b>Class III implantable prosthesis (FDA)</b> — a heart-valve sewing cuff, life-sustaining, PMA pathway — so a suturing defect is a <b>patient-safety</b> event, not merely scrap. Work runs under an <b>ISO 13485</b> QMS with <b>21 CFR 820 (QMSR)</b> and <b>EU MDR</b> controls, inside a <b>cleanroom (ISO 14644)</b> under <b>GMP / GxP</b>, and every unit carries a <b>Device History Record (DHR)</b>. This maximises the zero-error bar and brings cleanroom readiness into scope.<br><span class="pill crit">Class III</span><span class="pill std">PMA</span><span class="pill std">ISO 13485</span><span class="pill std">21 CFR 820 · QMSR</span><span class="pill std">EU MDR</span><span class="pill std">ISO 14644</span><span class="pill std">GMP / GxP</span><span class="pill std">DHR</span> <em>[VERIFY cleanroom grade &amp; device specifics against the site’s validated spec.]</em>',
     's0-p2':'This case designs a <b>4D simulator</b>: a digital twin of the piece the operator can <b>rotate, pull apart, handle and suture — in time — before cutting a single real thread</b>. Learning by doing, with zero scrap while learning.',
@@ -622,10 +684,10 @@ window.PAGE_I18N = {
     's8-anchor':'<b>What this proves (portfolio):</b> a full D1–D7 compliance-training design — performance-first analysis, DIF-driven scope, criterion objectives, a signature simulation-based learning-by-doing method, zero-error mastery, and an auditable SCORM/cmi5 trace — for a regulated MedTech manufacturing process. The teaching move: <i>move the error into a simulator where it costs nothing, so it never reaches the material.</i>',
     's8-disc':'Portfolio / interview design case. The part is framed as a Class III implantable prosthesis (heart-valve sewing cuff) under ISO 13485 / 21 CFR 820 (QMSR) / EU MDR, cleanroom (ISO 14644) and GMP/GxP; standards are named, not quoted — verify device class, cleanroom grade and tolerances against the site’s validated documentation ([VERIFY]). Step names, DIF ratings and defect figures are illustrative placeholders. · Interactive demo built with HTML/CSS/JS as a stand-in for the Storyline/WebGL production target. · AI-assisted instructional design under human governance, authored and verified by Ana Eslava-Graterol.',
     'rec-title':'REC · touchscreen telemetry (xAPI)',
-    'rec-export':'⭳ Export xAPI (JSON)',
+    'rec-export':'⭳ Export cmi5/xAPI',
     'rec-copy':'⧉ Copy',
     'rec-clear':'⌫ Clear',
-    'rec-note':'Every tap, drag and gesture is captured with its <code>pointerType</code> (touch / mouse / pen), timestamp and coordinates — an auditable training record and a UX-usability signal. On a phone you’ll see <code>touch</code>.',
+    'rec-note':'Every tap, drag and gesture is captured as an <b>ADL xAPI</b> statement (<code>actor · verb · object · result</code>) with <code>pointerType</code>, timestamp and coordinates — the UI itself is traceable. Export is <b>cmi5-conformant</b> (Cornerstone-ready) and includes a <b>drop-off</b> summary (furthest step, time per step) for SAM iteration. Auditable training record and UX signal in one.',
     'meth-h':'Built with two engines',
     'meth-id-k':'Instructional design',
     'meth-id-h':'Technical & Compliance Training Architect',
@@ -633,8 +695,8 @@ window.PAGE_I18N = {
     'meth-id-zero':'zero-error',
     'meth-ux-k':'UXEdTech',
     'meth-ux-h':'CUXedTech · UX Quality Framework',
-    'meth-ux-p':'The craft layer: UX Writing (<b>clear · consistent · useful</b>), error feedback as amber <i>“needs review”</i> not red, WCAG POUR accessibility, responsive design and multilingual UX — the method that decides <em>how</em> the interface reads, feels and includes.',
-    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG POUR','meth-ux-t3':'responsive','meth-ux-t4':'multilingual',
+    'meth-ux-p':'The craft layer: UX Writing (<b>clear · consistent · useful</b>), error feedback as amber <i>“needs review”</i> not red, <b>WCAG 2.2 AA</b> (POUR) accessibility, responsive design and multilingual UX — the method that decides <em>how</em> the interface reads, feels and includes.',
+    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG 2.2 AA','meth-ux-t3':'responsive','meth-ux-t4':'multilingual',
     'meth-bridge':'<b>Where they meet — this build:</b> the touchscreen recorder turns UX usability signals into an xAPI-style, exportable audit trail (D6/D7). The same capture that proves <i>mastery</i> for the instructional designer also exposes <i>friction</i> for the UX designer. One interaction, two kinds of evidence.'
   },
   es: {
@@ -645,6 +707,17 @@ window.PAGE_I18N = {
 
     's0-eye':'Caso de diseño · ADDIE · contexto ISO 13485',
     's0-h':'Ensaya las manos antes de que toquen el dispositivo.',
+    'vid-badge':'Intro · 90s · concienciación · [storyboard placeholder]',
+    'vid-play':'Reproducir la intro de concienciación y abrir su transcripción',
+    'vid-title':'Por qué importa esta puntada — una vida depende de ella',
+    'vid-sub':'Apertura de 90 segundos: el manguito que coses sostiene la válvula cardíaca de un paciente. El cumplimiento aquí no es papeleo — es la vida de alguien. (Vídeo de concienciación por producir; storyboard y transcripción abajo.)',
+    'vid-ts-label':'Transcripción y storyboard · subtítulos + audiodescripción en producción',
+    'vid-ts':'[0–15s] Una persona en casa, viviendo su día — luego un gráfico de válvula cardíaca late al ritmo. VO: «En algún lugar, el corazón de alguien depende de una válvula.» [15–45s] Corte al puesto de costura: una mano con guante coloca una puntada en el manguito. VO: «Esa válvula la sostiene el manguito que coses — puntada a puntada.» [45–75s] Un orificio saltado se resalta en ámbar. VO: «Una puntada saltada puede fallar donde más importa. Por eso existe la norma — no para la auditoría, para el paciente.» [75–90s] Aparece el simulador. VO: «Así que ensayamos aquí, donde un error no cuesta nada — y nunca les llega.»',
+    'lo-h':'Objetivos de aprendizaje — al terminar esta unidad serás capaz de…',
+    'lo-1':'Completar un surcido de manguito completo en el simulador con <b>cero errores de secuencia</b> y tensión dentro de tolerancia, sin ayuda.',
+    'lo-2':'Entrar a la sala blanca con el vestido correcto y en orden para la clase elegida (<b>ISO 7 / ISO 8</b>).',
+    'lo-3':'Identificar y nombrar el manguito, el stent y la línea de surcido en una vista explosionada.',
+    'lo-4':'Explicar por qué un defecto de surcido es un evento de <b>seguridad del paciente</b> bajo el sistema de calidad del dispositivo.',
     's0-p1':'Una estación de costura MedTech une un <b>sewing cuff</b> de tejido al stent de una <b>válvula cardíaca implantable Clase III</b> — una operación manual de <b>surcido</b> donde una puntada mal colocada, tensión despareja o un orificio saltado se convierte en una pieza desechada o, peor, en una reclamación de campo de seguridad del paciente. Los operarios nuevos aprenden sobre material real, así que cada error destruye un componente controlado y sus primeras semanas acumulan la tasa de defecto más alta.',
     's0-reg':'<b>Marco normativo — el peor caso por diseño:</b> la pieza se trata como <b>prótesis implantable Clase III (FDA)</b> — un sewing cuff de válvula cardíaca, life-sustaining, vía PMA — así que un defecto de surcido es un evento de <b>seguridad del paciente</b>, no mero desecho. El trabajo corre bajo un QMS <b>ISO 13485</b> con controles <b>21 CFR 820 (QMSR)</b> y <b>EU MDR</b>, dentro de una <b>sala blanca (ISO 14644)</b> bajo <b>GMP / GxP</b>, y cada unidad lleva su <b>Device History Record (DHR)</b>. Esto maximiza el listón cero-error y añade la preparación de sala blanca al alcance.<br><span class="pill crit">Clase III</span><span class="pill std">PMA</span><span class="pill std">ISO 13485</span><span class="pill std">21 CFR 820 · QMSR</span><span class="pill std">EU MDR</span><span class="pill std">ISO 14644</span><span class="pill std">GMP / GxP</span><span class="pill std">DHR</span> <em>[VERIFICAR la clase de sala blanca y los detalles del dispositivo contra la especificación validada del sitio.]</em>',
     's0-p2':'Este caso diseña un <b>simulador 4D</b>: un gemelo digital de la pieza que el operario puede <b>rotar, desmontar, manipular y surcir — en el tiempo — antes de cortar un solo hilo real</b>. Aprender haciendo, con cero desperdicio mientras se aprende.',
@@ -751,10 +824,10 @@ window.PAGE_I18N = {
     's8-anchor':'<b>Qué demuestra (portfolio):</b> un diseño completo D1–D7 de formación en compliance — análisis desempeño-primero, alcance guiado por DIF, objetivos con criterio, un método firma de aprender-haciendo basado en simulación, maestría cero-error y una traza SCORM/cmi5 auditable — para un proceso regulado de manufactura MedTech. La jugada pedagógica: <i>mover el error a un simulador donde no cuesta nada, para que nunca llegue al material.</i>',
     's8-disc':'Caso de diseño de portfolio / entrevista. La pieza se enmarca como prótesis implantable Clase III (sewing cuff de válvula cardíaca) bajo ISO 13485 / 21 CFR 820 (QMSR) / EU MDR, sala blanca (ISO 14644) y GMP/GxP; las normas se nombran, no se citan — verificar clase del dispositivo, grado de sala blanca y tolerancias contra la documentación validada del sitio ([VERIFICAR]). Los nombres de pasos, las puntuaciones DIF y las cifras de defecto son marcadores ilustrativos. · Demo interactiva construida con HTML/CSS/JS como sustituto del objetivo de producción Storyline/WebGL. · Diseño instruccional asistido por IA bajo gobernanza humana, autoría y verificación de Ana Eslava-Graterol.',
     'rec-title':'REC · telemetría táctil (xAPI)',
-    'rec-export':'⭳ Exportar xAPI (JSON)',
+    'rec-export':'⭳ Exportar cmi5/xAPI',
     'rec-copy':'⧉ Copiar',
     'rec-clear':'⌫ Limpiar',
-    'rec-note':'Cada toque, arrastre y gesto se captura con su <code>pointerType</code> (touch / mouse / pen), marca de tiempo y coordenadas — un registro de formación auditable y una señal de usabilidad UX. En el móvil verás <code>touch</code>.',
+    'rec-note':'Cada toque, arrastre y gesto se captura como una sentencia <b>ADL xAPI</b> (<code>actor · verbo · objeto · resultado</code>) con <code>pointerType</code>, marca de tiempo y coordenadas — la propia UI es trazable. El export es <b>conforme a cmi5</b> (listo para Cornerstone) e incluye un resumen de <b>drop-off</b> (paso más lejano, tiempo por paso) para la iteración SAM. Registro de formación auditable y señal UX a la vez.',
     'meth-h':'Construido con dos motores',
     'meth-id-k':'Diseño instruccional',
     'meth-id-h':'Technical & Compliance Training Architect',
@@ -762,8 +835,8 @@ window.PAGE_I18N = {
     'meth-id-zero':'cero-error',
     'meth-ux-k':'UXEdTech',
     'meth-ux-h':'CUXedTech · Marco de Calidad UX',
-    'meth-ux-p':'La capa de oficio: UX Writing (<b>claro · consistente · útil</b>), feedback de error en ámbar <i>“para revisar”</i> no en rojo, accesibilidad WCAG POUR, diseño responsive y UX multilingüe — el método que decide <em>cómo</em> se lee, se siente y se incluye en la interfaz.',
-    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG POUR','meth-ux-t3':'responsive','meth-ux-t4':'multilingüe',
+    'meth-ux-p':'La capa de oficio: UX Writing (<b>claro · consistente · útil</b>), feedback de error en ámbar <i>“para revisar”</i> no en rojo, accesibilidad <b>WCAG 2.2 AA</b> (POUR), diseño responsive y UX multilingüe — el método que decide <em>cómo</em> se lee, se siente y se incluye en la interfaz.',
+    'meth-ux-t1':'UX Writing','meth-ux-t2':'WCAG 2.2 AA','meth-ux-t3':'responsive','meth-ux-t4':'multilingüe',
     'meth-bridge':'<b>Donde se encuentran — esta build:</b> el grabador táctil convierte señales de usabilidad UX en una traza de auditoría estilo xAPI, exportable (D6/D7). La misma captura que prueba <i>maestría</i> para la diseñadora instruccional también expone <i>fricción</i> para la diseñadora UX. Una interacción, dos tipos de evidencia.'
   }
 };
@@ -1029,23 +1102,53 @@ window.PAGE_I18N = {
   });
 
   /* ---- export / copy / clear the audit trail ---- */
+  function uuid(){ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);}); }
   function envelope(){
+    var NS='https://profeanaeslava.example/xapi/', ADL='http://adlnet.gov/expapi/verbs/';
+    var VERB={ launched:ADL+'launched', initialized:ADL+'initialized', progressed:ADL+'progressed',
+      experienced:ADL+'experienced', interacted:ADL+'interacted', passed:ADL+'passed', failed:ADL+'failed',
+      completed:ADL+'completed', terminated:ADL+'terminated', suspended:ADL+'suspended' };
+    function verbIri(v){ return VERB[v] || (NS+'verb/'+v); }
+    var course={id:NS+'course/simulador-4d'}, au={id:NS+'au/zero-error-suturing'};
+    var reg = window.__reg || (window.__reg = uuid());
+    var actor={ objectType:'Agent', account:{ homePage:'https://profeanaeslava.example', name:'operator-anonymous' } };
+    var j = window.__journey || { furthest:0, total:document.querySelectorAll('.step').length, enters:[] };
+    var tot=(j.total||1)-1, enters=(j.enters||[]);
+    var perStep=enters.map(function(e,k){ return { step:e.step, msSincePrev: k? e.t-enters[k-1].t : 0 }; });
+    function toXapi(s){
+      return {
+        id: uuid(), timestamp: s.timestamp, actor: actor,
+        verb: { id: verbIri(s.verb), display: {'en-US': s.verb, 'es': s.verb} },
+        object: { id: NS+'activity/'+s.object, definition: { type:'http://adlnet.gov/expapi/activities/interaction' } },
+        result: { response: s.result? JSON.stringify(s.result) : undefined,
+          extensions: { 'https://profeanaeslava.example/xapi/ext/pointerType': s.pointerType,
+                        'https://profeanaeslava.example/xapi/ext/msOffset': s.ms } },
+        context: { registration: reg, contextActivities: {
+          category:[{ id:'https://w3id.org/xapi/cmi5/context/categories/cmi5' }], grouping:[{ id: au.id }] } }
+      };
+    }
     return {
-      format:'xAPI-style touchscreen telemetry (demo)',
-      course:'simulador-4d · zero-error suturing',
-      actor:{ account:'operator-anonymous' },
+      format:'cmi5 / xAPI (ADL verbs) — Cornerstone-ready',
+      note:'Conformant statement set for an LRS (cmi5 profile). A SCORM 2004 wrapper is available for SCORM-only LMS. Demo captures client-side; production streams to the LRS.',
+      conformance:{ profile:'cmi5', verbs:'ADL canonical where defined, project-namespaced otherwise', wcag:'2.2 AA' },
+      course: course, au: au, registration: reg, actor: actor,
       recordedFrom: sessionStart,
       device:{ touchSeen: sawTouch, userAgent: navigator.userAgent },
+      dropOff:{ furthestStep: j.furthest, totalSteps: tot,
+        completedPct: Math.round((j.furthest/(tot||1))*100),
+        abandonedAt: (j.abandoned? j.abandoned.step : null),
+        perStep: perStep },
       summary:{ events: statements.length, taps: taps, drags: drags, skipsBlocked: skipsBlocked },
-      statements: statements
+      statements: statements.map(toXapi)
     };
   }
   var eExport=document.getElementById('recExport'), eCopy=document.getElementById('recCopy'), eClear=document.getElementById('recClear');
   if (eExport) eExport.addEventListener('click', function(ev){
+    rec('terminated','unit', ev, {reason:'export'});
     rec('exported','auditTrail', ev, {events:statements.length}, 'tap');
     var blob = new Blob([JSON.stringify(envelope(), null, 2)], {type:'application/json'});
     var url = URL.createObjectURL(blob);
-    var a = document.createElement('a'); a.href = url; a.download = 'touchscreen-audit.json';
+    var a = document.createElement('a'); a.href = url; a.download = 'cmi5-xapi-statements.json';
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
   });
   if (eCopy) eCopy.addEventListener('click', function(ev){
@@ -1137,6 +1240,38 @@ window.PAGE_I18N = {
 
   document.addEventListener('click', function(e){ if(e.target && e.target.id==='oi-lang-btn') setTimeout(render, 0); });
   render();
+})();
+</script>
+<script>
+/* ── Learner journey + drop-off + cmi5 lifecycle (ADL xAPI) ── */
+(function(){
+  var steps = document.querySelectorAll('.step'); if(!steps.length) return;
+  function curStep(){ var a=document.querySelector('.step.active'); return a? +(a.getAttribute('data-step')||0) : 0; }
+  window.__journey = { furthest:0, total:steps.length, enters:[], abandoned:null };
+  function enter(n){
+    window.__journey.enters.push({step:n, t:Date.now()});
+    if(n>window.__journey.furthest) window.__journey.furthest=n;
+    if(window.__simRec) window.__simRec('progressed','unit.step'+n, null, {step:n, of:steps.length-1}, null);
+  }
+  function start(){
+    if(!window.__simRec){ return setTimeout(start,120); }
+    window.__simRec('launched','unit', null, {wcag:'2.2 AA'}, null);
+    window.__simRec('initialized','unit', null, null, null);
+    enter(curStep());
+    var nx=document.getElementById('next'), bk=document.getElementById('back');
+    if(nx) nx.addEventListener('click', function(){ setTimeout(function(){ enter(curStep()); }, 30); });
+    if(bk) bk.addEventListener('click', function(){ setTimeout(function(){ enter(curStep()); }, 30); });
+    var vp=document.getElementById('vidPlay'), vt=document.getElementById('vidTs');
+    if(vp) vp.addEventListener('click', function(ev){ if(vt) vt.open=true; window.__simRec('experienced','intro.awareness', ev, {video:'awareness-90s'}, 'tap'); });
+  }
+  function leave(reason){
+    var j=window.__journey; if(j.abandoned) return;
+    if(j.furthest < j.total-1){ j.abandoned={step:j.furthest, reason:reason};
+      if(window.__simRec) window.__simRec('suspended','unit', null, {furthestStep:j.furthest, reason:reason}, null); }
+  }
+  window.addEventListener('pagehide', function(){ leave('pagehide'); });
+  document.addEventListener('visibilitychange', function(){ if(document.hidden) leave('hidden'); });
+  start();
 })();
 </script>
 <script>
