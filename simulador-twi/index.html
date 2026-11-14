@@ -1026,6 +1026,7 @@ window.PAGE_I18N = {
   var current = 0, skipsBlocked = 0;
   var dots = [], R = 92;
   var zoom = 1, enlarged = false;
+  var lastStitchT = null, stitchTimes = [], offsets = [], magMax = 1, enlargeUsed = false;
 
   function es(){ return localStorage.getItem('oi-lang')==='es'; }
 
@@ -1171,16 +1172,19 @@ window.PAGE_I18N = {
     rec('passed','masteryRun', ev, {success:true, seqErrors:0, skipsBlocked:skipsBlocked});
     if (window.__simAddXP){ window.__simAddXP(20); window.__simAddXP = null; }
   }
-  function place(ev, kind){
+  function place(ev, kind, offset){
     if (current>=TOTAL) return;
+    var now=(performance&&performance.now)?performance.now():Date.now();
+    var dt = (lastStitchT!=null) ? Math.round(now-lastStitchT) : null; lastStitchT=now;
+    if(dt!=null) stitchTimes.push(dt); if(offset!=null) offsets.push(offset);
     current++; paintDots(); renderThread(); setMetric();
-    rec('progressed','stitch', ev, {stitch:current, of:TOTAL}, kind||'drag');
+    rec('progressed','stitch', ev, {stitch:current, of:TOTAL, offset_px:(offset!=null?offset:undefined), ms_since_prev:(dt!=null?dt:undefined)}, kind||'drag');
     if (current>=TOTAL) masteryDone(ev);
     else setStatus((es()?'Puntada ':'Stitch ') + current + '/' + TOTAL + (es()?' colocada. Lleva la aguja al siguiente punto resaltado.':' placed. Bring the needle to the next highlighted point.'));
   }
-  function block(ev, idx){
+  function block(ev, idx, offset){
     skipsBlocked++; setMetric();
-    rec('blocked','sequence', ev, {attemptedHole: idx+1, requiredHole: current+1}, 'drag');
+    rec('blocked','sequence', ev, {attemptedHole: idx+1, requiredHole: current+1, offset_px:(offset!=null?offset:undefined)}, 'drag');
     setStatus(es()
       ? '<b style="color:#F3B861">Para revisar:</b> ese no es el orden. Lleva la aguja al orificio <b>'+(current+1)+'</b> (resaltado) — así el error nunca llega al material.'
       : '<b style="color:#F3B861">Needs review:</b> that is out of order. Bring the needle to hole <b>'+(current+1)+'</b> (highlighted) — this is how the error never reaches the material.');
@@ -1193,7 +1197,7 @@ window.PAGE_I18N = {
     function needleUp(ev){
       if(!nDrag) return; nDrag=false; needle.classList.remove('grab');
       var r=needle.getBoundingClientRect(); var nd=nearestDot(r.right-8, r.top+r.height/2);
-      if (nd && nd.dist<=TOL){ if(nd.idx===current) place(ev,'drag'); else block(ev, nd.idx); }
+      if (nd && nd.dist<=TOL){ if(nd.idx===current) place(ev,'drag', Math.round(nd.dist)); else block(ev, nd.idx, Math.round(nd.dist)); }
       else setStatus(es()?'Lleva la aguja al <b>punto resaltado</b> (en oro).':'Bring the needle to the <b>highlighted point</b> (gold).');
       needle.style.transform='';
     }
@@ -1228,10 +1232,10 @@ window.PAGE_I18N = {
   /* ---- N5: zoom + enlarge (PPE-friendly) ---- */
   var btnZoomIn=document.getElementById('btnZoomIn'), btnZoomOut=document.getElementById('btnZoomOut'), btnEnlarge=document.getElementById('btnEnlarge');
   var simEl = piece.closest ? piece.closest('.sim') : null;
-  if(btnZoomIn) btnZoomIn.addEventListener('click', function(ev){ zoom=Math.min(2.5, Math.round((zoom+0.25)*100)/100); sizePiece(); rec('interacted','zoomIn', ev, {zoom:zoom}, 'tap'); });
+  if(btnZoomIn) btnZoomIn.addEventListener('click', function(ev){ zoom=Math.min(2.5, Math.round((zoom+0.25)*100)/100); magMax=Math.max(magMax,zoom); sizePiece(); rec('interacted','zoomIn', ev, {zoom:zoom}, 'tap'); });
   if(btnZoomOut) btnZoomOut.addEventListener('click', function(ev){ zoom=Math.max(1, Math.round((zoom-0.25)*100)/100); sizePiece(); rec('interacted','zoomOut', ev, {zoom:zoom}, 'tap'); });
   function setEnlarge(on, ev){
-    enlarged=on;
+    enlarged=on; if(on) enlargeUsed=true;
     if(simEl) simEl.classList.toggle('enlarged', on);
     document.documentElement.classList.toggle('sim-lock', on);
     if(btnEnlarge) btnEnlarge.textContent = on ? (es()?'⛶ Cerrar':'⛶ Close') : (es()?'⛶ Ampliar':'⛶ Enlarge');
@@ -1293,6 +1297,16 @@ window.PAGE_I18N = {
         completedPct: Math.round((j.furthest/(tot||1))*100),
         abandonedAt: (j.abandoned? j.abandoned.step : null),
         perStep: perStep },
+      metrics:{
+        total_ms: Math.round(((performance&&performance.now)?performance.now():Date.now()) - t0),
+        stitches_placed: current,
+        avg_ms_per_stitch: stitchTimes.length? Math.round(stitchTimes.reduce(function(a,b){return a+b;},0)/stitchTimes.length):null,
+        max_hesitation_ms: stitchTimes.length? Math.max.apply(null,stitchTimes):null,
+        mean_offset_px: offsets.length? Math.round(offsets.reduce(function(a,b){return a+b;},0)/offsets.length):null,
+        sequence_errors: skipsBlocked,
+        magnification_max: magMax, enlarge_used: enlargeUsed,
+        provisional:{ thread_tangle:null, tension_variance:null, needle_angle_deg:null, bite_depth:null, microscope_focus:null, gaze_dwell:null, note:'requires 3D/VR/haptic capture' }
+      },
       summary:{ events: statements.length, taps: taps, drags: drags, skipsBlocked: skipsBlocked },
       statements: statements.map(toXapi)
     };
