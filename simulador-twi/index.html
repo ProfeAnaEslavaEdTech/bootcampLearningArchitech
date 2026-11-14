@@ -153,6 +153,17 @@
   .sim.enlarged .sim-stage{height:68vh;}
   html.sim-lock, body.sim-lock{overflow:hidden;}
 
+  /* ── Microscope mode (ocular field + focus) ─────────── */
+  .sim-stage{position:relative;}
+  .sim-stage.micro{background:#05060f;}
+  .sim-stage.micro::after{content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+    background:radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0 36%, rgba(5,8,20,.45) 44%, rgba(5,8,20,.97) 60%);}
+  .micro-row{display:none; align-items:center; gap:10px; margin-top:8px; flex-wrap:wrap;}
+  .micro-row.on{display:flex;}
+  .micro-row label{font-size:.8rem; color:#A9B8F5;}
+  .micro-row input{flex:1 1 140px; min-width:120px;}
+  .micro-focus-tag{font-family:'IBM Plex Mono',monospace; font-size:.7rem;}
+
   /* ── Touchscreen audit recorder ─────────────────────── */
   .rec{margin-top:14px; border:1px solid #2A3566; border-radius:10px; background:#101830; overflow:hidden;}
   .rec-head{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #2A3566;}
@@ -444,7 +455,14 @@
         <div class="sim-controls" style="margin-top:8px;">
           <button class="sim-btn" id="btnZoomOut" data-i18n="sim-zoomout">– Zoom</button>
           <button class="sim-btn" id="btnZoomIn" data-i18n="sim-zoomin">+ Zoom</button>
+          <button class="sim-btn" id="btnMicro" data-i18n="sim-micro">🔬 Microscope</button>
           <button class="sim-btn" id="btnEnlarge" data-i18n="sim-enlarge">⛶ Enlarge</button>
+        </div>
+
+        <div class="micro-row" id="microRow">
+          <label for="microFocus" data-i18n="sim-micro-focus">Microscope focus</label>
+          <input type="range" id="microFocus" min="0" max="100" value="20" aria-label="Microscope focus">
+          <span class="micro-focus-tag" id="microFocusTag" aria-live="polite"></span>
         </div>
 
         <div class="sim-controls" style="margin-top:12px;">
@@ -691,6 +709,7 @@ window.PAGE_I18N = {
     'sim-ins4':'Complete the pass with no skips (mastery).',
     'sim-instr-note':'The active step highlights as you manipulate the simulator.',
     'sim-zoomout':'– Zoom','sim-zoomin':'+ Zoom','sim-enlarge':'⛶ Enlarge',
+    'sim-micro':'🔬 Microscope','sim-micro-focus':'Microscope focus',
     's4-l1':'<b>Disassemble</b> — explode the digital twin into cuff / stent / core and name each part.',
     's4-l2':'<b>Understand</b> — rotate it to see the seam and every suture hole from any angle.',
     's4-l3':'<b>Handle</b> — reseat the parts; feel the orientation that must match the real jig.',
@@ -847,6 +866,7 @@ window.PAGE_I18N = {
     'sim-ins4':'Completar la pasada sin saltos (maestría).',
     'sim-instr-note':'El paso activo se resalta a medida que manipulas el simulador.',
     'sim-zoomout':'– Zoom','sim-zoomin':'+ Zoom','sim-enlarge':'⛶ Ampliar',
+    'sim-micro':'🔬 Microscopio','sim-micro-focus':'Enfoque del microscopio',
     's4-l1':'<b>Desmontar</b> — explosiona el gemelo digital en manguito / stent / núcleo y nombra cada parte.',
     's4-l2':'<b>Comprender</b> — rótalo para ver la costura y cada orificio desde cualquier ángulo.',
     's4-l3':'<b>Manipular</b> — reasienta las partes; siente la orientación que debe coincidir con el jig real.',
@@ -1245,6 +1265,31 @@ window.PAGE_I18N = {
   if(btnEnlarge) btnEnlarge.addEventListener('click', function(ev){ setEnlarge(!enlarged, ev); });
   document.addEventListener('keydown', function(e){ if(e.key==='Escape' && enlarged) setEnlarge(false, null); });
 
+  /* ---- Microscope mode (real microscope_focus telemetry) ---- */
+  var btnMicro=document.getElementById('btnMicro'), microRow=document.getElementById('microRow'),
+      microFocus=document.getElementById('microFocus'), microFocusTag=document.getElementById('microFocusTag');
+  var micro=false, microUsed=false, focusErrLast=1, microFocused=false;
+  function applyFocusBlur(){
+    var v=microFocus?+microFocus.value:50; focusErrLast=Math.abs(v-50)/50; microFocused=focusErrLast<0.15;
+    piece.style.filter = micro ? ('blur('+(focusErrLast*4).toFixed(1)+'px)') : 'none';
+    if(microFocusTag) microFocusTag.innerHTML = micro ? (microFocused ? (es()?'<span style="color:#8FE0B0">enfocado</span>':'<span style="color:#8FE0B0">in focus</span>') : (es()?'<span style="color:#F3B861">desenfocado</span>':'<span style="color:#F3B861">out of focus</span>')) : '';
+  }
+  function setMicro(on, ev){
+    micro=on; if(microRow) microRow.classList.toggle('on', on);
+    stage.classList.toggle('micro', on);
+    if(on){ microUsed=true; if(zoom<1.75){ zoom=1.75; magMax=Math.max(magMax,zoom); } }
+    else { piece.style.filter='none'; }
+    if(btnMicro) btnMicro.textContent = on ? (es()?'🔬 Salir micro':'🔬 Exit micro') : (es()?'🔬 Microscopio':'🔬 Microscope');
+    applyFocusBlur(); sizePiece();
+    rec('interacted', on?'microscope.on':'microscope.off', ev, {magnification:zoom}, 'tap');
+    if(on) setStatus(es()?'<b>Microscopio.</b> Enfoca con el control deslizante antes de la primera puntada.':'<b>Microscope.</b> Focus with the slider before the first stitch.');
+  }
+  if(btnMicro) btnMicro.addEventListener('click', function(ev){ setMicro(!micro, ev); });
+  if(microFocus){
+    microFocus.addEventListener('input', applyFocusBlur);
+    microFocus.addEventListener('change', function(ev){ rec('interacted','microscope.focus', ev, {value:+microFocus.value, focus_error_pct:Math.round(focusErrLast*100), focused:microFocused}, 'drag'); });
+  }
+
   btnReset.addEventListener('click', function(ev){
     current = 0; skipsBlocked = 0; paintDots(); renderThread(); setMetric();
     rec('initialized','run', ev, null, 'tap');
@@ -1305,7 +1350,8 @@ window.PAGE_I18N = {
         mean_offset_px: offsets.length? Math.round(offsets.reduce(function(a,b){return a+b;},0)/offsets.length):null,
         sequence_errors: skipsBlocked,
         magnification_max: magMax, enlarge_used: enlargeUsed,
-        provisional:{ thread_tangle:null, tension_variance:null, needle_angle_deg:null, bite_depth:null, microscope_focus:null, gaze_dwell:null, note:'requires 3D/VR/haptic capture' }
+        microscope:{ used: microUsed, focused: microFocused, focus_error_pct: Math.round((typeof focusErrLast==='number'?focusErrLast:1)*100) },
+        provisional:{ thread_tangle:null, tension_variance:null, needle_angle_deg:null, bite_depth:null, gaze_dwell:null, note:'requires 3D/VR/haptic capture' }
       },
       summary:{ events: statements.length, taps: taps, drags: drags, skipsBlocked: skipsBlocked },
       statements: statements.map(toXapi)
