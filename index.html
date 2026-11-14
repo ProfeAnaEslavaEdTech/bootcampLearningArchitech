@@ -464,6 +464,101 @@ footer a:hover { text-decoration: underline; }
 @media (max-width: 1200px) { .card-row-5 { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px)  { .card-row-5 { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px)  { .card-row-5 { grid-template-columns: 1fr; max-width: 480px; } }
+
+/* ── ID MODEL CARDS ── */
+.model-intro {
+  padding: 32px 2px 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+.model-intro-label {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.model-intro-label::before {
+  content: ''; display: inline-block; width: 20px; height: 2px;
+  background: var(--muted); border-radius: 2px;
+}
+.model-intro h2 {
+  font-family: 'Fraunces', 'Palatino Linotype', Palatino, Georgia, serif;
+  font-size: 22px; font-weight: 700; color: var(--ink); line-height: 1.2;
+  text-wrap: balance; margin-bottom: 8px;
+}
+.model-intro p {
+  font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 560px;
+}
+.model-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 14px; max-width: 930px; margin: 0 auto;
+}
+@media (max-width: 700px)  { .model-grid { grid-template-columns: 1fr; max-width: 480px; } }
+@media (max-width: 1000px) and (min-width: 701px) { .model-grid { grid-template-columns: 1fr 1fr; } }
+
+.model-card {
+  background: var(--surface); border: 1.5px solid var(--line);
+  border-radius: 12px; overflow: hidden;
+  cursor: pointer; transition: border-color 0.18s, box-shadow 0.18s;
+}
+.model-card:hover, .model-card:focus-within {
+  border-color: var(--mc-accent, var(--primary));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mc-accent, var(--primary)) 18%, transparent);
+}
+.model-card[data-open="true"] { border-color: var(--mc-accent, var(--primary)); }
+
+.model-card-head {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 20px 20px 18px; user-select: none;
+}
+.model-card-icon {
+  width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+  background: color-mix(in srgb, var(--mc-accent, var(--primary)) 16%, var(--surface));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700;
+  color: var(--mc-accent, var(--primary)); letter-spacing: 0.04em;
+}
+.model-card-title-block { flex: 1; min-width: 0; }
+.model-card-name {
+  font-family: 'Fraunces', 'Palatino Linotype', Palatino, Georgia, serif;
+  font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.1;
+  margin-bottom: 4px;
+}
+.model-card-tagline {
+  font-size: 12px; color: var(--muted); line-height: 1.4;
+}
+.model-card-chevron {
+  font-size: 16px; color: var(--muted); flex-shrink: 0;
+  transition: transform 0.2s; align-self: center;
+}
+.model-card[data-open="true"] .model-card-chevron { transform: rotate(180deg); }
+
+.model-card-body {
+  display: none; border-top: 1px solid var(--line);
+  padding: 20px 20px 22px;
+}
+.model-card[data-open="true"] .model-card-body { display: block; }
+
+.mc-steps { margin: 0 0 18px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.mc-step {
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.mc-step-badge {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 6px;
+  background: color-mix(in srgb, var(--mc-accent, var(--primary)) 16%, var(--surface));
+  color: var(--mc-accent, var(--primary));
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.mc-step-text { font-size: 13.5px; color: var(--ink); line-height: 1.45; padding-top: 4px; }
+.mc-step-text strong { color: var(--mc-accent, var(--primary)); }
+
+.mc-when {
+  font-size: 12.5px; line-height: 1.6; color: var(--muted);
+  border-top: 1px solid var(--line); padding-top: 14px; margin-top: 2px;
+}
+.mc-when strong { color: var(--ink); display: block; margin-bottom: 2px; font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.08em; font-family: 'IBM Plex Mono', monospace; }
+.mc-when + .mc-when { margin-top: 10px; border-top: none; padding-top: 0; }
 </style>
 </head>
 <body>
@@ -506,6 +601,87 @@ footer a:hover { text-decoration: underline; }
 <!-- ═══════════════════════════════════════════ PANEL: TRACKS ═══ -->
 <div id="panel-tracks" role="tabpanel" aria-labelledby="tab-tracks">
 <div class="tracks-panel">
+
+  <!-- ── ID MODEL CARDS ── -->
+  <div class="model-intro">
+    <div class="model-intro-label">Instructional Design</div>
+    <h2>Choose your design model</h2>
+    <p>Every track in this bootcamp is built on one of three proven frameworks. Tap a card to see the steps, context, and when each model fits best.</p>
+  </div>
+  <div class="model-grid" style="margin-bottom: 48px;">
+
+    <!-- ADDIE -->
+    <div class="model-card" style="--mc-accent: var(--primary);" data-open="false"
+         role="button" tabindex="0" aria-expanded="false"
+         onclick="toggleModel(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleModel(this)">
+      <div class="model-card-head">
+        <div class="model-card-icon">ADDIE</div>
+        <div class="model-card-title-block">
+          <div class="model-card-name">ADDIE</div>
+          <div class="model-card-tagline">Classic linear model · 5 sequential phases</div>
+        </div>
+        <span class="model-card-chevron" aria-hidden="true">▾</span>
+      </div>
+      <div class="model-card-body" id="mc-addie">
+        <ol class="mc-steps">
+          <li class="mc-step"><span class="mc-step-badge">A</span><span class="mc-step-text"><strong>Analysis</strong> — Identify the performance gap, audience, constraints and existing knowledge.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">D</span><span class="mc-step-text"><strong>Design</strong> — Define learning objectives, assessment strategy, sequencing and media choices.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">D</span><span class="mc-step-text"><strong>Development</strong> — Build all content, assets and prototypes against the design blueprint.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">I</span><span class="mc-step-text"><strong>Implementation</strong> — Deploy the course, train facilitators, and launch to learners.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">E</span><span class="mc-step-text"><strong>Evaluation</strong> — Measure impact at Kirkpatrick levels 1–4 and feed findings back into Analysis.</span></li>
+        </ol>
+        <div class="mc-when"><strong>When it is used</strong>Regulated or compliance training, formal certification programmes, and long shelf-life content where requirements are fixed before development begins.</div>
+        <div class="mc-when"><strong>When we recommend it</strong>Choose ADDIE when documentation and audit trails matter — FDA or EU-AI-Act regulated training, stable onboarding procedures, or any context where a signed-off design document is required before a single slide is built.</div>
+      </div>
+    </div>
+
+    <!-- SAM -->
+    <div class="model-card" style="--mc-accent: var(--berry);" data-open="false"
+         role="button" tabindex="0" aria-expanded="false"
+         onclick="toggleModel(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleModel(this)">
+      <div class="model-card-head">
+        <div class="model-card-icon">SAM</div>
+        <div class="model-card-title-block">
+          <div class="model-card-name">SAM</div>
+          <div class="model-card-tagline">Successive Approximation · Agile &amp; iterative</div>
+        </div>
+        <span class="model-card-chevron" aria-hidden="true">▾</span>
+      </div>
+      <div class="model-card-body" id="mc-sam">
+        <ol class="mc-steps">
+          <li class="mc-step"><span class="mc-step-badge">P</span><span class="mc-step-text"><strong>Preparation</strong> — Rapid information gathering: existing knowledge, audience, goals. No lengthy analysis phase.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">D1</span><span class="mc-step-text"><strong>Iterative Design</strong> — Rough prototype → stakeholder review → revise. Three short cycles, not one long spec.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">D2</span><span class="mc-step-text"><strong>Iterative Development</strong> — Alpha → Beta → Gold. Each pass refines based on real user and SME feedback.</span></li>
+        </ol>
+        <div class="mc-when"><strong>When it is used</strong>Corporate L&amp;D where stakeholders need to see something early, content is likely to evolve, or timelines are tight and rework is cheaper than a long upfront design phase.</div>
+        <div class="mc-when"><strong>When we recommend it</strong>Most product and soft-skills training — especially when SMEs cannot articulate needs until they react to a prototype. SAM surfaces assumptions early, when fixing them is still cheap.</div>
+      </div>
+    </div>
+
+    <!-- TWI -->
+    <div class="model-card" style="--mc-accent: var(--accent);" data-open="false"
+         role="button" tabindex="0" aria-expanded="false"
+         onclick="toggleModel(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleModel(this)">
+      <div class="model-card-head">
+        <div class="model-card-icon">TWI</div>
+        <div class="model-card-title-block">
+          <div class="model-card-name">TWI</div>
+          <div class="model-card-tagline">Training Within Industry · 3 J-programmes</div>
+        </div>
+        <span class="model-card-chevron" aria-hidden="true">▾</span>
+      </div>
+      <div class="model-card-body" id="mc-twi">
+        <ol class="mc-steps">
+          <li class="mc-step"><span class="mc-step-badge">JI</span><span class="mc-step-text"><strong>Job Instruction</strong> — Prepare, Present, Try out, Follow up. Teach any task in four steps so the learner can do it correctly, safely, and conscientiously from day one.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">JM</span><span class="mc-step-text"><strong>Job Methods</strong> — Question every detail of a task to eliminate waste and improve how work is done.</span></li>
+          <li class="mc-step"><span class="mc-step-badge">JR</span><span class="mc-step-text"><strong>Job Relations</strong> — Build the supervisor–learner relationship so instruction is received, not resisted.</span></li>
+        </ol>
+        <div class="mc-when"><strong>When it is used</strong>Hands-on skills training in manufacturing, healthcare, Lean/Toyota environments, and any procedure where a wrong step has safety or quality consequences.</div>
+        <div class="mc-when"><strong>When we recommend it</strong>Choose TWI when you need a trainer — not a course — to transfer a physical skill or critical procedure in under 30 minutes, with zero margin for error. It is the foundation of every Lean training programme.</div>
+      </div>
+    </div>
+
+  </div><!-- /model-grid -->
 
   <!-- ── SECTOR 1 ── -->
   <div class="sector-block">
@@ -2096,6 +2272,12 @@ footer a:hover { text-decoration: underline; }
 })();
 
 /* ── WCAG 3.2.5 — open all external reference links in a new tab ── */
+function toggleModel(card) {
+  var isOpen = card.getAttribute('data-open') === 'true';
+  card.setAttribute('data-open', isOpen ? 'false' : 'true');
+  card.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+}
+
 document.querySelectorAll('.refs-list a[href^="http"]').forEach(function(a) {
   a.setAttribute('target', '_blank');
   a.setAttribute('rel', 'noopener');
