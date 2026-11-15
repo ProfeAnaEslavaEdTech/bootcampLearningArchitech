@@ -1452,7 +1452,7 @@ window.PAGE_I18N = {
       var baseurl = location.href.split('#')[0].split('?')[0];
       var html = await (await fetch(baseurl)).text();
       html = html.replace(/\.\.\/shared\//g, 'shared/');
-      html = html.replace('</body>', '<scr'+'ipt>window.SCORM_CONFIG={masteryScore:80};</scr'+'ipt>\n<scr'+'ipt src="scorm12.js"></scr'+'ipt>\n</body>');
+      html = html.replace('</'+'body>', '<scr'+'ipt>window.SCORM_CONFIG={masteryScore:80};</scr'+'ipt>\n<scr'+'ipt src="scorm12.js"></scr'+'ipt>\n</'+'body>');
       var dir='../shared/';
       var css = await (await fetch(dir+'oi.css')).text();
       var i18n = await (await fetch(dir+'i18n.js')).text();
