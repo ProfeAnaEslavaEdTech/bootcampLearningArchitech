@@ -133,6 +133,12 @@
   @media (prefers-reduced-motion:reduce){ .needle{transition:none;} }
   .needle svg{display:block; pointer-events:none;}
   .needle-hint{font-size:.82rem; color:#A9B8F5;}
+  .forceps{touch-action:none; cursor:grab; user-select:none; -webkit-user-select:none; display:inline-flex; padding:7px 9px; border:1px dashed #33407A; border-radius:10px; background:#121a35; position:relative; z-index:3; transition:transform .12s ease;}
+  .forceps:active, .forceps.grab{cursor:grabbing; border-color:#8FE0B0; transition:none;}
+  .forceps.holding{border-color:#8FE0B0; background:#13241c;}
+  .forceps svg{display:block; pointer-events:none;}
+  .sim-stage.loupe{background:#0a1020;}
+  .sim-stage.loupe::after{content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit; background:radial-gradient(circle at 50% 45%, rgba(255,255,230,.10) 0 30%, rgba(10,16,32,.35) 46%, rgba(10,16,32,.86) 66%);}
 
   /* ── N1/N2: sim tabs + synced step-by-step instructions ─────────── */
   .sim-tabs{display:flex; gap:8px; margin:10px 0; flex-wrap:wrap;}
@@ -441,7 +447,10 @@
           <div class="needle" id="needle" aria-hidden="true" title="Needle / Aguja">
             <svg width="62" height="20" viewBox="0 0 62 20"><circle cx="9" cy="10" r="3.5" fill="none" stroke="#C9D2F5" stroke-width="2"></circle><line x1="9" y1="10" x2="53" y2="10" stroke="#C9D2F5" stroke-width="3"></line><polygon points="53,5 62,10 53,15" fill="#C9D2F5"></polygon><path d="M9 10 q-7 4 -3 9" stroke="#F3B861" stroke-width="2" fill="none"></path></svg>
           </div>
-          <span class="needle-hint" id="needleHint" data-i18n="sim-needlehint">Drag the needle to the highlighted point to place each stitch.</span>
+          <div class="forceps" id="forceps" aria-hidden="true" title="Forceps / Pinza">
+            <svg width="54" height="20" viewBox="0 0 54 20"><path d="M4 4 L40 9 M4 16 L40 11" stroke="#C9D2F5" stroke-width="2.5" fill="none" stroke-linecap="round"></path><path d="M40 9 L50 10 L40 11" stroke="#C9D2F5" stroke-width="2.5" fill="none" stroke-linejoin="round"></path></svg>
+          </div>
+          <span class="needle-hint" id="needleHint" data-i18n="sim-needlehint">Steady the piece with the forceps, then drag the needle to the highlighted point.</span>
         </div>
 
         <div class="sim-controls">
@@ -456,8 +465,9 @@
         <div class="sim-controls" style="margin-top:8px;">
           <button class="sim-btn" id="btnZoomOut" data-i18n="sim-zoomout">– Zoom</button>
           <button class="sim-btn" id="btnZoomIn" data-i18n="sim-zoomin">+ Zoom</button>
-          <button class="sim-btn" id="btnMicro" data-i18n="sim-micro">🔬 Microscope</button>
-          <button class="sim-btn" id="btnEnlarge" data-i18n="sim-enlarge">⛶ Enlarge</button>
+          <button class="sim-btn" id="btnMicro" data-i18n="sim-micro">Microscope</button>
+          <button class="sim-btn" id="btnLoupe" aria-pressed="false" data-i18n="sim-loupe">Loupe lamp</button>
+          <button class="sim-btn" id="btnEnlarge" data-i18n="sim-enlarge">Enlarge</button>
         </div>
 
         <div class="micro-row" id="microRow">
@@ -721,7 +731,8 @@ window.PAGE_I18N = {
     'sim-rotate':'⟳ Auto-rotate','sim-explode':'⤢ Explode parts','sim-angle':'Rotate (angle)',
     'sim-reset':'⟲ Reset run',
     'sim-stitchkey':'✚ Suture highlighted point (accessible)',
-    'sim-needlehint':'Drag the needle to the highlighted point to place each stitch.',
+    'sim-needlehint':'Steady the piece with the forceps, then drag the needle to the highlighted point.',
+    'sim-loupe':'Loupe lamp',
     'sim-status0':'Explode to disassemble, rotate to inspect, then <b>drag the needle</b> to the highlighted point to suture.',
     'br-h':'Cleanroom readiness — a complementary branch (ISO 7 / ISO 8)',
     'br-sub':'Two instructional designs that scaffold: ISO 8 is the baseline readiness; ISO 7 builds on it for the critical zone. Pick a class to run its gowning gate.',
@@ -829,16 +840,16 @@ window.PAGE_I18N = {
     's2-t1':'Paso importante','s2-t2':'Punto clave','s2-t3':'Razón',
     's2-g1':'G1 · Vestido y entrada aséptica a sala blanca','s2-gtr1':'<span class="pill crit">Simular ·crítico</span>',
     's2-g2':'G2 · Despeje de línea y control ambiental (GMP)','s2-gtr2':'<span class="pill crit">Simular ·crítico</span>',
-    's2-s1':'1 · Orientar la costura del manguito al poste del stent','s2-tr1':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s1':'1 · Orientar las comisuras a los postes del stent','s2-tr1':'<span class="pill crit">Simular ·crítico</span>',
     's2-s2':'2 · Fijar profundidad de puntada y ángulo de aguja','s2-tr2':'<span class="pill crit">Simular ·crítico</span>',
     's2-s3':'3 · Mantener tensión de hilo pareja','s2-tr3':'<span class="pill crit">Simular ·crítico</span>',
-    's2-s4':'4 · Seguir la secuencia de orificios (sin saltos)','s2-tr4':'<span class="pill crit">Simular ·crítico</span>',
+    's2-s4':'4 · Seguir el hilo marcador — un punto por celda (sin saltos)','s2-tr4':'<span class="pill crit">Simular ·crítico</span>',
     's2-s5':'5 · Anudar y asentar el nudo final','s2-tr5':'<span class="pill crit">Simular ·crítico</span>',
     'twi-kp-g1':'Vestir en el orden correcto; nunca tocar la superficie externa.','twi-rs-g1':'Romper el orden de vestido rompe la asepsia → contaminación.',
-    'twi-kp-1':'Alinear la marca de la costura al poste del stent antes de la primera puntada.','twi-rs-1':'La desalineación distorsiona la geometría de la válvula.',
+    'twi-kp-1':'Alinear cada comisura a su poste/marca antes de la primera puntada.','twi-rs-1':'La desalineación distorsiona la coaptación de los velos → regurgitación.',
     'twi-kp-2':'Aguja ≈ 90°; profundidad dentro de la ventana de especificación.','twi-rs-2':'Muy superficial se suelta; muy profunda daña el velo.',
-    'twi-kp-3':'Tracción pareja y constante en cada puntada.','twi-rs-3':'La tensión despareja frunce el manguito → vía de fuga.',
-    'twi-kp-4':'Seguir el orden de orificios; nunca saltar uno.','twi-rs-4':'Un orificio saltado es un punto débil que puede fallar en el cuerpo.',
+    'twi-kp-3':'Tracción pareja y constante en cada puntada.','twi-rs-3':'La tensión despareja frunce el faldón → vía de fuga paravalvular (PVL).',
+    'twi-kp-4':'Seguir el hilo marcador; un punto por celda, espaciado uniforme; nunca saltar una celda.','twi-rs-4':'Una celda saltada deja un hueco en la fijación del faldón → fuga paravalvular (PVL).',
     'twi-kp-5':'Asentar el nudo plano y cuadrado.','twi-rs-5':'Un nudo saliente o flojo roza el tejido y puede soltarse.',
     's2-s6':'6 · Recortar hilo a la longitud de especificación','s2-tr6':'<span class="pill std">Ayuda de trabajo</span>',
     's2-s7':'7 · Completar y firmar el Device History Record (DHR)','s2-tr7':'<span class="pill std">Ayuda + SOP</span>',
@@ -878,7 +889,8 @@ window.PAGE_I18N = {
     'sim-rotate':'⟳ Auto-rotar','sim-explode':'⤢ Explosionar partes','sim-angle':'Rotar (ángulo)',
     'sim-reset':'⟲ Reiniciar pasada',
     'sim-stitchkey':'✚ Coser el punto resaltado (accesible)',
-    'sim-needlehint':'Arrastra la aguja al punto resaltado para colocar cada puntada.',
+    'sim-needlehint':'Sujeta la pieza con la pinza y luego arrastra la aguja al punto resaltado.',
+    'sim-loupe':'Lámpara-lupa',
     'sim-status0':'Explosiona para desmontar, rota para inspeccionar, y <b>arrastra la aguja</b> al punto resaltado para coser.',
     'br-h':'Preparación de sala blanca — un branch complementario (ISO 7 / ISO 8)',
     'br-sub':'Dos diseños instruccionales que se escalonan: ISO 8 es la preparación base; ISO 7 se construye sobre ella para la zona crítica. Elige una clase para correr su compuerta de vestido.',
@@ -1198,10 +1210,12 @@ window.PAGE_I18N = {
     var now=(performance&&performance.now)?performance.now():Date.now();
     var dt = (lastStitchT!=null) ? Math.round(now-lastStitchT) : null; lastStitchT=now;
     if(dt!=null) stitchTimes.push(dt); if(offset!=null) offsets.push(offset);
+    var fe = forcepsEngaged; if(fe) forcepsStitches++;
     current++; paintDots(); renderThread(); setMetric();
-    rec('progressed','stitch', ev, {stitch:current, of:TOTAL, offset_px:(offset!=null?offset:undefined), ms_since_prev:(dt!=null?dt:undefined)}, kind||'drag');
+    rec('progressed','stitch', ev, {stitch:current, of:TOTAL, offset_px:(offset!=null?offset:undefined), ms_since_prev:(dt!=null?dt:undefined), forceps_engaged:fe}, kind||'drag');
+    forcepsEngaged=false; if(forcepsEl) forcepsEl.classList.remove('holding');
     if (current>=TOTAL) masteryDone(ev);
-    else setStatus((es()?'Puntada ':'Stitch ') + current + '/' + TOTAL + (es()?' colocada. Lleva la aguja al siguiente punto resaltado.':' placed. Bring the needle to the next highlighted point.'));
+    else setStatus((es()?'Puntada ':'Stitch ') + current + '/' + TOTAL + (es()?' colocada. Sujeta de nuevo con la pinza y lleva la aguja al siguiente punto.':' placed. Steady again with the forceps and bring the needle to the next point.'));
   }
   function block(ev, idx, offset){
     skipsBlocked++; setMetric();
@@ -1212,20 +1226,45 @@ window.PAGE_I18N = {
   }
   function nearestDot(px,py){ var best=null; dots.forEach(function(e,k){ var r=e.getBoundingClientRect(); var cx=r.left+r.width/2, cy=r.top+r.height/2; var dd=Math.hypot(px-cx,py-cy); if(!best||dd<best.dist) best={idx:k,dist:dd}; }); return best; }
   var TOL=48, nDrag=false, nsx=0, nsy=0;
+  var forcepsEl=document.getElementById('forceps'), forcepsEngaged=false, forcepsStitches=0;
   if (needle){
     needle.addEventListener('pointerdown', function(ev){ ev.stopPropagation(); if(current>=TOTAL) return; nDrag=true; nsx=ev.clientX; nsy=ev.clientY; needle.classList.add('grab'); if(needle.setPointerCapture){try{needle.setPointerCapture(ev.pointerId);}catch(e){}} ev.preventDefault(); });
     window.addEventListener('pointermove', function(ev){ if(!nDrag) return; needle.style.transform='translate('+(ev.clientX-nsx)+'px,'+(ev.clientY-nsy)+'px)'; });
     function needleUp(ev){
       if(!nDrag) return; nDrag=false; needle.classList.remove('grab');
       var r=needle.getBoundingClientRect(); var nd=nearestDot(r.right-8, r.top+r.height/2);
-      if (nd && nd.dist<=TOL){ if(nd.idx===current) place(ev,'drag', Math.round(nd.dist)); else block(ev, nd.idx, Math.round(nd.dist)); }
+      if (nd && nd.dist<=TOL){
+        if(nd.idx===current){
+          if(forcepsEngaged){ place(ev,'drag', Math.round(nd.dist)); }
+          else { rec('blocked','forceps', ev, {stitch:current+1, reason:'no_forceps'}, 'drag'); setStatus(es()?'<b style="color:#F3B861">Para revisar:</b> sujeta primero el tejido con la <b>pinza</b>, luego cose.':'<b style="color:#F3B861">Needs review:</b> steady the tissue with the <b>forceps</b> first, then stitch.'); }
+        } else block(ev, nd.idx, Math.round(nd.dist));
+      }
       else setStatus(es()?'Lleva la aguja al <b>punto resaltado</b> (en oro).':'Bring the needle to the <b>highlighted point</b> (gold).');
       needle.style.transform='';
     }
     window.addEventListener('pointerup', needleUp);
     window.addEventListener('pointercancel', needleUp);
   }
-  if (btnStitchKey) btnStitchKey.addEventListener('click', function(ev){ if(current>=TOTAL){ masteryDone(ev); return; } place(ev,'tap'); });
+  if (forcepsEl){
+    var fDrag=false, fsx=0, fsy=0;
+    forcepsEl.addEventListener('pointerdown', function(ev){ ev.stopPropagation(); fDrag=true; fsx=ev.clientX; fsy=ev.clientY; forcepsEl.classList.add('grab'); if(forcepsEl.setPointerCapture){try{forcepsEl.setPointerCapture(ev.pointerId);}catch(e){}} ev.preventDefault(); });
+    window.addEventListener('pointermove', function(ev){ if(!fDrag) return; forcepsEl.style.transform='translate('+(ev.clientX-fsx)+'px,'+(ev.clientY-fsy)+'px)'; });
+    function forcepsUp(ev){
+      if(!fDrag) return; fDrag=false; forcepsEl.classList.remove('grab');
+      var fr=forcepsEl.getBoundingClientRect(); var fx=fr.right-10, fy=fr.top+fr.height/2;
+      var pr=piece.getBoundingClientRect();
+      if(fx>=pr.left && fx<=pr.right && fy>=pr.top && fy<=pr.bottom){
+        forcepsEngaged=true; forcepsEl.classList.add('holding');
+        rec('interacted','forceps.hold', ev, {engaged:true}, 'drag');
+        setStatus(es()?'<b>Pieza sujeta con la pinza.</b> Ahora lleva la aguja al punto resaltado.':'<b>Piece steadied with the forceps.</b> Now bring the needle to the highlighted point.');
+      } else { forcepsEngaged=false; forcepsEl.classList.remove('holding'); }
+      forcepsEl.style.transform='';
+    }
+    window.addEventListener('pointerup', forcepsUp);
+    window.addEventListener('pointercancel', forcepsUp);
+  }
+  if (btnStitchKey) btnStitchKey.addEventListener('click', function(ev){ if(current>=TOTAL){ masteryDone(ev); return; } if(!forcepsEngaged){ rec('blocked','forceps', ev, {stitch:current+1, reason:'no_forceps'}, 'tap'); setStatus(es()?'<b style="color:#F3B861">Para revisar:</b> activa la <b>pinza</b> (botón o arrástrala a la pieza) antes de coser.':'<b style="color:#F3B861">Needs review:</b> engage the <b>forceps</b> (button or drag it onto the piece) before stitching.'); return; } place(ev,'tap'); });
+  /* forceps accessible fallback: the suture-highlighted-point button above requires the forceps engaged first */
 
   /* ---- N2: step-by-step instructions tab (synced) + just-in-time highlight ---- */
   var simTab1=document.getElementById('simTab1'), simTab2=document.getElementById('simTab2');
@@ -1267,9 +1306,9 @@ window.PAGE_I18N = {
   document.addEventListener('keydown', function(e){ if(e.key==='Escape' && enlarged) setEnlarge(false, null); });
 
   /* ---- Microscope mode (real microscope_focus telemetry) ---- */
-  var btnMicro=document.getElementById('btnMicro'), microRow=document.getElementById('microRow'),
+  var btnMicro=document.getElementById('btnMicro'), btnLoupe=document.getElementById('btnLoupe'), microRow=document.getElementById('microRow'),
       microFocus=document.getElementById('microFocus'), microFocusTag=document.getElementById('microFocusTag');
-  var micro=false, microUsed=false, focusErrLast=1, microFocused=false;
+  var micro=false, microUsed=false, focusErrLast=1, microFocused=false, loupe=false, magMode='none';
   function applyFocusBlur(){
     var v=microFocus?+microFocus.value:50; focusErrLast=Math.abs(v-50)/50; microFocused=focusErrLast<0.15;
     piece.style.filter = micro ? ('blur('+(focusErrLast*4).toFixed(1)+'px)') : 'none';
@@ -1278,14 +1317,27 @@ window.PAGE_I18N = {
   function setMicro(on, ev){
     micro=on; if(microRow) microRow.classList.toggle('on', on);
     stage.classList.toggle('micro', on);
-    if(on){ microUsed=true; if(zoom<1.75){ zoom=1.75; magMax=Math.max(magMax,zoom); } }
+    if(on){ microUsed=true; if(loupe){ loupe=false; stage.classList.remove('loupe'); if(btnLoupe){ btnLoupe.setAttribute('aria-pressed','false'); btnLoupe.textContent=(es()?'Lámpara-lupa':'Loupe lamp'); } } if(zoom<1.75){ zoom=1.75; magMax=Math.max(magMax,zoom); } }
     else { piece.style.filter='none'; }
-    if(btnMicro) btnMicro.textContent = on ? (es()?'🔬 Salir micro':'🔬 Exit micro') : (es()?'🔬 Microscopio':'🔬 Microscope');
+    magMode = on ? 'microscope' : (loupe ? 'loupe' : 'none');
+    if(btnMicro) btnMicro.textContent = on ? (es()?'Salir micro':'Exit micro') : (es()?'Microscopio':'Microscope');
     applyFocusBlur(); sizePiece();
     rec('interacted', on?'microscope.on':'microscope.off', ev, {magnification:zoom}, 'tap');
     if(on) setStatus(es()?'<b>Microscopio.</b> Enfoca con el control deslizante antes de la primera puntada.':'<b>Microscope.</b> Focus with the slider before the first stitch.');
   }
   if(btnMicro) btnMicro.addEventListener('click', function(ev){ setMicro(!micro, ev); });
+  function setLoupe(on, ev){
+    loupe=on;
+    if(on && micro){ setMicro(false, null); }
+    stage.classList.toggle('loupe', on);
+    magMode = on ? 'loupe' : (micro ? 'microscope' : 'none');
+    if(on && zoom<1.4){ zoom=1.4; magMax=Math.max(magMax,zoom); }
+    if(btnLoupe){ btnLoupe.setAttribute('aria-pressed', on?'true':'false'); btnLoupe.textContent = on ? (es()?'Salir lupa':'Exit loupe') : (es()?'Lámpara-lupa':'Loupe lamp'); }
+    sizePiece();
+    rec('interacted', on?'loupe.on':'loupe.off', ev, {magnification:zoom}, 'tap');
+    if(on) setStatus(es()?'<b>Lámpara-lupa.</b> Magnificación de banco; sujeta con la pinza y cose.':'<b>Loupe lamp.</b> Bench magnification; steady with the forceps and stitch.');
+  }
+  if(btnLoupe) btnLoupe.addEventListener('click', function(ev){ setLoupe(!loupe, ev); });
   if(microFocus){
     microFocus.addEventListener('input', applyFocusBlur);
     microFocus.addEventListener('change', function(ev){ rec('interacted','microscope.focus', ev, {value:+microFocus.value, focus_error_pct:Math.round(focusErrLast*100), focused:microFocused}, 'drag'); });
@@ -1350,8 +1402,9 @@ window.PAGE_I18N = {
         max_hesitation_ms: stitchTimes.length? Math.max.apply(null,stitchTimes):null,
         mean_offset_px: offsets.length? Math.round(offsets.reduce(function(a,b){return a+b;},0)/offsets.length):null,
         sequence_errors: skipsBlocked,
-        magnification_max: magMax, enlarge_used: enlargeUsed,
+        magnification_max: magMax, magnification_mode: magMode, enlarge_used: enlargeUsed,
         microscope:{ used: microUsed, focused: microFocused, focus_error_pct: Math.round((typeof focusErrLast==='number'?focusErrLast:1)*100) },
+        forceps_handling:{ stitches_with_forceps: forcepsStitches, pct: current? Math.round(forcepsStitches/current*100):null },
         provisional:{ thread_tangle:null, tension_variance:null, needle_angle_deg:null, bite_depth:null, gaze_dwell:null, note:'requires 3D/VR/haptic capture' }
       },
       summary:{ events: statements.length, taps: taps, drags: drags, skipsBlocked: skipsBlocked },
