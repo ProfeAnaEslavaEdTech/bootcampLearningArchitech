@@ -139,6 +139,8 @@
   .forceps svg{display:block; pointer-events:none;}
   .sim-stage.loupe{background:#0a1020;}
   .sim-stage.loupe::after{content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit; background:radial-gradient(circle at 50% 45%, rgba(255,255,230,.10) 0 30%, rgba(10,16,32,.35) 46%, rgba(10,16,32,.86) 66%);}
+  /* geometry · THV-in-THV: cylindrical open-cell + guide-marker thread (teal) */
+  .sim-piece::after{content:''; position:absolute; inset:9%; border-radius:50%; border:2px dashed #39C0C8; opacity:.75; pointer-events:none;}
 
   /* ── N1/N2: sim tabs + synced step-by-step instructions ─────────── */
   .sim-tabs{display:flex; gap:8px; margin:10px 0; flex-wrap:wrap;}
