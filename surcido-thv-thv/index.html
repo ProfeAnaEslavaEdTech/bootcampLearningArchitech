@@ -16,6 +16,17 @@
 <title>TWI Job Instruction · Zero-Error Suturing — Aortic THV-in-THV variant</title>
 <meta name="description" content="Instructional-design case (D1–D7) for the aortic THV-in-THV suturing station: a 4D digital-twin simulator to disassemble, understand, handle and rehearse the operation — following the guide-marker thread, one stitch per cell — before touching real material, to reduce the defect rate.">
 <link rel="stylesheet" href="../shared/oi.css">
+<style id="kg-css">
+  body{visibility:hidden}
+  body.unlocked{visibility:visible}
+  #keygate{position:fixed;inset:0;z-index:99999;visibility:visible;display:flex;align-items:center;justify-content:center;background:#0E1428;color:#EAF0FF;font-family:'Inter',system-ui,sans-serif;padding:24px;text-align:center;}
+  #keygate .kg-box{max-width:420px;width:100%;}
+  #keygate h2{font-family:'Fraunces',Georgia,serif;font-size:1.35rem;color:#EAF0FF;margin:0 0 8px;}
+  #keygate p{color:#A9B8F5;font-size:.92rem;line-height:1.5;margin:0 0 16px;}
+  #keygate input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #33407A;background:#121a35;color:#EAF0FF;font:inherit;margin-bottom:10px;}
+  #keygate button{width:100%;padding:12px;border-radius:10px;border:none;background:#3B5BD6;color:#fff;font:inherit;font-weight:700;cursor:pointer;min-height:48px;}
+  #keygate .kg-err{display:none;color:#F3B861;font-size:.85rem;margin-top:8px;}
+</style>
 <style>
   :root{
     --navy:#1F3864; --blue:#2E5395; --ink:#1D2433; --mist:#EEF1F7;
@@ -1646,6 +1657,41 @@ window.PAGE_I18N = {
   }
   apply(saved);
   btn.addEventListener('click',function(){apply(cycle[(cycle.indexOf(saved)+1)%cycle.length]);});
+})();
+</script>
+<div id="keygate" role="dialog" aria-label="Acceso restringido">
+  <div class="kg-box">
+    <h2>Acceso restringido · Restricted</h2>
+    <p>Abre el <b>enlace de acceso</b> que te compartieron y entras directamente. · Open the access link you were given to enter directly.</p>
+    <input id="kgInput" type="password" autocomplete="off" aria-label="Llave de acceso" placeholder="(opcional) pega la llave · paste key">
+    <button id="kgBtn" type="button">Entrar · Enter</button>
+    <div class="kg-err" id="kgErr">Llave incorrecta · Wrong key</div>
+  </div>
+</div>
+<script>
+(function(){
+  var HASH='f1e1609bb70a0c870fb0597337213fb846f1ec0825b2c71c58834b05765ad1e2';
+  function reveal(){ document.body.classList.add('unlocked'); var g=document.getElementById('keygate'); if(g&&g.parentNode) g.parentNode.removeChild(g); try{localStorage.setItem('oi-key-ok','1');}catch(e){} }
+  function hasSCORM(){ var w=window,t=0; try{ while(w&&t<12){ if(w.API) return true; if(w.parent===w) break; w=w.parent; t++; } }catch(e){} return false; }
+  function hex(buf){ return Array.prototype.map.call(new Uint8Array(buf),function(x){return ('0'+x.toString(16)).slice(-2);}).join(''); }
+  async function sha(s){ var b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return hex(b); }
+  async function tryKey(k){ if(!k) return false; try{ return (await sha(k))===HASH; }catch(e){ return false; } }
+  function start(){
+    if(hasSCORM()){ reveal(); return; }
+    try{ if(localStorage.getItem('oi-key-ok')==='1'){ reveal(); return; } }catch(e){}
+    if(!(window.crypto&&window.crypto.subtle)){ reveal(); return; }
+    var p; try{ p=new URLSearchParams(location.search); }catch(e){ p=null; }
+    var k=(p&&p.get('k'))||'';
+    if(!k && location.hash.indexOf('k=')>=0){ k=decodeURIComponent(location.hash.split('k=')[1].split('&')[0]); }
+    (async function(){
+      if(await tryKey(k)){ try{history.replaceState(null,'',location.pathname);}catch(e){} reveal(); return; }
+      var inp=document.getElementById('kgInput'), btn=document.getElementById('kgBtn'), err=document.getElementById('kgErr');
+      async function submit(){ if(await tryKey(((inp&&inp.value)||'').trim())){ reveal(); } else if(err){ err.style.display='block'; } }
+      if(btn) btn.addEventListener('click', submit);
+      if(inp) inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
+    })();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
 </script>
 </body>
