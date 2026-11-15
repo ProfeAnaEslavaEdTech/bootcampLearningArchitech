@@ -492,10 +492,13 @@
           <div class="rec-actions">
             <button class="sim-btn" id="recExport" data-i18n="rec-export">⭳ Export xAPI (JSON)</button>
             <button class="sim-btn" id="recScorm" data-i18n="rec-scorm">⭳ SCORM 1.2 (.zip)</button>
+            <button class="sim-btn" id="recMetrics" data-i18n="rec-metrics">Show metrics</button>
             <button class="sim-btn" id="recCopy" data-i18n="rec-copy">⧉ Copy</button>
             <button class="sim-btn" id="recClear" data-i18n="rec-clear">⌫ Clear</button>
           </div>
         </div>
+        <div id="metricsPanel" style="display:none;margin-top:10px;border:1px solid #2A3566;border-radius:10px;background:#101830;padding:12px 14px;"></div>
+        <div class="rec-howto" style="margin-top:10px;font-size:.86rem;color:#C7D2F7;line-height:1.55;border:1px solid #2A3566;border-radius:10px;background:#0f1730;padding:10px 14px;" data-i18n="rec-howto"><b>How to use this demo</b></div>
         <p class="rec-note" data-i18n="rec-note">Every tap, drag and gesture is captured with its <code>pointerType</code> (touch / mouse / pen), timestamp and coordinates — an auditable training record and a UX-usability signal. On a phone you'll see <code>touch</code>.</p>
       </div>
       </div><!-- /panelSim -->
@@ -783,6 +786,8 @@ window.PAGE_I18N = {
     'rec-title':'REC · touchscreen telemetry (xAPI)',
     'rec-export':'⭳ Export cmi5/xAPI',
     'rec-scorm':'⭳ SCORM 1.2 (.zip)',
+    'rec-metrics':'Show metrics',
+    'rec-howto':'<b>How to use this demo</b><br>1) Practise the suturing above — steady the piece with the forceps, then bring the needle. 2) <b>Show metrics</b> to see your performance. 3) <b>Export cmi5/xAPI</b> → telemetry JSON (for an LRS). 4) <b>SCORM 1.2 (.zip)</b> → upload this file to Cornerstone (Online Course · SCORM 1.2).',
     'rec-copy':'⧉ Copy',
     'rec-clear':'⌫ Clear',
     'rec-note':'Every tap, drag and gesture is captured as an <b>ADL xAPI</b> statement (<code>actor · verb · object · result</code>) with <code>pointerType</code>, timestamp and coordinates — the UI itself is traceable. Export is <b>cmi5-conformant</b> (Cornerstone-ready) and includes a <b>drop-off</b> summary (furthest step, time per step) for SAM iteration. Auditable training record and UX signal in one.',
@@ -942,6 +947,8 @@ window.PAGE_I18N = {
     'rec-title':'REC · telemetría táctil (xAPI)',
     'rec-export':'⭳ Exportar cmi5/xAPI',
     'rec-scorm':'⭳ SCORM 1.2 (.zip)',
+    'rec-metrics':'Ver métricas',
+    'rec-howto':'<b>Cómo usar este demo</b><br>1) Practica el surcido arriba — sujeta la pieza con la pinza y luego lleva la aguja. 2) <b>Ver métricas</b> para ver tu desempeño. 3) <b>Exportar cmi5/xAPI</b> → JSON de telemetría (para un LRS). 4) <b>SCORM 1.2 (.zip)</b> → sube este archivo a Cornerstone (Curso en línea · SCORM 1.2).',
     'rec-copy':'⧉ Copiar',
     'rec-clear':'⌫ Limpiar',
     'rec-note':'Cada toque, arrastre y gesto se captura como una sentencia <b>ADL xAPI</b> (<code>actor · verbo · objeto · resultado</code>) con <code>pointerType</code>, marca de tiempo y coordenadas — la propia UI es trazable. El export es <b>conforme a cmi5</b> (listo para Cornerstone) e incluye un resumen de <b>drop-off</b> (paso más lejano, tiempo por paso) para la iteración SAM. Registro de formación auditable y señal UX a la vez.',
@@ -1414,6 +1421,24 @@ window.PAGE_I18N = {
     };
   }
   var eExport=document.getElementById('recExport'), eCopy=document.getElementById('recCopy'), eClear=document.getElementById('recClear');
+  var eMetrics=document.getElementById('recMetrics'), mPanel=document.getElementById('metricsPanel');
+  if (eMetrics && mPanel) eMetrics.addEventListener('click', function(ev){
+    rec('interacted','showMetrics', ev, null, 'tap');
+    var env=envelope(), m=env.metrics||{}, s=env.summary||{}, S=es();
+    function row(k,v){ return '<div style="display:flex;justify-content:space-between;gap:12px;padding:3px 0;border-bottom:1px solid #22305c;"><span style="color:#A9B8F5;">'+k+'</span><span><b>'+(v===null||v===undefined?'—':v)+'</b></span></div>'; }
+    var h='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:.7rem;letter-spacing:.06em;color:#A9B8F5;margin-bottom:6px;">'+(S?'MÉTRICAS DE ESTA SESIÓN':'THIS SESSION — METRICS')+'</div>';
+    h+=row(S?'Puntadas colocadas':'Stitches placed', m.stitches_placed);
+    h+=row(S?'Tiempo medio/puntada (ms)':'Avg time/stitch (ms)', m.avg_ms_per_stitch);
+    h+=row(S?'Mayor vacilación (ms)':'Max hesitation (ms)', m.max_hesitation_ms);
+    h+=row(S?'Uso de pinza (%)':'Forceps use (%)', m.forceps_handling? m.forceps_handling.pct : null);
+    h+=row(S?'Desviación media (px)':'Mean offset (px)', m.mean_offset_px);
+    h+=row(S?'Errores de secuencia':'Sequence errors', m.sequence_errors);
+    h+=row(S?'Magnificación':'Magnification', m.magnification_mode);
+    h+=row(S?'Microscopio enfocado':'Microscope focused', m.microscope? (m.microscope.focused?(S?'sí':'yes'):'no') : '—');
+    h+=row(S?'Eventos capturados':'Events captured', s.events);
+    h+='<div style="margin-top:8px;font-size:.76rem;color:#8FA0D8;">'+(S?'Los campos 3D/VR (ángulo, tensión, enredo) requieren captura háptica. La telemetría completa está en el export cmi5/xAPI.':'3D/VR fields (angle, tension, tangle) need haptic capture. Full telemetry is in the cmi5/xAPI export.')+'</div>';
+    mPanel.innerHTML=h; mPanel.style.display='block';
+  });
   if (eExport) eExport.addEventListener('click', function(ev){
     rec('terminated','unit', ev, {reason:'export'});
     rec('exported','auditTrail', ev, {events:statements.length}, 'tap');
