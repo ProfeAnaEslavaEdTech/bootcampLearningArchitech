@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Acceso a los demos · Access</title>
+<meta name="description" content="Clave maestra de acceso a los simuladores de surcido (demos privados).">
+<link rel="stylesheet" href="../shared/oi.css">
+<style>
+  body{font-family:'Inter',system-ui,sans-serif;background:#0E1428;color:#EAF0FF;margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .wrap{max-width:560px;width:100%;}
+  h1{font-family:'Fraunces',Georgia,serif;font-size:1.5rem;margin:0 0 6px;}
+  .sub{color:#A9B8F5;font-size:.95rem;margin:0 0 20px;line-height:1.5;}
+  #gate input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #33407A;background:#121a35;color:#EAF0FF;font:inherit;margin-bottom:10px;}
+  #gate button{width:100%;padding:12px;border-radius:10px;border:none;background:#3B5BD6;color:#fff;font:inherit;font-weight:700;cursor:pointer;min-height:48px;}
+  #gate .err{display:none;color:#F3B861;font-size:.85rem;margin-top:8px;}
+  #hub{display:none;}
+  .ok{color:#8FE0B0;font-size:.9rem;margin:0 0 14px;}
+  ul{list-style:none;padding:0;margin:0;}
+  li{margin-bottom:10px;}
+  a.demo{display:block;padding:14px 16px;border:1px solid #2A3566;border-radius:10px;background:#121a35;color:#EAF0FF;text-decoration:none;font-weight:600;}
+  a.demo:hover{border-color:#6E7BFF;}
+  a.demo span{display:block;color:#A9B8F5;font-size:.8rem;font-weight:400;margin-top:2px;}
+  .note{color:#8FA0D8;font-size:.78rem;margin-top:16px;line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="gate">
+    <h1>Acceso restringido · Restricted</h1>
+    <p class="sub">Abre el <b>enlace de acceso</b> que te compartieron y entras directamente. Si llegaste sin él, pega la llave. · Open the access link you were given, or paste the key.</p>
+    <input id="kgInput" type="password" autocomplete="off" aria-label="Llave de acceso" placeholder="Llave · key">
+    <button id="kgBtn" type="button">Entrar · Enter</button>
+    <div class="err" id="kgErr">Llave incorrecta · Wrong key</div>
+  </div>
+  <div id="hub">
+    <h1>Demos desbloqueados · Unlocked</h1>
+    <p class="ok">Acceso concedido en este navegador. Abre cualquiera: · Access granted on this browser. Open any:</p>
+    <ul>
+      <li><a class="demo" href="../surcido-thv-sav/">Surcido — THV-in-SAV <span>Faldón acampanado</span></a></li>
+      <li><a class="demo" href="../surcido-thv-thv/">Surcido — Aortic THV-in-THV <span>Hilo-guía · un punto por celda</span></a></li>
+      <li><a class="demo" href="../surcido-mitral/">Surcido — THV-in-Surgical Mitral <span>Contorno en D</span></a></li>
+      <li><a class="demo" href="../simulador-4d/">Simulador 4D <span>Caso de diseño (cliente)</span></a></li>
+      <li><a class="demo" href="../simulador-twi/">Simulador TWI <span>Job Instruction</span></a></li>
+    </ul>
+    <p class="note">El acceso queda recordado en este equipo. Para revocarlo, borra los datos del sitio en tu navegador.</p>
+  </div>
+</div>
+<script>
+(function(){
+  var HASH='f1e1609bb70a0c870fb0597337213fb846f1ec0825b2c71c58834b05765ad1e2';
+  function hex(buf){ return Array.prototype.map.call(new Uint8Array(buf),function(x){return ('0'+x.toString(16)).slice(-2);}).join(''); }
+  async function sha(s){ var b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return hex(b); }
+  async function tryKey(k){ if(!k) return false; try{ return (await sha(k))===HASH; }catch(e){ return false; } }
+  function grant(){ try{localStorage.setItem('oi-key-ok','1');}catch(e){} document.getElementById('gate').style.display='none'; document.getElementById('hub').style.display='block'; }
+  function start(){
+    try{ if(localStorage.getItem('oi-key-ok')==='1'){ grant(); return; } }catch(e){}
+    if(!(window.crypto&&window.crypto.subtle)){ /* contexto no seguro: deja pegar la llave igualmente */ }
+    var p; try{ p=new URLSearchParams(location.search); }catch(e){ p=null; }
+    var k=(p&&p.get('k'))||'';
+    if(!k && location.hash.indexOf('k=')>=0){ k=decodeURIComponent(location.hash.split('k=')[1].split('&')[0]); }
+    (async function(){
+      if(await tryKey(k)){ try{history.replaceState(null,'',location.pathname);}catch(e){} grant(); return; }
+      var inp=document.getElementById('kgInput'), btn=document.getElementById('kgBtn'), err=document.getElementById('kgErr');
+      async function submit(){ if(await tryKey((inp.value||'').trim())){ grant(); } else { err.style.display='block'; } }
+      btn.addEventListener('click', submit);
+      inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); submit(); } });
+    })();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+</body>
+</html>
