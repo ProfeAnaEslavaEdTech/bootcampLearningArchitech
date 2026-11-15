@@ -491,6 +491,7 @@
           <ul class="rec-log" id="recLog" aria-label="Recorded interaction events"></ul>
           <div class="rec-actions">
             <button class="sim-btn" id="recExport" data-i18n="rec-export">⭳ Export xAPI (JSON)</button>
+            <button class="sim-btn" id="recScorm" data-i18n="rec-scorm">⭳ SCORM 1.2 (.zip)</button>
             <button class="sim-btn" id="recCopy" data-i18n="rec-copy">⧉ Copy</button>
             <button class="sim-btn" id="recClear" data-i18n="rec-clear">⌫ Clear</button>
           </div>
@@ -781,6 +782,7 @@ window.PAGE_I18N = {
     's8-disc':'Portfolio / interview design case. The part is framed as a Class III implantable prosthesis (heart-valve sewing cuff) under ISO 13485 / 21 CFR 820 (QMSR) / EU MDR, cleanroom (ISO 14644) and GMP/GxP; standards are named, not quoted — verify device class, cleanroom grade and tolerances against the site’s validated documentation ([VERIFY]). Step names, DIF ratings and defect figures are illustrative placeholders. · Interactive demo built with HTML/CSS/JS as a stand-in for the Storyline/WebGL production target. · AI-assisted instructional design under human governance, authored and verified by Ana Eslava-Graterol.',
     'rec-title':'REC · touchscreen telemetry (xAPI)',
     'rec-export':'⭳ Export cmi5/xAPI',
+    'rec-scorm':'⭳ SCORM 1.2 (.zip)',
     'rec-copy':'⧉ Copy',
     'rec-clear':'⌫ Clear',
     'rec-note':'Every tap, drag and gesture is captured as an <b>ADL xAPI</b> statement (<code>actor · verb · object · result</code>) with <code>pointerType</code>, timestamp and coordinates — the UI itself is traceable. Export is <b>cmi5-conformant</b> (Cornerstone-ready) and includes a <b>drop-off</b> summary (furthest step, time per step) for SAM iteration. Auditable training record and UX signal in one.',
@@ -939,6 +941,7 @@ window.PAGE_I18N = {
     's8-disc':'Caso de diseño de portfolio / entrevista. La pieza se enmarca como prótesis implantable Clase III (sewing cuff de válvula cardíaca) bajo ISO 13485 / 21 CFR 820 (QMSR) / EU MDR, sala blanca (ISO 14644) y GMP/GxP; las normas se nombran, no se citan — verificar clase del dispositivo, grado de sala blanca y tolerancias contra la documentación validada del sitio ([VERIFICAR]). Los nombres de pasos, las puntuaciones DIF y las cifras de defecto son marcadores ilustrativos. · Demo interactiva construida con HTML/CSS/JS como sustituto del objetivo de producción Storyline/WebGL. · Diseño instruccional asistido por IA bajo gobernanza humana, autoría y verificación de Ana Eslava-Graterol.',
     'rec-title':'REC · telemetría táctil (xAPI)',
     'rec-export':'⭳ Exportar cmi5/xAPI',
+    'rec-scorm':'⭳ SCORM 1.2 (.zip)',
     'rec-copy':'⧉ Copiar',
     'rec-clear':'⌫ Limpiar',
     'rec-note':'Cada toque, arrastre y gesto se captura como una sentencia <b>ADL xAPI</b> (<code>actor · verbo · objeto · resultado</code>) con <code>pointerType</code>, marca de tiempo y coordenadas — la propia UI es trazable. El export es <b>conforme a cmi5</b> (listo para Cornerstone) e incluye un resumen de <b>drop-off</b> (paso más lejano, tiempo por paso) para la iteración SAM. Registro de formación auditable y señal UX a la vez.',
@@ -1202,6 +1205,7 @@ window.PAGE_I18N = {
   function masteryDone(ev){
     setStatus(es()?'<b>Pasada completa.</b> Cero errores de secuencia · tensión en tolerancia → <b>maestría superada</b>. +20 XP':'<b>Run complete.</b> Zero sequence errors · tension in tolerance → <b>mastery passed</b>. +20 XP');
     rec('passed','masteryRun', ev, {success:true, seqErrors:0, skipsBlocked:skipsBlocked});
+    try{ if(window.SCORM && window.SCORM.complete) window.SCORM.complete(true); }catch(e){}
     if (window.__simAddXP){ window.__simAddXP(20); window.__simAddXP = null; }
   }
   function place(ev, kind, offset){
@@ -1417,6 +1421,60 @@ window.PAGE_I18N = {
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a'); a.href = url; a.download = 'cmi5-xapi-statements.json';
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+  /* ---- SCORM 1.2 package export (self-contained ZIP, store method) ---- */
+  function _crc32(buf){ var tab=_crc32.t; if(!tab){ tab=[]; for(var n=0;n<256;n++){ var c=n; for(var k=0;k<8;k++) c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1); tab[n]=c>>>0; } _crc32.t=tab; } var crc=0xFFFFFFFF; for(var i=0;i<buf.length;i++) crc=(crc>>>8)^tab[(crc^buf[i])&0xFF]; return (crc^0xFFFFFFFF)>>>0; }
+  function _u8(s){ return new TextEncoder().encode(s); }
+  function _makeZip(files){
+    function u16(n){return [n&0xFF,(n>>>8)&0xFF];}
+    function u32(n){return [n&0xFF,(n>>>8)&0xFF,(n>>>16)&0xFF,(n>>>24)&0xFF];}
+    var parts=[], central=[], offset=0;
+    files.forEach(function(f){
+      var name=_u8(f.name), data=f.data, crc=_crc32(data);
+      var lfh=[].concat(u32(0x04034b50),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0));
+      parts.push(new Uint8Array(lfh)); parts.push(name); parts.push(data);
+      var cdh=[].concat(u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(data.length),u32(data.length),u16(name.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset));
+      central.push(new Uint8Array(cdh)); central.push(name);
+      offset += lfh.length+name.length+data.length;
+    });
+    var cdStart=offset, cdLen=0; central.forEach(function(p){ cdLen+=p.length; });
+    var eocd=[].concat(u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),u32(cdLen),u32(cdStart),u16(0));
+    return new Blob(parts.concat(central).concat([new Uint8Array(eocd)]),{type:'application/zip'});
+  }
+  var eScorm=document.getElementById('recScorm');
+  if (eScorm) eScorm.addEventListener('click', async function(ev){
+    try {
+      rec('exported','scormPackage', ev, {format:'SCORM 1.2'}, 'tap');
+      var baseurl = location.href.split('#')[0].split('?')[0];
+      var html = await (await fetch(baseurl)).text();
+      html = html.replace(/\.\.\/shared\//g, 'shared/');
+      html = html.replace('</body>', '<scr'+'ipt>window.SCORM_CONFIG={masteryScore:80};</scr'+'ipt>\n<scr'+'ipt src="scorm12.js"></scr'+'ipt>\n</body>');
+      var dir='../shared/';
+      var css = await (await fetch(dir+'oi.css')).text();
+      var i18n = await (await fetch(dir+'i18n.js')).text();
+      var sj = await (await fetch(dir+'scorm12.js')).text();
+      var title=(document.title||'Simulator').replace(/[<&>]/g,'');
+      var _segs=location.pathname.split('/').filter(Boolean); var id='sco_'+((_segs[_segs.length-2]||_segs[_segs.length-1]||'sim').replace(/[^\w-]/g,''));
+      var m='<?xml version="1.0" encoding="UTF-8"?>\n'
+        +'<manifest identifier="'+id+'" xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">\n'
+        +'  <metadata><schema>ADL SCORM</schema><schemaversion>1.2</schemaversion></metadata>\n'
+        +'  <organizations default="org_'+id+'"><organization identifier="org_'+id+'"><title>'+title+'</title><item identifier="item_'+id+'" identifierref="res_'+id+'"><title>'+title+'</title><adlcp:masteryscore>80</adlcp:masteryscore></item></organization></organizations>\n'
+        +'  <resources><resource identifier="res_'+id+'" type="webcontent" adlcp:scormtype="sco" href="index.html"><file href="index.html"/><file href="scorm12.js"/><file href="shared/oi.css"/><file href="shared/i18n.js"/></resource></resources>\n'
+        +'</manifest>\n';
+      var blob=_makeZip([
+        {name:'imsmanifest.xml', data:_u8(m)},
+        {name:'index.html', data:_u8(html)},
+        {name:'scorm12.js', data:_u8(sj)},
+        {name:'shared/oi.css', data:_u8(css)},
+        {name:'shared/i18n.js', data:_u8(i18n)}
+      ]);
+      var url2=URL.createObjectURL(blob);
+      var a2=document.createElement('a'); a2.href=url2; a2.download=id+'-scorm12.zip';
+      document.body.appendChild(a2); a2.click(); a2.remove(); setTimeout(function(){ URL.revokeObjectURL(url2); }, 1500);
+      setStatus(es()?'<b>Paquete SCORM 1.2 descargado.</b> Súbelo a tu LMS (Moodle/Chamilo/Cornerstone).':'<b>SCORM 1.2 package downloaded.</b> Upload it to your LMS (Moodle/Chamilo/Cornerstone).');
+    } catch(err){
+      setStatus(es()?'No se pudo empaquetar aquí. Ábrelo servido por http/https (no como archivo local) y reintenta.':'Could not package here. Open it served over http/https (not a local file) and retry.');
+    }
   });
   if (eCopy) eCopy.addEventListener('click', function(ev){
     var txt = JSON.stringify(envelope(), null, 2);
