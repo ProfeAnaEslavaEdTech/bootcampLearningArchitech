@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOP-100-AX · Puntada de bloqueo</title>
+<style>
+  :root{--ink:#16222E;--paper:#F4F6F8;--panel:#fff;--line:#d9dee3;--blue:#2F54B7;--blueS:#E9EEFB;
+        --amber:#E0A400;--amberS:#FFF6E0;--amberT:#8A5A00;--green:#17894A;--greenS:#E8F3E0;--gray:#5a5a5a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--paper);line-height:1.5}
+  .en .es{display:none}.es .en{display:none}
+  header{position:sticky;top:0;z-index:5;background:#16222E;color:#fff;display:flex;align-items:center;
+    justify-content:space-between;padding:12px 20px;gap:12px}
+  header h1{font-size:17px;font-weight:700}
+  .toggle{display:flex;border:1px solid #ffffff55;border-radius:20px;overflow:hidden;font-size:13px;font-weight:700}
+  .toggle button{background:transparent;color:#fff;border:0;padding:6px 14px;cursor:pointer}
+  .toggle button.on{background:#fff;color:#16222E}
+  .wrap{max-width:860px;margin:0 auto;padding:22px 18px 80px}
+  .lesson{display:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:18px}
+  .lesson.active{display:block}
+  h2{color:var(--blue);font-size:21px;margin-bottom:4px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--blue);border-radius:10px;padding:2px 9px;margin-bottom:10px}
+  h3{font-size:15px;margin:16px 0 6px;color:#16222E}
+  p,li{font-size:15px;margin-bottom:8px}ul,ol{margin:0 0 10px 22px}
+  video,img.fig{width:100%;border:1px solid var(--line);border-radius:8px;margin:8px 0}
+  .row{display:flex;gap:10px;flex-wrap:wrap}.row img.fig{flex:1;min-width:30%}
+  .crit{background:var(--amberS);border-left:5px solid var(--amber);color:var(--amberT);font-weight:700;padding:10px 12px;border-radius:4px;margin:10px 0}
+  .note{background:var(--blueS);border-left:5px solid var(--blue);padding:10px 12px;border-radius:4px;margin:10px 0;font-size:14px}
+  .qa{background:#fafafa;border:1px solid var(--line);border-radius:8px;padding:14px;margin:12px 0}
+  .qa label{display:block;margin:6px 0;font-size:15px;cursor:pointer}
+  select{padding:4px 6px;font-size:14px;margin:3px 0}
+  button.act{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer}
+  .fb{margin-top:10px;font-weight:700;font-size:14px;display:none}
+  .fb.ok{color:var(--green)}.fb.no{color:#C24A2E}.fb.show{display:block}
+  .locked{opacity:.5;pointer-events:none}
+  .gate{background:var(--greenS);border-left:5px solid var(--green);padding:10px 12px;border-radius:4px;margin:10px 0}
+  .green{background:var(--greenS);border:1px solid #bcd9c4;border-radius:8px;padding:12px;margin:8px 0}
+  nav.bottom{display:flex;justify-content:space-between;margin-top:10px}
+  .menu{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .menu button{font-size:12px;border:1px solid var(--line);background:#fff;border-radius:16px;padding:5px 10px;cursor:pointer}
+  .menu button.done{border-color:var(--green);color:var(--green)}
+  .menu button.cur{background:#16222E;color:#fff;border-color:#16222E}
+  .ai{font-size:12px;color:var(--gray);border-top:1px solid var(--line);padding-top:8px;margin-top:14px}
+</style></head>
+<body class="es">
+<header>
+  <h1><span class="es">SOP-100-AX · Puntada de bloqueo en una sola capa</span><span class="en">SOP-100-AX · Single-layer locking stitch</span></h1>
+  <div class="toggle"><button id="bEs" class="on" onclick="setLang('es')">ES</button><button id="bEn" onclick="setLang('en')">EN</button></div>
+</header>
+<div class="wrap">
+  <div class="menu" id="menu"></div>
+
+  <!-- L0 -->
+  <section class="lesson active" data-t="Bienvenida|Welcome">
+    <span class="tag">0</span>
+    <h2><span class="es">Bienvenida y objetivos</span><span class="en">Welcome and objectives</span></h2>
+    <h3><span class="es">Vídeo de bienvenida (avatar)</span><span class="en">Welcome video (avatar)</span></h3>
+    <div class="note"><span class="es">Vídeo de avatar pendiente de subir. Guion listo (ES/EN) en los guiones TTS.</span><span class="en">Avatar video pending upload. Script ready (ES/EN) in the TTS scripts.</span></div>
+    <h3><span class="es">Objetivos</span><span class="en">Objectives</span></h3>
+    <p><span class="es"><b>Objetivo principal:</b> ejecutar correctamente el Paso 5. Para lograrlo: (1) reconocer materiales y vocabulario; (2) distinguir una capa de dos; (5) ejecutar la puntada de bloqueo en una sola capa. <b>General:</b> cumplir los 6 criterios del Paso 7 sin errores (100 %).</span>
+       <span class="en"><b>Main goal:</b> perform Step 5 correctly. To get there: (1) recognise materials and vocabulary; (2) distinguish one layer from two; (5) execute the single-layer locking stitch. <b>General:</b> meet the six Step-7 criteria with no errors (100%).</span></p>
+    <div class="ai"><span class="es">Material desarrollado con asistencia de IA generativa, revisado y aprobado por Ana Eslava-Graterol. Art. 50, Reglamento (UE) 2024/1689.</span><span class="en">Developed with generative-AI assistance; reviewed and approved by Ana Eslava-Graterol. Art. 50, EU AI Act.</span></div>
+  </section>
+
+  <!-- L1 -->
+  <section class="lesson" data-t="Obj. 1 · Reconocer|Obj. 1 · Recognise">
+    <span class="tag">1</span>
+    <h2><span class="es">Reconocer la pieza, los materiales y el vocabulario</span><span class="en">Recognise the piece, materials and vocabulary</span></h2>
+    <p><span class="es"><b>Propósito:</b> este procedimiento explica cómo preparar y asegurar la cubierta de tela del Modelo 100-AX de doble capa.</span><span class="en"><b>Purpose:</b> this procedure explains how to prepare and secure the Model 100-AX double-layer fabric cover.</span></p>
+    <p><span class="es"><b>Materiales:</b> cubierta de tela del Modelo 100-AX de doble capa (capa 1 y capa 2), hilo de sutura, aguja n.º 12, tijeras, regla.</span><span class="en"><b>Materials:</b> Model 100-AX double-layer fabric cover (layer 1 and layer 2), suture thread, needle no. 12, scissors, ruler.</span></p>
+    <video controls preload="metadata" src="videos/video1_materiales.mp4"></video>
+    <h3><span class="es">Referencia (modelo)</span><span class="en">Reference (model)</span></h3>
+    <img class="fig" src="assets/referencia_etiquetada.png" alt="referencia">
+    <div class="qa">
+      <h3><span class="es">Ejercicio: coloca el término correcto (100 %)</span><span class="en">Exercise: choose the correct term (100%)</span></h3>
+      <div id="match"></div>
+      <button class="act" onclick="checkMatch()"><span class="es">Comprobar</span><span class="en">Check</span></button>
+      <div class="fb" id="fbMatch"></div>
+    </div>
+    <div class="gate" id="gate1"><span class="es">🔒 Completa este ejercicio al 100 % para avanzar.</span><span class="en">🔒 Complete this exercise at 100% to continue.</span></div>
+  </section>
+
+  <!-- L2 -->
+  <section class="lesson" data-t="Obj. 2 · Una capa vs dos|Obj. 2 · One vs two">
+    <span class="tag">2</span>
+    <h2><span class="es">Una capa frente a dos (crítico)</span><span class="en">One layer vs two (critical)</span></h2>
+    <p><span class="es">La cubierta tiene dos capas: la <b>capa 1</b> (donde trabajas) y la <b>capa 2</b> (que no debes tocar). El Paso 5 se realiza únicamente en la capa 1. Si la aguja toca la capa 2, la pieza sale defectuosa y la línea se detiene.</span>
+       <span class="en">The cover has two layers: <b>layer 1</b> (where you work) and <b>layer 2</b> (do not touch). Step 5 is done only on layer 1. If the needle touches layer 2, the piece is defective and the line stops.</span></p>
+    <div class="note"><span class="es">Vídeo 2 (Características) pendiente de subir.</span><span class="en">Video 2 (Characteristics) pending upload.</span></div>
+    <div class="qa">
+      <h3><span class="es">Comprobación crítica (100 %)</span><span class="en">Critical check (100%)</span></h3>
+      <p><span class="es">¿En cuántas capas trabajas en el Paso 5?</span><span class="en">In how many layers do you work in Step 5?</span></p>
+      <label><input type="radio" name="q2" value="1"> <span class="es">Una, la capa 1</span><span class="en">One, layer 1</span></label>
+      <label><input type="radio" name="q2" value="0"> <span class="es">Las dos capas</span><span class="en">Both layers</span></label>
+      <button class="act" onclick="checkQ2()"><span class="es">Comprobar</span><span class="en">Check</span></button>
+      <div class="fb" id="fbQ2"></div>
+    </div>
+    <div class="gate" id="gate2"><span class="es">🔒 Supera esto al 100 % para desbloquear el Paso 5.</span><span class="en">🔒 Pass this at 100% to unlock Step 5.</span></div>
+  </section>
+
+  <!-- L3 -->
+  <section class="lesson" data-t="Preparación|Preparation">
+    <span class="tag">3</span>
+    <h2><span class="es">Preparación del puesto</span><span class="en">Workstation preparation</span></h2>
+    <video controls preload="metadata" src="videos/video3_preparacion.mp4"></video>
+    <ul>
+      <li><span class="es">Pon la cubierta sobre una superficie limpia; identifica la vista frontal y los bordes superior e inferior.</span><span class="en">Place the cover on a clean surface; identify the front view and the upper/lower edges.</span></li>
+      <li><span class="es">Orienta la pieza para ver bien columnas y bucles; revisa que no haya daños.</span><span class="en">Orient the piece to see columns and loops; check for damage.</span></li>
+    </ul>
+  </section>
+
+  <!-- L4 -->
+  <section class="lesson locked" id="l4" data-t="Obj. 5 · Paso 5|Obj. 5 · Step 5">
+    <span class="tag">5</span>
+    <h2><span class="es">Paso 5: puntada de bloqueo en una sola capa (crítico)</span><span class="en">Step 5: single-layer locking stitch (critical)</span></h2>
+    <div class="crit"><span class="es">⚠ Trabaja en la capa 1, no insertes en la capa 2.</span><span class="en">⚠ Work on layer 1, do not insert into layer 2.</span></div>
+    <ol>
+      <li><span class="es">Ubica el nudo de anclaje y cuenta 5 bucles hacia arriba por la columna n.º 8. Ese es el bucle de la puntada de bloqueo.</span><span class="en">Find the anchor knot and count 5 loops up along column no. 8. That is the locking loop.</span></li>
+      <li><span class="es">Inserta la aguja y deslízala de derecha a izquierda a través de la capa 1.</span><span class="en">Insert the needle and slide it right to left through layer 1.</span></li>
+      <li><span class="es">Bordea la columna n.º 8 en la capa 1, toma el bucle de bloqueo y saca la aguja por el lado izquierdo del bucle, sin tocar la capa 2.</span><span class="en">Skirt column no. 8 on layer 1, take the locking loop and bring the needle out on the left of the loop, without touching layer 2.</span></li>
+      <li><span class="es">Enlaza una vuelta del hilo por encima de la aguja, por el extremo izquierdo. Pasa todo el hilo por la vuelta.</span><span class="en">Wrap one turn of thread over the needle, on the left. Pass all the thread through the turn.</span></li>
+      <li><span class="es">Aprieta con el dedo sobre la superficie mientras tensas el hilo, hasta que el nudo de remate quede firme y cerrado.</span><span class="en">Press with your finger while you pull the thread taut, until the finishing knot is firm and closed.</span></li>
+    </ol>
+    <video controls preload="metadata" src="videos/paso5_induccion.mp4"></video>
+    <div class="row"><img class="fig" src="assets/p5_1.png"><img class="fig" src="assets/p5_2.png"><img class="fig" src="assets/p5_3.png"></div>
+    <div class="note"><span class="es">Simulador interactivo del Paso 5: se insertará aquí como bloque Embed (HTML).</span><span class="en">Interactive Step 5 simulator: to be embedded here (HTML).</span></div>
+    <div class="qa">
+      <h3><span class="es">Escenario de error (crítico)</span><span class="en">Error scenario (critical)</span></h3>
+      <p><span class="es">¿Qué haces si tocas la capa 2?</span><span class="en">What do you do if you touch layer 2?</span></p>
+      <label><input type="radio" name="q5" value="1"> <span class="es">Retiro el hilo hasta ese punto y rehago el nudo solo en la capa 1.</span><span class="en">Remove the thread to that point and redo the knot only on layer 1.</span></label>
+      <label><input type="radio" name="q5" value="0"> <span class="es">Sigo adelante.</span><span class="en">Carry on.</span></label>
+      <button class="act" onclick="checkQ5()"><span class="es">Comprobar</span><span class="en">Check</span></button>
+      <div class="fb" id="fbQ5"></div>
+    </div>
+  </section>
+
+  <!-- L5 -->
+  <section class="lesson" data-t="Control de calidad|Quality check">
+    <span class="tag">QA</span>
+    <h2><span class="es">Control de calidad (job aid)</span><span class="en">Quality check (job aid)</span></h2>
+    <div class="green">
+      <p><b><span class="es">Verde = correcto · Rojo = qué hacer si falla</span><span class="en">Green = correct · Red = what to do if it fails</span></b></p>
+      <ul>
+        <li><span class="es">Nudo de anclaje completo y asegurado.</span><span class="en">Anchor knot complete and secured.</span></li>
+        <li><span class="es">Puntada de bloqueo completa y asegurada.</span><span class="en">Locking stitch complete and secured.</span></li>
+        <li><span class="es">Recorrido del hilo uniforme a lo largo de la columna.</span><span class="en">Uniform thread path along the column.</span></li>
+        <li><span class="es">Hilo en el punto de salida indicado en el borde superior.</span><span class="en">Thread at the exit point on the upper edge.</span></li>
+        <li><span class="es">Sin bucles de hilo sueltos. · Sin daños en la cubierta.</span><span class="en">No loose thread loops. · No damage to the cover.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- L6 -->
+  <section class="lesson" data-t="Cierre|Closing">
+    <span class="tag">✓</span>
+    <h2><span class="es">Cierre</span><span class="en">Closing</span></h2>
+    <p><span class="es">El dominio aquí (100 %) es la condición de entrada a la práctica supervisada en planta, no la prueba final. El formador evalúa con la lista del Paso 7 (6 criterios).</span>
+       <span class="en">Mastery here (100%) is the entry condition for supervised practice on the floor, not the final test. The trainer evaluates with the Step-7 checklist (6 criteria).</span></p>
+    <div class="ai"><span class="es">Divulgado conforme al Art. 50 del Reglamento (UE) 2024/1689 (EU AI Act).</span><span class="en">Disclosed under Art. 50 of Regulation (EU) 2024/1689 (EU AI Act).</span></div>
+  </section>
+
+  <nav class="bottom">
+    <button class="act" onclick="go(-1)"><span class="es">◀ Anterior</span><span class="en">◀ Back</span></button>
+    <button class="act" onclick="go(1)"><span class="es">Siguiente ▶</span><span class="en">Next ▶</span></button>
+  </nav>
+</div>
+
+<script>
+  var obj1=false, obj2=false, cur=0;
+  var lessons=[].slice.call(document.querySelectorAll('.lesson'));
+  function L(){return document.body.classList.contains('en')?'en':'es';}
+  function setLang(l){try{localStorage.setItem('sopLang',l)}catch(e){}
+    document.body.className=l; document.getElementById('bEs').classList.toggle('on',l=='es');
+    document.getElementById('bEn').classList.toggle('on',l=='en');}
+  try{var sv=localStorage.getItem('sopLang'); if(sv) setLang(sv);}catch(e){}
+
+  // menu
+  var menu=document.getElementById('menu');
+  lessons.forEach(function(s,i){var b=document.createElement('button');var t=s.getAttribute('data-t').split('|');
+    b.innerHTML='<span class="es">'+t[0]+'</span><span class="en">'+t[1]+'</span>';
+    b.onclick=function(){show(i)}; menu.appendChild(b);});
+  function show(i){cur=i; lessons.forEach(function(s,j){s.classList.toggle('active',j==i);});
+    [].slice.call(menu.children).forEach(function(b,j){b.classList.toggle('cur',j==i);});
+    window.scrollTo(0,0);}
+  function go(d){var n=cur+d; if(n>=0&&n<lessons.length) show(n);}
+
+  // matching activity
+  var terms=[['Capa 1 (vista frontal)','Layer 1 (front view)'],['Capa 2 (vista posterior)','Layer 2 (back view)'],
+    ['Columna','Column'],['Bucle','Loop'],['Borde superior','Upper edge'],['Borde inferior','Lower edge']];
+  var slots=[['La cara donde trabajas','The face you work on'],['La cara que no se toca','The face you must not touch'],
+    ['Hilera vertical de puntos','Vertical row of stitches'],['Cada punto de la tela','Each stitch of the fabric'],
+    ['Límite de arriba','Top limit'],['Límite de abajo','Bottom limit']];
+  var correct=[0,1,2,3,4,5];
+  (function(){var m=document.getElementById('match');
+    slots.forEach(function(sl,i){var d=document.createElement('div');
+      d.innerHTML='<span class="es">'+sl[0]+'</span><span class="en">'+sl[1]+'</span> → ';
+      var sel=document.createElement('select'); sel.id='m'+i;
+      var o0=document.createElement('option');o0.value='';o0.textContent='—';sel.appendChild(o0);
+      terms.forEach(function(t,k){var o=document.createElement('option');o.value=k;
+        o.innerHTML=t[0]; o.setAttribute('data-es',t[0]);o.setAttribute('data-en',t[1]);sel.appendChild(o);});
+      d.appendChild(sel); m.appendChild(d);});
+    // fill option labels per lang on toggle
+  })();
+  function relabel(){var en=L()=='en'; document.querySelectorAll('#match select option').forEach(function(o){
+    if(o.getAttribute('data-es')) o.textContent=en?o.getAttribute('data-en'):o.getAttribute('data-es');});}
+  var _sl=setLang; setLang=function(l){_sl(l);relabel();}; relabel();
+  function checkMatch(){var ok=true; for(var i=0;i<slots.length;i++){if(document.getElementById('m'+i).value!=String(correct[i])){ok=false;break;}}
+    var fb=document.getElementById('fbMatch'); fb.className='fb show '+(ok?'ok':'no');
+    fb.textContent= ok?(L()=='en'?'Correct! 100% — Objective 1 passed.':'¡Correcto! 100 % — Objetivo 1 superado.')
+      :(L()=='en'?'Not yet. Look at the reference and try again.':'Aún no. Fíjate en la referencia y vuelve a intentarlo.');
+    if(ok){obj1=true; document.getElementById('gate1').style.display='none'; unlock();}}
+  function checkQ2(){var v=(document.querySelector('input[name=q2]:checked')||{}).value;
+    var fb=document.getElementById('fbQ2'); fb.className='fb show '+(v=='1'?'ok':'no');
+    fb.textContent= v=='1'?(L()=='en'?'Exactly: only layer 1; never layer 2.':'Exacto: solo la capa 1; nunca la capa 2.')
+      :(L()=='en'?'Remember: Step 5 is only on layer 1.':'Recuerda: el Paso 5 va solo en la capa 1.');
+    if(v=='1'){obj2=true; document.getElementById('gate2').style.display='none'; unlock();}}
+  function checkQ5(){var v=(document.querySelector('input[name=q5]:checked')||{}).value;
+    var fb=document.getElementById('fbQ5'); fb.className='fb show '+(v=='1'?'ok':'no');
+    fb.textContent= v=='1'?(L()=='en'?'Correct. You worked on a single layer.':'Correcto. Has trabajado en una sola capa.')
+      :(L()=='en'?'No: remove the thread and redo the knot only on layer 1.':'No: retira el hilo y rehaz el nudo solo en la capa 1.');}
+  function unlock(){var l4=document.getElementById('l4');
+    if(obj1&&obj2){l4.classList.remove('locked');}
+    [].slice.call(menu.children)[1].classList.toggle('done',obj1);
+    [].slice.call(menu.children)[2].classList.toggle('done',obj2);}
+  show(0);
+</script>
+</body></html>
