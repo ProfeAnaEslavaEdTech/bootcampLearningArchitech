@@ -223,15 +223,21 @@ function drawScene(){var u=U();var s='';
  // AGUJA — ojal/punto de inserción FIJO a la derecha del bucle (hilo largo); la punta se arrastra por el bucle y sube a la superficie
  if(phase>=2 && !(phase===5&&closeProg>=1)){
    var IPx=loopX+82, IPy=laneY, tx=needle.x, ty=needle.y;
-   // hilo largo saliendo del punto de inserción hacia arriba-derecha (queda fijo)
-   s+='<path d="M'+IPx+','+IPy+' C'+(IPx+50)+','+(IPy-64)+' '+(IPx+150)+','+(IPy-38)+' '+(IPx+250)+','+(IPy-150)+'" stroke="#d8262f" stroke-width="4" fill="none" stroke-linecap="round"/>';
+   var ddx=tx-IPx, ddy=ty-IPy, dl=Math.hypot(ddx,ddy)||1, ux=ddx/dl, uy=ddy/dl, px=-uy, py=ux;
+   // ojal al lado OPUESTO de la punta (la aguja gira libre alrededor del punto de inserción)
+   var eyeLen=58, ex=IPx-ux*eyeLen, ey=IPy-uy*eyeLen;
+   // hilo largo que SALE del ojal y rota con la aguja
+   s+='<path d="M'+ex+','+ey+' C'+(ex-ux*60-px*22)+','+(ey-uy*60-py*22)+' '+(ex-ux*150+px*24)+','+(ey-uy*150+py*24)+' '+(ex-ux*240-px*8)+','+(ey-uy*240-py*8)+'" stroke="#d8262f" stroke-width="4" fill="none" stroke-linecap="round"/>';
    if(wrapN>0)s+='<circle cx="'+tx+'" cy="'+ty+'" r="'+(12+wrapN*3)+'" fill="none" stroke="#d8262f" stroke-width="3.5"/>';
-   s+='<line x1="'+IPx+'" y1="'+IPy+'" x2="'+tx+'" y2="'+ty+'" stroke="#8d99a2" stroke-width="11" stroke-linecap="round"/>';
-   s+='<line x1="'+IPx+'" y1="'+IPy+'" x2="'+tx+'" y2="'+ty+'" stroke="#eef3f6" stroke-width="3.2" opacity="0.85"/>';
+   // marcador del punto de inserción (fijo)
    s+='<circle cx="'+IPx+'" cy="'+IPy+'" r="13" fill="none" stroke="#E8A33D" stroke-width="2" stroke-dasharray="3 4"/>';
-   s+='<ellipse cx="'+IPx+'" cy="'+IPy+'" rx="11" ry="7" fill="#1c2a33" stroke="#cdd6dc" stroke-width="3"/><circle cx="'+IPx+'" cy="'+IPy+'" r="3.4" fill="#E0A400"/>';
-   var a=Math.atan2(ty-IPy,tx-IPx),dx=Math.cos(a),dy=Math.sin(a),px=-dy,py=dx;
-   s+='<polygon points="'+tx+','+ty+' '+(tx-dx*24+px*7)+','+(ty-dy*24+py*7)+' '+(tx-dx*24-px*7)+','+(ty-dy*24-py*7)+'" fill="#3f4e57"/>';
+   // cuerpo de la aguja: del ojal, pasando por el punto de inserción, hasta la punta
+   s+='<line x1="'+ex+'" y1="'+ey+'" x2="'+tx+'" y2="'+ty+'" stroke="#8d99a2" stroke-width="11" stroke-linecap="round"/>';
+   s+='<line x1="'+ex+'" y1="'+ey+'" x2="'+tx+'" y2="'+ty+'" stroke="#eef3f6" stroke-width="3.2" opacity="0.85"/>';
+   // ojal (rota con la aguja)
+   s+='<ellipse cx="'+ex+'" cy="'+ey+'" rx="11" ry="7" fill="#1c2a33" stroke="#cdd6dc" stroke-width="3" transform="rotate('+(Math.atan2(uy,ux)*180/Math.PI)+' '+ex+' '+ey+')"/><circle cx="'+ex+'" cy="'+ey+'" r="3.4" fill="#E0A400"/>';
+   // punta
+   s+='<polygon points="'+tx+','+ty+' '+(tx-ux*24+px*7)+','+(ty-uy*24+py*7)+' '+(tx-ux*24-px*7)+','+(ty-uy*24-py*7)+'" fill="#3f4e57"/>';
    s+='<path d="M'+(loopX-18)+','+(laneY-18)+' C'+(loopX-24)+','+(laneY-36)+' '+(loopX+24)+','+(laneY-36)+' '+(loopX+18)+','+(laneY-18)+'" fill="none" stroke="#51607e" stroke-width="8" stroke-linecap="round"/>';
  }
  if(phase===5&&closeProg>=1){ s+='<circle cx="'+loopX+'" cy="'+laneY+'" r="9" fill="#51607e" stroke="#fff" stroke-width="2"/>'; }
