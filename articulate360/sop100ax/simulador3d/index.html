@@ -68,7 +68,11 @@
     </div>
     <div class="step"><span class="es">3 · Sujeta la aguja n.º 12 y gírala 30–45° para atravesar la capa 1</span><span class="en">3 · Hold needle no. 12 and rotate it 30–45° to pierce layer 1</span></div>
     <p class="hint"><span class="es">Arrastra la aguja: lado a lado avanza la puntada; arriba/abajo la gira para clavar la capa 1 (rango 30–45°). El movimiento es suave a propósito. Si la fuerzas más allá de ~50° toca la capa 2 y salta la alerta. ¿No quieres arrastrar? Usa el control deslizante de coser.</span><span class="en">Drag the needle: side to side advances the stitch; up/down rotates it to pierce layer 1 (30–45° range). Motion is intentionally gentle. If you force it past ~50° it touches layer 2 and the alert fires. Prefer not to drag? Use the sew slider instead.</span></p>
-    <div class="row"><input type="range" id="sew" min="0" max="100" value="0" oninput="onSew(this.value)" disabled aria-label="Coser"></div>
+    <div class="step" style="margin-top:4px"><span class="es">a) Profundidad de la puntada — mantenla en la <b>capa 1</b>, sin tocar la capa 2</span><span class="en">a) Stitch depth — keep it in <b>layer 1</b>, without touching layer 2</span></div>
+    <div class="row"><input type="range" id="depthR" min="0" max="100" value="0" oninput="onDepth(this.value)" disabled aria-label="Profundidad de la puntada / Stitch depth"></div>
+    <div id="depthOut" aria-live="polite" style="font-weight:700;font-size:14px;min-height:20px;margin:2px 0 6px"></div>
+    <div class="step" style="margin-top:4px"><span class="es">b) Avance de la puntada (derecha → izquierda)</span><span class="en">b) Stitch advance (right → left)</span></div>
+    <div class="row"><input type="range" id="sew" min="0" max="100" value="0" oninput="onSew(this.value)" disabled aria-label="Avance / Advance"></div>
     <div class="row">
       <button class="act ghost" id="autoBtn" onclick="auto()" disabled><span class="es">▶ Coser automático (demostración)</span><span class="en">▶ Auto sew (demo)</span></button>
       <button class="act" id="knotBtn" onclick="closeKnot()" disabled><span class="es">🪢 Apretar y tensar (nudo de remate)</span><span class="en">🪢 Press & pull taut (finishing knot)</span></button>
@@ -135,7 +139,7 @@ function showReport(){var r=document.getElementById('report');var en=EN();
 /* ---------- 3D ---------- */
 var cv=document.getElementById('cv');
 var scene=new THREE.Scene();scene.background=new THREE.Color(0xdfe5ec);
-var camera=new THREE.PerspectiveCamera(45,cv.clientWidth/cv.clientHeight,0.1,100);camera.position.set(1.8,1.3,4.0);
+var camera=new THREE.PerspectiveCamera(45,cv.clientWidth/cv.clientHeight,0.1,100);camera.position.set(3.1,1.05,2.7);
 var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 function resize(){renderer.setSize(cv.clientWidth,cv.clientHeight,false);camera.aspect=cv.clientWidth/cv.clientHeight;camera.updateProjectionMatrix();}resize();
 var controls=null;try{controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.minDistance=2.6;controls.maxDistance=7;controls.enableDamping=true;controls.dampingFactor=0.09;controls.rotateSpeed=0.6;controls.zoomSpeed=0.7;}catch(e){simFail('OrbitControls no cargó desde el CDN. La escena 3D se ve, pero no podrás girar la vista. / OrbitControls failed to load.');}
@@ -154,22 +158,20 @@ var lockRing=new THREE.Mesh(new THREE.TorusGeometry(0.11,0.028,12,28),new THREE.
 function clamp(y){var m=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.16,0.3),new THREE.MeshStandardMaterial({color:0x6b7280}));m.position.set(-1.1,y,0);m.visible=false;return m;}
 var cT=clamp(1.15),cB=clamp(-1.15);scene.add(cT,cB);
 var needle=new THREE.Group();
-// aguja de sutura n.º 12: cuerpo curvo (arco en C); el pivote (origen del grupo) es la PUNTA = punto de entrada en la tela
-var NR=0.5;                                   // radio de curvatura de la aguja
-var shaft=new THREE.Mesh(new THREE.TorusGeometry(NR,0.024,14,44,Math.PI*0.6),
-  new THREE.MeshStandardMaterial({color:0xbfc6cf,metalness:.7,roughness:.25}));
-shaft.position.x=-NR;                         // lleva el extremo theta=0 (la punta) al origen del grupo
-var tip=new THREE.Mesh(new THREE.ConeGeometry(0.04,0.14,14),
-  new THREE.MeshStandardMaterial({color:0x9aa4ad,metalness:.7,roughness:.25}));
-tip.position.set(0,0.06,0);                   // punta afilada en el extremo de entrada
-needle.add(shaft,tip);
+// aguja de tapicería n.º 12: RECTA, con punta roma redondeada (bout rond) y OJO ovalado grande. Pivote (origen) = la punta = punto de entrada.
+var nmat=new THREE.MeshStandardMaterial({color:0xd7dce2,metalness:.25,roughness:.5,emissive:0x20262c,emissiveIntensity:.25}); // acero claro (sin env-map, metalness bajo = no se ve negro)
+var shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.026,0.03,0.82,20),nmat); shaft.position.y=0.46; // cuerpo recto, el origen queda en la punta
+var tipM=new THREE.MeshStandardMaterial({color:0xc2c9d1,metalness:.25,roughness:.5,emissive:0x20262c,emissiveIntensity:.25});
+var tip=new THREE.Mesh(new THREE.SphereGeometry(0.032,16,12),tipM); tip.position.y=0.05;              // punta roma redonda
+var eye=new THREE.Mesh(new THREE.TorusGeometry(0.05,0.012,10,26),nmat); eye.scale.set(0.6,1.5,1); eye.position.y=0.9; // ojo ovalado grande
+needle.add(shaft,tip,eye);
 scene.add(needle);
 var thread=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffffff}));scene.add(thread);
 var handle=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.5,0.5),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));scene.add(handle);
 
 var S={held:false,depth:1,prog:0,ang:0,tprog:0,tang:0,pierced:false,dragging:false,knot:false,open:false,attempts:0,errors:0,passed:false,yRow:0.54,alerted:false,located:false,seqOk:false};
 var dragY0=0,ang0=0;
-var zCloseF=0.045,zCloseB=-0.045,zOpenF=0.28,zOpenB=-0.28; // fabric thin & close; "open" separates to show both layers
+var zCloseF=0.045,zCloseB=-0.045,zOpenF=0.16,zOpenB=-0.16; // capas finas y juntas; "abierto" las separa (moderado) para ver la profundidad y seguir exigiendo control
 var tgtF=zCloseF,tgtB=zCloseB;
 function zF(){return L1.position.z;}
 function needleZ(){return S.depth? zF()+th/2+0.02 : L2.position.z-th/2-0.03;}
@@ -181,18 +183,27 @@ function drawThread(x,y,nz){var over=L1.position.z+th/2+0.02, under=(nz<0)?(L2.p
 function syncHandle(){if(!S.dragging)handle.position.copy(needle.position);} // no pelea con el arrastre activo
 function zOn(){return L1.position.z+th/2;}                 // cara frontal de la capa 1
 function layer2Front(){return L2.position.z+th/2;}         // la punta que llega aquí = toca la capa 2 (error)
-var ANG_MAX=1.05;                                          // ~60° tope duro de giro
-function tipZfromAng(a){return zOn()+0.03-0.14*a;}         // 30–45° => atraviesa la capa 1 (seguro); >~50° llega a la capa 2
+function layer1Back(){return L1.position.z-th/2;}          // la punta que pasa esto = atraviesa la capa 1
+var ANG_MAX=1.05;                                          // ~60° tope duro de profundidad
+function tipZfromAng(a){var top=zOn()+0.05, bot=layer2Front()-0.06; return top-(top-bot)*(a/ANG_MAX);} // adaptativo: 0=superficial, medio=capa 1, alto=capa 2 (se ajusta al hueco abierto/cerrado)
+function depthUI(tz,parked,crossed){var el=document.getElementById('depthOut');if(!el)return;var en=EN();
+  if(parked){el.style.color='#5a6672';el.textContent=en?'Needle parked — grab it or use the sliders.':'Aguja parqueada — tómala o usa los deslizadores.';return;}
+  if(crossed){el.style.color='#C24A2E';el.textContent=en?'✗ Layer 2 touched — too deep, pull back.':'✗ Capa 2 tocada — demasiado profundo, retrocede.';}
+  else if(tz<layer1Back()){el.style.color='#17894A';el.textContent=en?'✓ Correct depth: through layer 1 only.':'✓ Profundidad correcta: atraviesa solo la capa 1.';}
+  else{el.style.color='#8A5A00';el.textContent=en?'• Too shallow — not through layer 1 yet.':'• Muy superficial — aún no atraviesa la capa 1.';}
+  var dR=document.getElementById('depthR');if(dR&&!parked)dR.value=Math.round((S.ang/ANG_MAX)*100);} // mantiene el deslizador en sync con el arrastre
 // La aguja se sujeta y gira en un rango de 30–45° para clavar la capa 1. Amortiguado = poco sensible (WCAG 2.2 AA).
-function place(){var x=1.3-2.6*S.prog;
-  var tz=tipZfromAng(S.ang);
-  needle.position.set(x,S.yRow,tz);
-  needle.rotation.x=0.5+S.ang;                            // la aguja curva se inclina al clavar (visual)
+function place(){
+  var parked=(S.prog<=0.001 && S.ang<=0.02 && !S.dragging); // en reposo la aguja está parqueada a la derecha, sin tocar la tela, lista para tomarla
+  var x=1.3-2.6*S.prog, tz=tipZfromAng(S.ang);
+  if(parked){ needle.position.set(2.25,S.yRow+0.15,zOn()+0.2); needle.rotation.x=0.35; }
+  else      { needle.position.set(x,S.yRow,tz);               needle.rotation.x=0.5+S.ang; } // la aguja curva se inclina al clavar
   col.position.set(0.2,0,zF()+th/2+0.005);
-  var crossed=tz<layer2Front();                           // la punta tocó la capa 2
+  var crossed = !parked && tz<layer2Front();              // la punta tocó la capa 2 (nunca en reposo)
   S.depth=crossed?0:1;
-  if(S.ang>=0.52&&!crossed)S.pierced=true;                // llegó a >=30° sin cruzar = capa 1 atravesada
-  colorNeedle(crossed); drawThread(x,S.yRow,tz); maybeAlert(crossed); syncHandle();}
+  if(!parked && tz<layer1Back() && !crossed)S.pierced=true; // atravesó la capa 1 a la profundidad correcta
+  colorNeedle(crossed); drawThread(needle.position.x,needle.position.y,needle.position.z); maybeAlert(crossed);
+  depthUI(tz,parked,crossed); syncHandle();}
 // Arrastre amortiguado: horizontal = avance de la puntada; vertical = ángulo de clavado (0–60°, limitado).
 function onDrag(){
   S.tprog=Math.max(0,Math.min(1,(1.3-handle.position.x)/2.6));
@@ -221,14 +232,16 @@ function checkSeq(){var ok=true;for(var i=0;i<seqData.length;i++){if(document.ge
  S.seqOk=ok;var out=document.getElementById('seqOut');out.style.color=ok?'#17894A':'#C24A2E';out.textContent=ok?(EN()?'✔ Correct order':'✔ Orden correcto'):(EN()?'✗ Not yet':'✗ Aún no');if(ok)log("answered","gesture-sequence","correct");}
 /* ---------- actions ---------- */
 function hold(){S.held=true;cT.visible=cB.visible=true;document.getElementById('holdBtn').classList.add('on');
-  document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;
-  if(dragC)dragC.enabled=true;                          // needle 360° drag activates ONLY after the fabric is held
+  document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;document.getElementById('depthR').disabled=false;
+  if(dragC)dragC.enabled=true;                          // el arrastre de la aguja se activa SOLO tras sujetar la tela
+  if(!S.open){S.open=true;tgtF=zOpenF;tgtB=zOpenB;}     // abre las capas para VER la profundidad (capa 1 vs capa 2)
   log("initialized","fabric","held");
-  setFB('',EN()?'Fabric held and fixed. Grab the needle and rotate it 30–45° to pierce layer 1 (or use the sew slider).':'Tela sujeta y fija. Sujeta la aguja y gírala 30–45° para atravesar la capa 1 (o usa el deslizador de coser).');}
+  setFB('',EN()?'Fabric held. Now set the DEPTH: keep the needle in layer 1 (green), never touching layer 2. Drag up/down or use the depth slider.':'Tela sujeta. Ahora ajusta la PROFUNDIDAD: mantén la aguja en la capa 1 (verde), sin tocar la capa 2. Arrastra arriba/abajo o usa el deslizador de profundidad.');}
 function toggleOpen(){S.open=!S.open;tgtF=S.open?zOpenF:zCloseF;tgtB=S.open?zOpenB:zCloseB;log("interacted","double-layer",S.open?"open":"close");}
 function setDepth(d){S.depth=d;S.alerted=false;place();}
-function onSew(v){if(!S.held)return;S.prog=S.tprog=v/100;S.ang=S.tang=0.66;place();}      // ~38°: clavado seguro en capa 1 sin arrastrar
-function auto(){if(!S.held)return;S.ang=S.tang=0.66;var el=document.getElementById('sew'),p=0;(function st(){p+=2;if(p>100)p=100;el.value=p;S.prog=S.tprog=p/100;place();if(p<100)requestAnimationFrame(st);})();}
+function onDepth(v){if(!S.held)return;S.ang=S.tang=(v/100)*ANG_MAX;place();}               // el usuario controla la profundidad (0=superficial, medio=capa 1, alto=capa 2)
+function onSew(v){if(!S.held)return;S.prog=S.tprog=v/100;place();}                         // avance; mantiene la profundidad que fijó el usuario
+function auto(){if(!S.held)return;S.ang=S.tang=0.62;document.getElementById('depthR').value=59;var el=document.getElementById('sew'),p=0;(function st(){p+=2;if(p>100)p=100;el.value=p;S.prog=S.tprog=p/100;place();if(p<100)requestAnimationFrame(st);})();} // demo: profundidad correcta
 function dismissAlert(){document.getElementById('alert').style.display='none';reset();setFB('no',EN()?'Redo on layer 1 only.':'Rehaz solo en la capa 1.');}
 function closeKnot(){if(S.prog<0.9||S.depth!=1||!S.pierced){return;}S.knot=true;log("completed","finishing-knot","closed");check();}
 function check(){S.attempts++;var en=EN();
@@ -246,11 +259,12 @@ function check(){S.attempts++;var en=EN();
 function reset(){S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.pierced=false;S.dragging=false;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
   if(dragC)dragC.enabled=false;
   cT.visible=cB.visible=false;document.getElementById('holdBtn').classList.remove('on');
-  var sew=document.getElementById('sew');sew.value=0;sew.disabled=true;document.getElementById('autoBtn').disabled=true;document.getElementById('knotBtn').disabled=true;
+  var sew=document.getElementById('sew');sew.value=0;sew.disabled=true;var dR=document.getElementById('depthR');if(dR){dR.value=0;dR.disabled=true;}var dO=document.getElementById('depthOut');if(dO)dO.textContent='';
+  document.getElementById('autoBtn').disabled=true;document.getElementById('knotBtn').disabled=true;
   loopsArr.forEach(function(l){l.material.color.set(0xcfe0ff);});lockRing.material.opacity=0;document.getElementById('locBtn').disabled=false;
   document.getElementById('locOut').textContent='';document.getElementById('seqOut').textContent='';
   var r=document.querySelector('input[name=depth][value="1"]');if(r)r.checked=true;S.yRow=lockY;place();log("reset","sim","");}
-window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;
+window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;
 place();window.addEventListener('resize',resize);
 (function loop(){requestAnimationFrame(loop);
   L1.position.z+=(tgtF-L1.position.z)*0.12;L2.position.z+=(tgtB-L2.position.z)*0.12; // animate open/close
