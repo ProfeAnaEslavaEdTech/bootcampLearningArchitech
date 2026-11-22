@@ -164,15 +164,20 @@ function drawThread(x,y,nz){var over=L1.position.z+th/2+0.02, under=(nz<0)?(L2.p
   for(var sx=1.3;sx>x+0.001;sx-=0.3){pts.push(new THREE.Vector3(sx,y,over));pts.push(new THREE.Vector3(sx-0.15,y,under));}
   pts.push(new THREE.Vector3(x,y,nz));pts.push(new THREE.Vector3(x,y-1.5,over));thread.geometry.setFromPoints(pts);}
 function syncHandle(){handle.position.copy(needle.position);}
-function place(){var x=1.3-2.6*S.prog; needle.position.set(x,S.yRow,needleZ());
-  col.position.set(0.2,0,zF()+th/2+0.005); colorNeedle(S.depth==0); drawThread(x,S.yRow,needleZ());
-  maybeAlert(S.depth==0&&S.prog>0.05); syncHandle();}
-// 360° free drag of the needle; crossing into layer 2 (z<0) fires the red full-screen alert
+function zOn(){return L1.position.z+th/2;}                 // front face of layer 1
+function crossZ(){return L2.position.z-th/2-0.02;}         // BEHIND layer 2 = real crossing (error only here)
+// guided sew: the needle dips in and out (curve) on layer 1; never errors
+function place(){var x=1.3-2.6*S.prog;
+  var dip=-0.06*Math.abs(Math.sin(S.prog*Math.PI*4));      // pierce in/out (curve), stays in front of layer 2
+  var y=S.yRow+0.07*Math.sin(S.prog*Math.PI);              // slight bow
+  needle.position.set(x,y,zOn()+0.02+dip);
+  col.position.set(0.2,0,zF()+th/2+0.005); colorNeedle(false); drawThread(x,y,needle.position.z); syncHandle();}
+// 360° free drag; the needle must pierce the fabric. Error only when it crosses BEHIND layer 2.
 function onDrag(){needle.position.copy(handle.position);
   var x=Math.max(-1.3,Math.min(1.3,needle.position.x)); needle.position.x=x; handle.position.x=x;
-  S.prog=(1.3-x)/2.6; var z=needle.position.z; var crossed=z<0.0; S.depth=crossed?0:1; S.yRow=needle.position.y;
+  S.prog=(1.3-x)/2.6; var z=needle.position.z; var crossed=z<crossZ(); S.depth=crossed?0:1; S.yRow=needle.position.y;
   colorNeedle(crossed); drawThread(x,needle.position.y,z); maybeAlert(crossed);}
-var dragC=new THREE.DragControls([handle],camera,renderer.domElement);
+var dragC=new THREE.DragControls([handle],camera,renderer.domElement); dragC.enabled=false;
 dragC.addEventListener('dragstart',function(){controls.enabled=false;});
 dragC.addEventListener('dragend',function(){controls.enabled=true;});
 dragC.addEventListener('drag',function(){onDrag();});
@@ -195,8 +200,10 @@ function checkSeq(){var ok=true;for(var i=0;i<seqData.length;i++){if(document.ge
  S.seqOk=ok;var out=document.getElementById('seqOut');out.style.color=ok?'#17894A':'#C24A2E';out.textContent=ok?(EN()?'✔ Correct order':'✔ Orden correcto'):(EN()?'✗ Not yet':'✗ Aún no');if(ok)log("answered","gesture-sequence","correct");}
 /* ---------- actions ---------- */
 function hold(){S.held=true;cT.visible=cB.visible=true;document.getElementById('holdBtn').classList.add('on');
-  document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;log("initialized","fabric","held");
-  setFB('',EN()?'Fabric held. Choose depth and sew.':'Tela sujeta. Elige profundidad y cose.');}
+  document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;
+  dragC.enabled=true;                                   // needle 360° drag activates ONLY after the fabric is held
+  log("initialized","fabric","held");
+  setFB('',EN()?'Fabric held and fixed. Now move the needle (drag) to sew on layer 1 — do NOT cross into layer 2.':'Tela sujeta y fija. Ahora mueve la aguja (arrástrala) para coser en la capa 1 — no cruces a la capa 2.');}
 function toggleOpen(){S.open=!S.open;tgtF=S.open?zOpenF:zCloseF;tgtB=S.open?zOpenB:zCloseB;log("interacted","double-layer",S.open?"open":"close");}
 function setDepth(d){S.depth=d;S.alerted=false;place();}
 function onSew(v){if(!S.held)return;S.prog=v/100;place();}
