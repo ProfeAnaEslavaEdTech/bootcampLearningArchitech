@@ -82,8 +82,8 @@
       <button class="act" id="locBtn" onclick="countLoops()"><span class="es">🔢 Cuenta 5 bucles ↑ desde el nudo de anclaje (columna n.º 8)</span><span class="en">🔢 Count 5 loops ↑ from the anchor knot (column no. 8)</span></button>
       <span id="locOut" style="font-weight:700"></span>
     </div>
-    <div class="step"><span class="es">3 · Sujeta la aguja n.º 12 y gírala 30–45° para atravesar la capa 1</span><span class="en">3 · Hold needle no. 12 and rotate it 30–45° to pierce layer 1</span></div>
-    <p class="hint"><span class="es">Arrastra la aguja: lado a lado avanza la puntada; arriba/abajo la gira para clavar la capa 1 (rango 30–45°). El movimiento es suave a propósito. Si la fuerzas más allá de ~50° toca la capa 2 y salta la alerta. ¿No quieres arrastrar? Usa el control deslizante de coser.</span><span class="en">Drag the needle: side to side advances the stitch; up/down rotates it to pierce layer 1 (30–45° range). Motion is intentionally gentle. If you force it past ~50° it touches layer 2 and the alert fires. Prefer not to drag? Use the sew slider instead.</span></p>
+    <div class="step"><span class="es">3 · Inserta la aguja n.º 12 a lo largo en la capa 1 y controla la profundidad</span><span class="en">3 · Insert needle no. 12 lengthwise in layer 1 and control the depth</span></div>
+    <p class="hint"><span class="es">La aguja queda tumbada a lo largo (así puedes hacer el lazo sobre la aguja). Arrástrala: lado a lado = avanza la puntada (derecha→izquierda); arriba/abajo = profundidad en la capa 1. Mantenla en la capa 1 (verde), sin tocar la capa 2. Movimiento suave a propósito. ¿No quieres arrastrar? Usa los deslizadores.</span><span class="en">The needle lies lengthwise (so you can loop the thread over it). Drag it: side to side = advance the stitch (right→left); up/down = depth in layer 1. Keep it in layer 1 (green), without touching layer 2. Motion is intentionally gentle. Prefer not to drag? Use the sliders.</span></p>
     <div class="step" style="margin-top:4px"><span class="es">a) Profundidad de la puntada — mantenla en la <b>capa 1</b>, sin tocar la capa 2</span><span class="en">a) Stitch depth — keep it in <b>layer 1</b>, without touching layer 2</span></div>
     <div class="row"><input type="range" id="depthR" min="0" max="100" value="0" oninput="onDepth(this.value)" disabled aria-label="Profundidad de la puntada / Stitch depth"></div>
     <div id="depthOut" aria-live="polite" style="font-weight:700;font-size:14px;min-height:20px;margin:2px 0 6px"></div>
@@ -91,8 +91,9 @@
     <div class="row"><input type="range" id="sew" min="0" max="100" value="0" oninput="onSew(this.value)" disabled aria-label="Avance / Advance"></div>
     <div class="row">
       <button class="act ghost" id="autoBtn" onclick="auto()" disabled><span class="es">▶ Coser automático (demostración)</span><span class="en">▶ Auto sew (demo)</span></button>
-      <button class="act" id="knotBtn" onclick="closeKnot()" disabled><span class="es">🪢 Apretar y tensar (nudo de remate)</span><span class="en">🪢 Press & pull taut (finishing knot)</span></button>
+      <button class="act" id="knotBtn" onclick="check()" disabled><span class="es">✓ Comprobar la puntada</span><span class="en">✓ Check the stitch</span></button>
     </div>
+    <p class="hint"><span class="es">El nudo de remate se practicará en la fase siguiente (aún no está en el simulador).</span><span class="en">The finishing knot will be practised in the next phase (not in the simulator yet).</span></p>
     <div id="fb" role="status" aria-live="polite"></div>
 
     <details id="ccq">
@@ -161,7 +162,7 @@ function resize(){renderer.setSize(cv.clientWidth,cv.clientHeight,false);camera.
 var controls=null;try{controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.minDistance=2.6;controls.maxDistance=7;controls.enableDamping=true;controls.dampingFactor=0.09;controls.rotateSpeed=0.6;controls.zoomSpeed=0.7;}catch(e){simFail('OrbitControls no cargó desde el CDN. La escena 3D se ve, pero no podrás girar la vista. / OrbitControls failed to load.');}
 scene.add(new THREE.AmbientLight(0xffffff,0.8));var dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(3,5,4);scene.add(dl);
 var th=0.025;
-var L1=new THREE.Mesh(new THREE.BoxGeometry(3,2.4,th),new THREE.MeshStandardMaterial({color:0x3f6bd6,roughness:.9}));
+var L1=new THREE.Mesh(new THREE.BoxGeometry(3,2.4,th),new THREE.MeshStandardMaterial({color:0x3f6bd6,roughness:.9,transparent:true,opacity:0.5})); // capa 1 semitransparente: deja ver la aguja tumbada dentro y su profundidad
 var L2=new THREE.Mesh(new THREE.BoxGeometry(3,2.4,th),new THREE.MeshStandardMaterial({color:0x27489c,roughness:.9}));
 scene.add(L1,L2);
 var col=new THREE.Mesh(new THREE.BoxGeometry(0.28,2.4,0.012),new THREE.MeshBasicMaterial({color:0xE0A400,transparent:true,opacity:.3}));scene.add(col);
@@ -176,10 +177,11 @@ var cT=clamp(1.15),cB=clamp(-1.15);scene.add(cT,cB);
 var needle=new THREE.Group();
 // aguja de tapicería n.º 12: RECTA, con punta roma redondeada (bout rond) y OJO ovalado grande. Pivote (origen) = la punta = punto de entrada.
 var nmat=new THREE.MeshStandardMaterial({color:0xd7dce2,metalness:.25,roughness:.5,emissive:0x20262c,emissiveIntensity:.25}); // acero claro (sin env-map, metalness bajo = no se ve negro)
-var shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.026,0.03,0.82,20),nmat); shaft.position.y=0.46; // cuerpo recto, el origen queda en la punta
+// aguja TUMBADA A LO LARGO (eje X), sobre la capa 1, para poder hacer el lazo sobre la aguja. Punta a la IZQUIERDA (origen = entrada).
+var shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.026,0.03,0.82,20),nmat); shaft.rotation.z=Math.PI/2; shaft.position.x=0.35; // a lo largo de X
 var tipM=new THREE.MeshStandardMaterial({color:0xc2c9d1,metalness:.25,roughness:.5,emissive:0x20262c,emissiveIntensity:.25});
-var tip=new THREE.Mesh(new THREE.SphereGeometry(0.032,16,12),tipM); tip.position.y=0.05;              // punta roma redonda
-var eye=new THREE.Mesh(new THREE.TorusGeometry(0.05,0.012,10,26),nmat); eye.scale.set(0.6,1.5,1); eye.position.y=0.9; // ojo ovalado grande
+var tip=new THREE.Mesh(new THREE.SphereGeometry(0.032,16,12),tipM); tip.position.x=-0.06;              // punta roma a la izquierda
+var eye=new THREE.Mesh(new THREE.TorusGeometry(0.05,0.012,10,26),nmat); eye.scale.set(1.5,0.6,1); eye.position.x=0.78; // ojo ovalado grande, a lo largo, en el extremo del hilo (derecha)
 needle.add(shaft,tip,eye);
 scene.add(needle);
 var thread=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffffff}));scene.add(thread);
@@ -212,8 +214,8 @@ function depthUI(tz,parked,crossed){var el=document.getElementById('depthOut');i
 function place(){
   var parked=(S.prog<=0.001 && S.ang<=0.02 && !S.dragging); // en reposo la aguja está parqueada a la derecha, sin tocar la tela, lista para tomarla
   var x=1.3-2.6*S.prog, tz=tipZfromAng(S.ang);
-  if(parked){ needle.position.set(2.25,S.yRow+0.15,zOn()+0.2); needle.rotation.x=0.35; }
-  else      { needle.position.set(x,S.yRow,tz);               needle.rotation.x=0.5+S.ang; } // la aguja curva se inclina al clavar
+  if(parked){ needle.position.set(2.25,S.yRow,zOn()+0.18); needle.rotation.set(0.12,0,0); }        // parqueada a la derecha, tumbada
+  else      { needle.position.set(x,S.yRow,tz);             needle.rotation.set(0.1+0.18*(S.ang/ANG_MAX),0,0); } // tumbada a lo largo; la profundidad es la altura (z), leve inclinación
   col.position.set(0.2,0,zF()+th/2+0.005);
   var crossed = !parked && tz<layer2Front();              // la punta tocó la capa 2 (nunca en reposo)
   S.depth=crossed?0:1;
@@ -240,7 +242,7 @@ var HINTS=[
  {es:'Aprieta con el dedo al tensar, hasta cerrar el nudo de remate.',en:'Press with your finger as you tension, until the finishing knot closes.'},
  {es:'Puntada terminada: firme, en una sola capa y sin atravesar la tela.',en:'Finished stitch: firm, single layer, and without going through the fabric.'}
 ];
-function currentStepIdx(){if(S.passed)return 6;if(!S.located)return 1;if(!S.pierced)return 2;if(S.prog<0.9)return 3;if(!S.knot)return 4;return 5;}
+function currentStepIdx(){if(S.passed)return 6;if(!S.located)return 1;if(!S.pierced)return 2;if(S.prog<0.9)return 3;return 4;}
 function showHint(idx){var en=EN();var i=(typeof idx==='number')?idx:currentStepIdx();
   document.getElementById('hintStep').textContent=en?'WHAT TO DO NOW':'QUÉ HACER AHORA';
   document.getElementById('hintTx').textContent=en?HINTS[i].en:HINTS[i].es;
@@ -264,7 +266,7 @@ function checkSeq(){var ok=true;for(var i=0;i<seqData.length;i++){if(document.ge
  S.seqOk=ok;var out=document.getElementById('seqOut');out.style.color=ok?'#17894A':'#C24A2E';out.textContent=ok?(EN()?'✔ Correct order':'✔ Orden correcto'):(EN()?'✗ Not yet':'✗ Aún no');if(ok)log("answered","gesture-sequence","correct");}
 /* ---------- actions ---------- */
 function hold(){S.held=true;cT.visible=cB.visible=true;document.getElementById('holdBtn').classList.add('on');
-  document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;document.getElementById('depthR').disabled=false;
+  document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;document.getElementById('depthR').disabled=false;document.getElementById('knotBtn').disabled=false;
   if(dragC)dragC.enabled=true;                          // el arrastre de la aguja se activa SOLO tras sujetar la tela
   if(!S.open){S.open=true;tgtF=zOpenF;tgtB=zOpenB;}     // abre las capas para VER la profundidad (capa 1 vs capa 2)
   log("initialized","fabric","held");
@@ -280,14 +282,14 @@ function check(){S.attempts++;var en=EN();
   if(!S.located){setFB('no',en?'First locate the locking loop (count 5 loops up).':'Primero localiza el bucle de bloqueo (cuenta 5 bucles hacia arriba).');return;}
   if(!S.seqOk){setFB('no',en?'First order the gesture correctly.':'Primero ordena el gesto correctamente.');return;}
   if(!S.held){setFB('no',en?'Hold the fabric first.':'Primero sujeta la tela.');return;}
-  if(!S.pierced){setFB('no',en?'Pierce layer 1 first: grab the needle and rotate it ~30–45° into layer 1.':'Primero clava la capa 1: sujeta la aguja y gírala ~30–45° en la capa 1.');return;}
-  if(S.depth==0){S.errors++;log("failed","step5","layer2");setFB('no',en?'✖ You touched layer 2: remove the thread to that point and redo the knot only on layer 1.':'✖ Has tocado la capa 2: retira el hilo hasta ese punto y rehaz el nudo solo en la capa 1.');return;}
-  if(S.prog<0.9){setFB('no',en?'Finish the stitch: slide the needle fully to the left.':'Termina la puntada: lleva la aguja hasta la izquierda.');return;}
-  if(!S.knot){document.getElementById('knotBtn').disabled=false;setFB('ok',en?'Bien: has trabajado en una sola capa. Now press & pull taut to close the knot.':'Bien: has trabajado en una sola capa. Ahora aprieta y tensa para cerrar el nudo.');return;}
-  // all done
+  if(!S.pierced){setFB('no',en?'First set the depth: bring the needle into layer 1 (green), without touching layer 2.':'Primero ajusta la profundidad: lleva la aguja a la capa 1 (verde), sin tocar la capa 2.');return;}
+  if(S.depth==0){S.errors++;log("failed","step5","layer2");setFB('no',en?'✖ You touched layer 2: remove the thread to that point and redo only on layer 1.':'✖ Has tocado la capa 2: retira el hilo hasta ese punto y rehaz solo en la capa 1.');return;}
+  if(S.prog<0.9){setFB('no',en?'Finish the stitch: slide the needle fully to the left, around the loop.':'Termina la puntada: lleva la aguja hasta la izquierda, rodeando el bucle.');return;}
+  // Puntada correcta → superado. El nudo de remate es fase siguiente (fuera del simulador por ahora).
   S.passed=true;log("mastered","step5","100");log("passed","step5","100");scormSet(100,"passed");
   document.getElementById('gate').textContent=en?'✔ Zero Gate 100% — passed':'✔ Zero Gate 100 % — superado';
-  setFB('ok',en?'✔ Step 5 mastered (100%). Single layer, knot closed.':'✔ Paso 5 superado (100 %). Una sola capa, nudo cerrado.');}
+  setFB('ok',en?'✔ Step 5 stitch mastered (100%): single layer, correct depth, needle lying along to make the loop.':'✔ Puntada del Paso 5 superada (100 %): una sola capa, profundidad correcta, aguja a lo largo para hacer el lazo.');
+  showHint(6);}
 function reset(){S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.pierced=false;S.dragging=false;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
   if(dragC)dragC.enabled=false;
   cT.visible=cB.visible=false;document.getElementById('holdBtn').classList.remove('on');
