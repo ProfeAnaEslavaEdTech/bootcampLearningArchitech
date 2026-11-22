@@ -12,104 +12,202 @@
   .tg{display:flex;border:1px solid #fff5;border-radius:16px;overflow:hidden;font-size:12px;font-weight:700}
   .tg button{background:transparent;color:#fff;border:0;padding:5px 12px;cursor:pointer}
   .tg button.on{background:#fff;color:#16222E}
-  #wrap{max-width:960px;margin:0 auto;padding:14px}
-  #cv{width:100%;height:460px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
+  #wrap{max-width:980px;margin:0 auto;padding:14px}
+  #cv{width:100%;height:420px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
   .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px}
   .crit{background:#FFF6E0;border-left:5px solid var(--amber);color:#8A5A00;font-weight:700;padding:9px 12px;border-radius:4px;margin-bottom:10px}
+  .step{font-size:14px;margin:10px 0 4px;font-weight:700}
   label.r{display:inline-flex;align-items:center;gap:6px;margin-right:18px;font-size:14px;cursor:pointer}
-  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px}
   button.act{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:9px 15px;font-size:14px;font-weight:700;cursor:pointer}
+  button.act:disabled{opacity:.45;cursor:not-allowed}
   button.ghost{background:#eef1f6;color:#16222E}
+  button.hold.on{background:var(--green)}
+  button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #2F54B7;outline-offset:2px}
+  input[type=range]{width:100%;max-width:520px}
   #fb{margin-top:10px;font-weight:700;font-size:15px;min-height:22px}
   #fb.ok{color:var(--green)}#fb.no{color:var(--red)}
   .hint{font-size:12px;color:#5a6672;margin-top:6px}
+  #report{font-size:13px;margin-top:10px;display:none;border-top:1px solid var(--line);padding-top:8px}
+  #report table{border-collapse:collapse;width:100%}#report td,#report th{border:1px solid var(--line);padding:3px 6px;text-align:left}
+  .ai{font-size:11px;color:#777;border-top:1px solid var(--line);padding-top:8px;margin-top:12px}
+  /* full-screen forbidden-zone alert */
+  #alert{position:fixed;inset:0;background:rgba(194,74,46,.94);color:#fff;display:none;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:30px;z-index:50}
+  #alert h2{font-size:30px;margin-bottom:12px}#alert p{font-size:18px;max-width:640px;margin-bottom:20px}
+  #alert button{background:#fff;color:#C24A2E;border:0;border-radius:8px;padding:12px 22px;font-size:16px;font-weight:700;cursor:pointer}
 </style></head>
 <body class="es">
 <header>
   <h1><span class="es">Paso 5 · Simulador 3D — puntada de bloqueo en una sola capa</span><span class="en">Step 5 · 3D simulator — single-layer locking stitch</span></h1>
-  <div class="tg"><button id="bes" class="on" onclick="setLang('es')">ES</button><button id="ben" onclick="setLang('en')">EN</button></div>
+  <div class="tg"><button id="bes" class="on" onclick="setLang('es')" aria-label="Español">ES</button><button id="ben" onclick="setLang('en')" aria-label="English">EN</button></div>
 </header>
 <div id="wrap">
-  <canvas id="cv"></canvas>
+  <div class="crit"><span class="es">⚠ Trabaja en la capa 1, no insertes en la capa 2.</span><span class="en">⚠ Work on layer 1, do not insert into layer 2.</span></div>
+  <canvas id="cv" role="img" aria-label="Simulación 3D de la cubierta de dos capas"></canvas>
   <div class="panel">
-    <div class="crit"><span class="es">⚠ Trabaja en la capa 1. No cruces la aguja a la capa 2.</span><span class="en">⚠ Work on layer 1. Do not cross the needle into layer 2.</span></div>
-    <p style="font-size:14px"><span class="es"><b>1.</b> Elige la profundidad. <b>2.</b> Desliza la aguja de derecha a izquierda bordeando la columna. Arrastra con el ratón para girar la vista 3D.</span>
-       <span class="en"><b>1.</b> Choose the depth. <b>2.</b> Slide the needle from right to left skirting the column. Drag with the mouse to orbit the 3D view.</span></p>
+    <div class="step"><span class="es">1 · Sujeta la tela · 2 · Abre/cierra la doble capa</span><span class="en">1 · Hold the fabric · 2 · Open/close the double layer</span></div>
     <div class="row">
-      <span style="font-size:14px;font-weight:700"><span class="es">Profundidad:</span><span class="en">Depth:</span></span>
-      <label class="r"><input type="radio" name="depth" value="1" checked onchange="setDepth(1)"> <span class="es">Capa 1 (correcto)</span><span class="en">Layer 1 (correct)</span></label>
-      <label class="r"><input type="radio" name="depth" value="0" onchange="setDepth(0)"> <span class="es">Atravesar a la capa 2</span><span class="en">Cross into layer 2</span></label>
+      <button class="act hold" id="holdBtn" onclick="hold()"><span class="es">✋ Sujetar la tela</span><span class="en">✋ Hold the fabric</span></button>
+      <button class="act ghost" onclick="toggleOpen()"><span class="es">📖 Abrir / cerrar doble capa</span><span class="en">📖 Open / close double layer</span></button>
     </div>
+    <div class="step"><span class="es">3 · Localiza el bucle de bloqueo</span><span class="en">3 · Locate the locking loop</span></div>
     <div class="row">
-      <button class="act" id="slideBtn" onclick="slide()"><span class="es">▶ Deslizar (der→izq)</span><span class="en">▶ Slide (right→left)</span></button>
+      <button class="act" id="locBtn" onclick="countLoops()"><span class="es">🔢 Cuenta 5 bucles ↑ desde el nudo de anclaje (columna n.º 8)</span><span class="en">🔢 Count 5 loops ↑ from the anchor knot (column no. 8)</span></button>
+      <span id="locOut" style="font-weight:700"></span>
+    </div>
+    <div class="step"><span class="es">4 · Ordena el gesto (asigna 1 a 5)</span><span class="en">4 · Order the gesture (assign 1 to 5)</span></div>
+    <div id="seq" style="font-size:13px"></div>
+    <div class="row"><button class="act ghost" onclick="checkSeq()"><span class="es">Comprobar orden</span><span class="en">Check order</span></button><span id="seqOut" style="font-weight:700"></span></div>
+    <div class="step"><span class="es">5 · Profundidad de la aguja</span><span class="en">5 · Needle depth</span></div>
+    <div class="row">
+      <label class="r"><input type="radio" name="depth" value="1" checked onchange="setDepth(1)"> <span class="es">Solo la capa 1 (correcto)</span><span class="en">Layer 1 only (correct)</span></label>
+      <label class="r"><input type="radio" name="depth" value="0" onchange="setDepth(0)"> <span class="es">Atravesar las dos capas</span><span class="en">Through both layers</span></label>
+    </div>
+    <div class="step"><span class="es">4 · Maneja la aguja para coser (de derecha a izquierda)</span><span class="en">4 · Move the needle to sew (right to left)</span></div>
+    <div class="row"><input type="range" id="sew" min="0" max="100" value="0" oninput="onSew(this.value)" disabled aria-label="Coser"></div>
+    <div class="row">
+      <button class="act ghost" id="autoBtn" onclick="auto()" disabled><span class="es">▶ Coser automático</span><span class="en">▶ Auto sew</span></button>
+      <button class="act" id="knotBtn" onclick="closeKnot()" disabled><span class="es">🪢 Apretar y tensar (nudo de remate)</span><span class="en">🪢 Press & pull taut (finishing knot)</span></button>
       <button class="act ghost" onclick="reset()"><span class="es">Reiniciar</span><span class="en">Reset</span></button>
     </div>
-    <div id="fb"></div>
-    <div class="hint"><span class="es">Las dos superficies azules son la capa 1 (delante) y la capa 2 (detrás), con el canal entre ambas. El nudo de anclaje está abajo; el bucle de bloqueo, 5 bucles por encima.</span>
-      <span class="en">The two blue surfaces are layer 1 (front) and layer 2 (back), with the channel between them. The anchor knot is at the bottom; the locking loop is 5 loops above.</span></div>
+    <div id="fb" role="status" aria-live="polite"></div>
+
+    <div class="step"><span class="es">Dominio y datos</span><span class="en">Mastery &amp; data</span></div>
+    <div class="row">
+      <button class="act ghost" onclick="showReport()"><span class="es">📊 Ver informe</span><span class="en">📊 View report</span></button>
+      <button class="act ghost" onclick="downloadCSV()"><span class="es">⬇ Descargar CSV (xAPI)</span><span class="en">⬇ Download CSV (xAPI)</span></button>
+      <span id="gate" style="font-weight:700"></span>
+    </div>
+    <div id="report"></div>
+    <div class="ai"><span class="es">Material desarrollado con asistencia de IA generativa, revisado y aprobado por Ana Eslava-Graterol. Divulgado conforme al Art. 50 del Reglamento (UE) 2024/1689.</span>
+      <span class="en">Developed with generative-AI assistance; reviewed and approved by Ana Eslava-Graterol. Disclosed under Art. 50 of Regulation (EU) 2024/1689.</span></div>
   </div>
+</div>
+
+<div id="alert" role="alertdialog" aria-modal="true">
+  <h2>⚠ <span class="es">¡Capa 2!</span><span class="en">Layer 2!</span></h2>
+  <p><span class="es">Has tocado la capa 2: retira el hilo hasta ese punto y rehaz el nudo solo en la capa 1.</span>
+     <span class="en">You touched layer 2: remove the thread to that point and redo the knot only on layer 1.</span></p>
+  <button onclick="dismissAlert()"><span class="es">Entendido — rehacer en la capa 1</span><span class="en">Got it — redo on layer 1</span></button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
-function setLang(l){document.body.className=l;document.getElementById('bes').classList.toggle('on',l=='es');document.getElementById('ben').classList.toggle('on',l=='en');try{localStorage.setItem('sim3dLang',l)}catch(e){}}
-try{var sv=localStorage.getItem('sim3dLang');if(sv)setLang(sv);}catch(e){}
-function LANGEN(){return document.body.classList.contains('en');}
-
+/* ---------- i18n ---------- */
+function setLang(l){document.body.className=l;document.getElementById('bes').classList.toggle('on',l=='es');document.getElementById('ben').classList.toggle('on',l=='en');try{localStorage.setItem('s3',l)}catch(e){}}
+try{var sv=localStorage.getItem('s3');if(sv)setLang(sv);}catch(e){}
+function EN(){return document.body.classList.contains('en');}
+/* ---------- SCORM 1.2 ---------- */
+var API=null;function findAPI(w){var n=0;while(w&&!w.API&&w.parent&&w.parent!=w&&n++<8)w=w.parent;return w?w.API:null;}
+function scormInit(){try{API=findAPI(window)||(window.opener?findAPI(window.opener):null);if(API){API.LMSInitialize("");API.LMSSetValue("cmi.core.lesson_status","incomplete");API.LMSCommit("");}}catch(e){}}
+function scormSet(score,status){try{if(API){API.LMSSetValue("cmi.core.score.raw",String(score));API.LMSSetValue("cmi.core.score.min","0");API.LMSSetValue("cmi.core.score.max","100");API.LMSSetValue("cmi.core.lesson_status",status);API.LMSCommit("");}}catch(e){}}
+function scormFinish(){try{if(API){API.LMSFinish("");}}catch(e){}}
+window.addEventListener('load',scormInit);window.addEventListener('unload',scormFinish);
+/* ---------- telemetry (xAPI-style) ---------- */
+var EV=[];function log(verb,obj,result){EV.push({t:new Date().toISOString(),actor:"anonymous",verb:verb,object:obj,result:(result==null?"":result)});}
+function downloadCSV(){var rows=[["timestamp","actor","verb","object","result"]];EV.forEach(function(e){rows.push([e.t,e.actor,e.verb,e.object,'"'+String(e.result).replace(/"/g,'""')+'"']);});
+  var csv=rows.map(function(r){return r.join(",");}).join("\n");var b=new Blob([csv],{type:"text/csv"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="paso5_xapi.csv";a.click();}
+function showReport(){var r=document.getElementById('report');var en=EN();
+  var html='<table><tr><th>'+(en?'Metric':'Métrica')+'</th><th>'+(en?'Value':'Valor')+'</th></tr>'
+   +'<tr><td>'+(en?'Attempts':'Intentos')+'</td><td>'+S.attempts+'</td></tr>'
+   +'<tr><td>'+(en?'Layer-2 errors':'Errores capa 2')+'</td><td>'+S.errors+'</td></tr>'
+   +'<tr><td>'+(en?'Passed (Zero Gate 100%)':'Aprobado (Zero Gate 100%)')+'</td><td>'+(S.passed?(en?'Yes':'Sí'):'—')+'</td></tr>'
+   +'<tr><td>'+(en?'Score':'Puntuación')+'</td><td>'+(S.passed?100:0)+'</td></tr>'
+   +'<tr><td>'+(en?'xAPI events':'Eventos xAPI')+'</td><td>'+EV.length+'</td></tr></table>';
+  r.innerHTML=html;r.style.display='block';}
+/* ---------- 3D ---------- */
 var cv=document.getElementById('cv');
-var scene=new THREE.Scene(); scene.background=new THREE.Color(0xdfe5ec);
-var camera=new THREE.PerspectiveCamera(45, cv.clientWidth/cv.clientHeight, 0.1, 100);
-camera.position.set(2.6,1.8,4.2);
-var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});
-function resize(){renderer.setSize(cv.clientWidth,cv.clientHeight,false);camera.aspect=cv.clientWidth/cv.clientHeight;camera.updateProjectionMatrix();}
-renderer.setPixelRatio(Math.min(devicePixelRatio,2)); resize();
-var controls=new THREE.OrbitControls(camera,renderer.domElement); controls.enablePan=false; controls.minDistance=3; controls.maxDistance=8; controls.target.set(0,0,0);
-scene.add(new THREE.AmbientLight(0xffffff,0.75));
-var dl=new THREE.DirectionalLight(0xffffff,0.7); dl.position.set(3,5,4); scene.add(dl);
-
-// fabric layers (knit-like via color); layer1 front z=+0.25, layer2 back z=-0.25
-function layer(z,color){var g=new THREE.BoxGeometry(3,3,0.08);var m=new THREE.MeshStandardMaterial({color:color,roughness:.85,metalness:.05});var mesh=new THREE.Mesh(g,m);mesh.position.z=z;return mesh;}
-var L1=layer(0.25,0x3f6bd6), L2=layer(-0.25,0x1e3a86); scene.add(L1); scene.add(L2);
-// column highlight on layer 1
-var colGeo=new THREE.BoxGeometry(0.34,3,0.02); var colMat=new THREE.MeshBasicMaterial({color:0xE0A400,transparent:true,opacity:.35}); var col=new THREE.Mesh(colGeo,colMat); col.position.set(0.2,0,0.31); scene.add(col);
-// anchor knot (bottom) + locking loop (5 up)
-var knot=new THREE.Mesh(new THREE.SphereGeometry(0.1,18,18),new THREE.MeshStandardMaterial({color:0xffffff})); knot.position.set(0.2,-1.0,0.33); scene.add(knot);
-var loop=new THREE.Mesh(new THREE.TorusGeometry(0.14,0.045,12,24),new THREE.MeshStandardMaterial({color:0xffffff})); loop.position.set(0.2,0.1,0.33); scene.add(loop);
-
-// needle group (horizontal, tip to the left)
+var scene=new THREE.Scene();scene.background=new THREE.Color(0xdfe5ec);
+var camera=new THREE.PerspectiveCamera(45,cv.clientWidth/cv.clientHeight,0.1,100);camera.position.set(1.8,1.3,4.0);
+var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+function resize(){renderer.setSize(cv.clientWidth,cv.clientHeight,false);camera.aspect=cv.clientWidth/cv.clientHeight;camera.updateProjectionMatrix();}resize();
+var controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.minDistance=2.6;controls.maxDistance=7;
+scene.add(new THREE.AmbientLight(0xffffff,0.8));var dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(3,5,4);scene.add(dl);
+var th=0.025;
+var L1=new THREE.Mesh(new THREE.BoxGeometry(3,2.4,th),new THREE.MeshStandardMaterial({color:0x3f6bd6,roughness:.9}));
+var L2=new THREE.Mesh(new THREE.BoxGeometry(3,2.4,th),new THREE.MeshStandardMaterial({color:0x27489c,roughness:.9}));
+scene.add(L1,L2);
+var col=new THREE.Mesh(new THREE.BoxGeometry(0.28,2.4,0.012),new THREE.MeshBasicMaterial({color:0xE0A400,transparent:true,opacity:.3}));scene.add(col);
+// anchor knot (bottom of column 8) + 5 loops upward + locking-loop highlight
+var colX=0.2,yBase=-0.7,loopGap=0.26,zc=0.075;
+var anchorKnot=new THREE.Mesh(new THREE.TorusKnotGeometry(0.08,0.028,48,8),new THREE.MeshStandardMaterial({color:0xeaeaea}));anchorKnot.position.set(colX,yBase,zc);scene.add(anchorKnot);
+var loopsArr=[];for(var i=1;i<=5;i++){var lp=new THREE.Mesh(new THREE.TorusGeometry(0.06,0.018,10,20),new THREE.MeshStandardMaterial({color:0xcfe0ff}));lp.position.set(colX,yBase+i*loopGap,zc);lp.rotation.x=Math.PI/2;scene.add(lp);loopsArr.push(lp);}
+var lockY=yBase+5*loopGap;
+var lockRing=new THREE.Mesh(new THREE.TorusGeometry(0.11,0.028,12,28),new THREE.MeshBasicMaterial({color:0xE0A400,transparent:true,opacity:0}));lockRing.position.set(colX,lockY,zc);lockRing.rotation.x=Math.PI/2;scene.add(lockRing);
+function clamp(y){var m=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.16,0.3),new THREE.MeshStandardMaterial({color:0x6b7280}));m.position.set(-1.1,y,0);m.visible=false;return m;}
+var cT=clamp(1.15),cB=clamp(-1.15);scene.add(cT,cB);
 var needle=new THREE.Group();
-var shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,1.4,16),new THREE.MeshStandardMaterial({color:0xbfc6cf,metalness:.6,roughness:.3}));
-shaft.rotation.z=Math.PI/2; needle.add(shaft);
-var tip=new THREE.Mesh(new THREE.ConeGeometry(0.05,0.22,16),new THREE.MeshStandardMaterial({color:0x9aa4ad,metalness:.6,roughness:.3}));
-tip.rotation.z=Math.PI/2; tip.position.x=-0.8; needle.add(tip);
-// thread
-var thr=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.9,8),new THREE.MeshStandardMaterial({color:0xffffff})); thr.position.set(0.7,-0.45,0); thr.rotation.z=0.5; needle.add(thr);
+var shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,1.1,16),new THREE.MeshStandardMaterial({color:0xbfc6cf,metalness:.6,roughness:.3}));shaft.rotation.z=Math.PI/2;needle.add(shaft);
+var tip=new THREE.Mesh(new THREE.ConeGeometry(0.045,0.2,16),new THREE.MeshStandardMaterial({color:0x9aa4ad,metalness:.6,roughness:.3}));tip.rotation.z=Math.PI/2;tip.position.x=-0.65;needle.add(tip);
 scene.add(needle);
+var thread=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffffff}));scene.add(thread);
 
-var state={x:1.2, depth:1, sliding:false}; // depth 1 = layer1 (z=0.25), 0 = crosses (z=-0.25)
-function place(){ needle.position.x=state.x; needle.position.y=0.1; needle.position.z = state.depth? 0.25 : -0.22;
-  var bad = state.depth==0;
-  shaft.material.color.set(bad?0xd05a3e:0xbfc6cf); tip.material.color.set(bad?0xc24a2e:0x9aa4ad);
+var S={held:false,depth:1,prog:0,knot:false,open:false,attempts:0,errors:0,passed:false,yRow:0.54,alerted:false,located:false,seqOk:false};
+var zCloseF=0.045,zCloseB=-0.045,zOpenF=0.28,zOpenB=-0.28; // fabric thin & close; "open" separates to show both layers
+var tgtF=zCloseF,tgtB=zCloseB;
+function zF(){return L1.position.z;}
+function needleZ(){return S.depth? zF()+th/2+0.02 : L2.position.z-th/2-0.03;}
+function place(){var x0=1.3,x1=-1.3,x=x0+(x1-x0)*S.prog;
+  needle.position.set(x,S.yRow,needleZ());
+  var bad=S.depth==0;shaft.material.color.set(bad?0xd05a3e:0xbfc6cf);tip.material.color.set(bad?0xc24a2e:0x9aa4ad);
+  col.position.set(0.2,0,zF()+th/2+0.005);
+  var over=zF()+th/2+0.02, under=S.depth? 0.0 : L2.position.z-th/2-0.03, pts=[];
+  for(var sx=1.3;sx>x+0.001;sx-=0.3){pts.push(new THREE.Vector3(sx,S.yRow,over));pts.push(new THREE.Vector3(sx-0.15,S.yRow,under));}
+  pts.push(new THREE.Vector3(x,S.yRow,needleZ()));pts.push(new THREE.Vector3(x,S.yRow-1.5,over));
+  thread.geometry.setFromPoints(pts);
+  // forbidden-zone full-screen alert
+  if(S.depth==0 && S.prog>0.05 && !S.alerted){S.alerted=true;S.errors++;log("experienced","forbidden-zone-layer2","touched");document.getElementById('alert').style.display='flex';}
 }
-function setDepth(d){state.depth=d; place(); setFB('',''); }
-window.setDepth=setDepth;
-function setFB(cls,txt){var f=document.getElementById('fb'); f.className=cls; f.textContent=txt;}
-function slide(){ if(state.sliding) return; state.sliding=true; document.getElementById('slideBtn').disabled=true;
-  var start=performance.now(), dur=2200, x0=1.2, x1=-1.2; state.x=x0; place();
-  function step(now){var t=Math.min(1,(now-start)/dur); state.x=x0+(x1-x0)*t; place();
-    if(t<1){requestAnimationFrame(step);} else {state.sliding=false; document.getElementById('slideBtn').disabled=false; evaluate();}}
-  requestAnimationFrame(step);
-}
-window.slide=slide;
-function evaluate(){ var en=LANGEN();
-  if(state.depth==1){ setFB('ok', en?'✔ Correct: you stayed on layer 1. Locking stitch done without touching layer 2.':'✔ Correcto: te mantuviste en la capa 1. Puntada de bloqueo sin tocar la capa 2.'); }
-  else { setFB('no', en?'✖ You crossed into layer 2 → defective piece. Remove the thread to that point and redo the knot only on layer 1.':'✖ Cruzaste a la capa 2 → pieza defectuosa. Retira el hilo hasta ese punto y rehaz el nudo solo en la capa 1.'); }
-}
-function reset(){ state.x=1.2; state.depth=1; document.querySelector('input[name=depth][value="1"]').checked=true; place(); setFB('',''); }
-window.reset=reset;
-place();
-window.addEventListener('resize',resize);
-(function loop(){requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera);})();
+function setFB(c,t){var f=document.getElementById('fb');f.className=c;f.textContent=t;}
+/* ---------- locate loop (count 5) + sequencing ---------- */
+function countLoops(){if(S.located)return;var i=0,out=document.getElementById('locOut'),en=EN();
+  var iv=setInterval(function(){i++;if(i<=5){loopsArr[i-1].material.color.set(0xE0A400);out.textContent=(en?'Loop ':'Bucle ')+i;}
+    if(i>=5){clearInterval(iv);lockRing.material.opacity=0.95;S.located=true;S.yRow=lockY;place();log("interacted","locking-loop","located");
+      out.textContent=en?'Locking loop located (5 above the anchor knot).':'Bucle de bloqueo localizado (5 por encima del nudo de anclaje).';document.getElementById('locBtn').disabled=true;}},350);}
+var seqData=[['Inserta la aguja y deslízala de derecha a izquierda por la capa 1','Insert and slide the needle right to left on layer 1',2],
+ ['Aprieta con el dedo y tensa hasta cerrar el nudo de remate','Press and pull taut until the finishing knot closes',5],
+ ['Ubica el nudo de anclaje y cuenta 5 bucles hacia arriba (columna 8)','Find the anchor knot and count 5 loops up (column 8)',1],
+ ['Enlaza una vuelta del hilo y pásalo todo por la vuelta','Wrap one turn and pass all the thread through it',4],
+ ['Bordea la columna 8, toma el bucle y sal por la izquierda, sin tocar la capa 2','Skirt column 8, take the loop and exit left, without touching layer 2',3]];
+(function(){var s=document.getElementById('seq');seqData.forEach(function(it,i){var d=document.createElement('div');d.style.margin='5px 0';
+ var sel=document.createElement('select');sel.id='q'+i;var o0=document.createElement('option');o0.value='';o0.textContent='—';sel.appendChild(o0);
+ for(var n=1;n<=5;n++){var o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);}
+ d.appendChild(sel);var sp=document.createElement('span');sp.style.marginLeft='8px';sp.innerHTML='<span class="es">'+it[0]+'</span><span class="en">'+it[1]+'</span>';d.appendChild(sp);s.appendChild(d);});})();
+function checkSeq(){var ok=true;for(var i=0;i<seqData.length;i++){if(document.getElementById('q'+i).value!=String(seqData[i][2])){ok=false;break;}}
+ S.seqOk=ok;var out=document.getElementById('seqOut');out.style.color=ok?'#17894A':'#C24A2E';out.textContent=ok?(EN()?'✔ Correct order':'✔ Orden correcto'):(EN()?'✗ Not yet':'✗ Aún no');if(ok)log("answered","gesture-sequence","correct");}
+/* ---------- actions ---------- */
+function hold(){S.held=true;cT.visible=cB.visible=true;document.getElementById('holdBtn').classList.add('on');
+  document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;log("initialized","fabric","held");
+  setFB('',EN()?'Fabric held. Choose depth and sew.':'Tela sujeta. Elige profundidad y cose.');}
+function toggleOpen(){S.open=!S.open;tgtF=S.open?zOpenF:zCloseF;tgtB=S.open?zOpenB:zCloseB;log("interacted","double-layer",S.open?"open":"close");}
+function setDepth(d){S.depth=d;S.alerted=false;place();}
+function onSew(v){if(!S.held)return;S.prog=v/100;place();}
+function auto(){if(!S.held)return;var el=document.getElementById('sew'),p=0;(function st(){p+=2;if(p>100)p=100;el.value=p;S.prog=p/100;place();if(p<100)requestAnimationFrame(st);})();}
+function dismissAlert(){document.getElementById('alert').style.display='none';reset();setFB('no',EN()?'Redo on layer 1 only.':'Rehaz solo en la capa 1.');}
+function closeKnot(){if(S.prog<0.9||S.depth!=1){return;}S.knot=true;log("completed","finishing-knot","closed");check();}
+function check(){S.attempts++;var en=EN();
+  if(!S.located){setFB('no',en?'First locate the locking loop (count 5 loops up).':'Primero localiza el bucle de bloqueo (cuenta 5 bucles hacia arriba).');return;}
+  if(!S.seqOk){setFB('no',en?'First order the gesture correctly.':'Primero ordena el gesto correctamente.');return;}
+  if(!S.held){setFB('no',en?'Hold the fabric first.':'Primero sujeta la tela.');return;}
+  if(S.depth==0){S.errors++;log("failed","step5","layer2");setFB('no',en?'✖ You touched layer 2: remove the thread to that point and redo the knot only on layer 1.':'✖ Has tocado la capa 2: retira el hilo hasta ese punto y rehaz el nudo solo en la capa 1.');return;}
+  if(S.prog<0.9){setFB('no',en?'Finish the stitch: slide the needle fully to the left.':'Termina la puntada: lleva la aguja hasta la izquierda.');return;}
+  if(!S.knot){document.getElementById('knotBtn').disabled=false;setFB('ok',en?'Bien: has trabajado en una sola capa. Now press & pull taut to close the knot.':'Bien: has trabajado en una sola capa. Ahora aprieta y tensa para cerrar el nudo.');return;}
+  // all done
+  S.passed=true;log("mastered","step5","100");log("passed","step5","100");scormSet(100,"passed");
+  document.getElementById('gate').textContent=en?'✔ Zero Gate 100% — passed':'✔ Zero Gate 100 % — superado';
+  setFB('ok',en?'✔ Step 5 mastered (100%). Single layer, knot closed.':'✔ Paso 5 superado (100 %). Una sola capa, nudo cerrado.');}
+function reset(){S.held=false;S.depth=1;S.prog=0;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
+  cT.visible=cB.visible=false;document.getElementById('holdBtn').classList.remove('on');
+  var sew=document.getElementById('sew');sew.value=0;sew.disabled=true;document.getElementById('autoBtn').disabled=true;document.getElementById('knotBtn').disabled=true;
+  loopsArr.forEach(function(l){l.material.color.set(0xcfe0ff);});lockRing.material.opacity=0;document.getElementById('locBtn').disabled=false;
+  document.getElementById('locOut').textContent='';document.getElementById('seqOut').textContent='';
+  var r=document.querySelector('input[name=depth][value="1"]');if(r)r.checked=true;S.yRow=lockY;place();log("reset","sim","");}
+window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;
+place();window.addEventListener('resize',resize);
+(function loop(){requestAnimationFrame(loop);
+  L1.position.z+=(tgtF-L1.position.z)*0.12;L2.position.z+=(tgtB-L2.position.z)*0.12; // animate open/close
+  controls.update();renderer.render(scene,camera);})();
 </script>
 </body></html>
