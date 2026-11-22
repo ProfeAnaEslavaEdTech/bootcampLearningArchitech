@@ -154,9 +154,10 @@
       <summary style="cursor:pointer;font-weight:700;font-size:14px;margin-top:8px"><span class="es">📊 Dominio y datos (xAPI / SCORM)</span><span class="en">📊 Mastery &amp; data (xAPI / SCORM)</span></summary>
       <div class="row" style="margin-top:8px">
         <button class="act ghost" onclick="showReport()"><span class="es">📊 Ver informe</span><span class="en">📊 View report</span></button>
+        <button class="act" onclick="downloadProof()"><span class="es">⬇ Prueba para el entrenador</span><span class="en">⬇ Proof for the trainer</span></button>
+        <button class="act ghost" onclick="downloadJSON()">⬇ xAPI (Veracity/Cornerstone)</button>
         <button class="act ghost" onclick="downloadCSV()">⬇ CSV</button>
-        <button class="act ghost" onclick="downloadJSON()">⬇ xAPI JSON</button>
-        <button class="act ghost" onclick="downloadReport()"><span class="es">⬇ Informe .md</span><span class="en">⬇ Report .md</span></button>
+        <button class="act ghost" onclick="downloadReport()">⬇ .md</button>
       </div>
       <div id="report"></div>
     </details>
@@ -204,9 +205,39 @@ function tryParse(s){try{return JSON.parse(s);}catch(e){return s;}}
 function downloadCSV(){var rows=[["unit","learner","seq","verb","object","ms","result","ts"]];
   EV.forEach(function(e){rows.push(["SOP-100-AX/Paso5",LEARNER,e.seq,e.verb,e.object,e.ms,'"'+String(e.result).replace(/"/g,'""')+'"',e.ts]);});
   dl(rows.map(function(r){return r.join(",");}).join("\n"),"text/csv","paso5_xapi.csv");}
-function downloadJSON(){var V="http://adlnet.gov/expapi/verbs/";
-  var stmts=EV.map(function(e){var o={actor:{name:LEARNER},verb:{id:V+e.verb,display:{"es":e.verb}},object:{id:"sim://SOP-100-AX/Paso5/"+e.object},timestamp:e.ts,extensions:{seq:e.seq,ms:e.ms,pointerType:e.pointerType}};if(e.result!=="")o.result={extensions:{"https://sim/data":tryParse(e.result)}};return o;});
-  dl(JSON.stringify({unit:"SOP-100-AX/Paso5",learner:LEARNER,statements:stmts},null,2),"application/json","paso5_xapi.json");}
+/* --- xAPI CONFORMANTE (ingestible por LRS Veracity y LMS Cornerstone) --- */
+function uuid(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return (c==='x'?r:(r&0x3|0x8)).toString(16);});}
+var REG=uuid(), COURSE='https://edtech.sop100ax/course/SOP-100-AX/Paso5';
+var VERBS={progressed:['http://adlnet.gov/expapi/verbs/progressed','progressed'],blocked:['http://id.tincanapi.com/verb/blocked','blocked'],passed:['http://adlnet.gov/expapi/verbs/passed','passed'],failed:['http://adlnet.gov/expapi/verbs/failed','failed'],reset:['http://id.tincanapi.com/verb/skipped','reset'],interacted:['http://adlnet.gov/expapi/verbs/interacted','interacted'],initialized:['http://adlnet.gov/expapi/verbs/initialized','initialized'],requested:['http://adlnet.gov/expapi/verbs/asked','requested'],completed:['http://adlnet.gov/expapi/verbs/completed','completed']};
+function xActor(){return {objectType:'Agent',name:(LEARNER||'anonimo'),account:{homePage:'https://edtech.sop100ax',name:(LEARNER||'anonimo')}};}
+function xStatement(e){var v=VERBS[e.verb]||['https://edtech.sop100ax/verb/'+e.verb,e.verb];var data=tryParse(e.result);
+  var st={id:uuid(),actor:xActor(),verb:{id:v[0],display:{'en-US':v[1],'es':v[1]}},
+    object:{objectType:'Activity',id:COURSE+'/'+e.object,definition:{name:{'es':e.object},type:'http://adlnet.gov/expapi/activities/simulation'}},
+    timestamp:e.ts,
+    context:{registration:REG,contextActivities:{parent:[{id:COURSE}]},extensions:{'https://edtech.sop100ax/ext/seq':e.seq,'https://edtech.sop100ax/ext/ms':e.ms,'https://edtech.sop100ax/ext/pointerType':e.pointerType}}};
+  if(e.verb==='passed'||e.verb==='failed'){var sc=(data&&data.score!=null)?data.score:scoreNow();
+    st.result={success:(e.verb==='passed'),completion:true,score:{raw:sc,min:0,max:100,scaled:sc/100},
+      extensions:{'https://edtech.sop100ax/ext/critical_single_layer':!!(data&&data.critical_single_layer),'https://edtech.sop100ax/ext/layer2Touches':(data&&data.layer2Touches)||0}};}
+  else if(e.result!==''){st.result={extensions:{'https://edtech.sop100ax/ext/data':data}};}
+  return st;}
+function downloadJSON(){dl(JSON.stringify(EV.map(xStatement),null,2),'application/json','paso5_xapi_statements.json');} // POST directo a Veracity / Cornerstone LRS
+/* --- prueba de práctica (HTML autónomo) para enviar al entrenador --- */
+function downloadProof(){var sc=scoreNow(),d=new Date();
+  var html='<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prueba de práctica · SOP-100-AX · Paso 5</title>'
+   +'<style>body{font-family:Arial,sans-serif;color:#16222E;max-width:640px;margin:24px auto;padding:0 16px;line-height:1.5}h1{font-size:20px;color:#16365C}table{border-collapse:collapse;width:100%;margin:12px 0}td,th{border:1px solid #d9dee3;padding:7px 10px;text-align:left}.ok{color:#17894A;font-weight:700}.no{color:#C24A2E;font-weight:700}.small{font-size:12px;color:#777}</style></head><body>'
+   +'<h1>Prueba de práctica — SOP-100-AX · Paso 5</h1>'
+   +'<p><b>Aprendiz:</b> '+LEARNER+'<br><b>Fecha:</b> '+d.toLocaleString()+'<br><b>Unidad:</b> SOP-100-AX / Paso 5 · Registro: '+REG+'</p>'
+   +'<table><tr><th>Métrica</th><th>Valor</th></tr>'
+   +'<tr><td>Resultado (Zero-Gate 100% capa única)</td><td class="'+(S.passed?'ok':'no')+'">'+(S.passed?'APROBADO':'NO superado')+'</td></tr>'
+   +'<tr><td>Puntuación</td><td>'+sc+' / 100</td></tr>'
+   +'<tr><td>Intentos</td><td>'+S.attempts+'</td></tr>'
+   +'<tr><td>Toques de capa 2 (errores críticos)</td><td>'+S.layer2Touches+'</td></tr>'
+   +'<tr><td>Puntadas correctas</td><td>'+S.correct+'</td></tr>'
+   +'<tr><td>Recuperación tras error</td><td>'+(S.recovered?'Sí':(S.layer2Touches?'No':'n/a'))+'</td></tr>'
+   +'<tr><td>Eventos registrados (xAPI)</td><td>'+EV.length+'</td></tr></table>'
+   +'<p class="small">Evidencia de práctica del e-learning: mide la DECISIÓN (capa única) y la SECUENCIA. La motricidad fina real se evalúa en práctica supervisada (Nivel 3). Datos xAPI compatibles con LRS (Veracity) y LMS (Cornerstone). · Material con asistencia de IA, revisado por Ana Eslava-Graterol. Art. 50 Reglamento (UE) 2024/1689.</p>'
+   +'<p class="small">Enviar a: entrenador / supervisor de práctica.</p></body></html>';
+  dl(html,'text/html','paso5_prueba_practica.html');}
 function downloadReport(){var sc=scoreNow();
   var md="# Informe · SOP-100-AX · Paso 5\n\n- Unidad: SOP-100-AX / Paso 5\n- Aprendiz: "+LEARNER+"\n- Fecha: "+new Date().toISOString()+"\n\n## Resultado\n- Aprobado (Zero-Gate 100% capa única): "+(S.passed?"Sí":"No")+"\n- Puntuación: "+sc+"/100\n- Intentos: "+S.attempts+"\n- Toques de capa 2: "+S.layer2Touches+"\n- Puntadas correctas: "+S.correct+"\n- Recuperado tras error: "+(S.recovered?"Sí":"No")+"\n- Eventos (tamaño del log): "+EV.length+"\n\n## KPI (Kirkpatrick L2)\n| KPI | Valor |\n|---|---|\n| Dominio ítem crítico (capa única) | "+(S.critical_single_layer?"100%":"—")+" |\n| Errores de capa 2 | "+S.layer2Touches+" |\n| Recuperación | "+(S.recovered?"Sí":(S.layer2Touches?"No":"n/a"))+" |\n| Intentos hasta dominio | "+S.attempts+" |\n| Tiempo en tarea (ms) | "+(EV.length?EV[EV.length-1].ms:0)+" |\n";
   dl(md,"text/markdown","paso5_informe.md");}
@@ -382,7 +413,7 @@ function reset(){
   loopsArr.forEach(function(l){l.material.color.set(0xcfe0ff);});lockRing.material.opacity=0;document.getElementById('locBtn').disabled=false;
   document.getElementById('locOut').textContent='';document.getElementById('seqOut').textContent='';
   S.yRow=lockY;S.ny=lockY;S.tny=lockY;S.passed=false;place();}
-window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;window.showHint=showHint;window.hideHint=hideHint;window.showGuide=showGuide;window.hideGuide=hideGuide;window.downloadJSON=downloadJSON;window.downloadReport=downloadReport;
+window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;window.showHint=showHint;window.hideHint=hideHint;window.showGuide=showGuide;window.hideGuide=hideGuide;window.downloadJSON=downloadJSON;window.downloadReport=downloadReport;window.downloadProof=downloadProof;
 place();window.addEventListener('resize',resize);
 /* PROFUNDIDAD con rueda del ratón / pellizco táctil (zoom de cámara desactivado) */
 cv.addEventListener('wheel',function(e){if(!S.held)return;e.preventDefault();var d=(e.deltaY<0?1:-1)*0.06;S.ang=S.tang=Math.max(0,Math.min(ANG_MAX,S.ang+d));var dR=document.getElementById('depthR');if(dR)dR.value=Math.round((S.ang/ANG_MAX)*100);place();},{passive:false});
