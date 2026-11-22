@@ -12,14 +12,18 @@
   .tg{display:flex;border:1px solid #fff5;border-radius:16px;overflow:hidden;font-size:12px;font-weight:700}
   .tg button{background:transparent;color:#fff;border:0;padding:5px 12px;cursor:pointer}
   .tg button.on{background:#fff;color:#16222E}
-  #wrap{max-width:980px;margin:0 auto;padding:14px}
+  #wrap{max-width:1200px;margin:0 auto;padding:14px}
+  #stage{display:flex;gap:14px;align-items:flex-start}
+  #simcol{flex:1 1 56%;min-width:0;position:sticky;top:10px}
   #simbox{position:relative}
-  #cv{width:100%;height:440px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
+  #cv{width:100%;height:420px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
+  @media(max-width:880px){#stage{flex-direction:column}#simcol{position:static}#cv{height:340px}}
   .sideL{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:8px}
   .sidebtn{width:46px;height:46px;border-radius:10px;border:1px solid var(--line);background:#ffffffee;font-size:20px;cursor:pointer}
   .sidebtn:hover{background:#fff}
   button.cta{font-size:16px;padding:12px 20px}
-  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;flex:1 1 44%;min-width:0}
+  @media(max-width:880px){.panel{margin-top:12px}}
   .crit{background:#FFF6E0;border-left:5px solid var(--amber);color:#8A5A00;font-weight:700;padding:9px 12px;border-radius:4px;margin-bottom:10px}
   .step{font-size:14px;margin:10px 0 4px;font-weight:700}
   label.r{display:inline-flex;align-items:center;gap:6px;margin-right:18px;font-size:14px;cursor:pointer}
@@ -56,6 +60,8 @@
 </header>
 <div id="wrap">
   <div class="crit"><span class="es">⚠ Trabaja en la capa 1, no insertes en la capa 2.</span><span class="en">⚠ Work on layer 1, do not insert into layer 2.</span></div>
+  <div id="stage">
+  <div id="simcol">
   <div id="simbox">
     <canvas id="cv" role="img" aria-label="Simulación 3D de la cubierta de dos capas"></canvas>
     <div class="sideL">
@@ -72,6 +78,7 @@
       </div>
       <div class="hclose"><button class="act" onclick="hideHint()"><span class="es">Entendido</span><span class="en">Got it</span></button></div>
     </div>
+  </div>
   </div>
   <div class="panel">
     <div class="row">
@@ -111,6 +118,7 @@
     <div id="report"></div>
     <div class="ai"><span class="es">Material desarrollado con asistencia de IA generativa, revisado y aprobado por Ana Eslava-Graterol. Divulgado conforme al Art. 50 del Reglamento (UE) 2024/1689.</span>
       <span class="en">Developed with generative-AI assistance; reviewed and approved by Ana Eslava-Graterol. Disclosed under Art. 50 of Regulation (EU) 2024/1689.</span></div>
+  </div>
   </div>
 </div>
 
