@@ -90,7 +90,7 @@
       <span id="locOut" style="font-weight:700"></span>
     </div>
     <div class="step"><span class="es">3 · Haz UN punto en el bucle de bloqueo (5 arriba), controlando la profundidad en la capa 1</span><span class="en">3 · Make ONE stitch at the locking loop (5 up), controlling the depth in layer 1</span></div>
-    <p class="hint"><span class="es">No es coser a lo largo: es un solo punto. La aguja (tumbada) entra a la derecha del bucle, pasa por detrás y sale a la izquierda, tomando el bucle. Arrástrala: lado a lado = el punto; arriba/abajo = profundidad (mantenla en la capa 1, verde, sin tocar la capa 2). ¿No quieres arrastrar? Usa los deslizadores.</span><span class="en">It is not a running stitch: it is a single stitch. The (lengthwise) needle enters to the right of the loop, passes behind it and exits on the left, picking up the loop. Drag it: side to side = the stitch; up/down = depth (keep it in layer 1, green, without touching layer 2). Prefer not to drag? Use the sliders.</span></p>
+    <p class="hint"><span class="es">No es coser a lo largo: es un solo punto en el bucle. <b>Toma la aguja con la mano</b> (arrástrala): la mueves y la orientas 360° sobre la tela. La <b>PROFUNDIDAD</b> (capa 1, verde, sin tocar la capa 2) se ajusta con el <b>deslizador de profundidad</b>. ¿No quieres arrastrar? Usa los deslizadores.</span><span class="en">It is not a running stitch: it is a single stitch at the loop. <b>Take the needle by hand</b> (drag it): move and orient it 360° over the fabric. The <b>DEPTH</b> (layer 1, green, without touching layer 2) is set with the <b>depth slider</b>. Prefer not to drag? Use the sliders.</span></p>
     <div class="step" style="margin-top:4px"><span class="es">a) Profundidad de la puntada — mantenla en la <b>capa 1</b>, sin tocar la capa 2</span><span class="en">a) Stitch depth — keep it in <b>layer 1</b>, without touching layer 2</span></div>
     <div class="row"><input type="range" id="depthR" min="0" max="100" value="0" oninput="onDepth(this.value)" disabled aria-label="Profundidad de la puntada / Stitch depth"></div>
     <div id="depthOut" aria-live="polite" style="font-weight:700;font-size:14px;min-height:20px;margin:2px 0 6px"></div>
@@ -195,19 +195,19 @@ scene.add(needle);
 var thread=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffffff}));scene.add(thread);
 var handle=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.5,0.5),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));scene.add(handle);
 
-var S={held:false,depth:1,prog:0,ang:0,tprog:0,tang:0,pierced:false,dragging:false,knot:false,open:false,attempts:0,errors:0,passed:false,yRow:0.54,alerted:false,located:false,seqOk:false};
-var dragY0=0,ang0=0;
+var S={held:false,depth:1,prog:0,ang:0,tprog:0,tang:0,ny:0.54,tny:0.54,heading:0,pierced:false,dragging:false,knot:false,open:false,attempts:0,errors:0,passed:false,yRow:0.54,alerted:false,located:false,seqOk:false};
+var lx=0,ly=0;  // referencia para la orientación 360 de la aguja al arrastrar
 var zCloseF=0.045,zCloseB=-0.045,zOpenF=0.16,zOpenB=-0.16; // capas finas y juntas; "abierto" las separa (moderado) para ver la profundidad y seguir exigiendo control
 var tgtF=zCloseF,tgtB=zCloseB;
 function zF(){return L1.position.z;}
 function needleZ(){return S.depth? zF()+th/2+0.02 : L2.position.z-th/2-0.03;}
 function colorNeedle(bad){shaft.material.color.set(bad?0xc24a2e:0xbfc6cf);tip.material.color.set(bad?0xc24a2e:0x9aa4ad);}
 function maybeAlert(bad){if(bad&&!S.alerted){S.alerted=true;S.errors++;log("experienced","forbidden-zone-layer2","touched");document.getElementById('alert').style.display='flex';}}
-function drawThread(nx,ny,nz){var zc=L1.position.z+th/2+0.013, ex=nx+0.78, pts=[]; // hilo: anclaje -> sube por la columna 5 bucles -> UN punto en la aguja
+function drawThread(nx,ny,nz){var zc=L1.position.z+th/2+0.013, ex=nx+0.78*Math.cos(S.heading), ey=ny+0.78*Math.sin(S.heading), pts=[]; // hilo: anclaje -> sube por la columna 5 bucles -> UN punto en la aguja
   pts.push(new THREE.Vector3(colX,yBase,zc));      // desde el nudo de anclaje (bucle de referencia)
   pts.push(new THREE.Vector3(colX,S.yRow,zc));     // sube por la columna hasta el bucle de bloqueo (5 arriba)
   pts.push(new THREE.Vector3(nx,ny,nz));           // entra en el punto de la aguja
-  pts.push(new THREE.Vector3(ex,ny,nz));           // hasta el ojo de la aguja
+  pts.push(new THREE.Vector3(ex,ey,nz));           // hasta el ojo de la aguja (según la orientación)
   thread.geometry.setFromPoints(pts);}
 function syncHandle(){if(!S.dragging)handle.position.copy(needle.position);} // no pelea con el arrastre activo
 function zOn(){return L1.position.z+th/2;}                 // cara frontal de la capa 1
@@ -225,21 +225,24 @@ function depthUI(tz,parked,crossed){var el=document.getElementById('depthOut');i
 function place(){
   var parked=(S.prog<=0.001 && S.ang<=0.02 && !S.dragging); // en reposo la aguja está parqueada a la derecha, sin tocar la tela, lista para tomarla
   var x=0.8-1.1*S.prog, tz=tipZfromAng(S.ang);              // UN solo punto corto en el bucle de bloqueo (no a lo largo): de la derecha del bucle a su izquierda
-  if(parked){ needle.position.set(2.25,S.yRow,zOn()+0.18); needle.rotation.set(0.12,0,0); }        // parqueada a la derecha, tumbada
-  else      { needle.position.set(x,S.yRow,tz);             needle.rotation.set(0.1+0.18*(S.ang/ANG_MAX),0,0); } // tumbada a lo largo; la profundidad es la altura (z), leve inclinación
+  if(parked){ needle.position.set(2.25,S.yRow,zOn()+0.18); needle.rotation.set(0.12,0,0); }        // parqueada a la derecha
+  else      { needle.position.set(x,S.ny,tz);               needle.rotation.set(0.1+0.18*(S.ang/ANG_MAX),0,S.heading); } // mano: posición (x,y) + orientación 360 (heading); profundidad = z
   col.position.set(0.2,0,zF()+th/2+0.005);
   var crossed = !parked && tz<layer2Front();              // la punta tocó la capa 2 (nunca en reposo)
   S.depth=crossed?0:1;
   if(!parked && tz<layer1Back() && !crossed)S.pierced=true; // atravesó la capa 1 a la profundidad correcta
   colorNeedle(crossed); drawThread(needle.position.x,needle.position.y,needle.position.z); maybeAlert(crossed);
   depthUI(tz,parked,crossed); syncHandle();}
-// Arrastre amortiguado: horizontal = avance de la puntada; vertical = ángulo de clavado (0–60°, limitado).
+// Opción A: arrastrar = MOVER la aguja (x,y) y ORIENTARLA 360° (tomarla por la mano). La profundidad va por el deslizador.
 function onDrag(){
-  S.tprog=Math.max(0,Math.min(1,(1.3-handle.position.x)/2.6));
-  S.tang=Math.max(0,Math.min(ANG_MAX, ang0+(dragY0-handle.position.y)*1.1));}
+  var x=Math.max(-0.3,Math.min(0.8,handle.position.x));       // dentro del tramo del punto (localizado en el bucle)
+  var y=Math.max(S.yRow-0.5,Math.min(S.yRow+0.5,handle.position.y));
+  var dx=x-lx, dy=y-ly;
+  if(dx*dx+dy*dy>0.0004){S.heading=Math.atan2(dy,dx);lx=x;ly=y;} // orientación 360° según la dirección del arrastre
+  S.tprog=(0.8-x)/1.1; S.tny=y;}                                // profundidad NO: se ajusta con el deslizador
 var dragC=null;try{dragC=new THREE.DragControls([handle],camera,renderer.domElement); dragC.enabled=false;
-  dragC.addEventListener('dragstart',function(){if(controls)controls.enabled=false;S.dragging=true;dragY0=handle.position.y;ang0=S.ang;});
-  dragC.addEventListener('dragend',function(){if(controls)controls.enabled=true;S.dragging=false;S.tprog=S.prog;S.tang=S.ang;handle.position.copy(needle.position);});
+  dragC.addEventListener('dragstart',function(){if(controls)controls.enabled=false;S.dragging=true;lx=handle.position.x;ly=handle.position.y;});
+  dragC.addEventListener('dragend',function(){if(controls)controls.enabled=true;S.dragging=false;S.tprog=S.prog;S.tny=S.ny;handle.position.copy(needle.position);});
   dragC.addEventListener('drag',function(){onDrag();});
 }catch(e){simFail('DragControls no cargó desde el CDN. Podrás usar el control de coser, pero no arrastrar la aguja. / DragControls failed to load.');}
 function setFB(c,t){var f=document.getElementById('fb');f.className=c;f.textContent=t;}
@@ -262,7 +265,7 @@ function hideHint(){document.getElementById('hintbox').style.display='none';}
 /* ---------- locate loop (count 5) + sequencing ---------- */
 function countLoops(){if(S.located)return;var i=0,out=document.getElementById('locOut'),en=EN();
   var iv=setInterval(function(){i++;if(i<=5){loopsArr[i-1].material.color.set(0xE0A400);out.textContent=(en?'Loop ':'Bucle ')+i;}
-    if(i>=5){clearInterval(iv);lockRing.material.opacity=0.95;S.located=true;S.yRow=lockY;place();log("interacted","locking-loop","located");
+    if(i>=5){clearInterval(iv);lockRing.material.opacity=0.95;S.located=true;S.yRow=lockY;S.ny=lockY;S.tny=lockY;place();log("interacted","locking-loop","located");
       out.textContent=en?'Locking loop located (5 above the anchor knot).':'Bucle de bloqueo localizado (5 por encima del nudo de anclaje).';document.getElementById('locBtn').disabled=true;}},350);}
 var seqData=[['Inserta la aguja y deslízala de derecha a izquierda por la capa 1','Insert and slide the needle right to left on layer 1',2],
  ['Aprieta con el dedo y tensa hasta cerrar el nudo de remate','Press and pull taut until the finishing knot closes',5],
@@ -300,14 +303,14 @@ function check(){S.attempts++;var en=EN();
   document.getElementById('gate').textContent=en?'✔ Zero Gate 100% — passed':'✔ Zero Gate 100 % — superado';
   setFB('ok',en?'✔ Step 5 stitch mastered (100%): single layer, correct depth, needle lying along to make the loop.':'✔ Puntada del Paso 5 superada (100 %): una sola capa, profundidad correcta, aguja a lo largo para hacer el lazo.');
   showHint(6);}
-function reset(){S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.pierced=false;S.dragging=false;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
+function reset(){S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.ny=0.54;S.tny=0.54;S.heading=0;S.pierced=false;S.dragging=false;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
   if(dragC)dragC.enabled=false;
   cT.visible=cB.visible=false;document.getElementById('holdBtn').classList.remove('on');
   var sew=document.getElementById('sew');sew.value=0;sew.disabled=true;var dR=document.getElementById('depthR');if(dR){dR.value=0;dR.disabled=true;}var dO=document.getElementById('depthOut');if(dO)dO.textContent='';
   document.getElementById('autoBtn').disabled=true;document.getElementById('knotBtn').disabled=true;
   loopsArr.forEach(function(l){l.material.color.set(0xcfe0ff);});lockRing.material.opacity=0;document.getElementById('locBtn').disabled=false;
   document.getElementById('locOut').textContent='';document.getElementById('seqOut').textContent='';
-  var r=document.querySelector('input[name=depth][value="1"]');if(r)r.checked=true;S.yRow=lockY;place();log("reset","sim","");}
+  S.yRow=lockY;S.ny=lockY;S.tny=lockY;place();log("reset","sim","");}
 window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;window.showHint=showHint;window.hideHint=hideHint;
 place();window.addEventListener('resize',resize);
 (function loop(){requestAnimationFrame(loop);
@@ -315,7 +318,7 @@ place();window.addEventListener('resize',resize);
   var zf1=L1.position.z+th/2+0.012;                                                   // nudo, bucles y bloqueo SOBRE la capa 1 (siguen la capa al abrir/cerrar)
   anchorKnot.position.z=zf1; lockRing.position.z=zf1; col.position.z=L1.position.z+th/2+0.006;
   for(var li=0;li<loopsArr.length;li++)loopsArr[li].position.z=zf1;
-  if(S.held){S.prog+=(S.tprog-S.prog)*0.15;S.ang+=(S.tang-S.ang)*0.15;place();}       // damping: suave y poco sensible
+  if(S.held){S.prog+=(S.tprog-S.prog)*0.15;S.ny+=(S.tny-S.ny)*0.2;S.ang+=(S.tang-S.ang)*0.15;place();} // damping: suave y poco sensible
   if(controls)controls.update();renderer.render(scene,camera);})();
 </script>
 </body></html>
