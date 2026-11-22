@@ -13,7 +13,12 @@
   .tg button{background:transparent;color:#fff;border:0;padding:5px 12px;cursor:pointer}
   .tg button.on{background:#fff;color:#16222E}
   #wrap{max-width:980px;margin:0 auto;padding:14px}
-  #cv{width:100%;height:420px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
+  #simbox{position:relative}
+  #cv{width:100%;height:440px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
+  .sideL{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:8px}
+  .sidebtn{width:46px;height:46px;border-radius:10px;border:1px solid var(--line);background:#ffffffee;font-size:20px;cursor:pointer}
+  .sidebtn:hover{background:#fff}
+  button.cta{font-size:16px;padding:12px 20px}
   .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px}
   .crit{background:#FFF6E0;border-left:5px solid var(--amber);color:#8A5A00;font-weight:700;padding:9px 12px;border-radius:4px;margin-bottom:10px}
   .step{font-size:14px;margin:10px 0 4px;font-weight:700}
@@ -44,34 +49,36 @@
 </header>
 <div id="wrap">
   <div class="crit"><span class="es">⚠ Trabaja en la capa 1, no insertes en la capa 2.</span><span class="en">⚠ Work on layer 1, do not insert into layer 2.</span></div>
-  <canvas id="cv" role="img" aria-label="Simulación 3D de la cubierta de dos capas"></canvas>
-  <div class="panel">
-    <div class="step"><span class="es">1 · Sujeta la tela · 2 · Abre/cierra la doble capa</span><span class="en">1 · Hold the fabric · 2 · Open/close the double layer</span></div>
-    <div class="row">
-      <button class="act hold" id="holdBtn" onclick="hold()"><span class="es">✋ Sujetar la tela</span><span class="en">✋ Hold the fabric</span></button>
-      <button class="act ghost" onclick="toggleOpen()"><span class="es">📖 Abrir / cerrar doble capa</span><span class="en">📖 Open / close double layer</span></button>
+  <div id="simbox">
+    <canvas id="cv" role="img" aria-label="Simulación 3D de la cubierta de dos capas"></canvas>
+    <div class="sideL">
+      <button class="sidebtn" onclick="toggleOpen()" title="Abrir / cerrar doble capa" aria-label="Abrir o cerrar doble capa">📖</button>
+      <button class="sidebtn" onclick="reset()" title="Reiniciar" aria-label="Reiniciar">⟲</button>
     </div>
-    <div class="step"><span class="es">3 · Localiza el bucle de bloqueo</span><span class="en">3 · Locate the locking loop</span></div>
+  </div>
+  <div class="panel">
+    <div class="row">
+      <button class="act hold cta" id="holdBtn" onclick="hold()"><span class="es">✋ Sujeta la tela sobre la superficie</span><span class="en">✋ Hold the fabric on the surface</span></button>
+    </div>
+    <div class="step"><span class="es">2 · Localiza el bucle de bloqueo</span><span class="en">2 · Locate the locking loop</span></div>
     <div class="row">
       <button class="act" id="locBtn" onclick="countLoops()"><span class="es">🔢 Cuenta 5 bucles ↑ desde el nudo de anclaje (columna n.º 8)</span><span class="en">🔢 Count 5 loops ↑ from the anchor knot (column no. 8)</span></button>
       <span id="locOut" style="font-weight:700"></span>
     </div>
-    <div class="step"><span class="es">4 · Ordena el gesto (asigna 1 a 5)</span><span class="en">4 · Order the gesture (assign 1 to 5)</span></div>
-    <div id="seq" style="font-size:13px"></div>
-    <div class="row"><button class="act ghost" onclick="checkSeq()"><span class="es">Comprobar orden</span><span class="en">Check order</span></button><span id="seqOut" style="font-weight:700"></span></div>
-    <div class="step"><span class="es">5 · Profundidad de la aguja</span><span class="en">5 · Needle depth</span></div>
-    <div class="row">
-      <label class="r"><input type="radio" name="depth" value="1" checked onchange="setDepth(1)"> <span class="es">Solo la capa 1 (correcto)</span><span class="en">Layer 1 only (correct)</span></label>
-      <label class="r"><input type="radio" name="depth" value="0" onchange="setDepth(0)"> <span class="es">Atravesar las dos capas</span><span class="en">Through both layers</span></label>
-    </div>
-    <div class="step"><span class="es">4 · Maneja la aguja para coser (de derecha a izquierda)</span><span class="en">4 · Move the needle to sew (right to left)</span></div>
+    <div class="step"><span class="es">3 · Maneja la aguja en 3D y cose (de derecha a izquierda)</span><span class="en">3 · Move the needle in 3D and sew (right to left)</span></div>
+    <p class="hint"><span class="es">Arrastra la aguja con el ratón (360°) sobre la capa 1. Si la empujas hacia atrás y cruzas a la capa 2, saltará la alerta. También puedes usar el control de coser.</span><span class="en">Drag the needle with the mouse (360°) over layer 1. If you push it back and cross into layer 2, the alert fires. You can also use the sew control.</span></p>
     <div class="row"><input type="range" id="sew" min="0" max="100" value="0" oninput="onSew(this.value)" disabled aria-label="Coser"></div>
     <div class="row">
-      <button class="act ghost" id="autoBtn" onclick="auto()" disabled><span class="es">▶ Coser automático</span><span class="en">▶ Auto sew</span></button>
+      <button class="act ghost" id="autoBtn" onclick="auto()" disabled><span class="es">▶ Coser automático (demostración)</span><span class="en">▶ Auto sew (demo)</span></button>
       <button class="act" id="knotBtn" onclick="closeKnot()" disabled><span class="es">🪢 Apretar y tensar (nudo de remate)</span><span class="en">🪢 Press & pull taut (finishing knot)</span></button>
-      <button class="act ghost" onclick="reset()"><span class="es">Reiniciar</span><span class="en">Reset</span></button>
     </div>
     <div id="fb" role="status" aria-live="polite"></div>
+
+    <details id="ccq">
+      <summary style="cursor:pointer;font-weight:700;margin-top:12px"><span class="es">❓ Concept check: ordena el gesto (tras el ejercicio)</span><span class="en">❓ Concept check: order the gesture (after the exercise)</span></summary>
+      <div id="seq" style="font-size:13px;margin-top:8px"></div>
+      <div class="row"><button class="act ghost" onclick="checkSeq()"><span class="es">Comprobar orden</span><span class="en">Check order</span></button><span id="seqOut" style="font-weight:700"></span></div>
+    </details>
 
     <div class="step"><span class="es">Dominio y datos</span><span class="en">Mastery &amp; data</span></div>
     <div class="row">
@@ -94,6 +101,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/DragControls.js"></script>
 <script>
 /* ---------- i18n ---------- */
 function setLang(l){document.body.className=l;document.getElementById('bes').classList.toggle('on',l=='es');document.getElementById('ben').classList.toggle('on',l=='en');try{localStorage.setItem('s3',l)}catch(e){}}
@@ -143,23 +151,31 @@ var shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,1.1,16),new THREE.
 var tip=new THREE.Mesh(new THREE.ConeGeometry(0.045,0.2,16),new THREE.MeshStandardMaterial({color:0x9aa4ad,metalness:.6,roughness:.3}));tip.rotation.z=Math.PI/2;tip.position.x=-0.65;needle.add(tip);
 scene.add(needle);
 var thread=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffffff}));scene.add(thread);
+var handle=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.5,0.5),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));scene.add(handle);
 
 var S={held:false,depth:1,prog:0,knot:false,open:false,attempts:0,errors:0,passed:false,yRow:0.54,alerted:false,located:false,seqOk:false};
 var zCloseF=0.045,zCloseB=-0.045,zOpenF=0.28,zOpenB=-0.28; // fabric thin & close; "open" separates to show both layers
 var tgtF=zCloseF,tgtB=zCloseB;
 function zF(){return L1.position.z;}
 function needleZ(){return S.depth? zF()+th/2+0.02 : L2.position.z-th/2-0.03;}
-function place(){var x0=1.3,x1=-1.3,x=x0+(x1-x0)*S.prog;
-  needle.position.set(x,S.yRow,needleZ());
-  var bad=S.depth==0;shaft.material.color.set(bad?0xd05a3e:0xbfc6cf);tip.material.color.set(bad?0xc24a2e:0x9aa4ad);
-  col.position.set(0.2,0,zF()+th/2+0.005);
-  var over=zF()+th/2+0.02, under=S.depth? 0.0 : L2.position.z-th/2-0.03, pts=[];
-  for(var sx=1.3;sx>x+0.001;sx-=0.3){pts.push(new THREE.Vector3(sx,S.yRow,over));pts.push(new THREE.Vector3(sx-0.15,S.yRow,under));}
-  pts.push(new THREE.Vector3(x,S.yRow,needleZ()));pts.push(new THREE.Vector3(x,S.yRow-1.5,over));
-  thread.geometry.setFromPoints(pts);
-  // forbidden-zone full-screen alert
-  if(S.depth==0 && S.prog>0.05 && !S.alerted){S.alerted=true;S.errors++;log("experienced","forbidden-zone-layer2","touched");document.getElementById('alert').style.display='flex';}
-}
+function colorNeedle(bad){shaft.material.color.set(bad?0xc24a2e:0xbfc6cf);tip.material.color.set(bad?0xc24a2e:0x9aa4ad);}
+function maybeAlert(bad){if(bad&&!S.alerted){S.alerted=true;S.errors++;log("experienced","forbidden-zone-layer2","touched");document.getElementById('alert').style.display='flex';}}
+function drawThread(x,y,nz){var over=L1.position.z+th/2+0.02, under=(nz<0)?(L2.position.z-th/2-0.03):0.0, pts=[];
+  for(var sx=1.3;sx>x+0.001;sx-=0.3){pts.push(new THREE.Vector3(sx,y,over));pts.push(new THREE.Vector3(sx-0.15,y,under));}
+  pts.push(new THREE.Vector3(x,y,nz));pts.push(new THREE.Vector3(x,y-1.5,over));thread.geometry.setFromPoints(pts);}
+function syncHandle(){handle.position.copy(needle.position);}
+function place(){var x=1.3-2.6*S.prog; needle.position.set(x,S.yRow,needleZ());
+  col.position.set(0.2,0,zF()+th/2+0.005); colorNeedle(S.depth==0); drawThread(x,S.yRow,needleZ());
+  maybeAlert(S.depth==0&&S.prog>0.05); syncHandle();}
+// 360° free drag of the needle; crossing into layer 2 (z<0) fires the red full-screen alert
+function onDrag(){needle.position.copy(handle.position);
+  var x=Math.max(-1.3,Math.min(1.3,needle.position.x)); needle.position.x=x; handle.position.x=x;
+  S.prog=(1.3-x)/2.6; var z=needle.position.z; var crossed=z<0.0; S.depth=crossed?0:1; S.yRow=needle.position.y;
+  colorNeedle(crossed); drawThread(x,needle.position.y,z); maybeAlert(crossed);}
+var dragC=new THREE.DragControls([handle],camera,renderer.domElement);
+dragC.addEventListener('dragstart',function(){controls.enabled=false;});
+dragC.addEventListener('dragend',function(){controls.enabled=true;});
+dragC.addEventListener('drag',function(){onDrag();});
 function setFB(c,t){var f=document.getElementById('fb');f.className=c;f.textContent=t;}
 /* ---------- locate loop (count 5) + sequencing ---------- */
 function countLoops(){if(S.located)return;var i=0,out=document.getElementById('locOut'),en=EN();
