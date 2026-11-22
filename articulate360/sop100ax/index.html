@@ -22,6 +22,8 @@
   h3{font-size:15px;margin:16px 0 6px;color:#16222E}
   p,li{font-size:15px;margin-bottom:8px}ul,ol{margin:0 0 10px 22px}
   video,img.fig{width:100%;border:1px solid var(--line);border-radius:8px;margin:8px 0}
+  .sim{width:100%;height:600px;border:1px solid var(--line);border-radius:8px;margin:10px 0;background:#fff}
+  #seq select{margin-right:4px}
   .row{display:flex;gap:10px;flex-wrap:wrap}.row img.fig{flex:1;min-width:30%}
   .crit{background:var(--amberS);border-left:5px solid var(--amber);color:var(--amberT);font-weight:700;padding:10px 12px;border-radius:4px;margin:10px 0}
   .note{background:var(--blueS);border-left:5px solid var(--blue);padding:10px 12px;border-radius:4px;margin:10px 0;font-size:14px}
@@ -122,14 +124,20 @@
     </ol>
     <video controls preload="metadata" src="videos/paso5_induccion.mp4"></video>
     <div class="row"><img class="fig" src="assets/p5_1.png"><img class="fig" src="assets/p5_2.png"><img class="fig" src="assets/p5_3.png"></div>
-    <div class="note"><span class="es">Simulador interactivo del Paso 5: se insertará aquí como bloque Embed (HTML).</span><span class="en">Interactive Step 5 simulator: to be embedded here (HTML).</span></div>
+    <h3><span class="es">Simulador interactivo del Paso 5</span><span class="en">Interactive Step 5 simulator</span></h3>
+    <iframe class="sim" src="https://profeanaeslavaedtech.github.io/portofolio/sop-100ax-paso5/" allowfullscreen loading="lazy" title="Simulador Paso 5"></iframe>
     <div class="qa">
-      <h3><span class="es">Escenario de error (crítico)</span><span class="en">Error scenario (critical)</span></h3>
-      <p><span class="es">¿Qué haces si tocas la capa 2?</span><span class="en">What do you do if you touch layer 2?</span></p>
-      <label><input type="radio" name="q5" value="1"> <span class="es">Retiro el hilo hasta ese punto y rehago el nudo solo en la capa 1.</span><span class="en">Remove the thread to that point and redo the knot only on layer 1.</span></label>
-      <label><input type="radio" name="q5" value="0"> <span class="es">Sigo adelante.</span><span class="en">Carry on.</span></label>
-      <button class="act" onclick="checkQ5()"><span class="es">Comprobar</span><span class="en">Check</span></button>
-      <div class="fb" id="fbQ5"></div>
+      <h3><span class="es">Knowledge Check · Paso 5 (aprobado al 100 %)</span><span class="en">Knowledge Check · Step 5 (100% to pass)</span></h3>
+      <p><b><span class="es">1. ¿En cuántas capas trabajas en el Paso 5?</span><span class="en">1. In how many layers do you work in Step 5?</span></b></p>
+      <label><input type="radio" name="k1" value="1"> <span class="es">Una, la capa 1</span><span class="en">One, layer 1</span></label>
+      <label><input type="radio" name="k1" value="0"> <span class="es">Las dos capas</span><span class="en">Both layers</span></label>
+      <p><b><span class="es">2. Si tocas la capa 2, ¿qué haces?</span><span class="en">2. If you touch layer 2, what do you do?</span></b></p>
+      <label><input type="radio" name="k2" value="1"> <span class="es">Retiro el hilo hasta ese punto y rehago el nudo solo en la capa 1.</span><span class="en">Remove the thread to that point and redo the knot only on layer 1.</span></label>
+      <label><input type="radio" name="k2" value="0"> <span class="es">Sigo adelante y lo corrijo al final.</span><span class="en">Carry on and fix it at the end.</span></label>
+      <p><b><span class="es">3. Ordena el Paso 5 (asigna 1 a 5 a cada acción):</span><span class="en">3. Order Step 5 (assign 1 to 5 to each action):</span></b></p>
+      <div id="seq"></div>
+      <button class="act" onclick="checkStep5()"><span class="es">Comprobar Paso 5</span><span class="en">Check Step 5</span></button>
+      <div class="fb" id="fbS5"></div>
     </div>
   </section>
 
@@ -213,14 +221,34 @@
     fb.textContent= v=='1'?(L()=='en'?'Exactly: only layer 1; never layer 2.':'Exacto: solo la capa 1; nunca la capa 2.')
       :(L()=='en'?'Remember: Step 5 is only on layer 1.':'Recuerda: el Paso 5 va solo en la capa 1.');
     if(v=='1'){obj2=true; document.getElementById('gate2').style.display='none'; unlock();}}
-  function checkQ5(){var v=(document.querySelector('input[name=q5]:checked')||{}).value;
-    var fb=document.getElementById('fbQ5'); fb.className='fb show '+(v=='1'?'ok':'no');
-    fb.textContent= v=='1'?(L()=='en'?'Correct. You worked on a single layer.':'Correcto. Has trabajado en una sola capa.')
-      :(L()=='en'?'No: remove the thread and redo the knot only on layer 1.':'No: retira el hilo y rehaz el nudo solo en la capa 1.');}
+  // Step 5 sequencing
+  var seqData=[['Inserta la aguja y deslízala de derecha a izquierda por la capa 1','Insert the needle and slide it right to left through layer 1',2],
+   ['Aprieta con el dedo y tensa hasta cerrar el nudo de remate','Press and pull taut until the finishing knot closes',5],
+   ['Ubica el nudo de anclaje y cuenta 5 bucles hacia arriba (columna n.º 8)','Find the anchor knot and count 5 loops up (column no. 8)',1],
+   ['Enlaza una vuelta del hilo por encima de la aguja y pasa todo el hilo','Wrap one turn over the needle and pass all the thread',4],
+   ['Bordea la columna n.º 8, toma el bucle de bloqueo y sal por la izquierda, sin tocar la capa 2','Skirt column no. 8, take the locking loop and exit left, without touching layer 2',3]];
+  var obj5=false;
+  (function(){var s=document.getElementById('seq');
+    seqData.forEach(function(it,i){var d=document.createElement('div');d.style.margin='6px 0';
+      var sel=document.createElement('select');sel.id='s'+i;
+      var o0=document.createElement('option');o0.value='';o0.textContent='—';sel.appendChild(o0);
+      for(var n=1;n<=5;n++){var o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o);}
+      d.appendChild(sel);var sp=document.createElement('span');sp.style.marginLeft='8px';
+      sp.innerHTML='<span class="es">'+it[0]+'</span><span class="en">'+it[1]+'</span>';
+      d.appendChild(sp);s.appendChild(d);});})();
+  function checkStep5(){var en=L()=='en';
+    var k1=(document.querySelector('input[name=k1]:checked')||{}).value;
+    var k2=(document.querySelector('input[name=k2]:checked')||{}).value;
+    var seqOk=true; for(var i=0;i<seqData.length;i++){if(document.getElementById('s'+i).value!=String(seqData[i][2])){seqOk=false;break;}}
+    var all=(k1=='1'&&k2=='1'&&seqOk);
+    var fb=document.getElementById('fbS5'); fb.className='fb show '+(all?'ok':'no');
+    fb.textContent=all?(en?'100% — Step 5 passed. You worked on a single layer.':'100 % — Paso 5 superado. Has trabajado en una sola capa.')
+      :(en?'Not 100% yet. Review: single layer, error recovery and the correct order, then try again.':'Aún no es 100 %. Revisa: una sola capa, la recuperación y el orden correcto, y reintenta.');
+    if(all){obj5=true; unlock();}}
   function unlock(){var l4=document.getElementById('l4');
     if(obj1&&obj2){l4.classList.remove('locked');}
-    [].slice.call(menu.children)[1].classList.toggle('done',obj1);
-    [].slice.call(menu.children)[2].classList.toggle('done',obj2);}
+    var mc=[].slice.call(menu.children);
+    mc[1].classList.toggle('done',obj1); mc[2].classList.toggle('done',obj2); if(mc[4])mc[4].classList.toggle('done',obj5);}
   show(0);
 </script>
 </body></html>
