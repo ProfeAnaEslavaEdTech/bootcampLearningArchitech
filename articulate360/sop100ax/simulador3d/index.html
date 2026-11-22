@@ -429,8 +429,8 @@ cv.addEventListener('pointerdown',function(e){lastPointer=e.pointerType||'mouse'
 function tick(){var el=document.getElementById('clock');if(!el)return;var d=new Date(),loc=EN()?'en-GB':'es-ES';
   el.textContent=(EN()?'Technical Assessment · ID Valencia · ':'Prueba técnica · ID Valencia · ')+d.toLocaleDateString(loc)+' '+d.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit'});}
 tick();setInterval(tick,30000);
-/* instructivo corto al cargar (una vez) */
-try{if(!localStorage.getItem('s3guide')){showGuide();localStorage.setItem('s3guide','1');}}catch(e){showGuide();}
+/* instructivo corto: abre SIEMPRE al cargar */
+showGuide();
 (function loop(){requestAnimationFrame(loop);
   L1.position.z+=(tgtF-L1.position.z)*0.12;L2.position.z+=(tgtB-L2.position.z)*0.12; // animate open/close
   var zf1=L1.position.z+th/2+0.012;                                                   // nudo, bucles y bloqueo SOBRE la capa 1 (siguen la capa al abrir/cerrar)
