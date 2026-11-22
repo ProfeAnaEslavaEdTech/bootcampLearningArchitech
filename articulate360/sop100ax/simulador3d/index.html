@@ -128,7 +128,9 @@
       <span id="locOut" style="font-weight:700"></span>
     </div>
     <div class="step"><span class="es">3 · Haz UN punto en el bucle de bloqueo (5 arriba), controlando la profundidad en la capa 1</span><span class="en">3 · Make ONE stitch at the locking loop (5 up), controlling the depth in layer 1</span></div>
-    <p class="hint"><span class="es">No es coser a lo largo: es un solo punto en el bucle. <b>Toma la aguja con la mano</b> (arrástrala): la mueves y la orientas 360° sobre la tela. La <b>PROFUNDIDAD</b> (capa 1, verde, sin tocar la capa 2) se ajusta con el <b>deslizador de profundidad</b>. ¿No quieres arrastrar? Usa los deslizadores.</span><span class="en">It is not a running stitch: it is a single stitch at the loop. <b>Take the needle by hand</b> (drag it): move and orient it 360° over the fabric. The <b>DEPTH</b> (layer 1, green, without touching layer 2) is set with the <b>depth slider</b>. Prefer not to drag? Use the sliders.</span></p>
+    <details><summary style="cursor:pointer;font-size:13px;color:#2F54B7;font-weight:700;margin:2px 0"><span class="es">ⓘ Cómo hacer el punto</span><span class="en">ⓘ How to make the stitch</span></summary>
+    <p class="hint"><span class="es">No es coser a lo largo: es un solo punto en el bucle. <b>Toma la aguja con la mano</b> (arrástrala): la mueves y la orientas 360° sobre la tela. La <b>PROFUNDIDAD</b> (capa 1, verde, sin tocar la capa 2) se ajusta con el <b>deslizador de profundidad</b> o la rueda del ratón. ¿No quieres arrastrar? Usa los deslizadores.</span><span class="en">It is not a running stitch: it is a single stitch at the loop. <b>Take the needle by hand</b> (drag it): move and orient it 360° over the fabric. The <b>DEPTH</b> (layer 1, green, without touching layer 2) is set with the <b>depth slider</b> or the mouse wheel. Prefer not to drag? Use the sliders.</span></p></details>
+    <p class="hint" style="font-size:12px;color:#8A5A00;background:#FFF6E0;border-left:4px solid var(--amber);padding:6px 9px;border-radius:4px;margin-top:6px"><span class="es">Este demo entrena y mide la <b>decisión</b> (una sola capa) y la <b>secuencia</b> del gesto. La <b>motricidad fina real</b> se evalúa en la práctica supervisada (Nivel 3), no aquí.</span><span class="en">This demo trains and measures the <b>decision</b> (single layer) and the <b>sequence</b>. Real <b>fine motor skill</b> is assessed in supervised practice (Level 3), not here.</span></p>
     <div class="step" style="margin-top:4px"><span class="es">a) Profundidad de la puntada — mantenla en la <b>capa 1</b>, sin tocar la capa 2</span><span class="en">a) Stitch depth — keep it in <b>layer 1</b>, without touching layer 2</span></div>
     <div class="row"><input type="range" id="depthR" min="0" max="100" value="0" oninput="onDepth(this.value)" disabled aria-label="Profundidad de la puntada / Stitch depth"></div>
     <div id="depthOut" aria-live="polite" style="font-weight:700;font-size:14px;min-height:20px;margin:2px 0 6px"></div>
@@ -147,13 +149,17 @@
       <div class="row"><button class="act ghost" onclick="checkSeq()"><span class="es">Comprobar orden</span><span class="en">Check order</span></button><span id="seqOut" style="font-weight:700"></span></div>
     </details>
 
-    <div class="step"><span class="es">Dominio y datos</span><span class="en">Mastery &amp; data</span></div>
-    <div class="row">
-      <button class="act ghost" onclick="showReport()"><span class="es">📊 Ver informe</span><span class="en">📊 View report</span></button>
-      <button class="act ghost" onclick="downloadCSV()"><span class="es">⬇ Descargar CSV (xAPI)</span><span class="en">⬇ Download CSV (xAPI)</span></button>
-      <span id="gate" style="font-weight:700"></span>
-    </div>
-    <div id="report"></div>
+    <div id="gate" style="font-weight:700;margin-top:8px"></div>
+    <details>
+      <summary style="cursor:pointer;font-weight:700;font-size:14px;margin-top:8px"><span class="es">📊 Dominio y datos (xAPI / SCORM)</span><span class="en">📊 Mastery &amp; data (xAPI / SCORM)</span></summary>
+      <div class="row" style="margin-top:8px">
+        <button class="act ghost" onclick="showReport()"><span class="es">📊 Ver informe</span><span class="en">📊 View report</span></button>
+        <button class="act ghost" onclick="downloadCSV()">⬇ CSV</button>
+        <button class="act ghost" onclick="downloadJSON()">⬇ xAPI JSON</button>
+        <button class="act ghost" onclick="downloadReport()"><span class="es">⬇ Informe .md</span><span class="en">⬇ Report .md</span></button>
+      </div>
+      <div id="report"></div>
+    </details>
     <div class="ai"><span class="es">Material desarrollado con asistencia de IA generativa, revisado y aprobado por Ana Eslava-Graterol. Divulgado conforme al Art. 50 del Reglamento (UE) 2024/1689.</span>
       <span class="en">Developed with generative-AI assistance; reviewed and approved by Ana Eslava-Graterol. Disclosed under Art. 50 of Regulation (EU) 2024/1689.</span></div>
   </div>
@@ -181,22 +187,37 @@ if(typeof THREE==='undefined'){simFail('No se pudo cargar la librería 3D (three
 function setLang(l){document.body.className=l;document.getElementById('bes').classList.toggle('on',l=='es');document.getElementById('ben').classList.toggle('on',l=='en');try{localStorage.setItem('s3',l)}catch(e){}}
 try{var sv=localStorage.getItem('s3');if(sv)setLang(sv);}catch(e){}
 function EN(){return document.body.classList.contains('en');}
-/* ---------- SCORM 1.2 ---------- */
-var API=null;function findAPI(w){var n=0;while(w&&!w.API&&w.parent&&w.parent!=w&&n++<8)w=w.parent;return w?w.API:null;}
-function scormInit(){try{API=findAPI(window)||(window.opener?findAPI(window.opener):null);if(API){API.LMSInitialize("");API.LMSSetValue("cmi.core.lesson_status","incomplete");API.LMSCommit("");}}catch(e){}}
-function scormSet(score,status){try{if(API){API.LMSSetValue("cmi.core.score.raw",String(score));API.LMSSetValue("cmi.core.score.min","0");API.LMSSetValue("cmi.core.score.max","100");API.LMSSetValue("cmi.core.lesson_status",status);API.LMSCommit("");}}catch(e){}}
+/* ---------- SCORM 1.2 (espejo para el LMS) ---------- */
+var API=null, LEARNER='anonimo', IX=0;
+function findAPI(w){var n=0;while(w&&!w.API&&w.parent&&w.parent!=w&&n++<8)w=w.parent;return w?w.API:null;}
+function scormInit(){try{API=findAPI(window)||(window.opener?findAPI(window.opener):null);if(API){API.LMSInitialize("");var nm=API.LMSGetValue("cmi.core.student_name");if(nm)LEARNER=nm;API.LMSSetValue("cmi.core.lesson_status","incomplete");API.LMSCommit("");}}catch(e){}}
+function scormScore(score,status){try{if(API){API.LMSSetValue("cmi.core.score.raw",String(score));API.LMSSetValue("cmi.core.score.min","0");API.LMSSetValue("cmi.core.score.max","100");API.LMSSetValue("cmi.core.lesson_status",status);API.LMSCommit("");}}catch(e){}}
+function scormIX(id,type,result){try{if(API){var p="cmi.interactions."+IX+".";API.LMSSetValue(p+"id",id);API.LMSSetValue(p+"type",type);API.LMSSetValue(p+"result",result);API.LMSSetValue(p+"time",new Date().toTimeString().slice(0,8));IX++;API.LMSCommit("");}}catch(e){}}
 function scormFinish(){try{if(API){API.LMSFinish("");}}catch(e){}}
 window.addEventListener('load',scormInit);window.addEventListener('unload',scormFinish);
-/* ---------- telemetry (xAPI-style) ---------- */
-var EV=[];function log(verb,obj,result){EV.push({t:new Date().toISOString(),actor:"anonymous",verb:verb,object:obj,result:(result==null?"":result)});}
-function downloadCSV(){var rows=[["timestamp","actor","verb","object","result"]];EV.forEach(function(e){rows.push([e.t,e.actor,e.verb,e.object,'"'+String(e.result).replace(/"/g,'""')+'"']);});
-  var csv=rows.map(function(r){return r.join(",");}).join("\n");var b=new Blob([csv],{type:"text/csv"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="paso5_xapi.csv";a.click();}
-function showReport(){var r=document.getElementById('report');var en=EN();
+/* ---------- telemetría xAPI — emite { seq, ts, ms, verb, object, pointerType, result } ---------- */
+var EV=[], SEQ=0, T0=Date.now(), lastPointer='';
+function log(verb,object,result){EV.push({seq:++SEQ,ts:new Date().toISOString(),ms:Date.now()-T0,verb:verb,object:object,pointerType:lastPointer,result:(result==null?"":result)});}
+function scoreNow(){return Math.max(0,100-20*S.layer2Touches);}  // 100 si una sola capa; −20 por cada toque de capa 2
+function dl(txt,type,name){var b=new Blob([txt],{type:type});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();}
+function tryParse(s){try{return JSON.parse(s);}catch(e){return s;}}
+function downloadCSV(){var rows=[["unit","learner","seq","verb","object","ms","result","ts"]];
+  EV.forEach(function(e){rows.push(["SOP-100-AX/Paso5",LEARNER,e.seq,e.verb,e.object,e.ms,'"'+String(e.result).replace(/"/g,'""')+'"',e.ts]);});
+  dl(rows.map(function(r){return r.join(",");}).join("\n"),"text/csv","paso5_xapi.csv");}
+function downloadJSON(){var V="http://adlnet.gov/expapi/verbs/";
+  var stmts=EV.map(function(e){var o={actor:{name:LEARNER},verb:{id:V+e.verb,display:{"es":e.verb}},object:{id:"sim://SOP-100-AX/Paso5/"+e.object},timestamp:e.ts,extensions:{seq:e.seq,ms:e.ms,pointerType:e.pointerType}};if(e.result!=="")o.result={extensions:{"https://sim/data":tryParse(e.result)}};return o;});
+  dl(JSON.stringify({unit:"SOP-100-AX/Paso5",learner:LEARNER,statements:stmts},null,2),"application/json","paso5_xapi.json");}
+function downloadReport(){var sc=scoreNow();
+  var md="# Informe · SOP-100-AX · Paso 5\n\n- Unidad: SOP-100-AX / Paso 5\n- Aprendiz: "+LEARNER+"\n- Fecha: "+new Date().toISOString()+"\n\n## Resultado\n- Aprobado (Zero-Gate 100% capa única): "+(S.passed?"Sí":"No")+"\n- Puntuación: "+sc+"/100\n- Intentos: "+S.attempts+"\n- Toques de capa 2: "+S.layer2Touches+"\n- Puntadas correctas: "+S.correct+"\n- Recuperado tras error: "+(S.recovered?"Sí":"No")+"\n- Eventos (tamaño del log): "+EV.length+"\n\n## KPI (Kirkpatrick L2)\n| KPI | Valor |\n|---|---|\n| Dominio ítem crítico (capa única) | "+(S.critical_single_layer?"100%":"—")+" |\n| Errores de capa 2 | "+S.layer2Touches+" |\n| Recuperación | "+(S.recovered?"Sí":(S.layer2Touches?"No":"n/a"))+" |\n| Intentos hasta dominio | "+S.attempts+" |\n| Tiempo en tarea (ms) | "+(EV.length?EV[EV.length-1].ms:0)+" |\n";
+  dl(md,"text/markdown","paso5_informe.md");}
+function showReport(){var r=document.getElementById('report');var en=EN();var sc=scoreNow();
   var html='<table><tr><th>'+(en?'Metric':'Métrica')+'</th><th>'+(en?'Value':'Valor')+'</th></tr>'
    +'<tr><td>'+(en?'Attempts':'Intentos')+'</td><td>'+S.attempts+'</td></tr>'
-   +'<tr><td>'+(en?'Layer-2 errors':'Errores capa 2')+'</td><td>'+S.errors+'</td></tr>'
-   +'<tr><td>'+(en?'Passed (Zero Gate 100%)':'Aprobado (Zero Gate 100%)')+'</td><td>'+(S.passed?(en?'Yes':'Sí'):'—')+'</td></tr>'
-   +'<tr><td>'+(en?'Score':'Puntuación')+'</td><td>'+(S.passed?100:0)+'</td></tr>'
+   +'<tr><td>'+(en?'Layer-2 touches':'Toques capa 2')+'</td><td>'+S.layer2Touches+'</td></tr>'
+   +'<tr><td>'+(en?'Correct stitches':'Puntadas correctas')+'</td><td>'+S.correct+'</td></tr>'
+   +'<tr><td>'+(en?'Recovered':'Recuperado')+'</td><td>'+(S.recovered?(en?'Yes':'Sí'):'—')+'</td></tr>'
+   +'<tr><td>'+(en?'Passed (Zero-Gate 100%)':'Aprobado (Zero-Gate 100%)')+'</td><td>'+(S.passed?(en?'Yes':'Sí'):'—')+'</td></tr>'
+   +'<tr><td>'+(en?'Score':'Puntuación')+'</td><td>'+sc+'</td></tr>'
    +'<tr><td>'+(en?'xAPI events':'Eventos xAPI')+'</td><td>'+EV.length+'</td></tr></table>';
   r.innerHTML=html;r.style.display='block';}
 /* ---------- 3D ---------- */
@@ -233,14 +254,15 @@ scene.add(needle);
 var thread=new THREE.Line(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0xffffff}));scene.add(thread);
 var handle=new THREE.Mesh(new THREE.BoxGeometry(1.5,0.5,0.5),new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}));scene.add(handle);
 
-var S={held:false,depth:1,prog:0,ang:0,tprog:0,tang:0,ny:0.54,tny:0.54,heading:0,pierced:false,dragging:false,knot:false,open:false,attempts:0,errors:0,passed:false,yRow:0.54,alerted:false,located:false,seqOk:false};
+var S={held:false,depth:1,prog:0,ang:0,tprog:0,tang:0,ny:0.54,tny:0.54,heading:0,pierced:false,dragging:false,knot:false,open:false,attempts:1,errors:0,passed:false,yRow:0.54,alerted:false,located:false,seqOk:false,
+  layer2Touches:0,correct:0,recovered:false,critical_single_layer:false,throughLoopDone:false,insertedDone:false};
 var lx=0,ly=0;  // referencia para la orientación 360 de la aguja al arrastrar
 var zCloseF=0.045,zCloseB=-0.045,zOpenF=0.16,zOpenB=-0.16; // capas finas y juntas; "abierto" las separa (moderado) para ver la profundidad y seguir exigiendo control
 var tgtF=zCloseF,tgtB=zCloseB;
 function zF(){return L1.position.z;}
 function needleZ(){return S.depth? zF()+th/2+0.02 : L2.position.z-th/2-0.03;}
 function colorNeedle(bad){shaft.material.color.set(bad?0xc24a2e:0xbfc6cf);tip.material.color.set(bad?0xc24a2e:0x9aa4ad);}
-function maybeAlert(bad){if(bad&&!S.alerted){S.alerted=true;S.errors++;log("experienced","forbidden-zone-layer2","touched");document.getElementById('alert').style.display='flex';}}
+function maybeAlert(bad){if(bad&&!S.alerted){S.alerted=true;S.layer2Touches++;log("blocked","sim.layer2",JSON.stringify({attempt:S.attempts}));document.getElementById('alert').style.display='flex';}}
 function drawThread(nx,ny,nz){var zc=L1.position.z+th/2+0.013, ex=nx+0.78*Math.cos(S.heading), ey=ny+0.78*Math.sin(S.heading), pts=[]; // hilo: anclaje -> sube por la columna 5 bucles -> UN punto en la aguja
   pts.push(new THREE.Vector3(colX,yBase,zc));      // desde el nudo de anclaje (bucle de referencia)
   pts.push(new THREE.Vector3(colX,S.yRow,zc));     // sube por la columna hasta el bucle de bloqueo (5 arriba)
@@ -269,6 +291,8 @@ function place(){
   var crossed = !parked && tz<layer2Front();              // la punta tocó la capa 2 (nunca en reposo)
   S.depth=crossed?0:1;
   if(!parked && tz<layer1Back() && !crossed)S.pierced=true; // atravesó la capa 1 a la profundidad correcta
+  if(!parked && S.pierced && !S.insertedDone){S.insertedDone=true;log("progressed","sim.insertedInLoop",JSON.stringify({layer:'1'}));}     // insertó en el bucle, capa 1
+  if(!parked && S.pierced && needle.position.x<=colX && !S.throughLoopDone){S.throughLoopDone=true;log("progressed","sim.throughLoop","");} // pasó la aguja por el bucle
   colorNeedle(crossed); drawThread(needle.position.x,needle.position.y,needle.position.z); maybeAlert(crossed);
   depthUI(tz,parked,crossed); syncHandle();}
 // Opción A: arrastrar = MOVER la aguja (x,y) y ORIENTARLA 360° (tomarla por la mano). La profundidad va por el deslizador.
@@ -331,33 +355,41 @@ function onSew(v){if(!S.held)return;S.prog=S.tprog=v/100;place();}              
 function auto(){if(!S.held)return;S.ang=S.tang=0.62;document.getElementById('depthR').value=59;var el=document.getElementById('sew'),p=0;(function st(){p+=2;if(p>100)p=100;el.value=p;S.prog=S.tprog=p/100;place();if(p<100)requestAnimationFrame(st);})();} // demo: profundidad correcta
 function dismissAlert(){document.getElementById('alert').style.display='none';reset();setFB('no',EN()?'Redo on layer 1 only.':'Rehaz solo en la capa 1.');showHint(0);} // al errar: foto de referencia + una línea
 function closeKnot(){if(S.prog<0.9||S.depth!=1||!S.pierced){return;}S.knot=true;log("completed","finishing-knot","closed");check();}
-function check(){S.attempts++;var en=EN();
+function check(){var en=EN();   // el intento se cuenta en reset(), no en cada comprobación
   if(!S.located){setFB('no',en?'First locate the locking loop (count 5 loops up).':'Primero localiza el bucle de bloqueo (cuenta 5 bucles hacia arriba).');return;}
   if(!S.seqOk){setFB('no',en?'First order the gesture correctly.':'Primero ordena el gesto correctamente.');return;}
   if(!S.held){setFB('no',en?'Hold the fabric first.':'Primero sujeta la tela.');return;}
   if(!S.pierced){setFB('no',en?'First set the depth: bring the needle into layer 1 (green), without touching layer 2.':'Primero ajusta la profundidad: lleva la aguja a la capa 1 (verde), sin tocar la capa 2.');return;}
-  if(S.depth==0){S.errors++;log("failed","step5","layer2");setFB('no',en?'✖ You touched layer 2: remove the thread to that point and redo only on layer 1.':'✖ Has tocado la capa 2: retira el hilo hasta ese punto y rehaz solo en la capa 1.');return;}
+  if(S.depth==0){setFB('no',en?'✖ You touched layer 2: remove the thread to that point and redo only on layer 1.':'✖ Has tocado la capa 2: retira el hilo hasta ese punto y rehaz solo en la capa 1.');return;}
   if(S.prog<0.82){setFB('no',en?'Finish the single stitch: pass the needle behind the locking loop and out to the left.':'Termina el punto: pasa la aguja por detrás del bucle de bloqueo y sal por la izquierda.');return;}
   // Puntada correcta → superado. El nudo de remate es fase siguiente (fuera del simulador por ahora).
-  S.passed=true;log("mastered","step5","100");log("passed","step5","100");scormSet(100,"passed");
+  S.passed=true;S.critical_single_layer=true;S.correct++;S.recovered=(S.layer2Touches>0);
+  var sc=scoreNow();
+  log("passed","sim.masteryRun",JSON.stringify({critical_single_layer:true,layer2Touches:S.layer2Touches,score:sc}));
+  scormScore(sc,"passed");scormIX("single_layer","true-false","correct");scormIX("sequence","sequencing",S.seqOk?"correct":"wrong");scormIX("recovery","true-false","correct");
   document.getElementById('gate').textContent=en?'✔ Zero Gate 100% — passed':'✔ Zero Gate 100 % — superado';
   setFB('ok',en?'✔ Step 5 stitch mastered (100%): single layer, correct depth, needle lying along to make the loop.':'✔ Puntada del Paso 5 superada (100 %): una sola capa, profundidad correcta, aguja a lo largo para hacer el lazo.');
   showHint(6);}
-function reset(){S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.ny=0.54;S.tny=0.54;S.heading=0;S.pierced=false;S.dragging=false;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
+function reset(){
+  if(!S.passed && (S.layer2Touches>0||S.pierced||S.throughLoopDone)){var fsc=scoreNow();log("failed","sim.masteryRun",JSON.stringify({critical_single_layer:false,layer2Touches:S.layer2Touches,score:fsc}));scormScore(fsc,"failed");} // cierra el intento abandonado
+  log("reset","sim.run",JSON.stringify({attempt:S.attempts}));
+  S.attempts++;S.layer2Touches=0;S.throughLoopDone=false;S.insertedDone=false;S.critical_single_layer=false;S.recovered=false;
+  S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.ny=0.54;S.tny=0.54;S.heading=0;S.pierced=false;S.dragging=false;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
   if(dragC)dragC.enabled=false;
   cT.visible=cB.visible=false;document.getElementById('holdBtn').classList.remove('on');
   var sew=document.getElementById('sew');sew.value=0;sew.disabled=true;var dR=document.getElementById('depthR');if(dR){dR.value=0;dR.disabled=true;}var dO=document.getElementById('depthOut');if(dO)dO.textContent='';
   document.getElementById('autoBtn').disabled=true;document.getElementById('knotBtn').disabled=true;
   loopsArr.forEach(function(l){l.material.color.set(0xcfe0ff);});lockRing.material.opacity=0;document.getElementById('locBtn').disabled=false;
   document.getElementById('locOut').textContent='';document.getElementById('seqOut').textContent='';
-  S.yRow=lockY;S.ny=lockY;S.tny=lockY;place();log("reset","sim","");}
-window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;window.showHint=showHint;window.hideHint=hideHint;window.showGuide=showGuide;window.hideGuide=hideGuide;
+  S.yRow=lockY;S.ny=lockY;S.tny=lockY;S.passed=false;place();}
+window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;window.showHint=showHint;window.hideHint=hideHint;window.showGuide=showGuide;window.hideGuide=hideGuide;window.downloadJSON=downloadJSON;window.downloadReport=downloadReport;
 place();window.addEventListener('resize',resize);
 /* PROFUNDIDAD con rueda del ratón / pellizco táctil (zoom de cámara desactivado) */
 cv.addEventListener('wheel',function(e){if(!S.held)return;e.preventDefault();var d=(e.deltaY<0?1:-1)*0.06;S.ang=S.tang=Math.max(0,Math.min(ANG_MAX,S.ang+d));var dR=document.getElementById('depthR');if(dR)dR.value=Math.round((S.ang/ANG_MAX)*100);place();},{passive:false});
 var pinchD=null;
 cv.addEventListener('touchmove',function(e){if(!S.held||e.touches.length!==2)return;e.preventDefault();var dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY,dd=Math.sqrt(dx*dx+dy*dy);if(pinchD!=null){var k=(dd-pinchD)*0.004;S.ang=S.tang=Math.max(0,Math.min(ANG_MAX,S.ang+k));var dR=document.getElementById('depthR');if(dR)dR.value=Math.round((S.ang/ANG_MAX)*100);place();}pinchD=dd;},{passive:false});
 cv.addEventListener('touchend',function(){pinchD=null;});
+cv.addEventListener('pointerdown',function(e){lastPointer=e.pointerType||'mouse';});  // registra ratón/táctil/lápiz para el log xAPI
 /* reloj con sello de la prueba técnica */
 function tick(){var el=document.getElementById('clock');if(!el)return;var d=new Date(),loc=EN()?'en-GB':'es-ES';
   el.textContent=(EN()?'Technical Assessment · ID Valencia · ':'Prueba técnica · ID Valencia · ')+d.toLocaleDateString(loc)+' '+d.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit'});}
