@@ -33,6 +33,8 @@
   button.act{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:9px 15px;font-size:14px;font-weight:700;cursor:pointer}
   button.act:disabled{opacity:.45;cursor:not-allowed}
   button.ghost{background:#eef1f6;color:#16222E}
+  button.demo{background:var(--amber);color:#3a2a00}
+  button.demo:hover{filter:brightness(1.05)}
   button.hold.on{background:var(--green)}
   button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #2F54B7;outline-offset:2px}
   input[type=range]{width:100%;max-width:520px}
@@ -128,18 +130,19 @@
       <span id="locOut" style="font-weight:700"></span>
     </div>
     <div class="step"><span class="es">3 · Haz UN punto en el bucle de bloqueo (5 arriba), controlando la profundidad en la capa 1</span><span class="en">3 · Make ONE stitch at the locking loop (5 up), controlling the depth in layer 1</span></div>
-    <details><summary style="cursor:pointer;font-size:13px;color:#2F54B7;font-weight:700;margin:2px 0"><span class="es">ⓘ Cómo hacer el punto</span><span class="en">ⓘ How to make the stitch</span></summary>
-    <p class="hint"><span class="es">No es coser a lo largo: es un solo punto en el bucle. <b>Toma la aguja con la mano</b> (arrástrala): la mueves y la orientas 360° sobre la tela. La <b>PROFUNDIDAD</b> (capa 1, verde, sin tocar la capa 2) se ajusta con el <b>deslizador de profundidad</b> o la rueda del ratón. ¿No quieres arrastrar? Usa los deslizadores.</span><span class="en">It is not a running stitch: it is a single stitch at the loop. <b>Take the needle by hand</b> (drag it): move and orient it 360° over the fabric. The <b>DEPTH</b> (layer 1, green, without touching layer 2) is set with the <b>depth slider</b> or the mouse wheel. Prefer not to drag? Use the sliders.</span></p></details>
-    <p class="hint" style="font-size:12px;color:#8A5A00;background:#FFF6E0;border-left:4px solid var(--amber);padding:6px 9px;border-radius:4px;margin-top:6px"><span class="es">Este demo entrena y mide la <b>decisión</b> (una sola capa) y la <b>secuencia</b> del gesto. La <b>motricidad fina real</b> se evalúa en la práctica supervisada (Nivel 3), no aquí.</span><span class="en">This demo trains and measures the <b>decision</b> (single layer) and the <b>sequence</b>. Real <b>fine motor skill</b> is assessed in supervised practice (Level 3), not here.</span></p>
-    <div class="step" style="margin-top:4px"><span class="es">a) Profundidad de la puntada — mantenla en la <b>capa 1</b>, sin tocar la capa 2</span><span class="en">a) Stitch depth — keep it in <b>layer 1</b>, without touching layer 2</span></div>
-    <div class="row"><input type="range" id="depthR" min="0" max="100" value="0" oninput="onDepth(this.value)" disabled aria-label="Profundidad de la puntada / Stitch depth"></div>
-    <div id="depthOut" aria-live="polite" style="font-weight:700;font-size:14px;min-height:20px;margin:2px 0 6px"></div>
-    <div class="step" style="margin-top:4px"><span class="es">b) El punto sobre el bucle (derecha → izquierda)</span><span class="en">b) The stitch over the loop (right → left)</span></div>
-    <div class="row"><input type="range" id="sew" min="0" max="100" value="0" oninput="onSew(this.value)" disabled aria-label="Avance / Advance"></div>
-    <div class="row">
-      <button class="act ghost" id="autoBtn" onclick="auto()" disabled><span class="es">▶ Coser automático (demostración)</span><span class="en">▶ Auto sew (demo)</span></button>
-      <button class="act" id="knotBtn" onclick="check()" disabled><span class="es">✓ Comprobar la puntada</span><span class="en">✓ Check the stitch</span></button>
-    </div>
+    <div class="row"><button class="act demo" id="autoBtn" onclick="auto()" style="width:100%;justify-content:center;font-weight:700"><span class="es">▶ Ver demostración completa (sujeta, cuenta, profundidad y punto)</span><span class="en">▶ Watch full demo (hold, count, depth and stitch)</span></button></div>
+    <details id="practice">
+      <summary style="cursor:pointer;font-weight:700;font-size:14px;margin:8px 0;color:#16222E"><span class="es">✍️ Practicar la puntada (controles de la aguja)</span><span class="en">✍️ Practise the stitch (needle controls)</span></summary>
+      <details><summary style="cursor:pointer;font-size:13px;color:#2F54B7;font-weight:700;margin:2px 0"><span class="es">ⓘ Cómo hacer el punto</span><span class="en">ⓘ How to make the stitch</span></summary>
+      <p class="hint"><span class="es">No es coser a lo largo: es un solo punto en el bucle. <b>Toma la aguja con la mano</b> (arrástrala): la mueves y la orientas 360° sobre la tela. La <b>PROFUNDIDAD</b> (capa 1, verde, sin tocar la capa 2) se ajusta con el <b>deslizador de profundidad</b> o la rueda del ratón. ¿No quieres arrastrar? Usa los deslizadores.</span><span class="en">It is not a running stitch: it is a single stitch at the loop. <b>Take the needle by hand</b> (drag it): move and orient it 360° over the fabric. The <b>DEPTH</b> (layer 1, green, without touching layer 2) is set with the <b>depth slider</b> or the mouse wheel. Prefer not to drag? Use the sliders.</span></p></details>
+      <p class="hint" style="font-size:12px;color:#8A5A00;background:#FFF6E0;border-left:4px solid var(--amber);padding:6px 9px;border-radius:4px;margin-top:6px"><span class="es">Este demo entrena y mide la <b>decisión</b> (una sola capa) y la <b>secuencia</b> del gesto. La <b>motricidad fina real</b> se evalúa en la práctica supervisada (Nivel 3), no aquí.</span><span class="en">This demo trains and measures the <b>decision</b> (single layer) and the <b>sequence</b>. Real <b>fine motor skill</b> is assessed in supervised practice (Level 3), not here.</span></p>
+      <div class="step" style="margin-top:4px"><span class="es">a) Profundidad de la puntada — mantenla en la <b>capa 1</b>, sin tocar la capa 2</span><span class="en">a) Stitch depth — keep it in <b>layer 1</b>, without touching layer 2</span></div>
+      <div class="row"><input type="range" id="depthR" min="0" max="100" value="0" oninput="onDepth(this.value)" disabled aria-label="Profundidad de la puntada / Stitch depth"></div>
+      <div id="depthOut" aria-live="polite" style="font-weight:700;font-size:14px;min-height:20px;margin:2px 0 6px"></div>
+      <div class="step" style="margin-top:4px"><span class="es">b) El punto sobre el bucle (derecha → izquierda)</span><span class="en">b) The stitch over the loop (right → left)</span></div>
+      <div class="row"><input type="range" id="sew" min="0" max="100" value="0" oninput="onSew(this.value)" disabled aria-label="Avance / Advance"></div>
+      <div class="row"><button class="act" id="knotBtn" onclick="check()" disabled><span class="es">✓ Comprobar la puntada</span><span class="en">✓ Check the stitch</span></button></div>
+    </details>
     <p class="hint"><span class="es">El nudo de remate se practicará en la fase siguiente (aún no está en el simulador).</span><span class="en">The finishing knot will be practised in the next phase (not in the simulator yet).</span></p>
     <div id="fb" role="status" aria-live="polite"></div>
 
@@ -197,8 +200,8 @@ function scormIX(id,type,result){try{if(API){var p="cmi.interactions."+IX+".";AP
 function scormFinish(){try{if(API){API.LMSFinish("");}}catch(e){}}
 window.addEventListener('load',scormInit);window.addEventListener('unload',scormFinish);
 /* ---------- telemetría xAPI — emite { seq, ts, ms, verb, object, pointerType, result } ---------- */
-var EV=[], SEQ=0, T0=Date.now(), lastPointer='';
-function log(verb,object,result){EV.push({seq:++SEQ,ts:new Date().toISOString(),ms:Date.now()-T0,verb:verb,object:object,pointerType:lastPointer,result:(result==null?"":result)});}
+var EV=[], SEQ=0, T0=Date.now(), lastPointer='', DEMO=false;
+function log(verb,object,result){if(DEMO)return;EV.push({seq:++SEQ,ts:new Date().toISOString(),ms:Date.now()-T0,verb:verb,object:object,pointerType:lastPointer,result:(result==null?"":result)});} // la demostración no registra telemetría
 function scoreNow(){return Math.max(0,100-20*S.layer2Touches);}  // 100 si una sola capa; −20 por cada toque de capa 2
 function dl(txt,type,name){var b=new Blob([txt],{type:type});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();}
 function tryParse(s){try{return JSON.parse(s);}catch(e){return s;}}
@@ -387,7 +390,23 @@ function toggleOpen(){S.open=!S.open;tgtF=S.open?zOpenF:zCloseF;tgtB=S.open?zOpe
 function setDepth(d){S.depth=d;S.alerted=false;place();}
 function onDepth(v){if(!S.held)return;S.ang=S.tang=(v/100)*ANG_MAX;place();}               // el usuario controla la profundidad (0=superficial, medio=capa 1, alto=capa 2)
 function onSew(v){if(!S.held)return;S.prog=S.tprog=v/100;place();}                         // avance; mantiene la profundidad que fijó el usuario
-function auto(){if(!S.held)return;S.ang=S.tang=0.62;document.getElementById('depthR').value=59;var el=document.getElementById('sew'),p=0;(function st(){p+=2;if(p>100)p=100;el.value=p;S.prog=S.tprog=p/100;place();if(p<100)requestAnimationFrame(st);})();} // demo: profundidad correcta
+function msg(es,en){return EN()?en:es;}
+function rampDepth(frac,cb){var t=frac*ANG_MAX;(function st(){S.ang+=(t-S.ang)*0.2;S.tang=S.ang;var d=document.getElementById('depthR');if(d)d.value=Math.round((S.ang/ANG_MAX)*100);place();if(Math.abs(t-S.ang)>0.01)requestAnimationFrame(st);else if(cb)cb();})();}
+function rampSew(cb){var el=document.getElementById('sew'),p=0;(function st(){p+=2;if(p>100)p=100;if(el)el.value=p;S.prog=S.tprog=p/100;place();if(p<100)requestAnimationFrame(st);else if(cb)cb();})();}
+/* DEMOSTRACIÓN COMPLETA: sujeta → cuenta bucles → se ubica → ajusta y activa profundidad → hace el punto por debajo del bucle. No puntúa. */
+function auto(){
+  DEMO=true; reset();
+  setFB('',msg('1) Sujetando la tela sobre la superficie…','1) Holding the fabric on the surface…')); hold();
+  setTimeout(function(){ setFB('',msg('2) Contando 5 bucles desde el nudo de anclaje…','2) Counting 5 loops from the anchor knot…')); countLoops(); }, 800);
+  setTimeout(function(){ setFB('',msg('3) Ubicada en el bucle de bloqueo. Ajustando y activando la profundidad en la capa 1…','3) At the locking loop. Setting and activating the depth in layer 1…')); rampDepth(0.6); }, 2800);
+  setTimeout(function(){ setFB('',msg('4) Haciendo el punto: la aguja toma por debajo del bucle (derecha→izquierda), sin tocar la capa 2…','4) Making the stitch: the needle passes under the loop (right→left), without touching layer 2…'));
+    rampSew(function(){ setTimeout(function(){
+      S.prog=S.tprog=0;S.ang=S.tang=0;S.pierced=false;S.throughLoopDone=false;S.insertedDone=false;place();   // deja listo para practicar, sin puntuar
+      var pr=document.getElementById('practice'); if(pr)pr.open=true;
+      DEMO=false; setFB('ok',msg('Demostración completa. Ahora practícalo tú con los controles.','Demo complete. Now practise it yourself with the controls.'));
+    }, 900); });
+  }, 4400);
+}
 function dismissAlert(){document.getElementById('alert').style.display='none';reset();setFB('no',EN()?'Redo on layer 1 only.':'Rehaz solo en la capa 1.');showHint(0);} // al errar: foto de referencia + una línea
 function closeKnot(){if(S.prog<0.9||S.depth!=1||!S.pierced){return;}S.knot=true;log("completed","finishing-knot","closed");check();}
 function check(){var en=EN();   // el intento se cuenta en reset(), no en cada comprobación
@@ -406,14 +425,17 @@ function check(){var en=EN();   // el intento se cuenta en reset(), no en cada c
   setFB('ok',en?'✔ Step 5 stitch mastered (100%): single layer, correct depth, needle lying along to make the loop.':'✔ Puntada del Paso 5 superada (100 %): una sola capa, profundidad correcta, aguja a lo largo para hacer el lazo.');
   showHint(6);}
 function reset(){
-  if(!S.passed && (S.layer2Touches>0||S.pierced||S.throughLoopDone)){var fsc=scoreNow();log("failed","sim.masteryRun",JSON.stringify({critical_single_layer:false,layer2Touches:S.layer2Touches,score:fsc}));scormScore(fsc,"failed");} // cierra el intento abandonado
-  log("reset","sim.run",JSON.stringify({attempt:S.attempts}));
-  S.attempts++;S.layer2Touches=0;S.throughLoopDone=false;S.insertedDone=false;S.critical_single_layer=false;S.recovered=false;
+  if(!DEMO){
+    if(!S.passed && (S.layer2Touches>0||S.pierced||S.throughLoopDone)){var fsc=scoreNow();log("failed","sim.masteryRun",JSON.stringify({critical_single_layer:false,layer2Touches:S.layer2Touches,score:fsc}));scormScore(fsc,"failed");} // cierra el intento abandonado
+    log("reset","sim.run",JSON.stringify({attempt:S.attempts}));
+    S.attempts++;
+  }
+  S.layer2Touches=0;S.throughLoopDone=false;S.insertedDone=false;S.critical_single_layer=false;S.recovered=false;
   S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.ny=0.54;S.tny=0.54;S.heading=0;S.pierced=false;S.dragging=false;S.knot=false;S.alerted=false;S.located=false;S.seqOk=false;
   if(dragC)dragC.enabled=false;
   cT.visible=cB.visible=false;document.getElementById('holdBtn').classList.remove('on');
   var sew=document.getElementById('sew');sew.value=0;sew.disabled=true;var dR=document.getElementById('depthR');if(dR){dR.value=0;dR.disabled=true;}var dO=document.getElementById('depthOut');if(dO)dO.textContent='';
-  document.getElementById('autoBtn').disabled=true;document.getElementById('knotBtn').disabled=true;
+  document.getElementById('knotBtn').disabled=true;  // el botón de demo queda siempre disponible
   loopsArr.forEach(function(l){l.material.color.set(0xcfe0ff);});lockRing.material.opacity=0;document.getElementById('locBtn').disabled=false;
   document.getElementById('locOut').textContent='';document.getElementById('seqOut').textContent='';
   S.yRow=lockY;S.ny=lockY;S.tny=lockY;S.passed=false;place();}
