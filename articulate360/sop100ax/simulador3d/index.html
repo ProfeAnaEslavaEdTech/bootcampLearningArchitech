@@ -16,10 +16,12 @@
   #stage{display:flex;gap:14px;align-items:flex-start}
   #simcol{flex:1 1 56%;min-width:0;position:sticky;top:10px}
   #simbox{position:relative}
-  #cv{width:100%;height:420px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
+  #cv{width:100%;height:420px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block;cursor:grab}
+  #cv.grabbing{cursor:grabbing}
   @media(max-width:880px){#stage{flex-direction:column}#simcol{position:static}#cv{height:340px}}
   .sideL{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:8px}
-  .sidebtn{width:46px;height:46px;border-radius:10px;border:1px solid var(--line);background:#ffffffee;font-size:20px;cursor:pointer}
+  .sidebtn{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:6px 11px;border-radius:10px;border:1px solid var(--line);background:#ffffffee;font-size:14px;font-weight:700;color:#16222E;cursor:pointer;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .sidebtn span:first-child{font-size:18px}
   .sidebtn:hover{background:#fff}
   button.cta{font-size:16px;padding:12px 20px}
   .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;flex:1 1 44%;min-width:0}
@@ -52,11 +54,20 @@
   #hintbox img{width:240px;max-width:48%;border-radius:8px;border:1px solid #d9dee3}
   #hintbox .htx{flex:1;min-width:210px;font-size:16px;font-weight:700;color:#16222E;line-height:1.45}
   #hintbox .hclose{margin-top:14px}
+  /* instructivo corto: cómo usar el demo */
+  #guide{position:absolute;inset:10px;background:#fff;border:2px solid #17894A;border-radius:12px;padding:16px;display:none;z-index:9;overflow:auto}
+  #guide h3{font-size:16px;color:#16222E;margin:0 0 8px}
+  #guide ol{margin:0 0 10px 18px;font-size:14px;line-height:1.5}
+  #guide li{margin:5px 0}
+  #guide .gnote{font-size:12px;color:#5a6672;margin:0 0 12px}
 </style></head>
 <body class="es">
 <header>
   <h1><span class="es">Paso 5 · Simulador 3D — puntada de bloqueo en una sola capa</span><span class="en">Step 5 · 3D simulator — single-layer locking stitch</span></h1>
-  <div class="tg"><button id="bes" class="on" onclick="setLang('es')" aria-label="Español">ES</button><button id="ben" onclick="setLang('en')" aria-label="English">EN</button></div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <span id="clock" style="font-size:12px;color:#cdd6e6"></span>
+    <div class="tg"><button id="bes" class="on" onclick="setLang('es')" aria-label="Español">ES</button><button id="ben" onclick="setLang('en')" aria-label="English">EN</button></div>
+  </div>
 </header>
 <div id="wrap">
   <div class="crit"><span class="es">⚠ Trabaja en la capa 1, no insertes en la capa 2.</span><span class="en">⚠ Work on layer 1, do not insert into layer 2.</span></div>
@@ -65,9 +76,9 @@
   <div id="simbox">
     <canvas id="cv" role="img" aria-label="Simulación 3D de la cubierta de dos capas"></canvas>
     <div class="sideL">
-      <button class="sidebtn" onclick="toggleOpen()" title="Abrir / cerrar doble capa" aria-label="Abrir o cerrar doble capa">📖</button>
-      <button class="sidebtn" onclick="reset()" title="Reiniciar" aria-label="Reiniciar">⟲</button>
-      <button class="sidebtn" onclick="showHint()" title="Ayuda / Help" aria-label="Ayuda · Help">❓</button>
+      <button class="sidebtn" onclick="toggleOpen()" aria-label="Ver las dos capas · View the two layers"><span>📖</span><span class="es">Ver capas</span><span class="en">Layers</span></button>
+      <button class="sidebtn" onclick="reset()" aria-label="Reiniciar · Reset"><span>⟲</span><span class="es">Reiniciar</span><span class="en">Reset</span></button>
+      <button class="sidebtn" onclick="showGuide()" aria-label="Repasa los pasos · Review the steps"><span>❓</span><span class="es">Pasos</span><span class="en">Steps</span></button>
     </div>
     <div id="diag" style="display:none;position:absolute;inset:12px;background:#fff;border:2px solid #C24A2E;border-radius:10px;padding:16px;font:13px/1.5 Arial;color:#C24A2E;overflow:auto;z-index:5"></div>
     <div id="hintbox" role="dialog" aria-label="Ayuda · Help">
@@ -78,9 +89,36 @@
       </div>
       <div class="hclose"><button class="act" onclick="hideHint()"><span class="es">Entendido</span><span class="en">Got it</span></button></div>
     </div>
+    <div id="guide" role="dialog" aria-label="Cómo usar el demo · How to use the demo">
+      <div class="es">
+        <h3>Cómo usar el demo</h3>
+        <ol>
+          <li>Pulsa <b>✋ Sujeta la tela</b>: queda plana y fija sobre la superficie.</li>
+          <li>Pulsa <b>🔢 Cuenta 5 bucles</b>: localiza el bucle de bloqueo (5 por encima del nudo de anclaje).</li>
+          <li>Ajusta la <b>PROFUNDIDAD</b>: gira la <b>rueda del ratón</b> sobre la escena (o <b>pellizca/zoom</b> en táctil), o usa el <b>deslizador a)</b>. Mantén la aguja en la <b>capa 1 (verde)</b>, sin tocar la capa 2.</li>
+          <li>Cuando la tengas a la profundidad deseada, <b>déjala fija</b> y <b>toma la aguja</b> con el ratón/dedo: muévela y <b>oriéntala 360°</b> para hacer <b>UN punto</b> en el bucle (derecha→izquierda) — motricidad fina.</li>
+          <li>Pulsa <b>✓ Comprobar la puntada</b>.</li>
+        </ol>
+        <div class="gnote">El nudo de remate se practica en la fase siguiente (no está en el simulador).</div>
+        <button class="act" onclick="hideGuide()">Empezar</button>
+      </div>
+      <div class="en">
+        <h3>How to use the demo</h3>
+        <ol>
+          <li>Press <b>✋ Hold the fabric</b>: it lies flat and fixed on the surface.</li>
+          <li>Press <b>🔢 Count 5 loops</b>: find the locking loop (5 above the anchor knot).</li>
+          <li>Set the <b>DEPTH</b>: turn the <b>mouse wheel</b> over the scene (or <b>pinch/zoom</b> on touch), or use <b>slider a)</b>. Keep the needle in <b>layer 1 (green)</b>, without touching layer 2.</li>
+          <li>Once at the desired depth, <b>keep it steady</b> and <b>take the needle</b> with mouse/finger: move it and <b>orient it 360°</b> to make <b>ONE stitch</b> at the loop (right→left) — fine motor skill.</li>
+          <li>Press <b>✓ Check the stitch</b>.</li>
+        </ol>
+        <div class="gnote">The finishing knot is practised in the next phase (not in the simulator).</div>
+        <button class="act" onclick="hideGuide()">Start</button>
+      </div>
+    </div>
   </div>
   </div>
   <div class="panel">
+    <div class="row"><button class="act ghost" style="width:100%;justify-content:center;font-weight:700" onclick="showGuide()"><span class="es">❓ Repasa los pasos a seguir</span><span class="en">❓ Review the steps</span></button></div>
     <div class="row">
       <button class="act hold cta" id="holdBtn" onclick="hold()"><span class="es">✋ Sujeta la tela sobre la superficie</span><span class="en">✋ Hold the fabric on the surface</span></button>
     </div>
@@ -167,7 +205,7 @@ var scene=new THREE.Scene();scene.background=new THREE.Color(0xdfe5ec);
 var camera=new THREE.PerspectiveCamera(45,cv.clientWidth/cv.clientHeight,0.1,100);camera.position.set(3.1,1.05,2.7);
 var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 function resize(){renderer.setSize(cv.clientWidth,cv.clientHeight,false);camera.aspect=cv.clientWidth/cv.clientHeight;camera.updateProjectionMatrix();}resize();
-var controls=null;try{controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.minDistance=2.6;controls.maxDistance=7;controls.enableDamping=true;controls.dampingFactor=0.09;controls.rotateSpeed=0.6;controls.zoomSpeed=0.7;}catch(e){simFail('OrbitControls no cargó desde el CDN. La escena 3D se ve, pero no podrás girar la vista. / OrbitControls failed to load.');}
+var controls=null;try{controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.minDistance=2.6;controls.maxDistance=7;controls.enableDamping=true;controls.dampingFactor=0.09;controls.rotateSpeed=0.6;controls.enableZoom=false;/* zoom desactivado: la rueda/pellizco ajustan la PROFUNDIDAD */}catch(e){simFail('OrbitControls no cargó desde el CDN. La escena 3D se ve, pero no podrás girar la vista. / OrbitControls failed to load.');}
 scene.add(new THREE.AmbientLight(0xffffff,0.8));var dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(3,5,4);scene.add(dl);
 var th=0.025;
 var L1=new THREE.Mesh(new THREE.BoxGeometry(3,2.4,th),new THREE.MeshStandardMaterial({color:0x3f6bd6,roughness:.9,transparent:true,opacity:0.5})); // capa 1 semitransparente: deja ver la aguja tumbada dentro y su profundidad
@@ -241,8 +279,8 @@ function onDrag(){
   if(dx*dx+dy*dy>0.0004){S.heading=Math.atan2(dy,dx);lx=x;ly=y;} // orientación 360° según la dirección del arrastre
   S.tprog=(0.8-x)/1.1; S.tny=y;}                                // profundidad NO: se ajusta con el deslizador
 var dragC=null;try{dragC=new THREE.DragControls([handle],camera,renderer.domElement); dragC.enabled=false;
-  dragC.addEventListener('dragstart',function(){if(controls)controls.enabled=false;S.dragging=true;lx=handle.position.x;ly=handle.position.y;});
-  dragC.addEventListener('dragend',function(){if(controls)controls.enabled=true;S.dragging=false;S.tprog=S.prog;S.tny=S.ny;handle.position.copy(needle.position);});
+  dragC.addEventListener('dragstart',function(){if(controls)controls.enabled=false;S.dragging=true;lx=handle.position.x;ly=handle.position.y;cv.classList.add('grabbing');});
+  dragC.addEventListener('dragend',function(){if(controls)controls.enabled=true;S.dragging=false;S.tprog=S.prog;S.tny=S.ny;handle.position.copy(needle.position);cv.classList.remove('grabbing');});
   dragC.addEventListener('drag',function(){onDrag();});
 }catch(e){simFail('DragControls no cargó desde el CDN. Podrás usar el control de coser, pero no arrastrar la aguja. / DragControls failed to load.');}
 function setFB(c,t){var f=document.getElementById('fb');f.className=c;f.textContent=t;}
@@ -262,6 +300,8 @@ function showHint(idx){var en=EN();var i=(typeof idx==='number')?idx:currentStep
   document.getElementById('hintTx').textContent=en?HINTS[i].en:HINTS[i].es;
   document.getElementById('hintbox').style.display='block';log("requested","hint",String(i));}
 function hideHint(){document.getElementById('hintbox').style.display='none';}
+function showGuide(){document.getElementById('guide').style.display='block';}
+function hideGuide(){document.getElementById('guide').style.display='none';}
 /* ---------- locate loop (count 5) + sequencing ---------- */
 function countLoops(){if(S.located)return;var i=0,out=document.getElementById('locOut'),en=EN();
   var iv=setInterval(function(){i++;if(i<=5){loopsArr[i-1].material.color.set(0xE0A400);out.textContent=(en?'Loop ':'Bucle ')+i;}
@@ -311,8 +351,19 @@ function reset(){S.held=false;S.depth=1;S.prog=0;S.ang=0;S.tprog=0;S.tang=0;S.ny
   loopsArr.forEach(function(l){l.material.color.set(0xcfe0ff);});lockRing.material.opacity=0;document.getElementById('locBtn').disabled=false;
   document.getElementById('locOut').textContent='';document.getElementById('seqOut').textContent='';
   S.yRow=lockY;S.ny=lockY;S.tny=lockY;place();log("reset","sim","");}
-window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;window.showHint=showHint;window.hideHint=hideHint;
+window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setDepth=setDepth;window.onDepth=onDepth;window.onSew=onSew;window.auto=auto;window.closeKnot=closeKnot;window.check=check;window.reset=reset;window.dismissAlert=dismissAlert;window.downloadCSV=downloadCSV;window.showReport=showReport;window.countLoops=countLoops;window.checkSeq=checkSeq;window.showHint=showHint;window.hideHint=hideHint;window.showGuide=showGuide;window.hideGuide=hideGuide;
 place();window.addEventListener('resize',resize);
+/* PROFUNDIDAD con rueda del ratón / pellizco táctil (zoom de cámara desactivado) */
+cv.addEventListener('wheel',function(e){if(!S.held)return;e.preventDefault();var d=(e.deltaY<0?1:-1)*0.06;S.ang=S.tang=Math.max(0,Math.min(ANG_MAX,S.ang+d));var dR=document.getElementById('depthR');if(dR)dR.value=Math.round((S.ang/ANG_MAX)*100);place();},{passive:false});
+var pinchD=null;
+cv.addEventListener('touchmove',function(e){if(!S.held||e.touches.length!==2)return;e.preventDefault();var dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY,dd=Math.sqrt(dx*dx+dy*dy);if(pinchD!=null){var k=(dd-pinchD)*0.004;S.ang=S.tang=Math.max(0,Math.min(ANG_MAX,S.ang+k));var dR=document.getElementById('depthR');if(dR)dR.value=Math.round((S.ang/ANG_MAX)*100);place();}pinchD=dd;},{passive:false});
+cv.addEventListener('touchend',function(){pinchD=null;});
+/* reloj con sello de la prueba técnica */
+function tick(){var el=document.getElementById('clock');if(!el)return;var d=new Date(),loc=EN()?'en-GB':'es-ES';
+  el.textContent=(EN()?'Technical Assessment · ID Valencia · ':'Prueba técnica · ID Valencia · ')+d.toLocaleDateString(loc)+' '+d.toLocaleTimeString(loc,{hour:'2-digit',minute:'2-digit'});}
+tick();setInterval(tick,30000);
+/* instructivo corto al cargar (una vez) */
+try{if(!localStorage.getItem('s3guide')){showGuide();localStorage.setItem('s3guide','1');}}catch(e){showGuide();}
 (function loop(){requestAnimationFrame(loop);
   L1.position.z+=(tgtF-L1.position.z)*0.12;L2.position.z+=(tgtB-L2.position.z)*0.12; // animate open/close
   var zf1=L1.position.z+th/2+0.012;                                                   // nudo, bucles y bloqueo SOBRE la capa 1 (siguen la capa al abrir/cerrar)
