@@ -55,6 +55,7 @@
       <button class="sidebtn" onclick="toggleOpen()" title="Abrir / cerrar doble capa" aria-label="Abrir o cerrar doble capa">📖</button>
       <button class="sidebtn" onclick="reset()" title="Reiniciar" aria-label="Reiniciar">⟲</button>
     </div>
+    <div id="diag" style="display:none;position:absolute;inset:12px;background:#fff;border:2px solid #C24A2E;border-radius:10px;padding:16px;font:13px/1.5 Arial;color:#C24A2E;overflow:auto;z-index:5"></div>
   </div>
   <div class="panel">
     <div class="row">
@@ -103,6 +104,12 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/DragControls.js"></script>
 <script>
+/* ---------- load guard / diagnostics ---------- */
+function simFail(msg){var d=document.getElementById('diag');if(d){d.style.display='block';d.textContent=msg;}}
+window.addEventListener('error',function(e){simFail('⚠ '+(e.message||'Error')+(e.filename?('  ['+String(e.filename).split('/').pop()+']'):''));},true);
+if(typeof THREE==='undefined'){simFail('No se pudo cargar la librería 3D (three.min.js) desde el CDN. Necesitas conexión a internet y que el visor no bloquee los scripts (usa el enlace githack, no htmlpreview). / Could not load three.min.js from the CDN.');}
+</script>
+<script>
 /* ---------- i18n ---------- */
 function setLang(l){document.body.className=l;document.getElementById('bes').classList.toggle('on',l=='es');document.getElementById('ben').classList.toggle('on',l=='en');try{localStorage.setItem('s3',l)}catch(e){}}
 try{var sv=localStorage.getItem('s3');if(sv)setLang(sv);}catch(e){}
@@ -131,7 +138,7 @@ var scene=new THREE.Scene();scene.background=new THREE.Color(0xdfe5ec);
 var camera=new THREE.PerspectiveCamera(45,cv.clientWidth/cv.clientHeight,0.1,100);camera.position.set(1.8,1.3,4.0);
 var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 function resize(){renderer.setSize(cv.clientWidth,cv.clientHeight,false);camera.aspect=cv.clientWidth/cv.clientHeight;camera.updateProjectionMatrix();}resize();
-var controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.minDistance=2.6;controls.maxDistance=7;
+var controls=null;try{controls=new THREE.OrbitControls(camera,renderer.domElement);controls.enablePan=false;controls.minDistance=2.6;controls.maxDistance=7;}catch(e){simFail('OrbitControls no cargó desde el CDN. La escena 3D se ve, pero no podrás girar la vista. / OrbitControls failed to load.');}
 scene.add(new THREE.AmbientLight(0xffffff,0.8));var dl=new THREE.DirectionalLight(0xffffff,0.65);dl.position.set(3,5,4);scene.add(dl);
 var th=0.025;
 var L1=new THREE.Mesh(new THREE.BoxGeometry(3,2.4,th),new THREE.MeshStandardMaterial({color:0x3f6bd6,roughness:.9}));
@@ -177,10 +184,11 @@ function onDrag(){needle.position.copy(handle.position);
   var x=Math.max(-1.3,Math.min(1.3,needle.position.x)); needle.position.x=x; handle.position.x=x;
   S.prog=(1.3-x)/2.6; var z=needle.position.z; var crossed=z<crossZ(); S.depth=crossed?0:1; S.yRow=needle.position.y;
   colorNeedle(crossed); drawThread(x,needle.position.y,z); maybeAlert(crossed);}
-var dragC=new THREE.DragControls([handle],camera,renderer.domElement); dragC.enabled=false;
-dragC.addEventListener('dragstart',function(){controls.enabled=false;});
-dragC.addEventListener('dragend',function(){controls.enabled=true;});
-dragC.addEventListener('drag',function(){onDrag();});
+var dragC=null;try{dragC=new THREE.DragControls([handle],camera,renderer.domElement); dragC.enabled=false;
+  dragC.addEventListener('dragstart',function(){if(controls)controls.enabled=false;});
+  dragC.addEventListener('dragend',function(){if(controls)controls.enabled=true;});
+  dragC.addEventListener('drag',function(){onDrag();});
+}catch(e){simFail('DragControls no cargó desde el CDN. Podrás usar el control de coser, pero no arrastrar la aguja. / DragControls failed to load.');}
 function setFB(c,t){var f=document.getElementById('fb');f.className=c;f.textContent=t;}
 /* ---------- locate loop (count 5) + sequencing ---------- */
 function countLoops(){if(S.located)return;var i=0,out=document.getElementById('locOut'),en=EN();
@@ -201,7 +209,7 @@ function checkSeq(){var ok=true;for(var i=0;i<seqData.length;i++){if(document.ge
 /* ---------- actions ---------- */
 function hold(){S.held=true;cT.visible=cB.visible=true;document.getElementById('holdBtn').classList.add('on');
   document.getElementById('sew').disabled=false;document.getElementById('autoBtn').disabled=false;
-  dragC.enabled=true;                                   // needle 360° drag activates ONLY after the fabric is held
+  if(dragC)dragC.enabled=true;                          // needle 360° drag activates ONLY after the fabric is held
   log("initialized","fabric","held");
   setFB('',EN()?'Fabric held and fixed. Now move the needle (drag) to sew on layer 1 — do NOT cross into layer 2.':'Tela sujeta y fija. Ahora mueve la aguja (arrástrala) para coser en la capa 1 — no cruces a la capa 2.');}
 function toggleOpen(){S.open=!S.open;tgtF=S.open?zOpenF:zCloseF;tgtB=S.open?zOpenB:zCloseB;log("interacted","double-layer",S.open?"open":"close");}
@@ -231,6 +239,6 @@ window.setLang=setLang;window.hold=hold;window.toggleOpen=toggleOpen;window.setD
 place();window.addEventListener('resize',resize);
 (function loop(){requestAnimationFrame(loop);
   L1.position.z+=(tgtF-L1.position.z)*0.12;L2.position.z+=(tgtB-L2.position.z)*0.12; // animate open/close
-  controls.update();renderer.render(scene,camera);})();
+  if(controls)controls.update();renderer.render(scene,camera);})();
 </script>
 </body></html>
