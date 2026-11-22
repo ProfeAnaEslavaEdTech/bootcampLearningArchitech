@@ -222,14 +222,14 @@ function xStatement(e){var v=VERBS[e.verb]||['https://edtech.sop100ax/verb/'+e.v
   return st;}
 function downloadJSON(){dl(JSON.stringify(EV.map(xStatement),null,2),'application/json','paso5_xapi_statements.json');} // POST directo a Veracity / Cornerstone LRS
 /* --- prueba de práctica (HTML autónomo) para enviar al entrenador --- */
-function downloadProof(){var sc=scoreNow(),d=new Date();
+function downloadProof(){var sc=scoreNow(),d=new Date(),scDisp=S.passed?(sc+' / 100'):'— (sin comprobar)';
   var html='<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prueba de práctica · SOP-100-AX · Paso 5</title>'
    +'<style>body{font-family:Arial,sans-serif;color:#16222E;max-width:640px;margin:24px auto;padding:0 16px;line-height:1.5}h1{font-size:20px;color:#16365C}table{border-collapse:collapse;width:100%;margin:12px 0}td,th{border:1px solid #d9dee3;padding:7px 10px;text-align:left}.ok{color:#17894A;font-weight:700}.no{color:#C24A2E;font-weight:700}.small{font-size:12px;color:#777}</style></head><body>'
    +'<h1>Prueba de práctica — SOP-100-AX · Paso 5</h1>'
    +'<p><b>Aprendiz:</b> '+LEARNER+'<br><b>Fecha:</b> '+d.toLocaleString()+'<br><b>Unidad:</b> SOP-100-AX / Paso 5 · Registro: '+REG+'</p>'
    +'<table><tr><th>Métrica</th><th>Valor</th></tr>'
-   +'<tr><td>Resultado (Zero-Gate 100% capa única)</td><td class="'+(S.passed?'ok':'no')+'">'+(S.passed?'APROBADO':'NO superado')+'</td></tr>'
-   +'<tr><td>Puntuación</td><td>'+sc+' / 100</td></tr>'
+   +'<tr><td>Resultado (Zero-Gate 100% capa única)</td><td class="'+(S.passed?'ok':'no')+'">'+(S.passed?'APROBADO':'NO superado / sin comprobar')+'</td></tr>'
+   +'<tr><td>Puntuación</td><td>'+scDisp+'</td></tr>'
    +'<tr><td>Intentos</td><td>'+S.attempts+'</td></tr>'
    +'<tr><td>Toques de capa 2 (errores críticos)</td><td>'+S.layer2Touches+'</td></tr>'
    +'<tr><td>Puntadas correctas</td><td>'+S.correct+'</td></tr>'
@@ -238,18 +238,22 @@ function downloadProof(){var sc=scoreNow(),d=new Date();
    +'<p class="small">Evidencia de práctica del e-learning: mide la DECISIÓN (capa única) y la SECUENCIA. La motricidad fina real se evalúa en práctica supervisada (Nivel 3). Datos xAPI compatibles con LRS (Veracity) y LMS (Cornerstone). · Material con asistencia de IA, revisado por Ana Eslava-Graterol. Art. 50 Reglamento (UE) 2024/1689.</p>'
    +'<p class="small">Enviar a: entrenador / supervisor de práctica.</p></body></html>';
   dl(html,'text/html','paso5_prueba_practica.html');}
-function downloadReport(){var sc=scoreNow();
-  var md="# Informe · SOP-100-AX · Paso 5\n\n- Unidad: SOP-100-AX / Paso 5\n- Aprendiz: "+LEARNER+"\n- Fecha: "+new Date().toISOString()+"\n\n## Resultado\n- Aprobado (Zero-Gate 100% capa única): "+(S.passed?"Sí":"No")+"\n- Puntuación: "+sc+"/100\n- Intentos: "+S.attempts+"\n- Toques de capa 2: "+S.layer2Touches+"\n- Puntadas correctas: "+S.correct+"\n- Recuperado tras error: "+(S.recovered?"Sí":"No")+"\n- Eventos (tamaño del log): "+EV.length+"\n\n## KPI (Kirkpatrick L2)\n| KPI | Valor |\n|---|---|\n| Dominio ítem crítico (capa única) | "+(S.critical_single_layer?"100%":"—")+" |\n| Errores de capa 2 | "+S.layer2Touches+" |\n| Recuperación | "+(S.recovered?"Sí":(S.layer2Touches?"No":"n/a"))+" |\n| Intentos hasta dominio | "+S.attempts+" |\n| Tiempo en tarea (ms) | "+(EV.length?EV[EV.length-1].ms:0)+" |\n";
+function downloadReport(){var sc=scoreNow(),scDisp=S.passed?(sc+"/100"):"— (sin comprobar)";
+  var md="# Informe · SOP-100-AX · Paso 5\n\n- Unidad: SOP-100-AX / Paso 5\n- Aprendiz: "+LEARNER+"\n- Fecha: "+new Date().toISOString()+"\n\n## Resultado\n- Aprobado (Zero-Gate 100% capa única): "+(S.passed?"Sí":"No")+"\n- Puntuación: "+scDisp+"\n- Intentos: "+S.attempts+"\n- Toques de capa 2: "+S.layer2Touches+"\n- Puntadas correctas: "+S.correct+"\n- Recuperado tras error: "+(S.recovered?"Sí":"No")+"\n- Eventos (tamaño del log): "+EV.length+"\n\n## KPI (Kirkpatrick L2)\n| KPI | Valor |\n|---|---|\n| Dominio ítem crítico (capa única) | "+(S.critical_single_layer?"100%":"—")+" |\n| Errores de capa 2 | "+S.layer2Touches+" |\n| Recuperación | "+(S.recovered?"Sí":(S.layer2Touches?"No":"n/a"))+" |\n| Intentos hasta dominio | "+S.attempts+" |\n| Tiempo en tarea (ms) | "+(EV.length?EV[EV.length-1].ms:0)+" |\n";
   dl(md,"text/markdown","paso5_informe.md");}
-function showReport(){var r=document.getElementById('report');var en=EN();var sc=scoreNow();
+function showReport(){var r=document.getElementById('report');var en=EN();
+  var estado=S.passed?(en?'✓ Passed (single layer)':'✓ Aprobado (capa única)'):(en?'In progress — press ✓ Check the stitch':'En progreso — pulsa ✓ Comprobar la puntada');
+  var col=S.passed?'#17894A':'#8A5A00';
+  var scDisp=S.passed?(scoreNow()+' / 100'):'—';
   var html='<table><tr><th>'+(en?'Metric':'Métrica')+'</th><th>'+(en?'Value':'Valor')+'</th></tr>'
+   +'<tr><td>'+(en?'Status':'Estado')+'</td><td style="color:'+col+';font-weight:700">'+estado+'</td></tr>'
+   +'<tr><td>'+(en?'Score':'Puntuación')+'</td><td>'+scDisp+'</td></tr>'
    +'<tr><td>'+(en?'Attempts':'Intentos')+'</td><td>'+S.attempts+'</td></tr>'
    +'<tr><td>'+(en?'Layer-2 touches':'Toques capa 2')+'</td><td>'+S.layer2Touches+'</td></tr>'
    +'<tr><td>'+(en?'Correct stitches':'Puntadas correctas')+'</td><td>'+S.correct+'</td></tr>'
-   +'<tr><td>'+(en?'Recovered':'Recuperado')+'</td><td>'+(S.recovered?(en?'Yes':'Sí'):'—')+'</td></tr>'
-   +'<tr><td>'+(en?'Passed (Zero-Gate 100%)':'Aprobado (Zero-Gate 100%)')+'</td><td>'+(S.passed?(en?'Yes':'Sí'):'—')+'</td></tr>'
-   +'<tr><td>'+(en?'Score':'Puntuación')+'</td><td>'+sc+'</td></tr>'
-   +'<tr><td>'+(en?'xAPI events':'Eventos xAPI')+'</td><td>'+EV.length+'</td></tr></table>';
+   +'<tr><td>'+(en?'Recovered after error':'Recuperado tras error')+'</td><td>'+(S.recovered?(en?'Yes':'Sí'):(S.layer2Touches?(en?'No':'No'):'—'))+'</td></tr>'
+   +'<tr><td>'+(en?'xAPI events':'Eventos xAPI')+'</td><td>'+EV.length+'</td></tr></table>'
+   +(S.passed?'':'<p style="font-size:12px;color:#8A5A00;margin-top:6px">'+(en?'The score is set when you check the stitch: 100 if single layer, −20 per layer-2 touch.':'La puntuación se calcula al comprobar la puntada: 100 si una sola capa, −20 por cada toque de capa 2.')+'</p>');
   r.innerHTML=html;r.style.display='block';}
 /* ---------- 3D ---------- */
 var cv=document.getElementById('cv');
