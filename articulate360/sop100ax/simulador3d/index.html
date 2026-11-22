@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SOP-100-AX · Paso 5 · Simulador 3D (WebGL)</title>
+<style>
+  :root{--ink:#16222E;--blue:#2F54B7;--green:#17894A;--amber:#E0A400;--red:#C24A2E;--line:#d9dee3}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#eef1f4}
+  .es .en{display:none}.en .es{display:none}
+  header{background:#16222E;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:10px 16px}
+  header h1{font-size:15px}
+  .tg{display:flex;border:1px solid #fff5;border-radius:16px;overflow:hidden;font-size:12px;font-weight:700}
+  .tg button{background:transparent;color:#fff;border:0;padding:5px 12px;cursor:pointer}
+  .tg button.on{background:#fff;color:#16222E}
+  #wrap{max-width:960px;margin:0 auto;padding:14px}
+  #cv{width:100%;height:460px;background:#dfe5ec;border:1px solid var(--line);border-radius:10px;display:block}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:12px}
+  .crit{background:#FFF6E0;border-left:5px solid var(--amber);color:#8A5A00;font-weight:700;padding:9px 12px;border-radius:4px;margin-bottom:10px}
+  label.r{display:inline-flex;align-items:center;gap:6px;margin-right:18px;font-size:14px;cursor:pointer}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+  button.act{background:var(--blue);color:#fff;border:0;border-radius:8px;padding:9px 15px;font-size:14px;font-weight:700;cursor:pointer}
+  button.ghost{background:#eef1f6;color:#16222E}
+  #fb{margin-top:10px;font-weight:700;font-size:15px;min-height:22px}
+  #fb.ok{color:var(--green)}#fb.no{color:var(--red)}
+  .hint{font-size:12px;color:#5a6672;margin-top:6px}
+</style></head>
+<body class="es">
+<header>
+  <h1><span class="es">Paso 5 · Simulador 3D — puntada de bloqueo en una sola capa</span><span class="en">Step 5 · 3D simulator — single-layer locking stitch</span></h1>
+  <div class="tg"><button id="bes" class="on" onclick="setLang('es')">ES</button><button id="ben" onclick="setLang('en')">EN</button></div>
+</header>
+<div id="wrap">
+  <canvas id="cv"></canvas>
+  <div class="panel">
+    <div class="crit"><span class="es">⚠ Trabaja en la capa 1. No cruces la aguja a la capa 2.</span><span class="en">⚠ Work on layer 1. Do not cross the needle into layer 2.</span></div>
+    <p style="font-size:14px"><span class="es"><b>1.</b> Elige la profundidad. <b>2.</b> Desliza la aguja de derecha a izquierda bordeando la columna. Arrastra con el ratón para girar la vista 3D.</span>
+       <span class="en"><b>1.</b> Choose the depth. <b>2.</b> Slide the needle from right to left skirting the column. Drag with the mouse to orbit the 3D view.</span></p>
+    <div class="row">
+      <span style="font-size:14px;font-weight:700"><span class="es">Profundidad:</span><span class="en">Depth:</span></span>
+      <label class="r"><input type="radio" name="depth" value="1" checked onchange="setDepth(1)"> <span class="es">Capa 1 (correcto)</span><span class="en">Layer 1 (correct)</span></label>
+      <label class="r"><input type="radio" name="depth" value="0" onchange="setDepth(0)"> <span class="es">Atravesar a la capa 2</span><span class="en">Cross into layer 2</span></label>
+    </div>
+    <div class="row">
+      <button class="act" id="slideBtn" onclick="slide()"><span class="es">▶ Deslizar (der→izq)</span><span class="en">▶ Slide (right→left)</span></button>
+      <button class="act ghost" onclick="reset()"><span class="es">Reiniciar</span><span class="en">Reset</span></button>
+    </div>
+    <div id="fb"></div>
+    <div class="hint"><span class="es">Las dos superficies azules son la capa 1 (delante) y la capa 2 (detrás), con el canal entre ambas. El nudo de anclaje está abajo; el bucle de bloqueo, 5 bucles por encima.</span>
+      <span class="en">The two blue surfaces are layer 1 (front) and layer 2 (back), with the channel between them. The anchor knot is at the bottom; the locking loop is 5 loops above.</span></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+function setLang(l){document.body.className=l;document.getElementById('bes').classList.toggle('on',l=='es');document.getElementById('ben').classList.toggle('on',l=='en');try{localStorage.setItem('sim3dLang',l)}catch(e){}}
+try{var sv=localStorage.getItem('sim3dLang');if(sv)setLang(sv);}catch(e){}
+function LANGEN(){return document.body.classList.contains('en');}
+
+var cv=document.getElementById('cv');
+var scene=new THREE.Scene(); scene.background=new THREE.Color(0xdfe5ec);
+var camera=new THREE.PerspectiveCamera(45, cv.clientWidth/cv.clientHeight, 0.1, 100);
+camera.position.set(2.6,1.8,4.2);
+var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true});
+function resize(){renderer.setSize(cv.clientWidth,cv.clientHeight,false);camera.aspect=cv.clientWidth/cv.clientHeight;camera.updateProjectionMatrix();}
+renderer.setPixelRatio(Math.min(devicePixelRatio,2)); resize();
+var controls=new THREE.OrbitControls(camera,renderer.domElement); controls.enablePan=false; controls.minDistance=3; controls.maxDistance=8; controls.target.set(0,0,0);
+scene.add(new THREE.AmbientLight(0xffffff,0.75));
+var dl=new THREE.DirectionalLight(0xffffff,0.7); dl.position.set(3,5,4); scene.add(dl);
+
+// fabric layers (knit-like via color); layer1 front z=+0.25, layer2 back z=-0.25
+function layer(z,color){var g=new THREE.BoxGeometry(3,3,0.08);var m=new THREE.MeshStandardMaterial({color:color,roughness:.85,metalness:.05});var mesh=new THREE.Mesh(g,m);mesh.position.z=z;return mesh;}
+var L1=layer(0.25,0x3f6bd6), L2=layer(-0.25,0x1e3a86); scene.add(L1); scene.add(L2);
+// column highlight on layer 1
+var colGeo=new THREE.BoxGeometry(0.34,3,0.02); var colMat=new THREE.MeshBasicMaterial({color:0xE0A400,transparent:true,opacity:.35}); var col=new THREE.Mesh(colGeo,colMat); col.position.set(0.2,0,0.31); scene.add(col);
+// anchor knot (bottom) + locking loop (5 up)
+var knot=new THREE.Mesh(new THREE.SphereGeometry(0.1,18,18),new THREE.MeshStandardMaterial({color:0xffffff})); knot.position.set(0.2,-1.0,0.33); scene.add(knot);
+var loop=new THREE.Mesh(new THREE.TorusGeometry(0.14,0.045,12,24),new THREE.MeshStandardMaterial({color:0xffffff})); loop.position.set(0.2,0.1,0.33); scene.add(loop);
+
+// needle group (horizontal, tip to the left)
+var needle=new THREE.Group();
+var shaft=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,1.4,16),new THREE.MeshStandardMaterial({color:0xbfc6cf,metalness:.6,roughness:.3}));
+shaft.rotation.z=Math.PI/2; needle.add(shaft);
+var tip=new THREE.Mesh(new THREE.ConeGeometry(0.05,0.22,16),new THREE.MeshStandardMaterial({color:0x9aa4ad,metalness:.6,roughness:.3}));
+tip.rotation.z=Math.PI/2; tip.position.x=-0.8; needle.add(tip);
+// thread
+var thr=new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.9,8),new THREE.MeshStandardMaterial({color:0xffffff})); thr.position.set(0.7,-0.45,0); thr.rotation.z=0.5; needle.add(thr);
+scene.add(needle);
+
+var state={x:1.2, depth:1, sliding:false}; // depth 1 = layer1 (z=0.25), 0 = crosses (z=-0.25)
+function place(){ needle.position.x=state.x; needle.position.y=0.1; needle.position.z = state.depth? 0.25 : -0.22;
+  var bad = state.depth==0;
+  shaft.material.color.set(bad?0xd05a3e:0xbfc6cf); tip.material.color.set(bad?0xc24a2e:0x9aa4ad);
+}
+function setDepth(d){state.depth=d; place(); setFB('',''); }
+window.setDepth=setDepth;
+function setFB(cls,txt){var f=document.getElementById('fb'); f.className=cls; f.textContent=txt;}
+function slide(){ if(state.sliding) return; state.sliding=true; document.getElementById('slideBtn').disabled=true;
+  var start=performance.now(), dur=2200, x0=1.2, x1=-1.2; state.x=x0; place();
+  function step(now){var t=Math.min(1,(now-start)/dur); state.x=x0+(x1-x0)*t; place();
+    if(t<1){requestAnimationFrame(step);} else {state.sliding=false; document.getElementById('slideBtn').disabled=false; evaluate();}}
+  requestAnimationFrame(step);
+}
+window.slide=slide;
+function evaluate(){ var en=LANGEN();
+  if(state.depth==1){ setFB('ok', en?'✔ Correct: you stayed on layer 1. Locking stitch done without touching layer 2.':'✔ Correcto: te mantuviste en la capa 1. Puntada de bloqueo sin tocar la capa 2.'); }
+  else { setFB('no', en?'✖ You crossed into layer 2 → defective piece. Remove the thread to that point and redo the knot only on layer 1.':'✖ Cruzaste a la capa 2 → pieza defectuosa. Retira el hilo hasta ese punto y rehaz el nudo solo en la capa 1.'); }
+}
+function reset(){ state.x=1.2; state.depth=1; document.querySelector('input[name=depth][value="1"]').checked=true; place(); setFB('',''); }
+window.reset=reset;
+place();
+window.addEventListener('resize',resize);
+(function loop(){requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera);})();
+</script>
+</body></html>
