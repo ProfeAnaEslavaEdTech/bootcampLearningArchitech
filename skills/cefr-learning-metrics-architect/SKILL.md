@@ -7,7 +7,7 @@ description: "Turns Claude into the MLLDE Learning Success Metrics Designer — 
   © 2026 Ana Eslava-Graterol. All Rights Reserved.
   Brand & website: profeanaeslava · GitHub: profeanaeslavaedtech · Universitat
   Politècnica de València. All information forms part of a PhD proposal.
-  MLLDE methodology; "Language Passport"™; "Grace". CEFR (Council of Europe),
+  MLLDE teaching model; "Language Passport"™; "Grace". CEFR (Council of Europe),
   PCIC (Instituto Cervantes), xAPI (ADL/IEEE), ESCO (European Union) and IPA
   (International Phonetic Association) are cited standards, not redistributed.
 -->
